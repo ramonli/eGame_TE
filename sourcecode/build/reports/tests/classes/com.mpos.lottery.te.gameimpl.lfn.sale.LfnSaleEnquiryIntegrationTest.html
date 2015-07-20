@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Class com.mpos.lottery.te.gameimpl.lfn.sale.LfnSaleEnquiryIntegrationTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class com.mpos.lottery.te.gameimpl.lfn.sale.LfnSaleEnquiryIntegrationTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.mpos.lottery.te.gameimpl.lfn.sale.html">com.mpos.lottery.te.gameimpl.lfn.sale</a> &gt; LfnSaleEnquiryIntegrationTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">2</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">1.017s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">testEnquirySaleTransaction_OK</td>
+<td>0.538s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testEnquiryTicket_OK</td>
+<td>0.479s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>[2015-05-29 17:13:18,155][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:18,155][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:18,155][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@595545b6) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:18,156][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:18,156][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:18,156][Test worker][INFO ][BaseTransactionalIntegrationTest] | LfnSaleEnquiryIntegrationTest.testEnquirySaleTransaction_OK                                                            |
+[2015-05-29 17:13:18,156][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:18,156][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/SellTicket_Req.xml) by key(15.transtype.200).
+[2015-05-29 17:13:18,157][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.lfn.sale.LfnTicket, mappingFile=xml-mapping/game/lfn/SellTicket_Req.xml).
+[2015-05-29 17:13:18,158][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890798156|Timestamp:20150529171318|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;2&quot; totalAmount=&quot;2600.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;11002&quot; gameId=&quot;LFN-1&quot;/&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;2&quot; entryAmount=&quot;100.0&quot; countOfQPNumber=&quot;0&quot;/&gt;&lt;Entry selectedNumber=&quot;2,7,13,24,25,36&quot; betOption=&quot;53&quot; inputChannel=&quot;2&quot; entryAmount=&quot;1200.0&quot; countOfQPNumber=&quot;0&quot;/&gt;&lt;/Ticket&gt;,hash=1355507448), get digest:0c3fca911d9f3db0398d934af5a11319
+[2015-05-29 17:13:18,158][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:18,158][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:18,158][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171318).
+[2015-05-29 17:13:18,158][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:18,158][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890798156).
+[2015-05-29 17:13:18,158][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:18,158][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:18,158][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=0c3fca911d9f3db0398d934af5a11319).
+[2015-05-29 17:13:18,158][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=15).
+[2015-05-29 17:13:18,158][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:18,158][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:18,160][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfncNCEmxnE1Ou0qcmJ+qutg9L2k05jXFbPjS1FsBBTLuWj4a8kJVsM72/YMzruGEM7DWPI5uQU+kvE7y74H12t4zbaRoUQTDb7n/h8zAxrh6Hn2mtyfU/CYtxKe3z/Py5RlIQZDC6AG8TrAvhb3G3SNDjlu4Vxm32uHjs7iClqnt2hDh9rhQSOHhB9K5LUL3NVo8dKwh6SCwM56BaXiK557zz5HaYz2004U1raT6OlReAP7pgHuknsbfxdYkwSI2v0wkzsQ/uHRPv01BVY1tFvgu1/1csAMYBq+O2tRLIhXeAoIJOVLJJPvPHAkozf5FsxcYBza1aivogG1+z8aPrO9uA0h0ScFgQ8LmCP5AX0mf6ruPkYWDcmUtW5ansd9eHP+N72iCfLshuhdBbTWGleRy.
+[2015-05-29 17:13:18,160][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890798156|Timestamp:20150529171318|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:18,160][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;2&quot; totalAmount=&quot;2600.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;11002&quot; gameId=&quot;LFN-1&quot;/&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;2&quot; entryAmount=&quot;100.0&quot; countOfQPNumber=&quot;0&quot;/&gt;&lt;Entry selectedNumber=&quot;2,7,13,24,25,36&quot; betOption=&quot;53&quot; inputChannel=&quot;2&quot; entryAmount=&quot;1200.0&quot; countOfQPNumber=&quot;0&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:18,160][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890798156|Timestamp:20150529171318|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;2&quot; totalAmount=&quot;2600.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;11002&quot; gameId=&quot;LFN-1&quot;/&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;2&quot; entryAmount=&quot;100.0&quot; countOfQPNumber=&quot;0&quot;/&gt;&lt;Entry selectedNumber=&quot;2,7,13,24,25,36&quot; betOption=&quot;53&quot; inputChannel=&quot;2&quot; entryAmount=&quot;1200.0&quot; countOfQPNumber=&quot;0&quot;/&gt;&lt;/Ticket&gt;,hash=1355507448), get digest:0c3fca911d9f3db0398d934af5a11319
+[2015-05-29 17:13:18,160][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/SellTicket_Req.xml) by key(15.transtype.200).
+[2015-05-29 17:13:18,160][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/lfn/SellTicket_Req.xml
+[2015-05-29 17:13:18,160][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/SellTicket_Req.xml) by key(15.transtype.200).
+[2015-05-29 17:13:18,177][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_200_1.5.0).
+[2015-05-29 17:13:18,177][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_200_).
+[2015-05-29 17:13:18,177][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(15_200_), found controller(com.mpos.lottery.te.gameimpl.lfn.LfnController@444e8ac1) and method(public void com.mpos.lottery.te.gameimpl.lfn.LfnController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:18,185][Test worker][DEBUG][BaseJpaDao] Query future game instance(class com.mpos.lottery.te.gameimpl.lfn.game.LfnGameInstance) by(number=11002,gameId=LFN-1, multipleDraws=2, state=1||2):1
+[2015-05-29 17:13:18,191][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:18,191][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745519300006396
+[2015-05-29 17:13:18,197][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:18,199][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(y013eOifYgLRjcmw7N8vMlRtFP9EoUAV) as 80000
+[2015-05-29 17:13:18,203][Test worker][DEBUG][LfnRiskControlService] THe odds for given entry(BaseEntry [ticketSerialNo=y013eOifYgLRjcmw7N8vMlRtFP9EoUAV, selectNumber=5, betOption=1, totalBets=1, entryAmount=100.0]) is ChanceOdds [odds=50, prizelLevelType=1, bettingNumber=null]
+[2015-05-29 17:13:18,203][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=1, bettingNumber=null]
+[2015-05-29 17:13:18,203][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(5, amount=100.0) is 50
+[2015-05-29 17:13:18,210][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(y013eOifYgLRjcmw7N8vMlRtFP9EoUAV) as 80000
+[2015-05-29 17:13:18,212][Test worker][DEBUG][LfnRiskControlService] THe odds for given entry(BaseEntry [ticketSerialNo=y013eOifYgLRjcmw7N8vMlRtFP9EoUAV, selectNumber=2,7,13,24,25,36, betOption=53, totalBets=20, entryAmount=1200.0]) is ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=null]
+[2015-05-29 17:13:18,212][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=null]
+[2015-05-29 17:13:18,212][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,13, amount=60.00) is 30
+[2015-05-29 17:13:18,220][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,13]
+[2015-05-29 17:13:18,220][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,24, amount=60.00) is 30
+[2015-05-29 17:13:18,226][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,24]
+[2015-05-29 17:13:18,226][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,25, amount=60.00) is 30
+[2015-05-29 17:13:18,233][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,25]
+[2015-05-29 17:13:18,233][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,36, amount=60.00) is 30
+[2015-05-29 17:13:18,240][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,36]
+[2015-05-29 17:13:18,240][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,13,24, amount=60.00) is 30
+[2015-05-29 17:13:18,247][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,13,24]
+[2015-05-29 17:13:18,247][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,13,25, amount=60.00) is 30
+[2015-05-29 17:13:18,254][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,13,25]
+[2015-05-29 17:13:18,254][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,13,36, amount=60.00) is 30
+[2015-05-29 17:13:18,260][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,13,36]
+[2015-05-29 17:13:18,260][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,24,25, amount=60.00) is 30
+[2015-05-29 17:13:18,267][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,24,25]
+[2015-05-29 17:13:18,267][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,24,36, amount=60.00) is 30
+[2015-05-29 17:13:18,275][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,24,36]
+[2015-05-29 17:13:18,275][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,25,36, amount=60.00) is 30
+[2015-05-29 17:13:18,282][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,25,36]
+[2015-05-29 17:13:18,282][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,13,24, amount=60.00) is 30
+[2015-05-29 17:13:18,291][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,13,24]
+[2015-05-29 17:13:18,291][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,13,25, amount=60.00) is 30
+[2015-05-29 17:13:18,297][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,13,25]
+[2015-05-29 17:13:18,298][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,13,36, amount=60.00) is 30
+[2015-05-29 17:13:18,304][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,13,36]
+[2015-05-29 17:13:18,304][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,24,25, amount=60.00) is 30
+[2015-05-29 17:13:18,311][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,24,25]
+[2015-05-29 17:13:18,311][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,24,36, amount=60.00) is 30
+[2015-05-29 17:13:18,317][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,24,36]
+[2015-05-29 17:13:18,317][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,25,36, amount=60.00) is 30
+[2015-05-29 17:13:18,324][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,25,36]
+[2015-05-29 17:13:18,324][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(13,24,25, amount=60.00) is 30
+[2015-05-29 17:13:18,330][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=13,24,25]
+[2015-05-29 17:13:18,330][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(13,24,36, amount=60.00) is 30
+[2015-05-29 17:13:18,336][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=13,24,36]
+[2015-05-29 17:13:18,336][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(13,25,36, amount=60.00) is 30
+[2015-05-29 17:13:18,343][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=13,25,36]
+[2015-05-29 17:13:18,343][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(24,25,36, amount=60.00) is 30
+[2015-05-29 17:13:18,349][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(y013eOifYgLRjcmw7N8vMlRtFP9EoUAV) as 80000
+[2015-05-29 17:13:18,351][Test worker][DEBUG][LfnRiskControlService] THe odds for given entry(BaseEntry [ticketSerialNo=y013eOifYgLRjcmw7N8vMlRtFP9EoUAV, selectNumber=5, betOption=1, totalBets=1, entryAmount=100.0]) is ChanceOdds [odds=50, prizelLevelType=1, bettingNumber=null]
+[2015-05-29 17:13:18,351][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=1, bettingNumber=null]
+[2015-05-29 17:13:18,351][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(5, amount=100.0) is 50
+[2015-05-29 17:13:18,359][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(y013eOifYgLRjcmw7N8vMlRtFP9EoUAV) as 80000
+[2015-05-29 17:13:18,361][Test worker][DEBUG][LfnRiskControlService] THe odds for given entry(BaseEntry [ticketSerialNo=y013eOifYgLRjcmw7N8vMlRtFP9EoUAV, selectNumber=2,7,13,24,25,36, betOption=53, totalBets=20, entryAmount=1200.0]) is ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=null]
+[2015-05-29 17:13:18,361][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=null]
+[2015-05-29 17:13:18,361][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,13, amount=60.00) is 30
+[2015-05-29 17:13:18,372][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,13]
+[2015-05-29 17:13:18,372][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,24, amount=60.00) is 30
+[2015-05-29 17:13:18,380][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,24]
+[2015-05-29 17:13:18,380][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,25, amount=60.00) is 30
+[2015-05-29 17:13:18,387][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,25]
+[2015-05-29 17:13:18,387][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,36, amount=60.00) is 30
+[2015-05-29 17:13:18,394][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,36]
+[2015-05-29 17:13:18,394][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,13,24, amount=60.00) is 30
+[2015-05-29 17:13:18,401][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,13,24]
+[2015-05-29 17:13:18,401][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,13,25, amount=60.00) is 30
+[2015-05-29 17:13:18,409][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,13,25]
+[2015-05-29 17:13:18,409][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,13,36, amount=60.00) is 30
+[2015-05-29 17:13:18,416][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,13,36]
+[2015-05-29 17:13:18,416][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,24,25, amount=60.00) is 30
+[2015-05-29 17:13:18,423][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,24,25]
+[2015-05-29 17:13:18,423][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,24,36, amount=60.00) is 30
+[2015-05-29 17:13:18,430][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,24,36]
+[2015-05-29 17:13:18,430][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,25,36, amount=60.00) is 30
+[2015-05-29 17:13:18,436][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,25,36]
+[2015-05-29 17:13:18,437][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,13,24, amount=60.00) is 30
+[2015-05-29 17:13:18,443][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,13,24]
+[2015-05-29 17:13:18,443][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,13,25, amount=60.00) is 30
+[2015-05-29 17:13:18,450][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,13,25]
+[2015-05-29 17:13:18,450][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,13,36, amount=60.00) is 30
+[2015-05-29 17:13:18,457][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,13,36]
+[2015-05-29 17:13:18,457][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,24,25, amount=60.00) is 30
+[2015-05-29 17:13:18,463][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,24,25]
+[2015-05-29 17:13:18,464][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,24,36, amount=60.00) is 30
+[2015-05-29 17:13:18,470][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,24,36]
+[2015-05-29 17:13:18,470][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,25,36, amount=60.00) is 30
+[2015-05-29 17:13:18,476][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,25,36]
+[2015-05-29 17:13:18,476][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(13,24,25, amount=60.00) is 30
+[2015-05-29 17:13:18,483][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=13,24,25]
+[2015-05-29 17:13:18,483][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(13,24,36, amount=60.00) is 30
+[2015-05-29 17:13:18,489][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=13,24,36]
+[2015-05-29 17:13:18,489][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(13,25,36, amount=60.00) is 30
+[2015-05-29 17:13:18,496][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=13,25,36]
+[2015-05-29 17:13:18,496][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(24,25,36, amount=60.00) is 30
+[2015-05-29 17:13:18,513][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:18,513][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:18,514][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199997400.0, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:18,527][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.15]: transaction {
+  id: &quot;0115052900000000000847&quot;
+  dev_id: &quot;111&quot;
+  operator_id: &quot;OPERATOR-111&quot;
+  merchant_id: &quot;111&quot;
+  create_time: 1432890798000
+  trans_type: 200
+  game_id: &quot;LFN-1&quot;
+  game_type: 15
+  total_amount: &quot;2600.0&quot;
+}
+multi_draw: 2
+total_amount: &quot;2600.0&quot;
+serial_no: &quot;y013eOifYgLRjcmw7N8vMlRtFP9EoUAV&quot;
+game_instance {
+  id: &quot;GII-112&quot;
+}
+entries {
+  selected_number: &quot;2,7,13,24,25,36&quot;
+  bet_option: 53
+  total_bets: 20
+  entry_amount: &quot;1200.0&quot;
+  input_channel: &quot;2&quot;
+}
+entries {
+  selected_number: &quot;5&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100.0&quot;
+  input_channel: &quot;2&quot;
+}
+
+[2015-05-29 17:13:18,528][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:18,528][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/SellTicket_Res.xml) by key(15.transtype.4200).
+[2015-05-29 17:13:18,528][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.lfn.sale.LfnTicket),mappingFile=xml-mapping/game/lfn/SellTicket_Res.xml
+[2015-05-29 17:13:18,528][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/SellTicket_Res.xml) by key(15.transtype.4200).
+[2015-05-29 17:13:18,529][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.lfn.sale.LfnTicket, mappingFile=xml-mapping/game/lfn/SellTicket_Res.xml).
+[2015-05-29 17:13:18,529][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890798156|Timestamp:20150529171318|Transaction-Type:4200|Transaction-Id:0115052900000000000847|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745519300006396&quot; type=&quot;1&quot; lastDrawNo=&quot;11003&quot; barcode=&quot;15cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xavGhw4lusfIqqvZVwatc2iA=&quot; validationCode=&quot;694635&quot; multipleDraws=&quot;2&quot; totalBets=&quot;42&quot; totalAmount=&quot;2600.0&quot;&gt;&lt;GameDraw number=&quot;11002&quot; gameId=&quot;LFN-1&quot;/&gt;&lt;Entry selectedNumber=&quot;2,7,13,24,25,36&quot; betOption=&quot;53&quot; inputChannel=&quot;2&quot; entryAmount=&quot;1200.0&quot;/&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;2&quot; entryAmount=&quot;100.0&quot;/&gt;&lt;/Ticket&gt;):f67e6ab61ed1fe121b216a414f895818
+[2015-05-29 17:13:18,529][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=672) succesfully.
+[2015-05-29 17:13:18,530][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=672): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745519300006396&quot; type=&quot;1&quot; lastDrawNo=&quot;11003&quot; barcode=&quot;15cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xavGhw4lusfIqqvZVwatc2iA=&quot; validationCode=&quot;694635&quot; multipleDraws=&quot;2&quot; totalBets=&quot;42&quot; totalAmount=&quot;2600.0&quot;&gt;&lt;GameDraw number=&quot;11002&quot; gameId=&quot;LFN-1&quot;/&gt;&lt;Entry selectedNumber=&quot;2,7,13,24,25,36&quot; betOption=&quot;53&quot; inputChannel=&quot;2&quot; entryAmount=&quot;1200.0&quot;/&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;2&quot; entryAmount=&quot;100.0&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:18,530][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/SellTicket_Res.xml) by key(15.transtype.4200).
+[2015-05-29 17:13:18,534][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/TransactionEnquiry_Req.xml) by key(transtype.310).
+[2015-05-29 17:13:18,535][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.trans.domain.Transaction, mappingFile=xml-mapping/TransactionEnquiry_Req.xml).
+[2015-05-29 17:13:18,535][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890798534|Timestamp:20150529171318|Transaction-Type:310|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Transaction terminalId=&quot;111&quot; traceMessageId=&quot;1432890798156&quot;/&gt;,hash=134919961), get digest:74ce0e28f8f6921e3c37dc00279f685a
+[2015-05-29 17:13:18,535][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=310).
+[2015-05-29 17:13:18,535][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:18,535][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171318).
+[2015-05-29 17:13:18,535][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:18,535][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890798534).
+[2015-05-29 17:13:18,535][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:18,535][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:18,536][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=74ce0e28f8f6921e3c37dc00279f685a).
+[2015-05-29 17:13:18,536][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:13:18,536][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:18,536][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:18,537][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6jcIE4b0pl+ogrA4SMNVUFtCb0VnctvqFZ4g+Dv1D5Fz4ERoX4gVmzFJ1yZK27DdHzjsRFyQd8KVMWRCHWN7lPA=.
+[2015-05-29 17:13:18,537][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890798534|Timestamp:20150529171318|Transaction-Type:310|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:18,538][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Transaction terminalId=&quot;111&quot; traceMessageId=&quot;1432890798156&quot;/&gt;
+[2015-05-29 17:13:18,538][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890798534|Timestamp:20150529171318|Transaction-Type:310|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Transaction terminalId=&quot;111&quot; traceMessageId=&quot;1432890798156&quot;/&gt;,hash=134919961), get digest:74ce0e28f8f6921e3c37dc00279f685a
+[2015-05-29 17:13:18,538][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/TransactionEnquiry_Req.xml) by key(transtype.310).
+[2015-05-29 17:13:18,538][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/TransactionEnquiry_Req.xml
+[2015-05-29 17:13:18,538][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/TransactionEnquiry_Req.xml) by key(transtype.310).
+[2015-05-29 17:13:18,553][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_310_1.5.0).
+[2015-05-29 17:13:18,553][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_310_).
+[2015-05-29 17:13:18,553][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_310_), found controller(com.mpos.lottery.te.trans.TransactionController@53ddecd8) and method(public void com.mpos.lottery.te.trans.TransactionController.enquiry(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:18,558][Test worker][DEBUG][TransactionServiceImpl] Found TicketEnquiryService[com.mpos.lottery.te.gameimpl.lfn.sale.service.LfnSaleService@23ce68fc] for ticket enquiry.
+[2015-05-29 17:13:18,577][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(TRANSACTION_ENQUIRY)
+[2015-05-29 17:13:18,578][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/TransactionEnquiry_Res.xml) by key(15.transtype.4310).
+[2015-05-29 17:13:18,578][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.trans.domain.Transaction),mappingFile=xml-mapping/game/lfn/TransactionEnquiry_Res.xml
+[2015-05-29 17:13:18,578][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/TransactionEnquiry_Res.xml) by key(15.transtype.4310).
+[2015-05-29 17:13:18,649][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.trans.domain.Transaction, mappingFile=xml-mapping/game/lfn/TransactionEnquiry_Res.xml).
+[2015-05-29 17:13:18,650][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890798534|Timestamp:20150529171318|Transaction-Type:4310|Transaction-Id:0115052900000000000894|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Transaction id=&quot;0115052900000000000847&quot; type=&quot;200&quot; createTime=&quot;20150529171318&quot; responseCode=&quot;200&quot;&gt;&lt;Ticket barcode=&quot;15cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xavGhw4lusfIqqvZVwatc2iA=&quot; validationCode=&quot;694635&quot; multipleDraws=&quot;2&quot; totalBets=&quot;42&quot; totalAmount=&quot;2600&quot; serialNo=&quot;01111745519300006396&quot; type=&quot;1&quot; lastDrawNo=&quot;11003&quot; PIN=&quot;98abe3a28383501f4bfd2d9077820f11&quot;&gt;&lt;GameDraw xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:java=&quot;http://java.sun.com&quot; sale-suspended=&quot;false&quot; version=&quot;0&quot; state=&quot;2&quot; payout-blocked=&quot;false&quot; max-claim-days=&quot;3650&quot; suspend-manual-cancel=&quot;false&quot; risk-control-method=&quot;1&quot; xsi:type=&quot;java:com.mpos.lottery.te.gameimpl.lfn.game.LfnGameInstance&quot;&gt;&lt;prize-logic-id&gt;PL-LFN-111&lt;/prize-logic-id&gt;&lt;number&gt;11002&lt;/number&gt;&lt;end-time&gt;2015-05-30T17:12:14.000+08:00&lt;/end-time&gt;&lt;max-loss-amount&gt;80000&lt;/max-loss-amount&gt;&lt;game-id&gt;LFN-1&lt;/game-id&gt;&lt;freeze-time&gt;2015-05-30T17:42:14.000+08:00&lt;/freeze-time&gt;&lt;percentage-of-turnover&gt;0.4&lt;/percentage-of-turnover&gt;&lt;id&gt;GII-112&lt;/id&gt;&lt;begin-time&gt;2015-05-28T17:12:14.000+08:00&lt;/begin-time&gt;&lt;game state=&quot;1&quot; type=&quot;15&quot; need-auto-payout=&quot;true&quot;&gt;&lt;tax-policy-id&gt;TP-1&lt;/tax-policy-id&gt;&lt;operator-parameter-id&gt;LFN-OP-1&lt;/operator-parameter-id&gt;&lt;name&gt;LFN-1&lt;/name&gt;&lt;id&gt;LFN-1&lt;/id&gt;&lt;tax-method-base&gt;1&lt;/tax-method-base&gt;&lt;fun-type-id&gt;FUN-1&lt;/fun-type-id&gt;&lt;tax-method&gt;1&lt;/tax-method&gt;&lt;/game&gt;&lt;draw-date&gt;2015-05-30T17:12:14.000+08:00&lt;/draw-date&gt;&lt;key&gt;11002-LFN-1&lt;/key&gt;&lt;name&gt;active game instance&lt;/name&gt;&lt;/GameDraw&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;2&quot; amount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;2,7,13,24,25,36&quot; betOption=&quot;53&quot; inputChannel=&quot;2&quot; amount=&quot;1200&quot;/&gt;&lt;/Ticket&gt;&lt;/Transaction&gt;):136c309f1962c46a73945b33132a2b31
+[2015-05-29 17:13:18,662][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=2208) succesfully.
+[2015-05-29 17:13:18,665][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=2208): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Transaction id=&quot;0115052900000000000847&quot; type=&quot;200&quot; createTime=&quot;20150529171318&quot; responseCode=&quot;200&quot;&gt;&lt;Ticket barcode=&quot;15cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xavGhw4lusfIqqvZVwatc2iA=&quot; validationCode=&quot;694635&quot; multipleDraws=&quot;2&quot; totalBets=&quot;42&quot; totalAmount=&quot;2600&quot; serialNo=&quot;01111745519300006396&quot; type=&quot;1&quot; lastDrawNo=&quot;11003&quot; PIN=&quot;98abe3a28383501f4bfd2d9077820f11&quot;&gt;&lt;GameDraw xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:java=&quot;http://java.sun.com&quot; sale-suspended=&quot;false&quot; version=&quot;0&quot; state=&quot;2&quot; payout-blocked=&quot;false&quot; max-claim-days=&quot;3650&quot; suspend-manual-cancel=&quot;false&quot; risk-control-method=&quot;1&quot; xsi:type=&quot;java:com.mpos.lottery.te.gameimpl.lfn.game.LfnGameInstance&quot;&gt;&lt;prize-logic-id&gt;PL-LFN-111&lt;/prize-logic-id&gt;&lt;number&gt;11002&lt;/number&gt;&lt;end-time&gt;2015-05-30T17:12:14.000+08:00&lt;/end-time&gt;&lt;max-loss-amount&gt;80000&lt;/max-loss-amount&gt;&lt;game-id&gt;LFN-1&lt;/game-id&gt;&lt;freeze-time&gt;2015-05-30T17:42:14.000+08:00&lt;/freeze-time&gt;&lt;percentage-of-turnover&gt;0.4&lt;/percentage-of-turnover&gt;&lt;id&gt;GII-112&lt;/id&gt;&lt;begin-time&gt;2015-05-28T17:12:14.000+08:00&lt;/begin-time&gt;&lt;game state=&quot;1&quot; type=&quot;15&quot; need-auto-payout=&quot;true&quot;&gt;&lt;tax-policy-id&gt;TP-1&lt;/tax-policy-id&gt;&lt;operator-parameter-id&gt;LFN-OP-1&lt;/operator-parameter-id&gt;&lt;name&gt;LFN-1&lt;/name&gt;&lt;id&gt;LFN-1&lt;/id&gt;&lt;tax-method-base&gt;1&lt;/tax-method-base&gt;&lt;fun-type-id&gt;FUN-1&lt;/fun-type-id&gt;&lt;tax-method&gt;1&lt;/tax-method&gt;&lt;/game&gt;&lt;draw-date&gt;2015-05-30T17:12:14.000+08:00&lt;/draw-date&gt;&lt;key&gt;11002-LFN-1&lt;/key&gt;&lt;name&gt;active game instance&lt;/name&gt;&lt;/GameDraw&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;2&quot; amount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;2,7,13,24,25,36&quot; betOption=&quot;53&quot; inputChannel=&quot;2&quot; amount=&quot;1200&quot;/&gt;&lt;/Ticket&gt;&lt;/Transaction&gt;
+[2015-05-29 17:13:18,666][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/TransactionEnquiry_Res.xml) by key(15.transtype.4310).
+[2015-05-29 17:13:18,689][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:18,689][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:18,690][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@354dff7e) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:18,690][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:18,690][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:18,690][Test worker][INFO ][BaseTransactionalIntegrationTest] | LfnSaleEnquiryIntegrationTest.testEnquiryTicket_OK                                                                     |
+[2015-05-29 17:13:18,690][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:18,691][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/SellTicket_Req.xml) by key(15.transtype.200).
+[2015-05-29 17:13:18,691][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.lfn.sale.LfnTicket, mappingFile=xml-mapping/game/lfn/SellTicket_Req.xml).
+[2015-05-29 17:13:18,692][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890798691|Timestamp:20150529171318|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;2&quot; totalAmount=&quot;2600.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;11002&quot; gameId=&quot;LFN-1&quot;/&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;2&quot; entryAmount=&quot;100.0&quot; countOfQPNumber=&quot;0&quot;/&gt;&lt;Entry selectedNumber=&quot;2,7,13,24,25,36&quot; betOption=&quot;53&quot; inputChannel=&quot;2&quot; entryAmount=&quot;1200.0&quot; countOfQPNumber=&quot;0&quot;/&gt;&lt;/Ticket&gt;,hash=-320200388), get digest:a5f4428c71b46408d9267c5c9c11c5f4
+[2015-05-29 17:13:18,692][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:18,692][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:18,692][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171318).
+[2015-05-29 17:13:18,692][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:18,692][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890798691).
+[2015-05-29 17:13:18,692][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:18,692][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:18,692][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=a5f4428c71b46408d9267c5c9c11c5f4).
+[2015-05-29 17:13:18,692][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=15).
+[2015-05-29 17:13:18,692][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:18,692][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:18,694][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfncNCEmxnE1Ou0qcmJ+qutg9L2k05jXFbPjS1FsBBTLuWj4a8kJVsM72/YMzruGEM7DWPI5uQU+kvE7y74H12t4zbaRoUQTDb7n/h8zAxrh6Hn2mtyfU/CYtxKe3z/Py5RlIQZDC6AG8TrAvhb3G3SNDjlu4Vxm32uHjs7iClqnt2hDh9rhQSOHhB9K5LUL3NVo8dKwh6SCwM56BaXiK557zz5HaYz2004U1raT6OlReAP7pgHuknsbfxdYkwSI2v0wkzsQ/uHRPv01BVY1tFvgu1/1csAMYBq+O2tRLIhXeAoIJOVLJJPvPHAkozf5FsxcYBza1aivogG1+z8aPrO9uA0h0ScFgQ8LmCP5AX0mf6ruPkYWDcmUtW5ansd9eHP+N72iCfLshuhdBbTWGleRy.
+[2015-05-29 17:13:18,694][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890798691|Timestamp:20150529171318|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:18,694][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;2&quot; totalAmount=&quot;2600.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;11002&quot; gameId=&quot;LFN-1&quot;/&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;2&quot; entryAmount=&quot;100.0&quot; countOfQPNumber=&quot;0&quot;/&gt;&lt;Entry selectedNumber=&quot;2,7,13,24,25,36&quot; betOption=&quot;53&quot; inputChannel=&quot;2&quot; entryAmount=&quot;1200.0&quot; countOfQPNumber=&quot;0&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:18,695][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890798691|Timestamp:20150529171318|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;2&quot; totalAmount=&quot;2600.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;11002&quot; gameId=&quot;LFN-1&quot;/&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;2&quot; entryAmount=&quot;100.0&quot; countOfQPNumber=&quot;0&quot;/&gt;&lt;Entry selectedNumber=&quot;2,7,13,24,25,36&quot; betOption=&quot;53&quot; inputChannel=&quot;2&quot; entryAmount=&quot;1200.0&quot; countOfQPNumber=&quot;0&quot;/&gt;&lt;/Ticket&gt;,hash=-320200388), get digest:a5f4428c71b46408d9267c5c9c11c5f4
+[2015-05-29 17:13:18,695][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/SellTicket_Req.xml) by key(15.transtype.200).
+[2015-05-29 17:13:18,695][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/lfn/SellTicket_Req.xml
+[2015-05-29 17:13:18,695][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/SellTicket_Req.xml) by key(15.transtype.200).
+[2015-05-29 17:13:18,710][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_200_1.5.0).
+[2015-05-29 17:13:18,710][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_200_).
+[2015-05-29 17:13:18,710][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(15_200_), found controller(com.mpos.lottery.te.gameimpl.lfn.LfnController@444e8ac1) and method(public void com.mpos.lottery.te.gameimpl.lfn.LfnController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:18,717][Test worker][DEBUG][BaseJpaDao] Query future game instance(class com.mpos.lottery.te.gameimpl.lfn.game.LfnGameInstance) by(number=11002,gameId=LFN-1, multipleDraws=2, state=1||2):1
+[2015-05-29 17:13:18,722][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:18,722][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745519300006424
+[2015-05-29 17:13:18,728][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:18,731][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(y013eOifYgLRjcmw7N8vMgjFwMkdg8tM) as 80000
+[2015-05-29 17:13:18,735][Test worker][DEBUG][LfnRiskControlService] THe odds for given entry(BaseEntry [ticketSerialNo=y013eOifYgLRjcmw7N8vMgjFwMkdg8tM, selectNumber=5, betOption=1, totalBets=1, entryAmount=100.0]) is ChanceOdds [odds=50, prizelLevelType=1, bettingNumber=null]
+[2015-05-29 17:13:18,735][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=1, bettingNumber=null]
+[2015-05-29 17:13:18,735][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(5, amount=100.0) is 50
+[2015-05-29 17:13:18,743][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(y013eOifYgLRjcmw7N8vMgjFwMkdg8tM) as 80000
+[2015-05-29 17:13:18,745][Test worker][DEBUG][LfnRiskControlService] THe odds for given entry(BaseEntry [ticketSerialNo=y013eOifYgLRjcmw7N8vMgjFwMkdg8tM, selectNumber=2,7,13,24,25,36, betOption=53, totalBets=20, entryAmount=1200.0]) is ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=null]
+[2015-05-29 17:13:18,745][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=null]
+[2015-05-29 17:13:18,745][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,13, amount=60.00) is 30
+[2015-05-29 17:13:18,752][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,13]
+[2015-05-29 17:13:18,752][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,24, amount=60.00) is 30
+[2015-05-29 17:13:18,759][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,24]
+[2015-05-29 17:13:18,759][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,25, amount=60.00) is 30
+[2015-05-29 17:13:18,766][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,25]
+[2015-05-29 17:13:18,766][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,36, amount=60.00) is 30
+[2015-05-29 17:13:18,773][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,36]
+[2015-05-29 17:13:18,773][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,13,24, amount=60.00) is 30
+[2015-05-29 17:13:18,780][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,13,24]
+[2015-05-29 17:13:18,780][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,13,25, amount=60.00) is 30
+[2015-05-29 17:13:18,786][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,13,25]
+[2015-05-29 17:13:18,787][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,13,36, amount=60.00) is 30
+[2015-05-29 17:13:18,793][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,13,36]
+[2015-05-29 17:13:18,793][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,24,25, amount=60.00) is 30
+[2015-05-29 17:13:18,800][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,24,25]
+[2015-05-29 17:13:18,800][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,24,36, amount=60.00) is 30
+[2015-05-29 17:13:18,806][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,24,36]
+[2015-05-29 17:13:18,806][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,25,36, amount=60.00) is 30
+[2015-05-29 17:13:18,813][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,25,36]
+[2015-05-29 17:13:18,813][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,13,24, amount=60.00) is 30
+[2015-05-29 17:13:18,819][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,13,24]
+[2015-05-29 17:13:18,820][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,13,25, amount=60.00) is 30
+[2015-05-29 17:13:18,826][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,13,25]
+[2015-05-29 17:13:18,826][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,13,36, amount=60.00) is 30
+[2015-05-29 17:13:18,833][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,13,36]
+[2015-05-29 17:13:18,833][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,24,25, amount=60.00) is 30
+[2015-05-29 17:13:18,840][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,24,25]
+[2015-05-29 17:13:18,840][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,24,36, amount=60.00) is 30
+[2015-05-29 17:13:18,847][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,24,36]
+[2015-05-29 17:13:18,847][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,25,36, amount=60.00) is 30
+[2015-05-29 17:13:18,854][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,25,36]
+[2015-05-29 17:13:18,854][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(13,24,25, amount=60.00) is 30
+[2015-05-29 17:13:18,860][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=13,24,25]
+[2015-05-29 17:13:18,860][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(13,24,36, amount=60.00) is 30
+[2015-05-29 17:13:18,867][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=13,24,36]
+[2015-05-29 17:13:18,867][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(13,25,36, amount=60.00) is 30
+[2015-05-29 17:13:18,874][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=13,25,36]
+[2015-05-29 17:13:18,874][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(24,25,36, amount=60.00) is 30
+[2015-05-29 17:13:18,880][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(y013eOifYgLRjcmw7N8vMgjFwMkdg8tM) as 80000
+[2015-05-29 17:13:18,883][Test worker][DEBUG][LfnRiskControlService] THe odds for given entry(BaseEntry [ticketSerialNo=y013eOifYgLRjcmw7N8vMgjFwMkdg8tM, selectNumber=5, betOption=1, totalBets=1, entryAmount=100.0]) is ChanceOdds [odds=50, prizelLevelType=1, bettingNumber=null]
+[2015-05-29 17:13:18,883][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=1, bettingNumber=null]
+[2015-05-29 17:13:18,883][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(5, amount=100.0) is 50
+[2015-05-29 17:13:18,891][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(y013eOifYgLRjcmw7N8vMgjFwMkdg8tM) as 80000
+[2015-05-29 17:13:18,893][Test worker][DEBUG][LfnRiskControlService] THe odds for given entry(BaseEntry [ticketSerialNo=y013eOifYgLRjcmw7N8vMgjFwMkdg8tM, selectNumber=2,7,13,24,25,36, betOption=53, totalBets=20, entryAmount=1200.0]) is ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=null]
+[2015-05-29 17:13:18,893][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=null]
+[2015-05-29 17:13:18,893][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,13, amount=60.00) is 30
+[2015-05-29 17:13:18,900][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,13]
+[2015-05-29 17:13:18,900][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,24, amount=60.00) is 30
+[2015-05-29 17:13:18,907][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,24]
+[2015-05-29 17:13:18,907][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,25, amount=60.00) is 30
+[2015-05-29 17:13:18,914][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,25]
+[2015-05-29 17:13:18,914][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,7,36, amount=60.00) is 30
+[2015-05-29 17:13:18,921][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,7,36]
+[2015-05-29 17:13:18,921][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,13,24, amount=60.00) is 30
+[2015-05-29 17:13:18,927][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,13,24]
+[2015-05-29 17:13:18,927][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,13,25, amount=60.00) is 30
+[2015-05-29 17:13:18,934][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,13,25]
+[2015-05-29 17:13:18,934][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,13,36, amount=60.00) is 30
+[2015-05-29 17:13:18,940][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,13,36]
+[2015-05-29 17:13:18,940][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,24,25, amount=60.00) is 30
+[2015-05-29 17:13:18,947][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,24,25]
+[2015-05-29 17:13:18,947][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,24,36, amount=60.00) is 30
+[2015-05-29 17:13:18,954][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,24,36]
+[2015-05-29 17:13:18,954][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,25,36, amount=60.00) is 30
+[2015-05-29 17:13:18,961][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=2,25,36]
+[2015-05-29 17:13:18,961][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,13,24, amount=60.00) is 30
+[2015-05-29 17:13:18,968][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,13,24]
+[2015-05-29 17:13:18,968][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,13,25, amount=60.00) is 30
+[2015-05-29 17:13:18,974][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,13,25]
+[2015-05-29 17:13:18,975][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,13,36, amount=60.00) is 30
+[2015-05-29 17:13:18,981][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,13,36]
+[2015-05-29 17:13:18,981][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,24,25, amount=60.00) is 30
+[2015-05-29 17:13:18,989][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,24,25]
+[2015-05-29 17:13:18,989][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,24,36, amount=60.00) is 30
+[2015-05-29 17:13:18,997][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,24,36]
+[2015-05-29 17:13:18,997][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(7,25,36, amount=60.00) is 30
+[2015-05-29 17:13:19,003][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=7,25,36]
+[2015-05-29 17:13:19,004][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(13,24,25, amount=60.00) is 30
+[2015-05-29 17:13:19,011][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=13,24,25]
+[2015-05-29 17:13:19,011][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(13,24,36, amount=60.00) is 30
+[2015-05-29 17:13:19,017][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=13,24,36]
+[2015-05-29 17:13:19,017][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(13,25,36, amount=60.00) is 30
+[2015-05-29 17:13:19,024][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=3, bettingNumber=13,25,36]
+[2015-05-29 17:13:19,024][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(24,25,36, amount=60.00) is 30
+[2015-05-29 17:13:19,043][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:19,043][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:19,043][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199997400.0, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:19,056][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.15]: transaction {
+  id: &quot;0115052900000000000895&quot;
+  dev_id: &quot;111&quot;
+  operator_id: &quot;OPERATOR-111&quot;
+  merchant_id: &quot;111&quot;
+  create_time: 1432890798000
+  trans_type: 200
+  game_id: &quot;LFN-1&quot;
+  game_type: 15
+  total_amount: &quot;2600.0&quot;
+}
+multi_draw: 2
+total_amount: &quot;2600.0&quot;
+serial_no: &quot;y013eOifYgLRjcmw7N8vMgjFwMkdg8tM&quot;
+game_instance {
+  id: &quot;GII-112&quot;
+}
+entries {
+  selected_number: &quot;2,7,13,24,25,36&quot;
+  bet_option: 53
+  total_bets: 20
+  entry_amount: &quot;1200.0&quot;
+  input_channel: &quot;2&quot;
+}
+entries {
+  selected_number: &quot;5&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100.0&quot;
+  input_channel: &quot;2&quot;
+}
+
+[2015-05-29 17:13:19,057][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:19,057][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/SellTicket_Res.xml) by key(15.transtype.4200).
+[2015-05-29 17:13:19,057][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.lfn.sale.LfnTicket),mappingFile=xml-mapping/game/lfn/SellTicket_Res.xml
+[2015-05-29 17:13:19,057][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/SellTicket_Res.xml) by key(15.transtype.4200).
+[2015-05-29 17:13:19,058][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.lfn.sale.LfnTicket, mappingFile=xml-mapping/game/lfn/SellTicket_Res.xml).
+[2015-05-29 17:13:19,058][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890798691|Timestamp:20150529171318|Transaction-Type:4200|Transaction-Id:0115052900000000000895|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745519300006424&quot; type=&quot;1&quot; lastDrawNo=&quot;11003&quot; barcode=&quot;15cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xavGhw4lusfIqtM5W/0TUti8=&quot; validationCode=&quot;647028&quot; multipleDraws=&quot;2&quot; totalBets=&quot;42&quot; totalAmount=&quot;2600.0&quot;&gt;&lt;GameDraw number=&quot;11002&quot; gameId=&quot;LFN-1&quot;/&gt;&lt;Entry selectedNumber=&quot;2,7,13,24,25,36&quot; betOption=&quot;53&quot; inputChannel=&quot;2&quot; entryAmount=&quot;1200.0&quot;/&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;2&quot; entryAmount=&quot;100.0&quot;/&gt;&lt;/Ticket&gt;):fed243477bcee05e7d8f0157110a4d89
+[2015-05-29 17:13:19,058][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=672) succesfully.
+[2015-05-29 17:13:19,059][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=672): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745519300006424&quot; type=&quot;1&quot; lastDrawNo=&quot;11003&quot; barcode=&quot;15cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xavGhw4lusfIqtM5W/0TUti8=&quot; validationCode=&quot;647028&quot; multipleDraws=&quot;2&quot; totalBets=&quot;42&quot; totalAmount=&quot;2600.0&quot;&gt;&lt;GameDraw number=&quot;11002&quot; gameId=&quot;LFN-1&quot;/&gt;&lt;Entry selectedNumber=&quot;2,7,13,24,25,36&quot; betOption=&quot;53&quot; inputChannel=&quot;2&quot; entryAmount=&quot;1200.0&quot;/&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;2&quot; entryAmount=&quot;100.0&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:19,059][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/SellTicket_Res.xml) by key(15.transtype.4200).
+[2015-05-29 17:13:19,066][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/CancelTicket_Req.xml) by key(15.transtype.202).
+[2015-05-29 17:13:19,066][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.lfn.sale.LfnTicket, mappingFile=xml-mapping/game/lfn/CancelTicket_Req.xml).
+[2015-05-29 17:13:19,067][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890799066|Timestamp:20150529171319|Transaction-Type:202|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745519300006424&quot; isMannul=&quot;0&quot;/&gt;,hash=-1142786711), get digest:c7191ba96d0df36f4685e916445994dc
+[2015-05-29 17:13:19,067][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=202).
+[2015-05-29 17:13:19,067][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:19,067][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171319).
+[2015-05-29 17:13:19,067][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:19,067][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890799066).
+[2015-05-29 17:13:19,067][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:19,067][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:19,067][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=c7191ba96d0df36f4685e916445994dc).
+[2015-05-29 17:13:19,067][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=15).
+[2015-05-29 17:13:19,067][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:19,067][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:19,069][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6ttFDFcpmi1MamgAomcAmY77ZmH0pucSJt0uEHFSyYt5HCJeldd6vCWfvV1rHrRdBtvJj5ZVjfyx.
+[2015-05-29 17:13:19,069][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890799066|Timestamp:20150529171319|Transaction-Type:202|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:19,069][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745519300006424&quot; isMannul=&quot;0&quot;/&gt;
+[2015-05-29 17:13:19,069][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890799066|Timestamp:20150529171319|Transaction-Type:202|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745519300006424&quot; isMannul=&quot;0&quot;/&gt;,hash=-1142786711), get digest:c7191ba96d0df36f4685e916445994dc
+[2015-05-29 17:13:19,069][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/CancelTicket_Req.xml) by key(15.transtype.202).
+[2015-05-29 17:13:19,070][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/lfn/CancelTicket_Req.xml
+[2015-05-29 17:13:19,070][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/CancelTicket_Req.xml) by key(15.transtype.202).
+[2015-05-29 17:13:19,086][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_202_1.5.0).
+[2015-05-29 17:13:19,087][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_202_).
+[2015-05-29 17:13:19,087][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(15_202_), found controller(com.mpos.lottery.te.gameimpl.lfn.LfnController@444e8ac1) and method(public void com.mpos.lottery.te.gameimpl.lfn.LfnController.enquiry(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:19,104][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(TICKET_ENQUIRY)
+[2015-05-29 17:13:19,104][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/EnquiryTicket_Resp.xml) by key(15.transtype.4202).
+[2015-05-29 17:13:19,104][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.lfn.sale.LfnTicket),mappingFile=xml-mapping/game/lfn/EnquiryTicket_Resp.xml
+[2015-05-29 17:13:19,104][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/EnquiryTicket_Resp.xml) by key(15.transtype.4202).
+[2015-05-29 17:13:19,135][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.lfn.sale.LfnTicket, mappingFile=xml-mapping/game/lfn/EnquiryTicket_Resp.xml).
+[2015-05-29 17:13:19,135][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890799066|Timestamp:20150529171319|Transaction-Type:4202|Transaction-Id:0115052900000000000942|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket barcode=&quot;15cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xavGhw4lusfIqtM5W/0TUti8=&quot; validationCode=&quot;647028&quot; multipleDraws=&quot;2&quot; totalBets=&quot;42&quot; totalAmount=&quot;2600&quot; serialNo=&quot;01111745519300006424&quot; type=&quot;1&quot; lastDrawNo=&quot;11003&quot; PIN=&quot;98abe3a28383501f4bfd2d9077820f11&quot;&gt;&lt;GameDraw xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:java=&quot;http://java.sun.com&quot; sale-suspended=&quot;false&quot; version=&quot;0&quot; state=&quot;2&quot; payout-blocked=&quot;false&quot; max-claim-days=&quot;3650&quot; suspend-manual-cancel=&quot;false&quot; risk-control-method=&quot;1&quot; xsi:type=&quot;java:com.mpos.lottery.te.gameimpl.lfn.game.LfnGameInstance&quot;&gt;&lt;prize-logic-id&gt;PL-LFN-111&lt;/prize-logic-id&gt;&lt;number&gt;11002&lt;/number&gt;&lt;end-time&gt;2015-05-30T17:12:14.000+08:00&lt;/end-time&gt;&lt;max-loss-amount&gt;80000&lt;/max-loss-amount&gt;&lt;game-id&gt;LFN-1&lt;/game-id&gt;&lt;freeze-time&gt;2015-05-30T17:42:14.000+08:00&lt;/freeze-time&gt;&lt;percentage-of-turnover&gt;0.4&lt;/percentage-of-turnover&gt;&lt;id&gt;GII-112&lt;/id&gt;&lt;begin-time&gt;2015-05-28T17:12:14.000+08:00&lt;/begin-time&gt;&lt;game state=&quot;1&quot; type=&quot;15&quot; need-auto-payout=&quot;true&quot;&gt;&lt;tax-policy-id&gt;TP-1&lt;/tax-policy-id&gt;&lt;operator-parameter-id&gt;LFN-OP-1&lt;/operator-parameter-id&gt;&lt;name&gt;LFN-1&lt;/name&gt;&lt;id&gt;LFN-1&lt;/id&gt;&lt;tax-method-base&gt;1&lt;/tax-method-base&gt;&lt;fun-type-id&gt;FUN-1&lt;/fun-type-id&gt;&lt;tax-method&gt;1&lt;/tax-method&gt;&lt;/game&gt;&lt;draw-date&gt;2015-05-30T17:12:14.000+08:00&lt;/draw-date&gt;&lt;key&gt;11002-LFN-1&lt;/key&gt;&lt;name&gt;active game instance&lt;/name&gt;&lt;/GameDraw&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;2&quot; amount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;2,7,13,24,25,36&quot; betOption=&quot;53&quot; inputChannel=&quot;2&quot; amount=&quot;1200&quot;/&gt;&lt;/Ticket&gt;):775221d78b0157057a202335ddd22043
+[2015-05-29 17:13:19,136][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=2060) succesfully.
+[2015-05-29 17:13:19,136][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=2060): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket barcode=&quot;15cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xavGhw4lusfIqtM5W/0TUti8=&quot; validationCode=&quot;647028&quot; multipleDraws=&quot;2&quot; totalBets=&quot;42&quot; totalAmount=&quot;2600&quot; serialNo=&quot;01111745519300006424&quot; type=&quot;1&quot; lastDrawNo=&quot;11003&quot; PIN=&quot;98abe3a28383501f4bfd2d9077820f11&quot;&gt;&lt;GameDraw xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:java=&quot;http://java.sun.com&quot; sale-suspended=&quot;false&quot; version=&quot;0&quot; state=&quot;2&quot; payout-blocked=&quot;false&quot; max-claim-days=&quot;3650&quot; suspend-manual-cancel=&quot;false&quot; risk-control-method=&quot;1&quot; xsi:type=&quot;java:com.mpos.lottery.te.gameimpl.lfn.game.LfnGameInstance&quot;&gt;&lt;prize-logic-id&gt;PL-LFN-111&lt;/prize-logic-id&gt;&lt;number&gt;11002&lt;/number&gt;&lt;end-time&gt;2015-05-30T17:12:14.000+08:00&lt;/end-time&gt;&lt;max-loss-amount&gt;80000&lt;/max-loss-amount&gt;&lt;game-id&gt;LFN-1&lt;/game-id&gt;&lt;freeze-time&gt;2015-05-30T17:42:14.000+08:00&lt;/freeze-time&gt;&lt;percentage-of-turnover&gt;0.4&lt;/percentage-of-turnover&gt;&lt;id&gt;GII-112&lt;/id&gt;&lt;begin-time&gt;2015-05-28T17:12:14.000+08:00&lt;/begin-time&gt;&lt;game state=&quot;1&quot; type=&quot;15&quot; need-auto-payout=&quot;true&quot;&gt;&lt;tax-policy-id&gt;TP-1&lt;/tax-policy-id&gt;&lt;operator-parameter-id&gt;LFN-OP-1&lt;/operator-parameter-id&gt;&lt;name&gt;LFN-1&lt;/name&gt;&lt;id&gt;LFN-1&lt;/id&gt;&lt;tax-method-base&gt;1&lt;/tax-method-base&gt;&lt;fun-type-id&gt;FUN-1&lt;/fun-type-id&gt;&lt;tax-method&gt;1&lt;/tax-method&gt;&lt;/game&gt;&lt;draw-date&gt;2015-05-30T17:12:14.000+08:00&lt;/draw-date&gt;&lt;key&gt;11002-LFN-1&lt;/key&gt;&lt;name&gt;active game instance&lt;/name&gt;&lt;/GameDraw&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;2&quot; amount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;2,7,13,24,25,36&quot; betOption=&quot;53&quot; inputChannel=&quot;2&quot; amount=&quot;1200&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:19,136][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/EnquiryTicket_Resp.xml) by key(15.transtype.4202).
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>Generated by 
+<a href="http://www.gradle.org">Gradle 2.2.1</a> at 2015-5-29 17:14:47</p>
+</div>
+</div>
+</body>

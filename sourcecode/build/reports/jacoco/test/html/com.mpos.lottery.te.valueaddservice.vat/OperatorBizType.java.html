@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>OperatorBizType.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.valueaddservice.vat</a> &gt; <span class="el_source">OperatorBizType.java</span></div><h1>OperatorBizType.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.valueaddservice.vat;
+
+import com.mpos.lottery.te.common.dao.BaseEntity;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+/**
+ * Define the business type(B2B or B2C) of a device.
+ * 
+ * @author Ramon
+ */
+@Entity
+@Table(name = &quot;VAT_OPERATOR_MERCHANT_TYPE&quot;)
+<span class="fc" id="L16">public class OperatorBizType extends BaseEntity {</span>
+    private static final long serialVersionUID = -8934403347196560719L;
+    public static final String BIZ_B2B = &quot;1&quot;;
+    public static final String BIZ_B2C = &quot;2&quot;;
+    public static final int STATUS_INVALID = 0;
+    public static final int STATUS_VALID = 1;
+
+    @Column(name = &quot;OPERATOR_ID&quot;)
+    private String operatorId;
+    /**
+     * Refer to BIZ_XXX.
+     */
+    @Column(name = &quot;VAT_MERCHANT_TYPE_ID&quot;)
+    private String businessType;
+    /**
+     * Refer to STATUS_XXX.
+     */
+    @Column(name = &quot;STATUS&quot;)
+    private int status;
+
+    public String getOperatorId() {
+<span class="fc" id="L37">        return operatorId;</span>
+    }
+
+    public void setOperatorId(String operatorId) {
+<span class="nc" id="L41">        this.operatorId = operatorId;</span>
+<span class="nc" id="L42">    }</span>
+
+    public String getBusinessType() {
+<span class="fc" id="L45">        return businessType;</span>
+    }
+
+    public void setBusinessType(String businessType) {
+<span class="nc" id="L49">        this.businessType = businessType;</span>
+<span class="nc" id="L50">    }</span>
+
+    public int getStatus() {
+<span class="nc" id="L53">        return status;</span>
+    }
+
+    public void setStatus(int status) {
+<span class="nc" id="L57">        this.status = status;</span>
+<span class="nc" id="L58">    }</span>
+
+    public String getBizTypeString() {
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        return (BIZ_B2B.equalsIgnoreCase(this.getBusinessType()) ? &quot;B2B&quot; : &quot;B2C&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

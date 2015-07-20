@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.trans.dao.TransactionRetryLogDaoIntegrationTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:14:05" hostname="Ramon-PC" time="0.028">
+  <properties/>
+  <testcase name="testInsert" classname="com.mpos.lottery.te.trans.dao.TransactionRetryLogDaoIntegrationTest" time="0.015"/>
+  <testcase name="testUpdate" classname="com.mpos.lottery.te.trans.dao.TransactionRetryLogDaoIntegrationTest" time="0.013"/>
+  <system-out><![CDATA[[2015-05-29 17:14:05,970][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:14:05,979][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

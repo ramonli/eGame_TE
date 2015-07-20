@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>VoucherTransactionEnquiryHandler.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.valueaddservice.voucher.support</a> &gt; <span class="el_source">VoucherTransactionEnquiryHandler.java</span></div><h1>VoucherTransactionEnquiryHandler.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.valueaddservice.voucher.support;
+
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gamespec.game.GameType;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.trans.domain.Transaction;
+import com.mpos.lottery.te.trans.domain.transactionhandle.AbstractTransactionHandle;
+import com.mpos.lottery.te.valueaddservice.voucher.Voucher;
+import com.mpos.lottery.te.valueaddservice.voucher.dao.VoucherDao;
+
+<span class="fc" id="L12">public class VoucherTransactionEnquiryHandler extends AbstractTransactionHandle {</span>
+    private VoucherDao voucherDao;
+
+    @Override
+    public int supportHandle() {
+<span class="fc" id="L17">        return GameType.TELECO_VOUCHER.getType();</span>
+    }
+
+    /**
+     * The modle of 'voucher sale' should be voucher.
+     */
+    @Override
+    public Object getTransactionModel(Context respCtx, Transaction targetTrans) throws ApplicationException {
+        // voucher sale transaction will set voucher serialNo to ticket seralNo
+<span class="fc" id="L26">        Voucher voucher = this.getVoucherDao().findBySerialNo(targetTrans.getTicketSerialNo());</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        if (voucher == null) {</span>
+<span class="nc" id="L28">            throw new ApplicationException(SystemException.CODE_NO_TICKET, &quot;No voucher found by serialNo:&quot;</span>
+                    + targetTrans.getTicketSerialNo());
+        }
+<span class="fc" id="L31">        voucher.decryptPin();</span>
+<span class="fc" id="L32">        return voucher;</span>
+    }
+
+    public VoucherDao getVoucherDao() {
+<span class="fc" id="L36">        return voucherDao;</span>
+    }
+
+    public void setVoucherDao(VoucherDao voucherDao) {
+<span class="fc" id="L40">        this.voucherDao = voucherDao;</span>
+<span class="fc" id="L41">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

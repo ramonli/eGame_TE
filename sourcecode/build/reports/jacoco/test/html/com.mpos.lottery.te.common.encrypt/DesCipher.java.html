@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DesCipher.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.common.encrypt</a> &gt; <span class="el_source">DesCipher.java</span></div><h1>DesCipher.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.common.encrypt;
+
+import com.mpos.lottery.te.common.util.Base64Coder;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+
+<span class="nc" id="L9">public class DesCipher {</span>
+
+    /**
+     * Decrypt by DES.
+     * 
+     * @param cipherBytes
+     *            THe cipher byte array.
+     * @param keyBytes
+     *            THe DES key in byte array representation.
+     * @return bytes of encryption.
+     */
+    public static byte[] decrypt(byte[] cipherBytes, byte[] keyBytes) throws Exception {
+<span class="fc" id="L21">        SecretKey desKey = new SecretKeySpec(keyBytes, &quot;DES&quot;);</span>
+
+        Cipher desCipher;
+        // Create the cipher
+        // desCipher = Cipher.getInstance(&quot;DES/CFB8/NoPadding&quot;);
+<span class="fc" id="L26">        desCipher = Cipher.getInstance(&quot;DES&quot;);</span>
+<span class="fc" id="L27">        desCipher.init(Cipher.DECRYPT_MODE, desKey);</span>
+<span class="fc" id="L28">        byte[] decryptedBytes = desCipher.doFinal(cipherBytes);</span>
+<span class="fc" id="L29">        return decryptedBytes;</span>
+    }
+
+    /**
+     * Encrypt by DES.
+     * 
+     * @param input
+     *            The row input, will be translated into bytes by UTF-8.
+     * @param keys
+     *            THe DES key in byte array representation.
+     * @return bytes of encryption.
+     */
+    public static byte[] encrypt(String input, byte[] keys) throws Exception {
+<span class="nc" id="L42">        SecretKey desKey = new SecretKeySpec(keys, &quot;DES&quot;);</span>
+
+        Cipher desCipher;
+        // Create the cipher
+        // desCipher = Cipher.getInstance(&quot;DES/ECB/PKCS5Padding&quot;);
+<span class="nc" id="L47">        desCipher = Cipher.getInstance(&quot;DES&quot;);</span>
+<span class="nc" id="L48">        desCipher.init(Cipher.ENCRYPT_MODE, desKey);</span>
+<span class="nc" id="L49">        byte[] encryptedBytes = desCipher.doFinal(input.getBytes(&quot;UTF-8&quot;));</span>
+<span class="nc" id="L50">        return encryptedBytes;</span>
+    }
+
+    /**
+     * metfone key - 1B5A57676A56676E. smart PIN - AAAA009DF888CCCC.
+     */
+    public static void main(String[] args) throws Exception {
+<span class="nc" id="L57">        String[] inputs = new String[] { &quot;V-1-PIN&quot;, &quot;V-2-PIN&quot;, &quot;V-3-PIN&quot;, &quot;V-4-PIN&quot;, &quot;V-101-PIN&quot;, &quot;V-102-PIN&quot; };</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        for (String i : inputs) {</span>
+<span class="nc" id="L59">            System.out.println(i + &quot; : &quot;</span>
+                    + new String(Base64Coder.encode(encrypt(i, Base64Coder.decode(&quot;KmvjzpgmPlI=&quot;)))));
+        }
+
+<span class="nc" id="L63">        System.out.println(&quot;U+HBKjFw5pM= : &quot;</span>
+                + new String(decrypt(Base64Coder.decode(&quot;U+HBKjFw5pM=&quot;), Base64Coder.decode(&quot;KmvjzpgmPlI=&quot;))));
+<span class="nc" id="L65">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

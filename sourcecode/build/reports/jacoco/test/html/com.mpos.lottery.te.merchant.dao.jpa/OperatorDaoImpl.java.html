@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>OperatorDaoImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.merchant.dao.jpa</a> &gt; <span class="el_source">OperatorDaoImpl.java</span></div><h1>OperatorDaoImpl.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.merchant.dao.jpa;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.config.MLotteryContext;
+import com.mpos.lottery.te.merchant.dao.OperatorDao;
+import com.mpos.lottery.te.merchant.domain.Operator;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.dao.DataAccessException;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+import javax.persistence.Query;
+
+<span class="fc" id="L17">public class OperatorDaoImpl extends BaseJpaDao implements OperatorDao {</span>
+<span class="fc" id="L18">    private Log logger = LogFactory.getLog(OperatorDaoImpl.class);</span>
+
+    public Operator findByIdForUpdate(final String id) throws DataAccessException {
+        /**
+         * The association between Operator and Merchant is ManyToOne. When multiple operator update the credit level of
+         * the merchant, 'Non-repeatable read' should be avoided. So lock the merchant for update, until the transaction
+         * committed/rollbacked.
+         * 
+         * By default, the transaction waits until the requested row lock is acquired. If the wait for a row lock is too
+         * long, you can code logic into your application to cancel the lock operation and try again later.
+         */
+<span class="nc" id="L29">        long waitLockTime = MLotteryContext.getInstance().getWaitLockTime();</span>
+
+<span class="nc" id="L31">        String sql = &quot;select * from OPERATOR where OPERATOR_ID=? for update&quot;;</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        if (waitLockTime &gt; 0) {</span>
+<span class="nc" id="L33">            sql += &quot; wait &quot; + waitLockTime;</span>
+        }
+        // String sql = &quot;select * from MERCHANT where MERCHANT_ID=?&quot;;
+<span class="nc" id="L36">        Query query = this.getEntityManager().createNativeQuery(sql, Operator.class);</span>
+<span class="nc" id="L37">        query.setParameter(1, id);</span>
+<span class="nc" id="L38">        Object operator = query.getSingleResult();</span>
+        // Merchant merchant = em.find(Merchant.class, id);
+        // em.lock(merchant, LockModeType.WRITE);
+<span class="nc" id="L41">        return (Operator) operator;</span>
+    }
+
+    @Override
+    public Operator findByLoginName(final String loginName) throws DataAccessException {
+
+<span class="nc" id="L47">        String sql = &quot;select * from OPERATOR where LOGIN_NAME=? &quot;;</span>
+
+<span class="nc" id="L49">        Query query = this.getEntityManager().createNativeQuery(sql, Operator.class);</span>
+<span class="nc" id="L50">        query.setParameter(1, loginName);</span>
+<span class="nc" id="L51">        Operator operator = null;</span>
+<span class="nc" id="L52">        List&lt;Operator&gt; listoperator = query.getResultList();</span>
+
+<span class="nc bnc" id="L54" title="All 4 branches missed.">        if (listoperator != null &amp;&amp; listoperator.size() &gt; 0) {</span>
+<span class="nc" id="L55">            operator = (Operator) listoperator.get(0);</span>
+        }
+<span class="nc" id="L57">        return operator;</span>
+    }
+
+    @Override
+    public Operator findByLoginNameForUpdate(final String loginName) throws DataAccessException {
+        /**
+         * The association between Operator and Merchant is ManyToOne. When multiple operator update the credit level of
+         * the merchant, 'Non-repeatable read' should be avoided. So lock the merchant for update, until the transaction
+         * committed/rollbacked.
+         * 
+         * By default, the transaction waits until the requested row lock is acquired. If the wait for a row lock is too
+         * long, you can code logic into your application to cancel the lock operation and try again later.
+         */
+<span class="fc" id="L70">        long waitLockTime = MLotteryContext.getInstance().getWaitLockTime();</span>
+
+<span class="fc" id="L72">        String sql = &quot;select * from OPERATOR where LOGIN_NAME=? for update&quot;;</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if (waitLockTime &gt; 0) {</span>
+<span class="fc" id="L74">            sql += &quot; wait &quot; + waitLockTime;</span>
+        }
+        // String sql = &quot;select * from MERCHANT where MERCHANT_ID=?&quot;;
+<span class="fc" id="L77">        Query query = this.getEntityManager().createNativeQuery(sql, Operator.class);</span>
+<span class="fc" id="L78">        query.setParameter(1, loginName);</span>
+<span class="fc" id="L79">        Object operator = query.getSingleResult();</span>
+        // Merchant merchant = em.find(Merchant.class, id);
+        // em.lock(merchant, LockModeType.WRITE);
+<span class="fc" id="L82">        return (Operator) operator;</span>
+    }
+
+    @Override
+    public void deductBalanceByOperator(BigDecimal commissionDeducted, BigDecimal payoutDeducted,
+            BigDecimal cashoutDeducted, String operatorid) throws DataAccessException {
+<span class="nc" id="L88">        String sql = &quot;update OPERATOR set COMMISION_BALANCE=COMMISION_BALANCE - &quot; + commissionDeducted.doubleValue()</span>
+                + &quot;,&quot; + &quot; PAYOUT_BALANCE=PAYOUT_BALANCE - &quot; + payoutDeducted.doubleValue() + &quot;,&quot;
+                + &quot; CASHOUT_BALANCE=CASHOUT_BALANCE - &quot; + cashoutDeducted.doubleValue() + &quot; where OPERATOR_ID=?&quot;;
+<span class="nc" id="L91">        Query query = this.getEntityManager().createNativeQuery(sql);</span>
+<span class="nc" id="L92">        query.setParameter(1, operatorid);</span>
+<span class="nc" id="L93">        query.executeUpdate();</span>
+<span class="nc" id="L94">    }</span>
+
+    @Override
+    public void deductBalanceByOperatorCancel(BigDecimal commissionDeducted, BigDecimal payoutDeducted,
+            BigDecimal cashoutDeducted, String operatorid) throws DataAccessException {
+<span class="nc" id="L99">        String sql = &quot;update OPERATOR set COMMISION_BALANCE=COMMISION_BALANCE + &quot; + commissionDeducted.doubleValue()</span>
+                + &quot;,&quot; + &quot; PAYOUT_BALANCE=PAYOUT_BALANCE + &quot; + payoutDeducted.doubleValue() + &quot;,&quot;
+                + &quot; CASHOUT_BALANCE=CASHOUT_BALANCE + &quot; + cashoutDeducted.doubleValue() + &quot; where OPERATOR_ID=?&quot;;
+<span class="nc" id="L102">        Query query = this.getEntityManager().createNativeQuery(sql);</span>
+<span class="nc" id="L103">        query.setParameter(1, operatorid);</span>
+<span class="nc" id="L104">        query.executeUpdate();</span>
+<span class="nc" id="L105">    }</span>
+
+    @Override
+    public void addCashoutAndCommissionToOperator(BigDecimal cashoutAmount, BigDecimal commissionAmount,
+            String operatorid) throws DataAccessException {
+<span class="nc" id="L110">        String sql = &quot;update OPERATOR set &quot; + &quot; CASHOUT_BALANCE=CASHOUT_BALANCE + &quot; + cashoutAmount.doubleValue();</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        if (commissionAmount != null) {</span>
+<span class="nc" id="L112">            sql = sql + &quot;, COMMISION_BALANCE=COMMISION_BALANCE + &quot; + commissionAmount.doubleValue();</span>
+        }
+<span class="nc" id="L114">        sql = sql + &quot; where OPERATOR_ID=?&quot;;</span>
+<span class="nc" id="L115">        Query query = this.getEntityManager().createNativeQuery(sql);</span>
+<span class="nc" id="L116">        query.setParameter(1, operatorid);</span>
+<span class="nc" id="L117">        query.executeUpdate();</span>
+<span class="nc" id="L118">    }</span>
+
+    @Override
+    public void addCashoutAndCommissionToOperatorCancel(BigDecimal cashoutAmount, BigDecimal commissionAmount,
+            String operatorid) throws DataAccessException {
+<span class="nc" id="L123">        String sql = &quot;update OPERATOR set &quot; + &quot; CASHOUT_BALANCE=CASHOUT_BALANCE - &quot; + cashoutAmount.doubleValue();</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">        if (commissionAmount != null) {</span>
+<span class="nc" id="L125">            sql = sql + &quot;, COMMISION_BALANCE=COMMISION_BALANCE - &quot; + commissionAmount.doubleValue();</span>
+        }
+<span class="nc" id="L127">        sql = sql + &quot; where OPERATOR_ID=?&quot;;</span>
+<span class="nc" id="L128">        Query query = this.getEntityManager().createNativeQuery(sql);</span>
+<span class="nc" id="L129">        query.setParameter(1, operatorid);</span>
+<span class="nc" id="L130">        query.executeUpdate();</span>
+<span class="nc" id="L131">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

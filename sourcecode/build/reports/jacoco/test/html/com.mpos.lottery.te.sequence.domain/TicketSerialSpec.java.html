@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TicketSerialSpec.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.sequence.domain</a> &gt; <span class="el_source">TicketSerialSpec.java</span></div><h1>TicketSerialSpec.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.sequence.domain;
+
+import com.mpos.lottery.te.common.util.SimpleToolkit;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+
+import java.math.BigInteger;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
+
+/**
+ * According to the customer, the serial No. or reference No. should be added with randomness as below:
+ * &lt;p&gt;
+ * OYDHGHDYGMDMXXXXXXZZ
+ * &lt;p&gt;
+ * where
+ * &lt;ul&gt;
+ * &lt;li&gt;O - Online or offline mode.&lt;/li&gt;
+ * &lt;li&gt;YY - year&lt;/li&gt;
+ * &lt;li&gt;DDD - day of year&lt;/li&gt;
+ * &lt;li&gt;GG - game type or second in minute, it depends client is requesting serial No. or reference No.&lt;/li&gt;
+ * &lt;li&gt;HH - hour of day&lt;/li&gt;
+ * &lt;li&gt;MM - minute of hour&lt;/li&gt;
+ * &lt;li&gt;XXXXXX - sequential number&lt;/li&gt;
+ * &lt;li&gt;ZZ - random number&lt;/li&gt;
+ * &lt;/ul&gt;
+ * 
+ * @author Ramon Li
+ */
+public class TicketSerialSpec {
+    public static final int ONLINE_MODE = 0;
+    public static final int OFFLINE_MODE = 1;
+    public static final char PADDING = '0';
+<span class="pc" id="L35">    private int lengthOfSerial = 20;</span>
+    // elements of serialNo
+    private int mode;
+    private String year;
+    private String dayOfYear;
+    private String gameTypeOrSecond;
+    private String hour;
+    private String minute;
+    private String sequence;
+    private String randomNum;
+
+    /**
+     * Construct a ticket serial number by given elements.
+     * 
+     * @param saleMode
+     *            online or offline?
+     * @param timestamp
+     *            The timestamp used to generate time information in serial No.
+     * @param gameTypeOrSecond
+     *            the game type of a ticket.
+     * @param sequence
+     *            The sequential number.
+     */
+<span class="fc" id="L58">    public TicketSerialSpec(int saleMode, Date timestamp, int gameTypeOrSecond, BigInteger sequence) {</span>
+<span class="fc" id="L59">        this.mode = saleMode;</span>
+<span class="fc" id="L60">        Calendar calendar = Calendar.getInstance();</span>
+<span class="fc" id="L61">        calendar.setTime(timestamp);</span>
+<span class="fc" id="L62">        this.year = (calendar.get(Calendar.YEAR) + &quot;&quot;).substring(2);</span>
+<span class="fc" id="L63">        this.dayOfYear = SimpleToolkit.fillLeft(3, PADDING, calendar.get(Calendar.DAY_OF_YEAR) + &quot;&quot;);</span>
+<span class="fc" id="L64">        this.gameTypeOrSecond = SimpleToolkit.fillLeft(2, PADDING, gameTypeOrSecond + &quot;&quot;);</span>
+<span class="fc" id="L65">        this.hour = SimpleToolkit.fillLeft(2, PADDING, calendar.get(Calendar.HOUR_OF_DAY) + &quot;&quot;);</span>
+<span class="fc" id="L66">        this.minute = SimpleToolkit.fillLeft(2, PADDING, calendar.get(Calendar.MINUTE) + &quot;&quot;);</span>
+<span class="fc" id="L67">        this.sequence = SimpleToolkit.fillLeft(6, PADDING, sequence.toString());</span>
+<span class="fc" id="L68">        this.randomNum = SimpleToolkit.fillLeft(2, PADDING, this.calRandom() + &quot;&quot;);</span>
+<span class="fc" id="L69">    }</span>
+
+    /**
+     * De-construct a ticket serial number.
+     */
+<span class="nc" id="L74">    public TicketSerialSpec(String serialNo) throws ApplicationException {</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        if (lengthOfSerial != serialNo.length()) {</span>
+<span class="nc" id="L76">            throw new ApplicationException(SystemException.CODE_WRONGFORMAT_SERIALNO,</span>
+                    &quot;The length of serialNo/refNo must be &quot; + lengthOfSerial);
+        }
+        try {
+<span class="nc" id="L80">            this.mode = Integer.parseInt(&quot;&quot; + serialNo.charAt(0));</span>
+<span class="nc" id="L81">            this.year = &quot;&quot; + serialNo.charAt(1) + serialNo.charAt(7);</span>
+<span class="nc" id="L82">            this.dayOfYear = &quot;&quot; + serialNo.charAt(2) + serialNo.charAt(6) + serialNo.charAt(10);</span>
+<span class="nc" id="L83">            this.gameTypeOrSecond = &quot;&quot; + serialNo.charAt(4) + serialNo.charAt(8);</span>
+<span class="nc" id="L84">            this.hour = &quot;&quot; + serialNo.charAt(3) + serialNo.charAt(5);</span>
+<span class="nc" id="L85">            this.minute = &quot;&quot; + serialNo.charAt(9) + serialNo.charAt(11);</span>
+<span class="nc" id="L86">            this.sequence = serialNo.substring(12, 18);</span>
+<span class="nc" id="L87">            this.randomNum = serialNo.substring(18);</span>
+<span class="nc" id="L88">        } catch (Exception e) {</span>
+<span class="nc" id="L89">            throw new ApplicationException(SystemException.CODE_WRONGFORMAT_SERIALNO, e.getMessage());</span>
+<span class="nc" id="L90">        }</span>
+<span class="nc" id="L91">    }</span>
+
+    public String toSerialNo() {
+        // OYDHGHDYGMDMXXXXXXZZ
+<span class="fc" id="L95">        StringBuffer buffer = new StringBuffer();</span>
+<span class="fc" id="L96">        buffer.append(this.mode);</span>
+<span class="fc" id="L97">        buffer.append(this.year.charAt(0)).append(this.dayOfYear.charAt(0));</span>
+<span class="fc" id="L98">        buffer.append(this.hour.charAt(0)).append(this.gameTypeOrSecond.charAt(0));</span>
+<span class="fc" id="L99">        buffer.append(this.hour.charAt(1)).append(this.dayOfYear.charAt(1));</span>
+<span class="fc" id="L100">        buffer.append(this.year.charAt(1)).append(this.gameTypeOrSecond.charAt(1));</span>
+<span class="fc" id="L101">        buffer.append(this.minute.charAt(0)).append(this.dayOfYear.charAt(2));</span>
+<span class="fc" id="L102">        buffer.append(this.minute.charAt(1));</span>
+<span class="fc" id="L103">        buffer.append(this.sequence).append(this.randomNum);</span>
+<span class="fc" id="L104">        return buffer.toString();</span>
+    }
+
+    public int calRandom() {
+<span class="fc" id="L108">        return new Random().nextInt(99);</span>
+    }
+
+    public int getMode() {
+<span class="nc" id="L112">        return mode;</span>
+    }
+
+    public String getYear() {
+<span class="nc" id="L116">        return year;</span>
+    }
+
+    public String getDayOfYear() {
+<span class="nc" id="L120">        return dayOfYear;</span>
+    }
+
+    public String getGameTypeOrSecond() {
+<span class="nc" id="L124">        return gameTypeOrSecond;</span>
+    }
+
+    public String getHour() {
+<span class="nc" id="L128">        return hour;</span>
+    }
+
+    public String getMinute() {
+<span class="nc" id="L132">        return minute;</span>
+    }
+
+    public String getSequence() {
+<span class="nc" id="L136">        return sequence;</span>
+    }
+
+    public String getRandomNum() {
+<span class="nc" id="L140">        return randomNum;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L145">        return &quot;TicketSerialSpec [saleMode=&quot; + mode + &quot;, year=&quot; + year + &quot;, dayOfYear=&quot; + dayOfYear</span>
+                + &quot;, gameTypeOrSecond=&quot; + gameTypeOrSecond + &quot;, hour=&quot; + hour + &quot;, minute=&quot; + minute + &quot;, sequence=&quot;
+                + sequence + &quot;, randomNum=&quot; + randomNum + &quot;]&quot;;
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

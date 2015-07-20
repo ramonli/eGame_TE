@@ -1,0 +1,20 @@
+<h1>Design Principle</h1>
+The game-type implementation will be represented by a pakcage name
+'com.mpos.lottery.te.gameimpl.
+<i>GAMETYPE</i>
+', it should implement the specification defined by package
+'com.mpos.lottery.te.gamespec', it includes:
+<ol>
+	<li>Game Instance Enquiry - In general a game type specific
+		implementation should inherit from
+		com.mpos.lottery.te.gamespec.game.service.impl.AbstractGameInstanceService.</li>
+	<li>Ticket Sale - A game type specific implementation should
+		inherit from
+		com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService</li>
+	<li>Payout - A game type specific implementation should implement
+		com.mpos.lottery.te.gamespec.prize.service.PrizeService</li>
+</ol>
+<p>
+	<b>ANY CLASSES OUT OF PACKAGE 'com.mpos.lottery.te.gameimpl' MUST
+		NEVER REFERENCE TO ANY CLASSES RESIDE IN THAT GAME-TYPE IMPLEMENTATION
+		PACAKGE('com.mpos.lottery.te.gameimpl').</b>

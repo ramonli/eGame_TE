@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LfnTicket.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.lfn.sale</a> &gt; <span class="el_source">LfnTicket.java</span></div><h1>LfnTicket.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.lfn.sale;
+
+import com.mpos.lottery.te.gameimpl.lfn.game.LfnGameInstance;
+import com.mpos.lottery.te.gamespec.game.BaseGameInstance;
+import com.mpos.lottery.te.gamespec.sale.BaseTamperProofTicket;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;LFN_TE_TICKET&quot;)
+@AttributeOverrides({ @AttributeOverride(name = &quot;mobile&quot;, column = @Column(name = &quot;MOBLE_NO&quot;)) })
+<span class="fc" id="L19">public class LfnTicket extends BaseTamperProofTicket {</span>
+    private static final long serialVersionUID = -7218604671975254477L;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;LFN_GAME_INSTANCE_ID&quot;, nullable = false)
+    private LfnGameInstance gameInstance;
+
+    @Override
+    public BaseGameInstance getGameInstance() {
+<span class="fc" id="L28">        return this.gameInstance;</span>
+    }
+
+    @Override
+    public void setGameInstance(BaseGameInstance gameInstance) {
+<span class="fc" id="L33">        this.gameInstance = (LfnGameInstance) gameInstance;</span>
+<span class="fc" id="L34">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

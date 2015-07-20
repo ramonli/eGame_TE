@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.gamespec.sale.support.validator.SelectedNumberUnitTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:50" hostname="Ramon-PC" time="0.001">
+  <properties/>
+  <testcase name="test_1" classname="com.mpos.lottery.te.gamespec.sale.support.validator.SelectedNumberUnitTest" time="0.0"/>
+  <testcase name="test_2" classname="com.mpos.lottery.te.gamespec.sale.support.validator.SelectedNumberUnitTest" time="0.0"/>
+  <testcase name="test_3" classname="com.mpos.lottery.te.gamespec.sale.support.validator.SelectedNumberUnitTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

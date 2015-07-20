@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.common.util.BigDecimalUnitTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:12:32" hostname="Ramon-PC" time="0.001">
+  <properties/>
+  <testcase name="testBigDecimal" classname="com.mpos.lottery.te.common.util.BigDecimalUnitTest" time="0.001"/>
+  <system-out><![CDATA[3.3333333333333335
+10.25
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

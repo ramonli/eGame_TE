@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TransactionServiceImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.trans.service.impl</a> &gt; <span class="el_source">TransactionServiceImpl.java</span></div><h1>TransactionServiceImpl.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.trans.service.impl;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.config.SysConfiguration;
+import com.mpos.lottery.te.config.dao.SysConfigurationDao;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gamespec.game.Game;
+import com.mpos.lottery.te.gamespec.game.GameType;
+import com.mpos.lottery.te.gamespec.game.dao.GameDao;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.gamespec.sale.DummyTicket;
+import com.mpos.lottery.te.gamespec.sale.service.TicketEnquiryService;
+import com.mpos.lottery.te.merchant.domain.Merchant;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.sequence.service.UUIDService;
+import com.mpos.lottery.te.thirdpartyservice.amqp.AmqpMessageUtils;
+import com.mpos.lottery.te.thirdpartyservice.amqp.MessagePack;
+import com.mpos.lottery.te.thirdpartyservice.amqp.TeTransactionMessage;
+import com.mpos.lottery.te.trans.dao.PendingTransactionDao;
+import com.mpos.lottery.te.trans.dao.TransactionDao;
+import com.mpos.lottery.te.trans.dao.TransactionMessageDao;
+import com.mpos.lottery.te.trans.domain.PendingTransaction;
+import com.mpos.lottery.te.trans.domain.Transaction;
+import com.mpos.lottery.te.trans.domain.TransactionMessage;
+import com.mpos.lottery.te.trans.domain.TransactionType;
+import com.mpos.lottery.te.trans.domain.logic.ReversalOrCancelStrategy;
+import com.mpos.lottery.te.trans.domain.logic.ReversalOrCancelStrategyFactory;
+import com.mpos.lottery.te.trans.domain.transactionhandle.TransactionHandle;
+import com.mpos.lottery.te.trans.domain.transactionhandle.TransactionHandleFactory;
+import com.mpos.lottery.te.trans.service.TransactionService;
+import com.mpos.lottery.te.valueaddservice.airtime.AirtimeTopup;
+import com.mpos.lottery.te.valueaddservice.airtime.dao.AirtimeDao;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+/**
+ * Transaction record manager.
+ */
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">public class TransactionServiceImpl implements TransactionService {</span>
+<span class="fc" id="L50">    private Log logger = LogFactory.getLog(TransactionServiceImpl.class);</span>
+    // the key of map should be game type.
+<span class="fc" id="L52">    private Map&lt;GameType, TicketEnquiryService&gt; ticketEnquiryMap = new HashMap&lt;GameType, TicketEnquiryService&gt;();</span>
+    // ------------------------------------------------------
+    // SPRING DEPENDENCIES
+    // ------------------------------------------------------
+    private UUIDService uuidManager;
+    private TransactionDao transactionDao;
+    private TransactionMessageDao transMessageDao;
+    // private PayoutDao payoutDao;
+    private BaseJpaDao baseJpaDao;
+    private ReversalOrCancelStrategyFactory reversalStrategyFactory;
+    private GameDao gameDao;
+    private PendingTransactionDao pendingTransactionDao;
+    private SysConfigurationDao sysConfigurationDao;
+    @PersistenceContext
+    private EntityManager entityManager;
+    @Resource(name = &quot;transactionHandleFactory&quot;)
+    private TransactionHandleFactory transactionHandleFactory;
+
+    @Override
+    public void registerTicketEnquiry(GameType gameType, TicketEnquiryService ticketService) {
+<span class="fc" id="L72">        TicketEnquiryService handler = this.ticketEnquiryMap.get(gameType);</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if (handler != null) {</span>
+<span class="nc" id="L74">            throw new SystemException(&quot;A ticket enquiry handler(&quot; + handler + &quot;) has been registered with game type(&quot;</span>
+                    + gameType + &quot;).&quot;);
+        }
+<span class="fc" id="L77">        this.ticketEnquiryMap.put(gameType, ticketService);</span>
+<span class="fc" id="L78">    }</span>
+
+    /**
+     * @see TransactionService#enquiry(Context, long, String).
+     */
+    public Transaction enquiry(Context respCtx, long terminalId, String traceMessageId) throws ApplicationException {
+<span class="pc bpc" id="L84" title="2 of 4 branches missed.">        assert traceMessageId != null : &quot;argument 'traceMessageId' can NOT be null.&quot;;</span>
+<span class="fc" id="L85">        Transaction targetTrans = this.getTransactionDao().getByDeviceAndTraceMessage(terminalId, traceMessageId);</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        if (targetTrans == null) {</span>
+<span class="nc" id="L87">            throw new ApplicationException(SystemException.CODE_NO_TRANSACTION, &quot;can NOT find transaction(deviceId=&quot;</span>
+                    + terminalId + &quot;,traceMessageId=&quot; + traceMessageId + &quot;).&quot;);
+        }
+<span class="fc" id="L90">        int gameTypeId = this.lookupGameType(respCtx, targetTrans);</span>
+        // Game type id &gt;=1000,represents VAS transaction
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (gameTypeId &lt; 1000) {</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">            if (targetTrans.getTicketSerialNo() != null) {</span>
+<span class="fc" id="L94">                targetTrans.setTicket(getTransactionTicketByGameInfo(respCtx, targetTrans));</span>
+            } else {
+<span class="nc bnc" id="L96" title="All 2 branches missed.">                if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L97">                    logger.debug(&quot;Transaction(deviceId=&quot; + terminalId + &quot;,traceMessageID=&quot; + traceMessageId</span>
+                            + &quot;) doesn't associate with a ticket.&quot;);
+                }
+            }
+        } else {
+<span class="fc" id="L102">            TransactionHandle transactionHandle = transactionHandleFactory.lookupHandle(gameTypeId);</span>
+<span class="pc bpc" id="L103" title="1 of 2 branches missed.">            if (transactionHandle == null) {</span>
+<span class="nc" id="L104">                throw new SystemException(&quot;No transaction handle p&quot; + &quot;rovider found by given game type id(&quot;</span>
+                        + respCtx.getTransType() + &quot;)&quot;);
+            }
+<span class="fc" id="L107">            Object transactionModel = transactionHandle.getTransactionModel(respCtx, targetTrans);</span>
+<span class="fc" id="L108">            targetTrans.setObject(transactionModel);</span>
+        }
+
+<span class="fc" id="L111">        return targetTrans;</span>
+    }
+
+    /**
+     * @see com.mpos.lottery.te.trans.service.TransactionService#save(com.mpos.lottery.te.trans.domain.Transaction)
+     */
+    public void save(Transaction trans) throws ApplicationException {
+        // check if a transaction with same(terminalId+traceMessageid) has
+        // existed
+<span class="fc" id="L120">        Transaction dbTrans = this.getTransactionDao().getByDeviceAndTraceMessage(trans.getDeviceId(),</span>
+                trans.getTraceMessageId());
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (dbTrans != null) {</span>
+<span class="nc" id="L123">            throw new ApplicationException(SystemException.CODE_DULPLICATED_TRANSACTION, &quot;The transaction(terminalId=&quot;</span>
+                    + trans.getDeviceId() + &quot;,traceMessageId=&quot; + trans.getTraceMessageId()
+                    + &quot;) has existed, it can NOT be dulplicated.&quot;);
+        }
+
+<span class="fc" id="L128">        this.getTransactionDao().insert(trans);</span>
+<span class="fc" id="L129">    }</span>
+
+    /**
+     * @see com.mpos.lottery.te.trans.service.TransactionService#update(com.mpos.lottery.te.trans.domain.Transaction)
+     */
+    public void update(Transaction trans) throws ApplicationException {
+<span class="fc" id="L135">        this.getTransactionDao().update(trans);</span>
+<span class="fc" id="L136">        this.saveTransMessage(trans.getTransMessage());</span>
+<span class="fc" id="L137">    }</span>
+
+    /**
+     * @see ReversalOrCancelStrategy#cancelOrReverse(Context, Transaction).
+     */
+    public boolean reverseOrCancel(Context&lt;?&gt; respCtx, Transaction clientTargetTrans) throws ApplicationException {
+<span class="fc" id="L143">        Transaction dbTargetTrans = null;</span>
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        if (this.getEntityManager().contains(clientTargetTrans)) {</span>
+            /**
+             * If &lt;code&gt;Transaction&lt;/code&gt; entity has been loaded by entity manager, no need to load it again. As
+             * {@link #reverseOrCancel(Context&lt;?&gt;, BaseTicket)} will load transaction entity first. And {@link
+             * #reverseOrCancel(Context&lt;?&gt;, BaseTicket)} will be called by 'cancelByTicket' of &lt;code&gt;Controller&lt;/code&gt;
+             * accordingly.
+             */
+<span class="fc" id="L151">            dbTargetTrans = clientTargetTrans;</span>
+        } else {
+<span class="fc" id="L153">            dbTargetTrans = this.getTransactionDao().getByDeviceAndTraceMessage(clientTargetTrans.getDeviceId(),</span>
+                    clientTargetTrans.getTraceMessageId());
+        }
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">        if (dbTargetTrans == null) {</span>
+<span class="nc" id="L157">            throw new ApplicationException(SystemException.CODE_NO_TRANSACTION, &quot;can NOT find transaction(deviceId=&quot;</span>
+                    + clientTargetTrans.getDeviceId() + &quot;,traceMessageId=&quot; + clientTargetTrans.getTraceMessageId()
+                    + &quot;).&quot;);
+        }
+        // fix bug#5025
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        if (SystemException.CODE_OK != dbTargetTrans.getResponseCode()) {</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">            if (SystemException.CODE_CANCELLED_TRANS == dbTargetTrans.getResponseCode()) {</span>
+<span class="fc" id="L164">                logger.info(&quot;NO need to rollback transaction(id=&quot; + dbTargetTrans.getId()</span>
+                        + &quot;), it has been rollbacked.&quot;);
+<span class="fc" id="L166">                throw new ApplicationException(SystemException.CODE_CANCELLED_TRANS, &quot;The transaction(id=&quot;</span>
+                        + dbTargetTrans.getId() + &quot;) has been reversed, no need to reverse repeatedly.&quot;);
+            } else {
+<span class="nc" id="L169">                logger.info(&quot;NO need to rollback transaction(id=&quot; + dbTargetTrans.getId()</span>
+                        + &quot;), it is a unsuccessul trasnaction(Code:&quot; + dbTargetTrans.getResponseCode() + &quot;)&quot;);
+            }
+<span class="nc" id="L172">            return false;</span>
+        }
+
+        // FIX#5032
+        // If is automatical transactions, such as 'cancel by transaction', and
+        // the operator hasn't been allocated to any merchant, in this case, the
+        // merchant can be null... set the original merchant to this field
+<span class="fc bfc" id="L179" title="All 2 branches covered.">        if (respCtx.getMerchant() == null) {</span>
+<span class="fc" id="L180">            Merchant retailer = this.getBaseJpaDao().findById(Merchant.class, dbTargetTrans.getMerchantId());</span>
+<span class="pc bpc" id="L181" title="1 of 2 branches missed.">            if (retailer == null) {</span>
+<span class="nc" id="L182">                throw new ApplicationException(SystemException.CODE_NO_MERCHANT, &quot;merchant(id=&quot;</span>
+                        + dbTargetTrans.getMerchantId() + &quot;) doesn't exist.&quot;);
+            }
+<span class="fc" id="L185">            respCtx.setMerchant(retailer);</span>
+        }
+
+<span class="fc" id="L188">        respCtx.getTransaction().setGameId(dbTargetTrans.getGameId());</span>
+<span class="fc" id="L189">        respCtx.getTransaction().setTotalAmount(dbTargetTrans.getTotalAmount());</span>
+<span class="fc" id="L190">        respCtx.getTransaction().setTicketSerialNo(dbTargetTrans.getTicketSerialNo());</span>
+<span class="fc" id="L191">        respCtx.getTransaction().setCancelTransactionType(dbTargetTrans.getType());</span>
+<span class="fc" id="L192">        respCtx.getTransaction().setCancelTransactionId(dbTargetTrans.getId());</span>
+<span class="fc bfc" id="L193" title="All 2 branches covered.">        if (respCtx.getTransaction().isManualCancel()) {</span>
+<span class="fc" id="L194">            respCtx.getTransaction().setType(TransactionType.CANCEL_BY_CLIENT_MANUALLY.getRequestType());</span>
+        }
+        // set game type
+<span class="fc" id="L197">        this.lookupGameType(respCtx, dbTargetTrans);</span>
+        // set transaction message
+<span class="fc" id="L199">        TransactionMessage transMsg = this.getTransMessageDao().getById(dbTargetTrans.getId());</span>
+<span class="fc" id="L200">        dbTargetTrans.setTransMessage(transMsg);</span>
+<span class="fc" id="L201">        ReversalOrCancelStrategy reversalStrategy = this.getReversalStrategyFactory().lookupReversalStrategy(respCtx,</span>
+                dbTargetTrans);
+<span class="fc" id="L203">        boolean isCancelDeline = reversalStrategy.cancelOrReverse(respCtx, dbTargetTrans);</span>
+        // update original transaction
+<span class="fc" id="L205">        dbTargetTrans.setResponseCode(SystemException.CODE_CANCELLED_TRANS);</span>
+<span class="fc" id="L206">        dbTargetTrans.setCancelTransactionId(respCtx.getTransaction().getId());</span>
+<span class="fc" id="L207">        dbTargetTrans.setCancelTransactionType(respCtx.getTransaction().getType());</span>
+
+        // assemble AMQP message
+<span class="fc" id="L210">        MessagePack amqpPack = this.assembleAmqpPack(respCtx, dbTargetTrans);</span>
+<span class="fc" id="L211">        respCtx.setTransMessage(amqpPack);</span>
+
+<span class="fc" id="L213">        return isCancelDeline;</span>
+    }
+
+    @Override
+    public boolean reverseOrCancel(Context&lt;?&gt; respCtx, BaseTicket ticket) throws ApplicationException {
+        /**
+         * Refactor to call {@link TransactionService#reverseOrCancel} service, make 'cancel by ticket' and 'cancel by
+         * transaction' follow same logic, otherwise you have to change the implementation of both 'cancelbyticket' and
+         * 'cancelbytransaction'. Besides {@link TransactionService#reverseOrCancel} will call
+         * {@link TicketService#cancelByTicket}.
+         */
+<span class="fc" id="L224">        Transaction saleTrans = this.getTransactionDao().getByTicketAndType(ticket.getSerialNo(),</span>
+                TransactionType.SELL_TICKET.getRequestType());
+<span class="fc" id="L226">        respCtx.getTransaction().setManualCancel(ticket.isManualCancel());</span>
+<span class="fc" id="L227">        return this.reverseOrCancel(respCtx, saleTrans);</span>
+    }
+
+    @Override
+    public void pendTransaction(int cancelTransType, Object... params) throws ApplicationException {
+        // check arguments
+<span class="nc bnc" id="L233" title="All 2 branches missed.">        if (cancelTransType == TransactionType.CANCEL_BY_TICKET.getRequestType()) {</span>
+<span class="nc bnc" id="L234" title="All 2 branches missed.">            if (params.length != 3) {</span>
+<span class="nc" id="L235">                throw new IllegalArgumentException(&quot;ticket serialNo,deviceId,traceMsgId must be provided.&quot;);</span>
+            }
+        } else {
+<span class="nc bnc" id="L238" title="All 2 branches missed.">            if (params.length != 2) {</span>
+<span class="nc" id="L239">                throw new IllegalArgumentException(&quot;deviceID and traceMsgId must be provided.&quot;);</span>
+            }
+        }
+
+        // if server type is slave, write pending log
+<span class="nc" id="L244">        SysConfiguration sysConf = this.getSysConfigurationDao().getSysConfiguration();</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">        if (SysConfiguration.SERVER_TYPE_SLAVE != sysConf.getServerType()) {</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">            if (cancelTransType == TransactionType.CANCEL_BY_TICKET.getRequestType()) {</span>
+<span class="nc" id="L247">                throw new ApplicationException(SystemException.CODE_NO_TICKET, &quot;can NOT find ticket(serialNO=&quot;</span>
+                        + (String) params[0] + &quot;) from underlying database.&quot;);
+            } else {
+<span class="nc" id="L250">                throw new ApplicationException(SystemException.CODE_NO_TRANSACTION,</span>
+                        &quot;can not find transaction by terminalId=&quot; + (Long) params[0] + &quot;,traceMessageId=&quot;
+                                + (String) params[1]);
+            }
+        }
+
+<span class="nc" id="L256">        PendingTransaction pending = new PendingTransaction();</span>
+<span class="nc" id="L257">        pending.setId(this.getUuidManager().getGeneralID());</span>
+<span class="nc" id="L258">        pending.setTransType(cancelTransType);</span>
+<span class="nc" id="L259">        pending.setCreateTime(new Date());</span>
+<span class="nc" id="L260">        pending.setUpdateTime(pending.getCreateTime());</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">        if (cancelTransType == TransactionType.CANCEL_BY_TICKET.getRequestType()) {</span>
+<span class="nc" id="L262">            pending.setTicketSerialNo((String) params[0]);</span>
+<span class="nc" id="L263">            pending.setDeviceId((Long) params[1]);</span>
+<span class="nc" id="L264">            pending.setTraceMsgId((String) params[2]);</span>
+        } else {
+<span class="nc" id="L266">            pending.setDeviceId((Long) params[0]);</span>
+<span class="nc" id="L267">            pending.setTraceMsgId((String) params[1]);</span>
+        }
+
+<span class="nc bnc" id="L270" title="All 2 branches missed.">        if (logger.isInfoEnabled()) {</span>
+<span class="nc" id="L271">            logger.info(&quot;This request will be pended(&quot; + pending + &quot;).&quot;);</span>
+        }
+
+<span class="nc" id="L274">        this.getPendingTransactionDao().insert(pending);</span>
+<span class="nc" id="L275">    }</span>
+
+    // ---------------------------------------------------
+    // PRIVATE METHODS
+    // ---------------------------------------------------
+
+    private MessagePack assembleAmqpPack(Context&lt;?&gt; respCtx, Transaction dbTargetTrans) {
+<span class="fc" id="L282">        TransactionType targetTransType = TransactionType.getTransactionType(dbTargetTrans.getType());</span>
+<span class="pc bpc" id="L283" title="1 of 4 branches missed.">        if (!targetTransType.isCancellation() &amp;&amp; targetTransType.isPublishTransMsg()) {</span>
+<span class="fc" id="L284">            TeTransactionMessage.Cancellation msg = AmqpMessageUtils.assembleCancellationMsg(respCtx, dbTargetTrans);</span>
+<span class="fc" id="L285">            return new MessagePack(MessagePack.PREFIX + &quot;.&quot; + dbTargetTrans.getType(), MessagePack.PREFIX + &quot;.CANCEL.&quot;</span>
+                    + dbTargetTrans.getType() + &quot;.&quot; + respCtx.getGameTypeIdIntValue(), msg);
+        } else {
+<span class="fc" id="L288">            logger.debug(&quot;No need to publish cancellation for target transaction(type=&quot; + dbTargetTrans.getType()</span>
+                    + &quot;,id=&quot; + dbTargetTrans.getId() + &quot;).&quot;);
+<span class="fc" id="L290">            return null;</span>
+        }
+    }
+
+    private void saveTransMessage(TransactionMessage transMessage) {
+<span class="fc bfc" id="L295" title="All 2 branches covered.">        if (transMessage == null) {</span>
+<span class="fc" id="L296">            return;</span>
+        }
+        // convert reqJsonMap and respJsonMap to JSON string
+<span class="fc bfc" id="L299" title="All 2 branches covered.">        if (transMessage.getRequestMsg() == null) {</span>
+            // to be compatible with old implementation, they will call {@link
+            // TransactionMessage#setRequestMsg()} directly...we can't clear
+            // them
+<span class="fc" id="L303">            transMessage.setRequestMsg(transMessage.encodeReqJsonMap());</span>
+        }
+<span class="fc bfc" id="L305" title="All 2 branches covered.">        if (transMessage.getResponseMsg() == null) {</span>
+<span class="fc" id="L306">            transMessage.setResponseMsg(transMessage.encodeRespJsonMap());</span>
+        }
+
+<span class="fc" id="L309">        this.getTransMessageDao().insert(transMessage);</span>
+<span class="fc" id="L310">    }</span>
+
+    protected int lookupGameType(Context respCtx, Transaction targetTrans) throws ApplicationException {
+<span class="fc" id="L313">        int gameType = Game.TYPE_UNDEF;</span>
+<span class="fc bfc" id="L314" title="All 2 branches covered.">        if (targetTrans.getGameId() != null) {</span>
+<span class="fc" id="L315">            gameType = this.getGameDao().findById(Game.class, targetTrans.getGameId(), false).getType();</span>
+        }
+<span class="fc" id="L317">        respCtx.setGameTypeId(gameType + &quot;&quot;);</span>
+<span class="fc" id="L318">        return gameType;</span>
+    }
+
+    /**
+     * get return result according to serialNo or gameid.
+     */
+    private BaseTicket getTransactionTicketByGameInfo(Context respCtx, Transaction trans) throws ApplicationException {
+<span class="fc" id="L325">        DummyTicket ticket = new DummyTicket();</span>
+<span class="fc" id="L326">        ticket.setSerialNo(trans.getTicketSerialNo());</span>
+<span class="pc bpc" id="L327" title="1 of 2 branches missed.">        if (trans.getTicketSerialNo() == null) {</span>
+<span class="nc" id="L328">            return null;</span>
+        }
+
+        // UGLY!!! should query game type id according to transaction table's
+        // gameID
+<span class="fc" id="L333">        int gameTypeId = respCtx.getGameTypeIdIntValue();</span>
+<span class="pc bpc" id="L334" title="1 of 2 branches missed.">        if (gameTypeId == Game.TYPE_UNDEF) {</span>
+<span class="nc" id="L335">            return null;</span>
+        }
+
+<span class="fc" id="L338">        TicketEnquiryService ticketEnquiryHandler = this.ticketEnquiryMap.get(GameType.fromType(gameTypeId));</span>
+<span class="pc bpc" id="L339" title="1 of 2 branches missed.">        if (ticketEnquiryHandler == null) {</span>
+<span class="nc" id="L340">            throw new SystemException(SystemException.CODE_INTERNAL_SERVER_ERROR,</span>
+                    &quot;No dedicated ticket enquiry handler found for game type:&quot; + gameTypeId);
+<span class="pc bpc" id="L342" title="1 of 2 branches missed.">        } else if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L343">            logger.debug(&quot;Found TicketEnquiryService[&quot; + ticketEnquiryHandler + &quot;] for ticket enquiry.&quot;);</span>
+        }
+<span class="fc" id="L345">        BaseTicket hostTicket = ticketEnquiryHandler.enquiry(respCtx, ticket, true);</span>
+<span class="fc" id="L346">        return hostTicket;</span>
+    }
+
+    // ---------------------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // ---------------------------------------------------
+
+    public GameDao getGameDao() {
+<span class="fc" id="L354">        return gameDao;</span>
+    }
+
+    public void setGameDao(GameDao gameDao) {
+<span class="fc" id="L358">        this.gameDao = gameDao;</span>
+<span class="fc" id="L359">    }</span>
+
+    public TransactionDao getTransactionDao() {
+<span class="fc" id="L362">        return transactionDao;</span>
+    }
+
+    public void setTransactionDao(TransactionDao transactionDao) {
+<span class="fc" id="L366">        this.transactionDao = transactionDao;</span>
+<span class="fc" id="L367">    }</span>
+
+    public ReversalOrCancelStrategyFactory getReversalStrategyFactory() {
+<span class="fc" id="L370">        return reversalStrategyFactory;</span>
+    }
+
+    public void setReversalStrategyFactory(ReversalOrCancelStrategyFactory reversalStrategyFactory) {
+<span class="fc" id="L374">        this.reversalStrategyFactory = reversalStrategyFactory;</span>
+<span class="fc" id="L375">    }</span>
+
+    public TransactionMessageDao getTransMessageDao() {
+<span class="fc" id="L378">        return transMessageDao;</span>
+    }
+
+    public void setTransMessageDao(TransactionMessageDao transMessageDao) {
+<span class="fc" id="L382">        this.transMessageDao = transMessageDao;</span>
+<span class="fc" id="L383">    }</span>
+
+    public PendingTransactionDao getPendingTransactionDao() {
+<span class="nc" id="L386">        return pendingTransactionDao;</span>
+    }
+
+    public void setPendingTransactionDao(PendingTransactionDao pendingTransactionDao) {
+<span class="fc" id="L390">        this.pendingTransactionDao = pendingTransactionDao;</span>
+<span class="fc" id="L391">    }</span>
+
+    public UUIDService getUuidManager() {
+<span class="nc" id="L394">        return uuidManager;</span>
+    }
+
+    public void setUuidManager(UUIDService uuidManager) {
+<span class="fc" id="L398">        this.uuidManager = uuidManager;</span>
+<span class="fc" id="L399">    }</span>
+
+    public SysConfigurationDao getSysConfigurationDao() {
+<span class="nc" id="L402">        return sysConfigurationDao;</span>
+    }
+
+    public void setSysConfigurationDao(SysConfigurationDao sysConfigurationDao) {
+<span class="fc" id="L406">        this.sysConfigurationDao = sysConfigurationDao;</span>
+<span class="fc" id="L407">    }</span>
+
+    public BaseJpaDao getBaseJpaDao() {
+<span class="fc" id="L410">        return baseJpaDao;</span>
+    }
+
+    public void setBaseJpaDao(BaseJpaDao baseJpaDao) {
+<span class="fc" id="L414">        this.baseJpaDao = baseJpaDao;</span>
+<span class="fc" id="L415">    }</span>
+
+    public EntityManager getEntityManager() {
+<span class="fc" id="L418">        return entityManager;</span>
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+<span class="nc" id="L422">        this.entityManager = entityManager;</span>
+<span class="nc" id="L423">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

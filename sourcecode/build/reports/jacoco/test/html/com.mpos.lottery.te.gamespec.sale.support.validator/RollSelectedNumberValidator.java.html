@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>RollSelectedNumberValidator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.sale.support.validator</a> &gt; <span class="el_source">RollSelectedNumberValidator.java</span></div><h1>RollSelectedNumberValidator.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.sale.support.validator;
+
+import com.mpos.lottery.te.common.util.Combination;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gamespec.sale.BaseEntry;
+import com.mpos.lottery.te.port.Context;
+
+public class RollSelectedNumberValidator extends AbstractSelectedNumberValidator {
+
+    public RollSelectedNumberValidator(String numberFormat) {
+<span class="fc" id="L12">        super(numberFormat);</span>
+<span class="fc" id="L13">    }</span>
+
+    public long calTotalBets(BaseEntry entry) throws ApplicationException {
+<span class="fc" id="L16">        SelectedNumber sNumber = entry.parseSelectedNumber();</span>
+<span class="fc" id="L17">        int numbers[] = sNumber.getBaseNumbers();</span>
+        // The previous should guarantee that numbers.length&lt;funType.k
+<span class="fc" id="L19">        int n = this.getFunType().getN() - numbers.length;</span>
+<span class="fc" id="L20">        int r = this.getFunType().getK() - numbers.length;</span>
+<span class="fc" id="L21">        Combination c = new Combination(n, r);</span>
+<span class="fc" id="L22">        return c.getTotal().longValue();</span>
+    }
+
+    /**
+     * Roll bet option can be regarded as a special banker. If this bet option, all other numbers will be regarded as
+     * leg part.
+     */
+    @Override
+    protected void customValidateAfter(Context respCtx, BaseEntry entry, SelectedNumber selectedNumber)
+            throws ApplicationException {
+<span class="fc" id="L32">        int numbers[] = selectedNumber.getBaseNumbers();</span>
+<span class="fc" id="L33">        int k = this.getFunType().getK();</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (numbers.length &gt;= k) {</span>
+<span class="nc" id="L35">            throw new ApplicationException(SystemException.CODE_WRONGFORMAT_SELECTEDNUMBER,</span>
+                    &quot;The count of selected number of entry(number=&quot; + entry.getSelectNumber() + &quot;,serialNo=&quot;
+                            + entry.getTicketSerialNo() + &quot;,betOption=&quot; + entry.getBetOption()
+                            + &quot;) should be less than &quot; + k + &quot;.&quot;);
+        }
+<span class="fc" id="L40">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>WorkingKeyCache.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.workingkey.domain</a> &gt; <span class="el_source">WorkingKeyCache.java</span></div><h1>WorkingKeyCache.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.workingkey.domain;
+
+import com.mpos.lottery.te.config.MLotteryContext;
+import com.mpos.lottery.te.workingkey.dao.WorkingKeyDao;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * The daily working key for a given GPE is unique and won't change once generated, to it is suitable to cache.
+ * 
+ * @author Ramon
+ */
+public class WorkingKeyCache {
+    private static WorkingKeyCache cache;
+    // key of outer map is gpeId, and key of inner map is dailyStr.
+<span class="fc" id="L17">    private Map&lt;String, Map&lt;String, WorkingKey&gt;&gt; gpeWorkingKeyMap = new HashMap&lt;String, Map&lt;String, WorkingKey&gt;&gt;();</span>
+
+<span class="fc" id="L19">    private WorkingKeyCache() {</span>
+<span class="fc" id="L20">    }</span>
+
+    /**
+     * Get the singleton instance.
+     */
+    public static synchronized WorkingKeyCache getInstance() {
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (cache == null) {</span>
+<span class="fc" id="L27">            cache = new WorkingKeyCache();</span>
+        }
+<span class="fc" id="L29">        return cache;</span>
+    }
+
+    /**
+     * Get a daily working key by GPE and date string.
+     */
+    public synchronized WorkingKey getDailyWorkingKey(String gpeId, String dailyStr) {
+<span class="fc" id="L36">        WorkingKey workingKey = null;</span>
+<span class="fc" id="L37">        Map&lt;String, WorkingKey&gt; dailyWorkingKeyMap = this.gpeWorkingKeyMap.get(gpeId);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (dailyWorkingKeyMap == null) {</span>
+<span class="fc" id="L39">            dailyWorkingKeyMap = new HashMap&lt;String, WorkingKey&gt;();</span>
+<span class="fc" id="L40">            this.gpeWorkingKeyMap.put(gpeId, dailyWorkingKeyMap);</span>
+
+            // create working key for this GPE
+<span class="fc" id="L43">            workingKey = this.fetchWorkingKey(gpeId, dailyStr);</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">            if (workingKey != null) {</span>
+<span class="fc" id="L45">                dailyWorkingKeyMap.put(dailyStr, workingKey);</span>
+            }
+        } else {
+<span class="fc" id="L48">            workingKey = dailyWorkingKeyMap.get(dailyStr);</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">            if (workingKey == null) {</span>
+<span class="nc" id="L50">                workingKey = this.fetchWorkingKey(gpeId, dailyStr);</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">                if (workingKey != null) {</span>
+                    // clear all other workingKey of this GPE to avoid
+                    // OutOfMemoryException of jvm heap
+<span class="nc" id="L54">                    dailyWorkingKeyMap.clear();</span>
+                    // put new daily working key into cache
+<span class="nc" id="L56">                    dailyWorkingKeyMap.put(dailyStr, workingKey);</span>
+                }
+            }
+        }
+<span class="fc" id="L60">        return workingKey;</span>
+    }
+
+    private WorkingKey fetchWorkingKey(String gpeId, String dailyStr) {
+<span class="fc" id="L64">        MLotteryContext prop = MLotteryContext.getInstance();</span>
+<span class="fc" id="L65">        String beanName = prop.get(MLotteryContext.ENTRY_BEAN_WORKINGKEYDAO);</span>
+<span class="fc" id="L66">        WorkingKeyDao dao = (WorkingKeyDao) prop.getBeanFactory().getBean(beanName);</span>
+<span class="fc" id="L67">        WorkingKey key = dao.getWorkingKey(dailyStr, gpeId);</span>
+<span class="fc" id="L68">        return key;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

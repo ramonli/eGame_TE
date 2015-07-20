@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="Clinic4j" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>M.Lottery-TE</display-name>
+
+	<!-- ================================================== -->
+	<!-- SPRING SETTING ................................... -->
+	<!-- ================================================== -->
+	<!-- The default value of 'webAppRootKey' is 'webapp.root' -->
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>mlottery.root</param-value>
+	</context-param>
+
+	<!-- log4j:ERROR setFile(null,true) call failed. java.io.FileNotFoundException: 
+		\WEB-INF\logs\log4j.log (系统找不到指定的路径。) Below 2 solution can resolve this bug: 
+		- Rename log4j.xml to other name can avoid the conflict with default log4j 
+		configuration. - Upgrade tomcat to 6.X -->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>classpath:log4j_production.xml</param-value>
+	</context-param>
+
+	<!-- Use this setting, you can modify log4j.xml, and no need to reboot web 
+		container. -->
+	<context-param>
+		<param-name>log4jRefreshInterval</param-name>
+		<param-value>60000</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			classpath:spring/spring-core.xml, 
+			classpath:spring/spring-core-dao.xml,
+			classpath:spring/game/spring-vat.xml, 
+			classpath:spring/game/spring-raffle.xml,
+			classpath:spring/game/spring-ig.xml, 
+			classpath:spring/game/spring-extraball.xml,
+			classpath:spring/game/spring-lotto.xml, 
+			classpath:spring/game/spring-toto.xml,
+			classpath:spring/game/spring-lfn.xml, 
+			classpath:spring/spring-3rdparty.xml,
+			classpath:spring/game/spring-magic100.xml, 
+			classpath:spring/game/spring-digital.xml,
+			classpath:spring/spring-amqp.xml, 
+			classpath:spring/game/spring-union.xml,
+			classpath:spring/game/spring-bingo.xml,
+			classpath:spring/vas/spring-airtime.xml,
+			classpath:spring/vas/spring-teleco-voucher.xml,
+		</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- ================================================== -->
+	<!-- FILTER DEFINITION ................................ -->
+	<!-- ================================================== -->
+	<filter>
+		<filter-name>HttpsFilter</filter-name>
+		<filter-class>com.mpos.lottery.te.port.web.filter.HttpsFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>HttpsFilter</filter-name>
+		<url-pattern>/transaction_engine/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>ProfilingFilter</filter-name>
+		<filter-class>com.mpos.lottery.te.port.web.filter.ProfilingFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>ProfilingFilter</filter-name>
+		<url-pattern>/transaction_engine/*</url-pattern>
+	</filter-mapping>
+
+	<!-- ================================================== -->
+	<!-- LISTENER DEFINITION .............................. -->
+	<!-- ================================================== -->
+	<listener>
+		<listener-class>com.mpos.lottery.te.port.web.listener.TomcatContextListener</listener-class>
+	</listener>
+
+
+	<!-- ================================================== -->
+	<!-- SERVLET DEFINITION ............................... -->
+	<!-- ================================================== -->
+	<servlet>
+		<display-name>TePortServlet</display-name>
+		<servlet-name>TePortServlet</servlet-name>
+		<servlet-class>com.mpos.lottery.te.port.TEPortServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TePortServlet</servlet-name>
+		<url-pattern>/transaction_engine/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<display-name>InternalTePortServlet</display-name>
+		<servlet-name>InternalTePortServlet</servlet-name>
+		<servlet-class>com.mpos.lottery.te.port.InternalTEPortServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>InternalTePortServlet</servlet-name>
+		<url-pattern>/transaction_engine_internal/*</url-pattern>
+	</servlet-mapping>
+
+</web-app>

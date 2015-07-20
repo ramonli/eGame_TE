@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PrizeObject.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.lotto.prize.domain</a> &gt; <span class="el_source">PrizeObject.java</span></div><h1>PrizeObject.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.lotto.prize.domain;
+
+import java.math.BigDecimal;
+
+/**
+ * Use this domain class to represent 2nd chance and daily cash prize.
+ */
+public class PrizeObject {
+    private String prizeLogicId;
+    private int prizeLevel;
+    // the identifer of object...in general it is from bd_prize_object
+    private String id;
+    private String name;
+<span class="pc" id="L14">    private BigDecimal prizeAmount = new BigDecimal(&quot;0&quot;);</span>
+<span class="pc" id="L15">    private BigDecimal tax = new BigDecimal(&quot;0&quot;);</span>
+    private String description;
+    // refer to PrizeLevel.PRIZE_TYPE_XXX
+    private int prizeType;
+<span class="pc" id="L19">    private int numberOfPrize = 1;</span>
+
+<span class="fc" id="L21">    public PrizeObject() {</span>
+<span class="fc" id="L22">    }</span>
+
+    public PrizeObject(String prizeLogicId, int prizeLevel, String id, String name, BigDecimal prizeAmount,
+<span class="nc" id="L25">            BigDecimal tax, int prizeType, int numberOfPrize, String description) {</span>
+<span class="nc" id="L26">        this.prizeLogicId = prizeLogicId;</span>
+<span class="nc" id="L27">        this.prizeLevel = prizeLevel;</span>
+<span class="nc" id="L28">        this.id = id;</span>
+<span class="nc" id="L29">        this.name = name;</span>
+<span class="nc" id="L30">        this.prizeAmount = prizeAmount;</span>
+<span class="nc" id="L31">        this.tax = tax;</span>
+<span class="nc" id="L32">        this.description = description;</span>
+<span class="nc" id="L33">        this.prizeType = prizeType;</span>
+<span class="nc" id="L34">        this.numberOfPrize = numberOfPrize;</span>
+<span class="nc" id="L35">    }</span>
+
+    public String getPrizeLogicId() {
+<span class="nc" id="L38">        return prizeLogicId;</span>
+    }
+
+    public void setPrizeLogicId(String prizeLogicId) {
+<span class="nc" id="L42">        this.prizeLogicId = prizeLogicId;</span>
+<span class="nc" id="L43">    }</span>
+
+    public String getId() {
+<span class="fc" id="L46">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="fc" id="L50">        this.id = id;</span>
+<span class="fc" id="L51">    }</span>
+
+    public String getName() {
+<span class="fc" id="L54">        return name;</span>
+    }
+
+    public void setName(String name) {
+<span class="fc" id="L58">        this.name = name;</span>
+<span class="fc" id="L59">    }</span>
+
+    public BigDecimal getPrizeAmount() {
+<span class="fc" id="L62">        return prizeAmount;</span>
+    }
+
+    public void setPrizeAmount(BigDecimal prizeAmount) {
+<span class="fc" id="L66">        this.prizeAmount = prizeAmount;</span>
+<span class="fc" id="L67">    }</span>
+
+    public BigDecimal getTax() {
+<span class="fc" id="L70">        return tax;</span>
+    }
+
+    public void setTax(BigDecimal tax) {
+<span class="fc" id="L74">        this.tax = tax;</span>
+<span class="fc" id="L75">    }</span>
+
+    public int getPrizeLevel() {
+<span class="nc" id="L78">        return prizeLevel;</span>
+    }
+
+    public void setPrizeLevel(int prizeLevel) {
+<span class="nc" id="L82">        this.prizeLevel = prizeLevel;</span>
+<span class="nc" id="L83">    }</span>
+
+    public String getDescription() {
+<span class="nc" id="L86">        return description;</span>
+    }
+
+    public void setDescription(String description) {
+<span class="nc" id="L90">        this.description = description;</span>
+<span class="nc" id="L91">    }</span>
+
+    public int getPrizeType() {
+<span class="nc" id="L94">        return prizeType;</span>
+    }
+
+    public void setPrizeType(int prizeType) {
+<span class="nc" id="L98">        this.prizeType = prizeType;</span>
+<span class="nc" id="L99">    }</span>
+
+    public int getNumberOfPrize() {
+<span class="nc" id="L102">        return numberOfPrize;</span>
+    }
+
+    public void setNumberOfPrize(int numberOfPrize) {
+<span class="nc" id="L106">        this.numberOfPrize = numberOfPrize;</span>
+<span class="nc" id="L107">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

@@ -1,0 +1,110 @@
+// --------------------------------------------------------------------------------------------------
+// This message definition file defines the message format of all TE generated transactions, such 
+// as sale, cancellation etc.
+// 
+// TE will publish each successful transaction, for example sale, payout and operator topup etc, to a exchange named 'TE.${transactionType}' 
+// with routing key 'TE.${transactionType}.${gameType}', if no game type associates with a transaction, the '${gameType}' 
+// will be '-1', for example a routing key maybe 'TE.445.-1' in which case the cashout transaction has
+// no releationship with a game type. 
+// However the corresponding cancellation of a transaction will be published to a exchange named 'TE.${originalTransactionType}' with 
+// routing key 'TE.CANCEL.${originalTransactionType}.${gameType}'. If no game type associates with the original transaction, set ${gameType}
+// to -1. For example a cancellation of sale will be published to exhange 'TE.200' with routing key 'TE.CANCEL.200.1'(if a lotto sale).
+// 
+// Below table lists all supported transaction messages.
+// 
+// TransType Of TE| Exchange    | Routing Key                 | Message Type               | Description
+//            200 | TE.200      | TE.200.${game_type}         | Sale                       | sale
+//            201 | TE.200      | TE.CANCEL.200.${game_type}  | Cancellation               | cancel sale by ticket 
+//            206 | TE.200      | TE.CANCEL.200.${game_type}  | Cancellation               | cancel sale by transaction
+//            210 | TE.200      | TE.CANCEL.200.${game_type}  | Cancellation               | cancel sale manually
+//            --------
+//            302 | TE.302      | TE.302.${game_type}         | Transaction                | payout
+//            206 | TE.302      | TE.CANCEL.302.${game_type}  | Cancellation               | cancel payout by trans
+//            --------
+//            447 | TE.447      | TE.447.-1                   | Transaction                | operator topup by voucher
+//            206 | TE.447      | TE.CANCEL.447.-1            | Cancellation               | cancelation of operator topup 
+//            --------
+//            352 | TE.352      | TE.352.-1                   | Transaction                | operator cashout by pass
+//            206 | TE.352      | TE.CANCEL.352.-1            | Cancellation               | cancellation of operator cashout by pass
+//            353 | TE.353      | TE.353.-1                   | Transaction                | operator cashout manually
+//            206 | TE.353      | TE.CANCEL.353.-1            | Cancellation               | cancellation of operator cashout manually
+//            --------
+//            402 | TE.401      | TE.402.-1                   | Transaction                | IG validation
+//            206 | TE.401      | TE.CANCEL.402.-1            | Cancellation               | cancellation of IG validation
+//            411 | TE.411      | TE.411.-1                   | Transaction                | Batch IG Validation
+//            206 | TE.411      | TE.CANCEL.411.-1            | Cancellation               | Cancellation of batch IG validation
+//            --------
+//            445 | TE.445      | TE.445.1000                 | Transaction                | Player Cashout
+//            206 | TE.445      | TE.CANCEL.445.-1            | Cancellation               | Cancelation of player cashout
+//            --------
+//            455 | TE.455      | TE.455.1000                 | Transaction                | Airtime topup(no cancellation)
+//            --------
+//            456 | TE.456      | TE.455.1001                 | Transaction                | Sell teleco voucher
+//            206 | TE.456      | TE.CANCEL.456.-1            | Cancellation               | Cancelation of voucher sale
+// * if transaction has no relationship with game type, such as player/operator cashout, the ${gameType}  in routing 
+// key will be '-1'.
+//
+// @date 2015/01/19
+// @author Ramon Li
+// --------------------------------------------------------------------------------------------------
+
+option java_package = "com.mpos.lottery.te.thirdpartyservice.amqp";
+option java_outer_classname = "TeTransactionMessage";
+
+message Version {
+	required string value = 1 [default = '2.0.0'];
+}
+
+// Transaction represents the context of a specific request/response.
+message Transaction {
+	required string id = 1;
+	required string dev_id = 2;
+	required string operator_id=3;
+	required string merchant_id = 4;
+	// unix time since EPOCH
+	required int64 create_time = 5;	
+	required int32 trans_type = 6;
+	// not all transactions associate with game type.
+	optional string game_id = 7;
+	optional sint32 game_type = 15 [default = -1];
+	optional string total_amount=16;
+}
+
+// The game instance in which the sale occured.
+message GameInstance {
+	required string id = 1;	
+}
+
+// THe player who perform current transaction, such as sale, payout, cashout etc.
+message Player {
+	optional string id = 1;
+	optional string mobile_no = 2;
+	optional string credit_card_no = 3;
+}
+
+// The sale transaction.
+message Sale {
+	required Transaction transaction = 1;
+	required int32 multi_draw = 2;
+	// convert from sting to BigDecimal
+	required string total_amount = 3;
+	required string serial_no = 4;	// encryped 
+	required GameInstance game_instance = 5;
+
+	message Entry {
+		required string selected_number = 1;
+		required int32 bet_option = 2;
+		required int32 total_bets = 3;
+		// conver to BigDecimal
+		required string entry_amount = 4;
+		required string input_channel = 5;
+	}
+	repeated Entry entries = 6;
+}
+
+// cancellation of TE transaction type is 206
+message Cancellation {
+	required Transaction origTrans = 1;		// the transaction which has been cancelled
+	required Transaction cancelTrans = 2;	// the cancellation transaction it self.
+}
+

@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+	<class name="com.mpos.lottery.te.gamespec.prize.web.PrizeDto">
+		<map-to xml="Prize" />
+
+		<field name="returnAmount" type="java.math.BigDecimal">
+			<bind-xml name="returnAmount" node="attribute" />
+		</field>
+		<field name="payoutMode" type="integer" required="true">
+			<bind-xml name="mode" node="attribute" />
+		</field>
+		<field name="prizeAmount" type="java.math.BigDecimal" required="true">
+			<bind-xml name="prizeAmount" node="attribute" />
+		</field>
+		<field name="taxAmount" type="java.math.BigDecimal" required="true">
+			<bind-xml name="taxAmount" node="attribute" />
+		</field>
+		<field name="actualAmount" type="java.math.BigDecimal" required="true">
+			<bind-xml name="actualAmount" node="attribute" />
+		</field>
+		<field name="luckyPrizeAmount" type="java.math.BigDecimal"
+			required="false">
+			<bind-xml name="luckyAmount" node="attribute" />
+		</field>
+		<field name="verifyPIN" type="integer"
+			handler="com.mpos.lottery.te.port.protocol.BooleanFieldHandler"
+			required="true">
+			<bind-xml name="isVerifyPIN" node="attribute" />
+		</field>
+		<field name="winningTicket"
+			type="com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket"
+			required="true">
+			<bind-xml name="Ticket" />
+		</field>
+		<field name="prizeItems"
+			type="com.mpos.lottery.te.gamespec.prize.web.PrizeItemDto"
+			collection="arraylist" required="true">
+			<bind-xml name="PrizeItem" node="element" />
+		</field>
+	</class>
+
+	<class name="com.mpos.lottery.te.gamespec.prize.web.PrizeItemDto">
+		<field name="type" type="integer" required="false">
+			<bind-xml name="type" node="attribute" />
+		</field>
+		<field name="gameInstance"
+			type="com.mpos.lottery.te.gamespec.game.BaseGameInstance"
+			required="true">
+			<bind-xml name="GameDraw" />
+		</field>
+	</class>
+
+	<class
+		name="com.mpos.lottery.te.gamespec.game.BaseGameInstance" >
+		<field name="number" type="java.lang.String" required="true">
+			<bind-xml name="number" node="attribute" />
+		</field>
+		<field name="gameId" type="java.lang.String" required="true">
+			<bind-xml name="gameId" node="attribute" />
+		</field>
+	</class>
+</mapping>

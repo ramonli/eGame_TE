@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BatchRangeActiveStrategy.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.instantgame.domain.logic.active</a> &gt; <span class="el_source">BatchRangeActiveStrategy.java</span></div><h1>BatchRangeActiveStrategy.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.instantgame.domain.logic.active;
+
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.InstantTicketSerialNo;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.dto.ActiveCriteria;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.dto.ActiveResult;
+
+import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="nc" id="L14">public class BatchRangeActiveStrategy extends RangeTicketActiveStrategy {</span>
+
+    public ActiveResult active(ActiveCriteria criteria) throws ApplicationException {
+<span class="nc" id="L17">        ActiveResult batchResult = new ActiveResult();</span>
+<span class="nc" id="L18">        JSONObject jsonResult = new JSONObject();</span>
+<span class="nc" id="L19">        List&lt;SerialRange&gt; rangeList = this.parseCriteria(criteria);</span>
+<span class="nc bnc" id="L20" title="All 2 branches missed.">        for (SerialRange range : rangeList) {</span>
+            // check the range
+<span class="nc" id="L22">            ActiveResult result = new ActiveResult();</span>
+            try {
+<span class="nc" id="L24">                this.checkRange(criteria, range.getBeginSerial().getSerialNo(), range.getEndSerial().getSerialNo());</span>
+<span class="nc" id="L25">                result = this.batchActive(range.getBeginSerial().getSerialNo(), range.getEndSerial().getSerialNo(),</span>
+                        criteria.getTrans());
+<span class="nc" id="L27">            } catch (ApplicationException e) {</span>
+<span class="nc" id="L28">                result.setBatchSuccessful(false);</span>
+<span class="nc" id="L29">                result.setErrorCode(e.getErrorCode());</span>
+<span class="nc" id="L30">                logger.warn(e.getMessage(), e);</span>
+<span class="nc" id="L31">            }</span>
+
+<span class="nc bnc" id="L33" title="All 2 branches missed.">            if (result.isBatchSuccessful()) {</span>
+<span class="nc" id="L34">                batchResult.setCount(batchResult.getCount() + result.getCount());</span>
+            } else {
+<span class="nc" id="L36">                batchResult.appendFailure(range.getRange());</span>
+<span class="nc" id="L37">                batchResult.setErrorCode(result.getErrorCode());</span>
+<span class="nc" id="L38">                batchResult.setBatchSuccessful(false);</span>
+            }
+<span class="nc" id="L40">            jsonResult.put(range.getRange(), result.getErrorCode());</span>
+<span class="nc" id="L41">        }</span>
+<span class="nc" id="L42">        batchResult.setActiveResult(criteria.toJSONString(jsonResult));</span>
+<span class="nc" id="L43">        return batchResult;</span>
+    }
+
+    private List&lt;SerialRange&gt; parseCriteria(ActiveCriteria criteria) throws ApplicationException {
+<span class="nc" id="L47">        List&lt;SerialRange&gt; rangeList = new ArrayList&lt;SerialRange&gt;();</span>
+<span class="nc" id="L48">        String criteriaTokens[] = criteria.getValue().split(ActiveCriteria.TOKEN_SEPERATOR);</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        for (String criteriaToken : criteriaTokens) {</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">            if (!&quot;&quot;.equals(criteriaToken)) {</span>
+<span class="nc" id="L51">                int index = criteriaToken.indexOf(SerialRange.RANGE_SEPERATOR);</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">                if (index == -1) {</span>
+<span class="nc" id="L53">                    throw new ApplicationException(SystemException.CODE_WRONGFORMAT_CRITERIA,</span>
+                            &quot;NO '-' found in criteria for 'batch range activation'.&quot;);
+                }
+<span class="nc" id="L56">                InstantTicketSerialNo beginSerial = new InstantTicketSerialNo(criteriaToken.substring(0, index));</span>
+<span class="nc" id="L57">                InstantTicketSerialNo endSerial = new InstantTicketSerialNo(criteriaToken.substring(index + 1));</span>
+<span class="nc" id="L58">                SerialRange range = new SerialRange();</span>
+<span class="nc" id="L59">                range.setBeginSerial(beginSerial);</span>
+<span class="nc" id="L60">                range.setEndSerial(endSerial);</span>
+<span class="nc" id="L61">                rangeList.add(range);</span>
+            }
+        }
+<span class="nc" id="L64">        return rangeList;</span>
+    }
+
+<span class="nc" id="L67">    private class SerialRange {</span>
+        public final static String RANGE_SEPERATOR = &quot;-&quot;;
+        private InstantTicketSerialNo beginSerial;
+        private InstantTicketSerialNo endSerial;
+
+        public InstantTicketSerialNo getBeginSerial() {
+<span class="nc" id="L73">            return beginSerial;</span>
+        }
+
+        public void setBeginSerial(InstantTicketSerialNo beginSerial) {
+<span class="nc" id="L77">            this.beginSerial = beginSerial;</span>
+<span class="nc" id="L78">        }</span>
+
+        public InstantTicketSerialNo getEndSerial() {
+<span class="nc" id="L81">            return endSerial;</span>
+        }
+
+        public void setEndSerial(InstantTicketSerialNo endSerial) {
+<span class="nc" id="L85">            this.endSerial = endSerial;</span>
+<span class="nc" id="L86">        }</span>
+
+        public String getRange() {
+<span class="nc" id="L89">            return new StringBuffer().append(this.beginSerial.getSerialNo()).append(RANGE_SEPERATOR)</span>
+                    .append(this.endSerial.getSerialNo()).toString();
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

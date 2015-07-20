@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+	<!-- ApplicationContext will register BeanPostProcessor automatically. -->
+	<bean id="propertyConfigurer"
+		class="com.mpos.lottery.te.common.spring.XPropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:config/jdbc.properties</value>
+				<value>classpath:config/te_core.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- ==================================================== -->
+	<!-- ROUTER DEFINITION .................................. -->
+	<!-- ==================================================== -->
+
+	<!-- When write test cases base on spring test context framework, you will 
+		hugely depend on @Autowire and @Resource , and more, annotations for automatic 
+		dependency injection. While spring framework will handle those annotations 
+		by BeanPostProcess, for instance @Autowired is handled by AutowiredAnnotationBeanPostProcessor. 
+		If no context:component-scan stated, only a BeanPostProcess(internalAutoProxyCreator) 
+		will be registered automatically, in such case all dependency annotations 
+		will be ignored. I have a case, in which the simpleJdbcTemplate instance 
+		field of a test class is always null. If figure into spring source code deeply, 
+		a @Autowired annotation is stated on method setDataSource(...), as no AutowiredAnnotationBeanPostProcessor 
+		has been registered, @Autowired is ignored, then I can't get simpleJdbcTemplate 
+		from instance of my test class. context:component-scan will register below 
+		BeanPostProcessors: AutowiredAnnotationBeanPostProcessor, RequiredAnnotationBeanPostProcessor, 
+		CommonAnnotationBeanPostProcessor, PersistenceAnnotationBeanPostProcessor. 
+		Refer to spring's javadoc for more information -->
+	<context:component-scan base-package="com.mpos" />
+	<!-- Register BeanPostProcessors -->
+	<bean class="com.mpos.lottery.common.router.RoutineMetaDataBeanPostProcessor">
+		<property name="routineStrategyClass"
+			value="com.mpos.lottery.te.port.domain.router.RoutineKey" />
+		<property name="handlerMethodParameterValidator">
+			<bean
+				class="com.mpos.lottery.te.port.domain.router.ContextTypeHandlerMethodParameterValidator" />
+		</property>
+
+	</bean>
+
+	<!-- ==================================================== -->
+	<!-- FACADE DEFINITION .................................. -->
+	<!-- ==================================================== -->
+	<bean id="serviceFacade" class="com.mpos.lottery.te.port.service.CommonFacadeService">
+		<property name="workingKeyService" ref="workingKeyService" />
+		<property name="transService" ref="transService" />
+		<property name="uuidManager" ref="uuidManager" />
+		<property name="baseJpaDao" ref="baseJpaDao" />
+		<property name="sysConfigurationDao" ref="sysConfigurationDao" />
+		<property name="operatorMerchantDao" ref="operatorMerchantDao" />
+		<property name="amqpTemplate" ref="amqpTemplate" />
+	</bean>
+	
+    <!-- ==================================================== -->
+    <!-- QUARTZ SCHEDULER DEFINITION ........................ -->
+    <!-- ==================================================== -->
+    <bean id="teJobScheduler"
+        class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="transactionManager" ref="transactionManager" />
+        <!-- property name="applicationContextSchedulerContextKey" value="quartz_appContext" 
+            / -->
+        <property name="waitForJobsToCompleteOnShutdown" value="true" />
+        <!-- Set autoStartup to false. The job instance will need to access spring 
+            context by MLotterContext, and spring context will be set into MLotteryContext 
+            when init TEPortServlet, however if set autoStartup to true, spring context 
+            may launch quartz jobs before it is assembled into MLotteryContext. -->
+        <property name="autoStartup" value="false" />
+        <property name="quartzProperties">
+            <props>
+                <prop key="org.quartz.scheduler.instanceName">teScheduler</prop>
+                <prop key="org.quartz.scheduler.instanceId">AUTO</prop>
+                <prop key="org.quartz.jobStore.misfireThreshold">6000</prop>
+                <prop key="org.quartz.jobStore.class">org.springframework.scheduling.quartz.LocalDataSourceJobStore
+                </prop>
+                <prop key="org.quartz.jobStore.driverDelegateClass">org.quartz.impl.jdbcjobstore.oracle.OracleDelegate
+                </prop>
+                <prop key="org.quartz.jobStore.tablePrefix">QRTZ_</prop>
+                <prop key="org.quartz.jobStore.isClustered">false</prop>
+                <prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
+                <prop key="org.quartz.threadPool.threadCount">5</prop>
+                <prop key="org.quartz.threadPool.threadPriority">5</prop>
+            </props>
+        </property>
+    </bean>	
+
+	<!-- ==================================================== -->
+	<!-- SERVICE DEFINITION ................................. -->
+	<!-- ==================================================== -->
+	<bean id="transService"
+		class="com.mpos.lottery.te.trans.service.impl.TransactionServiceImpl">
+		<property name="transactionDao" ref="transactionDao" />
+		<property name="reversalStrategyFactory" ref="reversalStrategyFactory" />
+		<property name="baseJpaDao" ref="baseJpaDao" />
+		<property name="transMessageDao" ref="transMessageDao" />
+		<property name="gameDao" ref="gameDao" />
+		<property name="pendingTransactionDao" ref="pendingTransactionDao" />
+		<property name="uuidManager" ref="uuidManager" />
+		<property name="sysConfigurationDao" ref="sysConfigurationDao" />
+	</bean>
+
+	<bean id="gameInstanceServiceFactory"
+		class="com.mpos.lottery.te.gamespec.game.support.GameInstanceServiceFactory">
+		<property name="merchantService" ref="merchantService" />
+	</bean>
+
+	<bean id="merchantService"
+		class="com.mpos.lottery.te.merchant.service.impl.MerchantServiceImpl">
+		<property name="merchantDao" ref="merchantDao" />
+		<property name="merchantCommissionDao" ref="merchantCommissionDao" />
+		<property name="prizeGroupItemDao" ref="prizeGroupItemDao" />
+		<property name="uuidManager" ref="uuidManager" />
+		<property name="operatorDao" ref="operatorDao" />
+		<property name="operatorMerchantDao" ref="operatorMerchantDao" />
+		<property name="sysConfigurationDao" ref="sysConfigurationDao" />
+		<property name="cashoutPassDao" ref="cashoutPassDao" />
+		<property name="balanceTransactionsDao" ref="balanceTransactionsDao" />
+		<property name="transMessageDao" ref="transMessageDao" />
+	</bean>
+
+	<bean id="creditService"
+		class="com.mpos.lottery.te.merchant.service.impl.DefaultCreditService">
+		<property name="merchantDao" ref="merchantDao" />
+		<property name="merchantCommissionDao" ref="merchantCommissionDao" />
+		<property name="uuidManager" ref="uuidManager" />
+		<property name="operatorDao" ref="operatorDao" />
+		<property name="operatorMerchantDao" ref="operatorMerchantDao" />
+		<property name="creditTransferLogDao" ref="creditTransferLogDao" />
+		<property name="merchantService" ref="merchantService" />
+		<property name="reversalStrategyFactory" ref="reversalStrategyFactory" />
+		<property name="balanceTransactionsDao" ref="balanceTransactionsDao" />
+		<property name="operatorCommissionDao" ref="operatorCommissionDao" />
+		<property name="reversalStrategyKey" value="{transType:116}" />
+	</bean>
+	<bean id="incomeBalanceService"
+		class="com.mpos.lottery.te.merchant.service.impl.IncomeBalanceServiceImpl">
+		<property name="merchantDao" ref="merchantDao" />
+		<property name="merchantCommissionDao" ref="merchantCommissionDao" />
+		<property name="uuidManager" ref="uuidManager" />
+		<property name="operatorDao" ref="operatorDao" />
+		<property name="operatorMerchantDao" ref="operatorMerchantDao" />
+		<property name="creditTransferLogDao" ref="creditTransferLogDao" />
+		<property name="merchantService" ref="merchantService" />
+		<property name="reversalStrategyFactory" ref="reversalStrategyFactory" />
+		<property name="uuidService" ref="uuidManager" />
+		<property name="balanceTransactionsDao" ref="balanceTransactionsDao" />
+		<property name="reversalStrategyKey" value="{transType:350}" />
+	</bean>
+
+	<bean id="vatCreditService"
+		class="com.mpos.lottery.te.valueaddservice.vat.service.impl.VatCreditServiceImpl">
+		<property name="operatorDao" ref="operatorDao" />
+		<property name="vatOperatorBalanceDao" ref="vatOperatorBalanceDao" />
+		<property name="merchantService" ref="merchantService" />
+		<property name="uuidManager" ref="uuidManager" />
+		<property name="reversalStrategyFactory" ref="reversalStrategyFactory" />
+		<property name="reversalStrategyKey" value="{transType:118}" />
+	</bean>
+
+	<bean id="activityReportService"
+		class="com.mpos.lottery.te.merchant.service.impl.DefaultActivityReportService">
+		<property name="sysConfigurationDao" ref="sysConfigurationDao" />
+		<property name="payoutDao" ref="payoutDao" />
+		<property name="commissionDao" ref="commissionDao" />
+		<property name="destinationActivityReportDao" ref="destinationActivityReportDao" />
+		<property name="generalActivityReportDao" ref="generalActivityReportDao" />
+		<property name="transferActivityReportDao" ref="transferActivityReportDao"></property>
+	</bean>
+
+	<bean id="taxService"
+		class="com.mpos.lottery.te.gamespec.prize.service.impl.DefaultTaxService">
+		<property name="taxThresholdDao" ref="taxThresholdDao" />
+		<property name="gameDao" ref="gameDao" />
+	</bean>
+
+	<bean id="workingKeyService"
+		class="com.mpos.lottery.te.workingkey.service.impl.WorkingKeyServiceImpl">
+		<property name="workingKeyDao" ref="workingKeyDao" />
+		<property name="gpeDao" ref="baseJpaDao" />
+		<property name="uuidManager" ref="uuidManager" />
+	</bean>
+
+	<bean id="uuidManager"
+		class="com.mpos.lottery.te.sequence.service.impl.UUIDServiceImpl">
+		<property name="sequenceService" ref="sequenceService" />
+	</bean>
+
+	<bean id="sequenceService"
+		class="com.mpos.lottery.te.sequence.service.impl.SequenceManagerImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="transactionRetryLogService"
+		class="com.mpos.lottery.te.trans.service.impl.TransactionRetryLogServiceAsynImpl">
+		<property name="uuidManager" ref="uuidManager" />
+		<property name="baseJpaDao" ref="baseJpaDao" />
+		<property name="operationParameterDao" ref="igOperationParameterDao" />
+		<property name="transactionRetryLogDao" ref="transactionRetryLogDao" />
+	</bean>
+
+	<bean id="defaultRiskControlLogServiceAsyn"
+		class="com.mpos.lottery.te.gamespec.sale.service.DefaultRiskControlLogServiceAsyn">
+		<property name="uuidService" ref="uuidManager" />
+		<property name="riskControlLogDao" ref="riskControlLogDao" />
+	</bean>
+
+
+	<!-- CANCELLATION RELATED -->
+	<bean id="cashoutOperatorCancellationPass"
+		class="com.mpos.lottery.te.merchant.cancel.CashoutOperatorCancellation">
+		<property name="uuidManager" ref="uuidManager" />
+		<property name="merchantDao" ref="merchantDao" />
+		<property name="operatorDao" ref="operatorDao" />
+		<property name="balanceTransactionsDao" ref="balanceTransactionsDao" />
+		<property name="reversalStrategyFactory" ref="reversalStrategyFactory" />
+		<property name="reversalStrategyKey" value="{transType:352}" />
+	</bean>
+
+	<bean id="cashoutOperatorCancellationManual"
+		class="com.mpos.lottery.te.merchant.cancel.CashoutOperatorCancellation">
+		<property name="uuidManager" ref="uuidManager" />
+		<property name="merchantDao" ref="merchantDao" />
+		<property name="operatorDao" ref="operatorDao" />
+		<property name="balanceTransactionsDao" ref="balanceTransactionsDao" />
+		<property name="reversalStrategyFactory" ref="reversalStrategyFactory" />
+		<property name="reversalStrategyKey" value="{transType:353}" />
+	</bean>
+
+	<!-- ==================================================== -->
+	<!-- BALANCE SERVICE .................................... -->
+	<!-- ==================================================== -->
+
+	<bean id="defaultBalanceService"
+		class="com.mpos.lottery.te.merchant.service.balance.DefaultBalanceService">
+		<property name="baseJpaDao" ref="baseJpaDao" />
+		<property name="operatorMerchantDao" ref="operatorMerchantDao" />
+	</bean>
+
+	<bean id="saleBalanceStrategy"
+		class="com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy">
+		<property name="balanceService" ref="defaultBalanceService" />
+	</bean>
+
+	<bean id="payoutBalanceStrategy"
+		class="com.mpos.lottery.te.merchant.service.balance.PayoutBalanceStrategy">
+		<property name="balanceService" ref="defaultBalanceService" />
+	</bean>
+
+	<bean id="cashoutBalanceStrategy"
+		class="com.mpos.lottery.te.merchant.service.balance.CashoutBalanceStrategy">
+		<property name="balanceService" ref="defaultBalanceService" />
+	</bean>
+
+	<bean id="commissionBalanceStrategy"
+		class="com.mpos.lottery.te.merchant.service.balance.CommissionBalanceStrategy">
+		<property name="balanceService" ref="defaultBalanceService" />
+	</bean>
+
+	<!-- ==================================================== -->
+	<!-- STRATEGY DEFINITIONS ............................... -->
+	<!-- ==================================================== -->
+
+	<bean id="reversalStrategyFactory"
+		class="com.mpos.lottery.te.trans.domain.logic.ReversalOrCancelStrategyFactory">
+	</bean>
+
+	<bean id="operatorTopupReversalStrategy"
+		class="com.mpos.lottery.te.merchant.support.OperatorTopupReversalStrategy">
+		<property name="creditService" ref="creditService" />
+		<property name="reversalStrategyFactory" ref="reversalStrategyFactory" />
+		<property name="balanceTransactionsDao" ref="balanceTransactionsDao" />
+	</bean>
+
+	<bean id="defaultPayoutStrategyFactory"
+		class="com.mpos.lottery.te.gamespec.prize.support.payoutstrategy.DefaultPayoutStrategyFactory">
+		<property name="newprintPayoutStrategy" ref="defaultNewprintPayoutStrategy" />
+		<property name="refundPayoutStrategy" ref="defaultRefundPayoutStrategy" />
+	</bean>
+
+	<bean id="defaultNewprintPayoutStrategy"
+		class="com.mpos.lottery.te.gamespec.prize.support.payoutstrategy.NewPrintPayoutStrategy">
+		<property name="payoutDao" ref="payoutDao" />
+		<property name="payoutDetailDao" ref="payoutDetailDao" />
+		<property name="uuidService" ref="uuidManager" />
+		<property name="baseTicketDao" ref="baseTicketDao" />
+		<property name="baseEntryDao" ref="baseEntryDao" />
+		<property name="newPrintTicketDao" ref="newPrintTicketDao" />
+	</bean>
+
+	<bean id="defaultRefundPayoutStrategy"
+		class="com.mpos.lottery.te.gamespec.prize.support.payoutstrategy.RefundPayoutStrategy">
+		<property name="payoutDao" ref="payoutDao" />
+		<property name="payoutDetailDao" ref="payoutDetailDao" />
+		<property name="uuidService" ref="uuidManager" />
+		<property name="baseTicketDao" ref="baseTicketDao" />
+	</bean>
+
+	<bean id="defaultTicketValidator"
+		class="com.mpos.lottery.te.gamespec.sale.support.validator.DefaultTicketValidator">
+		<property name="baseJpaDao" ref="baseJpaDao" />
+	</bean>
+
+	<!-- ==================================================== -->
+	<!-- TRANSACTION DEFINITION ............................. -->
+	<!-- ==================================================== -->
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+	</bean>
+
+	<!-- the transactional advice (what 'happens'; see the <aop:advisor/> bean 
+		below) -->
+	<tx:advice id="defaultTxAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- Keep SequenceService in a isolation transaction -->
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="verifyPayoutLimit" read-only="true" />
+			<tx:method name="enquiry*" read-only="true" />
+			<!-- By default, A runtime exception will rollback transaction. -->
+			<tx:method name="*" rollback-for="ApplicationException" />
+		</tx:attributes>
+	</tx:advice>
+
+	<tx:advice id="asynTxAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!-- Keep SequenceService in a isolation transaction -->
+			<tx:method name="get*" read-only="true" />
+			<!-- By default, A runtime exception will rollback transaction. -->
+			<tx:method name="*" propagation="REQUIRES_NEW"
+				rollback-for="ApplicationException" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut id="service"
+			expression="execution(* com.mpos.lottery.te..service.*Service.*(..))" />
+		<aop:pointcut id="asynService"
+			expression="execution(* com.mpos.lottery.te..service.*ServiceAsyn.*(..))" />
+		<aop:advisor advice-ref="defaultTxAdvice" pointcut-ref="service" />
+		<aop:advisor advice-ref="asynTxAdvice" pointcut-ref="asynService" />
+	</aop:config>
+</beans>
+

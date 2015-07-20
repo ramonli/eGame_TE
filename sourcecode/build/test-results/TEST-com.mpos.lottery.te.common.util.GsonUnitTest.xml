@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.common.util.GsonUnitTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:12:32" hostname="Ramon-PC" time="0.29">
+  <properties/>
+  <testcase name="testGson" classname="com.mpos.lottery.te.common.util.GsonUnitTest" time="0.284"/>
+  <testcase name="testGson_2" classname="com.mpos.lottery.te.common.util.GsonUnitTest" time="0.006"/>
+  <system-out><![CDATA[[{"id":"0","objectName":"iphone#0","prizeType":0,"prizeAmount":0,"taxAmount":0,"actualAmount":0,"numberOfObject":1},{"id":"1","objectName":"iphone#1","prizeType":0,"prizeAmount":0,"taxAmount":0,"actualAmount":0,"numberOfObject":1},{"id":"2","objectName":"iphone#2","prizeType":0,"prizeAmount":0,"taxAmount":0,"actualAmount":0,"numberOfObject":1}]
+{"prizeLevelItems":[{"id":"0","objectName":"iphone#0","prizeType":0,"prizeAmount":0,"taxAmount":0,"actualAmount":0,"numberOfObject":1},{"id":"1","objectName":"iphone#1","prizeType":0,"prizeAmount":0,"taxAmount":0,"actualAmount":0,"numberOfObject":1},{"id":"2","objectName":"iphone#2","prizeType":0,"prizeAmount":0,"taxAmount":0,"actualAmount":0,"numberOfObject":1}],"merchant":{"id":11,"code":"merchant_code","saleCreditLevel":0,"payoutCreditLevel":0,"distributor":false,"salePayoutUnderSameDistributor":false,"status":0,"maxMultipleBets":0,"allowedMultiDraw":0,"creditType":0,"incentiveTarget":0,"dailyCashoutLevel":0,"deductSaleByCreditCard":false,"maxOfflineTickets":0,"cashoutBalance":0,"commisionBalance":0,"topupReat":0,"cashoutRate":0,"updateTime":"May 29, 2015 5:12:32 PM"}}
+{}
+[{"id":"LFN-1","amount":100.0},{"id":"0114111900000000010002","amount":300.0},{"id":"0114111900000000010003","amount":300.0},{"id":"0114111900000000010004","amount":300.0},{"id":"0114111900000000010005","amount":300.0},{"id":"0114111900000000010006","amount":100.0},{"id":"0114111900000000010007","amount":300.0},{"id":"0114111900000000010008","amount":300.0},{"id":"0114111900000000010009","amount":300.0},{"id":"0114111900000000010010","amount":300.0}]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

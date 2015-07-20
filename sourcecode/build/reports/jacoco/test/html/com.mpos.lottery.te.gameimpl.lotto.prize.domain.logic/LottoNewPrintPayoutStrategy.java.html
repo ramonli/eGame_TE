@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LottoNewPrintPayoutStrategy.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.lotto.prize.domain.logic</a> &gt; <span class="el_source">LottoNewPrintPayoutStrategy.java</span></div><h1>LottoNewPrintPayoutStrategy.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.lotto.prize.domain.logic;
+
+import com.mpos.lottery.te.common.util.SimpleToolkit;
+import com.mpos.lottery.te.gameimpl.lotto.sale.domain.LottoEntry;
+import com.mpos.lottery.te.gamespec.prize.support.payoutstrategy.NewPrintPayoutStrategy;
+import com.mpos.lottery.te.gamespec.sale.BaseEntry;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.port.Context;
+
+import java.math.BigDecimal;
+import java.util.LinkedList;
+import java.util.List;
+
+<span class="fc" id="L14">public class LottoNewPrintPayoutStrategy extends NewPrintPayoutStrategy {</span>
+
+    /**
+     * As Lotto let player specify entry amount(times betting), in which case a single entry in request will be split
+     * into multiple entries in database. When print new ticket, we have to merge those entries.
+     */
+    protected void customizePrintedPhysicalTicket(Context&lt;?&gt; respCtx, BaseTicket newPrintTicket) {
+<span class="fc" id="L21">        List&lt;BaseEntry&gt; entries = newPrintTicket.getEntries();</span>
+<span class="fc" id="L22">        List&lt;BaseEntry&gt; mergedEntries = new LinkedList&lt;BaseEntry&gt;();</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        for (BaseEntry entry : entries) {</span>
+<span class="fc" id="L24">            LottoEntry lottoEntry = (LottoEntry) entry;</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">            if (lottoEntry.getMultipleCount() &gt; 0) {</span>
+                // if use 'entry' which is a JPA managed entity, there is risk that JPA context will commit the change
+                // into underlying database even we don't mean that.
+<span class="fc" id="L28">                LottoEntry userEntry = (LottoEntry) lottoEntry.clone();</span>
+<span class="fc" id="L29">                userEntry.setEntryAmount(SimpleToolkit.mathMultiple(userEntry.getEntryAmount(), new BigDecimal(</span>
+                        userEntry.getMultipleCount())));
+<span class="fc" id="L31">                mergedEntries.add(userEntry);</span>
+            }
+<span class="fc" id="L33">        }</span>
+<span class="fc" id="L34">        newPrintTicket.setEntries(mergedEntries);</span>
+<span class="fc" id="L35">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

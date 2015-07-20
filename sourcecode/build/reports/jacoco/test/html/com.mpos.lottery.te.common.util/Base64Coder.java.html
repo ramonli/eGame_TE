@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Base64Coder.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.common.util</a> &gt; <span class="el_source">Base64Coder.java</span></div><h1>Base64Coder.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.common.util;
+
+/**
+ * A Base64 Encoder/Decoder.
+ * 
+ * &lt;p&gt;
+ * This class is used to encode and decode data in Base64 format as described in RFC 1521.*
+ * &lt;p&gt;
+ * This is &quot;Open Source&quot; software and released under the &lt;a href=&quot;http://www.gnu.org/licenses/lgpl.html&quot;&gt;GNU/LGPL&lt;/a&gt;
+ * license.&lt;br&gt;
+ * It is provided &quot;as is&quot; without warranty of any kind.&lt;br&gt;
+ * Copyright 2003: Christian d'Heureuse, Inventec Informatik AG, Switzerland.&lt;br&gt;
+ * Home page: &lt;a href=&quot;http://www.source-code.biz&quot;&gt;www.source-code.biz&lt;/a&gt;&lt;br&gt;
+ * 
+ * &lt;p&gt;
+ * Version history:&lt;br&gt;
+ * 2003-07-22 Christian d'Heureuse (chdh): Module created.&lt;br&gt;
+ * 2005-08-11 chdh: Lincense changed from GPL to LGPL.&lt;br&gt;
+ * 2006-11-21 chdh:&lt;br&gt;
+ * &amp;nbsp; Method encode(String) renamed to encodeString(String).&lt;br&gt;
+ * &amp;nbsp; Method decode(String) renamed to decodeString(String).&lt;br&gt;
+ * &amp;nbsp; New method encode(byte[],int) added.&lt;br&gt;
+ * &amp;nbsp; New method decode(String) added.&lt;br&gt;
+ */
+
+public class Base64Coder {
+
+    // Mapping table from 6-bit nibbles to Base64 characters.
+<span class="fc" id="L29">    private static char[] map1 = new char[64];</span>
+    static {
+<span class="fc" id="L31">        int i = 0;</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        for (char c = 'A'; c &lt;= 'Z'; c++)</span>
+<span class="fc" id="L33">            map1[i++] = c;</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        for (char c = 'a'; c &lt;= 'z'; c++)</span>
+<span class="fc" id="L35">            map1[i++] = c;</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        for (char c = '0'; c &lt;= '9'; c++)</span>
+<span class="fc" id="L37">            map1[i++] = c;</span>
+<span class="fc" id="L38">        map1[i++] = '+';</span>
+<span class="fc" id="L39">        map1[i++] = '/';</span>
+    }
+
+    // Mapping table from Base64 characters to 6-bit nibbles.
+<span class="fc" id="L43">    private static byte[] map2 = new byte[128];</span>
+    static {
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        for (int i = 0; i &lt; map2.length; i++)</span>
+<span class="fc" id="L46">            map2[i] = -1;</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        for (int i = 0; i &lt; 64; i++)</span>
+<span class="fc" id="L48">            map2[map1[i]] = (byte) i;</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Encodes a string into Base64 format. No blanks or line breaks are inserted.
+     * 
+     * @param s
+     *            a String to be encoded.
+     * @return A String with the Base64 encoded data.
+     */
+    public static String encodeString(String s) {
+<span class="fc" id="L59">        return new String(encode(s.getBytes()));</span>
+    }
+
+    /**
+     * Encodes a byte array into Base64 format. No blanks or line breaks are inserted.
+     * 
+     * @param in
+     *            an array containing the data bytes to be encoded.
+     * @return A character array with the Base64 encoded data.
+     */
+    public static char[] encode(byte[] in) {
+<span class="fc" id="L70">        return encode(in, in.length);</span>
+    }
+
+    /**
+     * Encodes a byte array into Base64 format. No blanks or line breaks are inserted.
+     * 
+     * @param in
+     *            an array containing the data bytes to be encoded.
+     * @param iLen
+     *            number of bytes to process in &lt;code&gt;in&lt;/code&gt;.
+     * @return A character array with the Base64 encoded data.
+     */
+    public static char[] encode(byte[] in, int iLen) {
+<span class="fc" id="L83">        int oDataLen = (iLen * 4 + 2) / 3; // output length without padding</span>
+<span class="fc" id="L84">        int oLen = ((iLen + 2) / 3) * 4; // output length including padding</span>
+<span class="fc" id="L85">        char[] out = new char[oLen];</span>
+<span class="fc" id="L86">        int ip = 0;</span>
+<span class="fc" id="L87">        int op = 0;</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        while (ip &lt; iLen) {</span>
+<span class="fc" id="L89">            int i0 = in[ip++] &amp; 0xff;</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">            int i1 = ip &lt; iLen ? in[ip++] &amp; 0xff : 0;</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">            int i2 = ip &lt; iLen ? in[ip++] &amp; 0xff : 0;</span>
+<span class="fc" id="L92">            int o0 = i0 &gt;&gt;&gt; 2;</span>
+<span class="fc" id="L93">            int o1 = ((i0 &amp; 3) &lt;&lt; 4) | (i1 &gt;&gt;&gt; 4);</span>
+<span class="fc" id="L94">            int o2 = ((i1 &amp; 0xf) &lt;&lt; 2) | (i2 &gt;&gt;&gt; 6);</span>
+<span class="fc" id="L95">            int o3 = i2 &amp; 0x3F;</span>
+<span class="fc" id="L96">            out[op++] = map1[o0];</span>
+<span class="fc" id="L97">            out[op++] = map1[o1];</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">            out[op] = op &lt; oDataLen ? map1[o2] : '=';</span>
+<span class="fc" id="L99">            op++;</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">            out[op] = op &lt; oDataLen ? map1[o3] : '=';</span>
+<span class="fc" id="L101">            op++;</span>
+<span class="fc" id="L102">        }</span>
+<span class="fc" id="L103">        return out;</span>
+    }
+
+    /**
+     * Decodes a string from Base64 format.
+     * 
+     * @param s
+     *            a Base64 String to be decoded.
+     * @return A String containing the decoded data.
+     * @throws IllegalArgumentException
+     *             if the input is not valid Base64 encoded data.
+     */
+    public static String decodeString(String s) {
+<span class="fc" id="L116">        return new String(decode(s));</span>
+    }
+
+    /**
+     * Decodes a byte array from Base64 format.
+     * 
+     * @param s
+     *            a Base64 String to be decoded.
+     * @return An array containing the decoded data bytes.
+     * @throws IllegalArgumentException
+     *             if the input is not valid Base64 encoded data.
+     */
+    public static byte[] decode(String s) {
+<span class="fc" id="L129">        return decode(s.toCharArray());</span>
+    }
+
+    /**
+     * Decodes a byte array from Base64 format. No blanks or line breaks are allowed within the Base64 encoded data.
+     * 
+     * @param in
+     *            a character array containing the Base64 encoded data.
+     * @return An array containing the decoded data bytes.
+     * @throws IllegalArgumentException
+     *             if the input is not valid Base64 encoded data.
+     */
+    public static byte[] decode(char[] in) {
+<span class="fc" id="L142">        int iLen = in.length;</span>
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        if (iLen % 4 != 0)</span>
+<span class="fc" id="L144">            throw new IllegalArgumentException(&quot;Length of Base64 encoded input string is not a multiple of 4.&quot;);</span>
+<span class="pc bpc" id="L145" title="1 of 4 branches missed.">        while (iLen &gt; 0 &amp;&amp; in[iLen - 1] == '=')</span>
+<span class="fc" id="L146">            iLen--;</span>
+<span class="fc" id="L147">        int oLen = (iLen * 3) / 4;</span>
+<span class="fc" id="L148">        byte[] out = new byte[oLen];</span>
+<span class="fc" id="L149">        int ip = 0;</span>
+<span class="fc" id="L150">        int op = 0;</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        while (ip &lt; iLen) {</span>
+<span class="fc" id="L152">            int i0 = in[ip++];</span>
+<span class="fc" id="L153">            int i1 = in[ip++];</span>
+<span class="fc bfc" id="L154" title="All 2 branches covered.">            int i2 = ip &lt; iLen ? in[ip++] : 'A';</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">            int i3 = ip &lt; iLen ? in[ip++] : 'A';</span>
+<span class="pc bpc" id="L156" title="4 of 8 branches missed.">            if (i0 &gt; 127 || i1 &gt; 127 || i2 &gt; 127 || i3 &gt; 127)</span>
+<span class="nc" id="L157">                throw new IllegalArgumentException(&quot;Illegal character in Base64 encoded data.&quot;);</span>
+<span class="fc" id="L158">            int b0 = map2[i0];</span>
+<span class="fc" id="L159">            int b1 = map2[i1];</span>
+<span class="fc" id="L160">            int b2 = map2[i2];</span>
+<span class="fc" id="L161">            int b3 = map2[i3];</span>
+<span class="pc bpc" id="L162" title="4 of 8 branches missed.">            if (b0 &lt; 0 || b1 &lt; 0 || b2 &lt; 0 || b3 &lt; 0)</span>
+<span class="nc" id="L163">                throw new IllegalArgumentException(&quot;Illegal character in Base64 encoded data.&quot;);</span>
+<span class="fc" id="L164">            int o0 = (b0 &lt;&lt; 2) | (b1 &gt;&gt;&gt; 4);</span>
+<span class="fc" id="L165">            int o1 = ((b1 &amp; 0xf) &lt;&lt; 4) | (b2 &gt;&gt;&gt; 2);</span>
+<span class="fc" id="L166">            int o2 = ((b2 &amp; 3) &lt;&lt; 6) | b3;</span>
+<span class="fc" id="L167">            out[op++] = (byte) o0;</span>
+<span class="fc bfc" id="L168" title="All 2 branches covered.">            if (op &lt; oLen)</span>
+<span class="fc" id="L169">                out[op++] = (byte) o1;</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">            if (op &lt; oLen)</span>
+<span class="fc" id="L171">                out[op++] = (byte) o2;</span>
+<span class="fc" id="L172">        }</span>
+<span class="fc" id="L173">        return out;</span>
+    }
+
+    // Dummy constructor.
+<span class="nc" id="L177">    private Base64Coder() {</span>
+<span class="nc" id="L178">    }</span>
+
+} // end class Base64Coder
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

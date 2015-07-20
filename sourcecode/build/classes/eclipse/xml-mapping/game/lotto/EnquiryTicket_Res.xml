@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+	<class name="com.mpos.lottery.te.gameimpl.lotto.sale.domain.LottoTicket">
+		<map-to xml="Ticket" />
+
+		<field name="barcode" type="java.lang.String" required="true">
+			<bind-xml name="barcode" node="attribute" />
+		</field>
+		<field name="validationCode" type="string" required="true">
+			<bind-xml name="validationCode" node="attribute" />
+		</field>
+		<field name="multipleDraws" type="integer" required="true">
+			<bind-xml name="multipleDraws" node="attribute" />
+		</field>
+		<field name="totalBets" type="integer" required="true">
+			<bind-xml name="totalBets" node="attribute" />
+		</field>
+		<field name="totalAmount" type="java.math.BigDecimal" required="true">
+			<bind-xml name="totalAmount" node="attribute" />
+		</field>
+		<field name="rawSerialNo" type="java.lang.String" required="true">
+			<bind-xml name="serialNo" node="attribute" />
+		</field>
+		<field name="ticketType" type="integer" required="true">
+			<bind-xml name="type" node="attribute" />
+		</field>
+        <field name="lastDrawNo" type="java.lang.String" required="true">
+            <bind-xml name="lastDrawNo" node="attribute" />
+        </field>		
+		<field name="status" type="integer" required="true">
+			<bind-xml name="status" node="attribute" />
+		</field>
+		<field name="gameInstance"
+			type="com.mpos.lottery.te.gameimpl.lotto.draw.domain.LottoGameInstance"
+			required="true">
+			<bind-xml name="GameDraw" />
+		</field>
+		<field name="entries"
+			type="com.mpos.lottery.te.gameimpl.lotto.sale.domain.LottoEntry"
+			collection="arraylist" required="true">
+			<bind-xml name="Entry" />
+		</field>
+		<field name="user"
+			type="com.mpos.lottery.te.thirdpartyservice.playeraccount.User"
+			required="false">
+			<bind-xml name="User" />
+		</field>
+	</class>
+
+	<class
+		name="com.mpos.lottery.te.gameimpl.lotto.draw.domain.LottoGameInstance">
+		<field name="number" type="java.lang.String" required="true">
+			<bind-xml name="number" node="attribute" />
+		</field>
+		<field name="gameId" type="java.lang.String" required="true">
+			<bind-xml name="gameId" node="attribute" />
+		</field>
+	</class>
+
+	<class name="com.mpos.lottery.te.gameimpl.lotto.sale.domain.LottoEntry">
+		<field name="selectNumber" type="java.lang.String" required="true">
+			<bind-xml name="selectedNumber" node="attribute" />
+		</field>
+		<field name="betOption" type="integer" required="true">
+			<bind-xml name="betOption" node="attribute" />
+		</field>
+		<field name="inputChannel" type="integer" required="true">
+			<bind-xml name="inputChannel" node="attribute" />
+		</field>
+		<field name="entryAmount" type="java.math.BigDecimal" required="false">
+			<bind-xml name="entryAmount" node="attribute" />
+		</field>
+        <field name="boostAmount" type="java.math.BigDecimal" required="false">
+            <bind-xml name="boostAmount" node="attribute" />
+        </field> 		
+	</class>
+
+	<class name="com.mpos.lottery.te.thirdpartyservice.playeraccount.User">
+		<field name="mobile" type="java.lang.String" required="true">
+			<bind-xml name="mobile" node="attribute" />
+		</field>
+		<field name="creditCardSN" type="java.lang.String" required="false">
+			<bind-xml name="creditCardSN" node="attribute" />
+		</field>
+		<field name="id" type="string">
+			<bind-xml name="id" node="attribute" />
+		</field>
+	</class>
+</mapping>

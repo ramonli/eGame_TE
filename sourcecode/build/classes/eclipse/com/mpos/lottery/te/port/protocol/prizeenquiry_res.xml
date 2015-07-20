@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Prize returnAmount="2500.1" prizeAmount="4887960" taxAmount="1054040" mode="0" 
+    actualAmount="12345" isVerifyPIN="1">
+	<Ticket serialNo="S-123456" totalAmount="2500.1" />
+	<PrizeItem>
+		<GameDraw number="20090408" gameId="GAME-111" />
+	</PrizeItem>
+	<PrizeItem>
+		<GameDraw number="20090403" gameId="GAME-111" />
+		<Winning level="2" amount="1000000">
+			<Entry selectedNumber="1,2,3,4,5" betOption="3" isQuickPick="0"
+				winNumber="2" />
+		</Winning>
+		<Winning level="4" amount="50000">
+			<Entry selectedNumber="1,2,3,4,5" betOption="3" isQuickPick="0"
+				winNumber="1" />
+			<Entry selectedNumber="1,2,3,4,5,6,7" betOption="2"
+				isQuickPick="0" winNumber="3" />
+		</Winning>
+	</PrizeItem>
+	<PrizeItem>
+		<GameDraw number="20090401" gameId="GAME-111" />
+		<Winning level="7" amount="3000">
+			<Entry selectedNumber="1,2,3,4,5,6,7" betOption="2"
+				isQuickPick="0" winNumber="4" />
+		</Winning>
+		<Winning level="1" amount="5000000">
+			<Entry selectedNumber="1,2,3,4,5,6" betOption="1" isQuickPick="0"
+				winNumber="1" />
+		</Winning>
+		<Winning level="5" amount="10000">
+			<Entry selectedNumber="1,2,3,4,5,6,7" betOption="2"
+				isQuickPick="0" winNumber="2" />
+		</Winning>
+	</PrizeItem>
+</Prize>

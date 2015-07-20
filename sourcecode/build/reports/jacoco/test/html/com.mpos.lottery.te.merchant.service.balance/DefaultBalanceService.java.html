@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DefaultBalanceService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.merchant.service.balance</a> &gt; <span class="el_source">DefaultBalanceService.java</span></div><h1>DefaultBalanceService.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.merchant.service.balance;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.merchant.dao.OperatorMerchantDao;
+import com.mpos.lottery.te.merchant.domain.Merchant;
+import com.mpos.lottery.te.merchant.domain.Operator;
+import com.mpos.lottery.te.merchant.domain.OperatorMerchant;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.trans.domain.Transaction;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.util.Assert;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
+import javax.persistence.PersistenceContext;
+
+<span class="fc" id="L25">public class DefaultBalanceService implements BalanceService {</span>
+<span class="fc" id="L26">    private Log logger = LogFactory.getLog(DefaultBalanceService.class);</span>
+    // Key will be BalanceService.BALANCE_TYPE.AAA
+<span class="fc" id="L28">    private Map&lt;Integer, BalanceStrategy&gt; transactionBalanceStrategyMap = new HashMap&lt;Integer, BalanceStrategy&gt;();</span>
+
+    // spring dependencies
+    @PersistenceContext(unitName = &quot;lottery_te&quot;)
+    private EntityManager entityManager;
+    private BaseJpaDao baseJpaDao;
+    private OperatorMerchantDao operatorMerchantDao;
+
+    @Override
+    public Object balance(Context&lt;?&gt; respCtx, Transaction targetTrans, int balanceType, String operatorId,
+                    boolean isTopup) throws ApplicationException {
+<span class="fc" id="L39">        Assert.notNull(targetTrans.getTotalAmount(), &quot;No totalAmount field of transaction has been set.&quot;);</span>
+
+<span class="fc" id="L41">        Operator operator = this.getBaseJpaDao().findById(Operator.class, operatorId, false);</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        if (operator.isIgnoreCredit()) {</span>
+<span class="nc" id="L43">            logger.info(&quot;Ignore the balance setting of operator(&quot; + operator + &quot;)&quot;);</span>
+<span class="nc" id="L44">            return null;</span>
+        }
+        // lookup leaf merchant
+<span class="fc" id="L47">        OperatorMerchant operatorMerchant = this.getOperatorMerchantDao().findByOperator(operatorId);</span>
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">        if (operatorMerchant == null) {</span>
+<span class="nc" id="L49">            throw new ApplicationException(SystemException.CODE_OPERATOR_NO_MERCHANT, &quot;operator(id=&quot; + operatorId</span>
+                            + &quot;) doesn't belong to any merchant, allocate it first.&quot;);
+        }
+<span class="fc" id="L52">        Merchant leafMerchant = this.getBaseJpaDao().findById(Merchant.class, operatorMerchant.getMerchantID(), false);</span>
+
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (Merchant.CREDIT_TYPE_DEFINITIVEVALUE == operator.getCreditType()) {</span>
+<span class="fc" id="L55">            return doOperatorBalance(respCtx, targetTrans, balanceType, operator, leafMerchant, isTopup);</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">        } else if (Merchant.CREDIT_TYPE_USE_PARENT == operator.getCreditType()) {</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L58">                logger.debug(&quot;Ignore balance calculation of &quot; + operator</span>
+                                + &quot;, as its credit type is USE PARENT... check its parent merchant&quot;);
+            }
+<span class="fc" id="L61">            return this.doMerchantBalance(respCtx, targetTrans, balanceType, operator, leafMerchant, isTopup);</span>
+        } else {
+<span class="nc" id="L63">            throw new SystemException(&quot;Unsupported credit type:&quot; + operator.getCreditType() + &quot; of operator(&quot;</span>
+                            + operator + &quot;)&quot;);
+        }
+    }
+
+    @Override
+    public Object balance(Context&lt;?&gt; respCtx, int balanceType, String operatorId, boolean isTopup)
+                    throws ApplicationException {
+<span class="fc" id="L71">        return this.balance(respCtx, respCtx.getTransaction(), balanceType, operatorId, isTopup);</span>
+    }
+
+    @Override
+    public Object lockAndVerifySaleBalance(String operatorId, long lefaMerchantId, BigDecimal transAmount)
+                    throws ApplicationException {
+<span class="fc" id="L77">        Operator operator = this.getBaseJpaDao().findById(Operator.class, operatorId, false);</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        if (operator.isIgnoreCredit()) {</span>
+<span class="nc" id="L79">            logger.info(&quot;Ignore the balance maintenance of operator(&quot; + operator + &quot;)&quot;);</span>
+<span class="nc" id="L80">            return null;</span>
+        }
+
+<span class="fc" id="L83">        Object balanceNode = null;</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        if (Merchant.CREDIT_TYPE_DEFINITIVEVALUE == operator.getCreditType()) {</span>
+<span class="fc" id="L85">            balanceNode = operator;</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        } else if (Merchant.CREDIT_TYPE_USE_PARENT == operator.getCreditType()) {</span>
+<span class="nc" id="L87">            Merchant leafMerchant = this.getBaseJpaDao().findById(Merchant.class, lefaMerchantId);</span>
+<span class="nc" id="L88">            balanceNode = this.lookupDefinteMerchant(leafMerchant);</span>
+<span class="nc" id="L89">        } else {</span>
+<span class="nc" id="L90">            throw new SystemException(&quot;Unsupported credit type:&quot; + operator.getCreditType() + &quot; of operator(&quot;</span>
+                            + operator + &quot;)&quot;);
+        }
+
+<span class="pc bpc" id="L94" title="1 of 2 branches missed.">        if (balanceNode != null) {</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L96">                logger.debug(&quot;Found the balance node(&quot; + balanceNode + &quot;)&quot;);</span>
+            }
+<span class="fc" id="L98">            this.getEntityManager().lock(balanceNode, LockModeType.PESSIMISTIC_READ);</span>
+<span class="fc" id="L99">            BigDecimal saleBalance = null;</span>
+<span class="pc bpc" id="L100" title="1 of 2 branches missed.">            if (balanceNode instanceof Operator) {</span>
+<span class="fc" id="L101">                saleBalance = ((Operator) balanceNode).getSaleCreditLevel();</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">            } else if (balanceNode instanceof Merchant) {</span>
+<span class="nc" id="L103">                saleBalance = ((Merchant) balanceNode).getSaleCreditLevel();</span>
+            } else {
+<span class="nc" id="L105">                throw new SystemException(&quot;Unsupported balance node instance(&quot; + balanceNode + &quot;)&quot;);</span>
+            }
+<span class="fc bfc" id="L107" title="All 2 branches covered.">            if (saleBalance.compareTo(transAmount) &lt; 0) {</span>
+<span class="fc" id="L108">                throw new ApplicationException(SystemException.CODE_EXCEED_CREDITLIMIT, &quot;The sale balance (&quot;</span>
+                                + saleBalance + &quot;) of &quot; + balanceNode + &quot; isn't enough for transacion(amount=&quot;
+                                + transAmount + &quot;).&quot;);
+            }
+        }
+<span class="fc" id="L113">        return balanceNode;</span>
+    }
+
+    /**
+     * Register a {@code TransactionBalanceStrategy} for a given transaction type. For a given transaction type, only a
+     * single strategy implementation can be registered, however a strategy implementation can support multiple
+     * transaction types.
+     */
+    public void registerBalanceStrategy(BalanceStrategy strategy) {
+<span class="fc" id="L122">        BalanceStrategy existed = this.transactionBalanceStrategyMap.get(strategy.supportedBalanceType());</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        if (existed != null) {</span>
+<span class="nc" id="L124">            throw new SystemException(&quot;Fail to register (&quot; + strategy + &quot;) with balance type(&quot;</span>
+                            + strategy.supportedBalanceType() + &quot;), it has been registered by &quot; + existed);
+        }
+<span class="fc" id="L127">        this.transactionBalanceStrategyMap.put(strategy.supportedBalanceType(), strategy);</span>
+<span class="fc" id="L128">    }</span>
+
+    /**
+     * Lookup a {@code TransactionBalanceStrategy} for a give transaction type, if no found a {@code SystemException}
+     * will be thrown out. null will be returned if no strategy implementation found.
+     */
+    public BalanceStrategy lookupBalanceStrategy(Integer balanceType) {
+<span class="fc" id="L135">        BalanceStrategy strategy = this.transactionBalanceStrategyMap.get(balanceType);</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        if (strategy == null) {</span>
+<span class="nc" id="L137">            throw new SystemException(&quot;No &quot; + BalanceStrategy.class + &quot; found for balance type:&quot; + balanceType);</span>
+        }
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L140">            logger.debug(&quot;Found balance strategy:&quot; + strategy);</span>
+        }
+<span class="fc" id="L142">        return strategy;</span>
+    }
+
+    // ----------------------------------------------------
+    // HELPER METHODS
+    // ----------------------------------------------------
+
+    /**
+     * Maintain all supported type of balance of operator.
+     * 
+     * @param respCtx
+     *            The context of current transaction.
+     * @param targetTrans
+     *            The target transaction. To a cancellation, it is the transaction which has been cancelled, however to
+     *            a normal transactions, such as sale, payout etc, it should be right current transaction.
+     * @param balanceType
+     *            Which balance should be maintained?
+     * @param operator
+     *            Whose balance should be maintained?
+     * @param leafMerchant
+     *            The leaf merchant of given operator.
+     * @param isTopup
+     *            topup or deduct the balance?
+     * @return The operator whose balance has been maintained.
+     * @throws ApplicationException
+     *             if encounters any business exception.
+     */
+    protected final Operator doOperatorBalance(Context&lt;?&gt; respCtx, Transaction targetTrans, int balanceType,
+                    Operator operator, Merchant leafMerchant, boolean isTopup) throws ApplicationException {
+        // Lock the entity first for late updating.
+        //
+        // If try to refresh a entity before flush state changes into underlying
+        // database, the changes of entity will be lost.
+<span class="fc" id="L175">        this.getEntityManager().flush();</span>
+        // Refresh entity to latest state of underlying database and lock it.
+<span class="fc" id="L177">        this.getEntityManager().refresh(operator, LockModeType.PESSIMISTIC_READ);</span>
+
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L180">            logger.debug(&quot;Operator before transaction -  &quot; + operator);</span>
+        }
+
+<span class="fc" id="L183">        BalanceStrategy balanceStrategy = this.lookupBalanceStrategy(balanceType);</span>
+<span class="fc" id="L184">        Operator targetOperator = balanceStrategy</span>
+                        .balanceOperator(respCtx, targetTrans, operator, leafMerchant, isTopup);
+
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">        if (targetOperator != null) {</span>
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L189">                logger.debug(&quot;Operator after transaction -  &quot; + operator);</span>
+            }
+
+<span class="fc" id="L192">            this.getBaseJpaDao().update(operator);</span>
+        }
+<span class="fc" id="L194">        return targetOperator;</span>
+    }
+
+    private Merchant lookupDefinteMerchant(Merchant merchant) {
+<span class="nc bnc" id="L198" title="All 2 branches missed.">        if (merchant.getId() == Merchant.SUPER_MERCHANT_ID) {</span>
+<span class="nc" id="L199">            throw new SystemException(&quot;can't find difinite-credit type merchant, as has reached the top merchant(id=&quot;</span>
+                            + Merchant.SUPER_MERCHANT_ID + &quot;)&quot;);
+        }
+<span class="nc bnc" id="L202" title="All 2 branches missed.">        if (Merchant.CREDIT_TYPE_DEFINITIVEVALUE == merchant.getCreditType()) {</span>
+<span class="nc" id="L203">            return merchant;</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">        } else if (Merchant.CREDIT_TYPE_USE_PARENT == merchant.getCreditType()) {</span>
+            // invoke method recursively
+<span class="nc" id="L206">            return this.lookupDefinteMerchant(merchant.getParentMerchant());</span>
+        } else {
+<span class="nc" id="L208">            return null;</span>
+        }
+    }
+
+    /**
+     * Maintain all supported type of balance of merchant.
+     * 
+     * @param respCtx
+     *            The context of current transaction.
+     * @param targetTrans
+     *            The target transaction. To a cancellation, it is the transaction which has been cancelled, however to
+     *            a normal transactions, such as sale, payout etc, it should be right current transaction.
+     * @param balanceType
+     *            Which balance should be maintained?
+     * @param operator
+     *            Whose balance should be maintained?
+     * @param merchant
+     *            The leaf merchant of given operator.
+     * @param isTopup
+     *            topup or deduct the balance?
+     * @return The operator whose balance has been maintained.
+     * @throws ApplicationException
+     *             if encounters any business exception.
+     */
+    protected final Merchant doMerchantBalance(Context&lt;?&gt; respCtx, Transaction targetTrans, int balanceType,
+                    Operator operator, Merchant merchant, boolean isTopup) throws ApplicationException {
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">        if (merchant.getId() == Merchant.SUPER_MERCHANT_ID) {</span>
+<span class="nc" id="L235">            throw new SystemException(&quot;can't calculate balance, as has reached the top merchant(id=&quot;</span>
+                            + Merchant.SUPER_MERCHANT_ID + &quot;)&quot;);
+        }
+<span class="pc bpc" id="L238" title="1 of 2 branches missed.">        if (Merchant.CREDIT_TYPE_DEFINITIVEVALUE == merchant.getCreditType()) {</span>
+            // If try to refresh a entity before flush state changes into
+            // underlying database, the changes of entity will be lost.
+<span class="fc" id="L241">            this.getEntityManager().flush();</span>
+            // Refresh entity to latest state of underlying database and lock
+            // it.
+<span class="fc" id="L244">            this.getEntityManager().refresh(merchant, LockModeType.PESSIMISTIC_READ);</span>
+
+<span class="pc bpc" id="L246" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L247">                logger.debug(&quot;Merchant before transaction: &quot; + merchant);</span>
+            }
+
+<span class="fc" id="L250">            BalanceStrategy balanceStrategy = this.lookupBalanceStrategy(balanceType);</span>
+<span class="fc" id="L251">            Merchant targetMerchant = balanceStrategy</span>
+                            .balanceMerchant(respCtx, targetTrans, operator, merchant, isTopup);
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">            if (targetMerchant != null) {</span>
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">                if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L255">                    logger.debug(&quot;Merchant after transaction -  &quot; + operator);</span>
+                }
+
+<span class="fc" id="L258">                this.getBaseJpaDao().update(merchant);</span>
+            }
+
+<span class="fc" id="L261">            return merchant;</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">        } else if (Merchant.CREDIT_TYPE_USE_PARENT == merchant.getCreditType()) {</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L264">                logger.debug(&quot;Ignore balance calculation, as the credit type of&quot; + merchant</span>
+                                + &quot; is USE PARENT... check its parent merchant.&quot;);
+            }
+            // invoke method recursively
+<span class="nc" id="L268">            return this.doMerchantBalance(respCtx, targetTrans, balanceType, operator, merchant.getParentMerchant(),</span>
+                            isTopup);
+        } else {
+<span class="nc" id="L271">            logger.warn(&quot;Ignore calculation of balance, as the credit type of &quot; + merchant + &quot; is &quot;</span>
+                            + merchant.getCreditType());
+<span class="nc" id="L273">            return null;</span>
+        }
+    }
+
+    // ----------------------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // ----------------------------------------------------
+
+    public OperatorMerchantDao getOperatorMerchantDao() {
+<span class="fc" id="L282">        return operatorMerchantDao;</span>
+    }
+
+    public void setOperatorMerchantDao(OperatorMerchantDao operatorMerchantDao) {
+<span class="fc" id="L286">        this.operatorMerchantDao = operatorMerchantDao;</span>
+<span class="fc" id="L287">    }</span>
+
+    public EntityManager getEntityManager() {
+<span class="fc" id="L290">        return entityManager;</span>
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+<span class="nc" id="L294">        this.entityManager = entityManager;</span>
+<span class="nc" id="L295">    }</span>
+
+    public BaseJpaDao getBaseJpaDao() {
+<span class="fc" id="L298">        return baseJpaDao;</span>
+    }
+
+    public void setBaseJpaDao(BaseJpaDao baseJpaDao) {
+<span class="fc" id="L302">        this.baseJpaDao = baseJpaDao;</span>
+<span class="fc" id="L303">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

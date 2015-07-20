@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+	<class
+		name="com.mpos.lottery.te.thirdpartyservice.playeraccount.web.CashoutRequest">
+		<map-to xml="CashOut" />
+
+		<field name="mobile" type="java.lang.String" required="true">
+			<bind-xml name="accountId" node="attribute" />
+		</field>
+		<field name="userPIN" type="java.lang.String" required="true">
+			<bind-xml name="accountPIN" node="attribute" />
+		</field>
+		<field name="cashoutAmount" type="java.math.BigDecimal"
+			required="false">
+			<bind-xml name="amount" node="attribute" />
+		</field>
+		<field name="referenceNum" type="java.lang.String" required="false">
+			<bind-xml name="referenceNum" node="attribute" />
+		</field>
+	</class>
+
+</mapping>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PayoutDetailDaoImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.prize.dao.jpa</a> &gt; <span class="el_source">PayoutDetailDaoImpl.java</span></div><h1>PayoutDetailDaoImpl.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.prize.dao.jpa;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.dto.PrizeLevelDto;
+import com.mpos.lottery.te.gamespec.prize.PayoutDetail;
+import com.mpos.lottery.te.gamespec.prize.dao.PayoutDetailDao;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * payout detail dao implements.
+ * 
+ */
+<span class="fc" id="L20">public class PayoutDetailDaoImpl extends BaseJpaDao implements PayoutDetailDao {</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    @Override
+    public List&lt;PayoutDetail&gt; findByTransactions(List&lt;String&gt; transactionIds) {
+<span class="nc bnc" id="L25" title="All 2 branches missed.">        if (transactionIds.size() == 0) {</span>
+<span class="nc" id="L26">            return new ArrayList&lt;PayoutDetail&gt;();</span>
+        }
+
+<span class="nc" id="L29">        StringBuffer transIdBuffer = new StringBuffer();</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        for (int i = 0; i &lt; transactionIds.size(); i++) {</span>
+<span class="nc" id="L31">            transIdBuffer.append(&quot;'&quot;).append(transactionIds.get(i)).append(&quot;'&quot;);</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">            if (i != (transactionIds.size() - 1)) {</span>
+<span class="nc" id="L33">                transIdBuffer.append(&quot;,&quot;);</span>
+            }
+        }
+<span class="nc" id="L36">        String sql = &quot;select d.BG_LUCKY_PRIZE_OBJECT_ID,d.BG_LUCKY_PRIZE_OBJECT_NAME,d.OBJECT_NUM,&quot;</span>
+                + &quot;p.TRANSACTION_ID from PAYOUT p, PAYOUT_DETAIL d where P.ID=d.PAYOUT_ID and d.PAYOUT_TYPE=&quot;
+                + PrizeLevelDto.PRIZE_TYPE_OBJECT + &quot; and p.TRANSACTION_ID in (&quot; + transIdBuffer.toString() + &quot;)&quot;;
+<span class="nc" id="L39">        return (List&lt;PayoutDetail&gt;) this.queryList(sql, new JdbcQueryCallback() {</span>
+
+            @Override
+            public void setParameter(PreparedStatement ps) throws SQLException {
+                // do nothing
+<span class="nc" id="L44">            }</span>
+
+            @Override
+            public Object objectFromRow(ResultSet rs) throws SQLException {
+<span class="nc" id="L48">                PayoutDetail pd = new PayoutDetail();</span>
+<span class="nc" id="L49">                pd.setObjectId(rs.getString(1));</span>
+<span class="nc" id="L50">                pd.setObjectName(rs.getString(2));</span>
+<span class="nc" id="L51">                pd.setNumberOfObject(rs.getInt(3));</span>
+<span class="nc" id="L52">                pd.setTransactionId(rs.getString(4));</span>
+<span class="nc" id="L53">                return pd;</span>
+            }
+        });
+    }
+
+    @Override
+    public List&lt;PayoutDetail&gt; findByPayout(String payoutId) {
+<span class="fc" id="L60">        Map&lt;String, Object&gt; params = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L61">        params.put(&quot;payoutId&quot;, payoutId);</span>
+<span class="fc" id="L62">        return this.findByNamedParams(&quot;from PayoutDetail d where d.payoutId=:payoutId&quot;, params);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

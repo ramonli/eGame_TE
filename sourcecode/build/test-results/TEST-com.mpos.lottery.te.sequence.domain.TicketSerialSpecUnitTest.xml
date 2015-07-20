@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.sequence.domain.TicketSerialSpecUnitTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:54" hostname="Ramon-PC" time="0.001">
+  <properties/>
+  <testcase name="testToSerialNo" classname="com.mpos.lottery.te.sequence.domain.TicketSerialSpecUnitTest" time="0.001"/>
+  <system-out><![CDATA[TicketSerialSpec [saleMode=0, year=13, dayOfYear=354, gameTypeOrSecond=07, hour=18, minute=39, sequence=781273, randomNum=06]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

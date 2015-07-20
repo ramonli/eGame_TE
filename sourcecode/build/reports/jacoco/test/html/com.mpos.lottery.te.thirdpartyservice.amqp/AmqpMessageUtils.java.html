@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AmqpMessageUtils.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.thirdpartyservice.amqp</a> &gt; <span class="el_source">AmqpMessageUtils.java</span></div><h1>AmqpMessageUtils.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.thirdpartyservice.amqp;
+
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.trans.domain.Transaction;
+
+<span class="nc" id="L6">public class AmqpMessageUtils {</span>
+
+    /**
+     * Build a AMQP cancellation message based on &lt;code&gt;Transaction&lt;/code&gt; instance.
+     */
+    public static TeTransactionMessage.Cancellation assembleCancellationMsg(Context&lt;?&gt; respCtx,
+            Transaction dbTargetTrans) {
+<span class="fc" id="L13">        TeTransactionMessage.Cancellation.Builder cancelTransBuilder = TeTransactionMessage.Cancellation.newBuilder();</span>
+<span class="fc" id="L14">        cancelTransBuilder.setCancelTrans(assembleTransactionMsg(respCtx));</span>
+        // assemble original trans
+<span class="fc" id="L16">        TeTransactionMessage.Transaction.Builder origTransBuilder = TeTransactionMessage.Transaction.newBuilder();</span>
+<span class="fc" id="L17">        origTransBuilder.setId(dbTargetTrans.getId()).setDevId(dbTargetTrans.getDeviceId() + &quot;&quot;)</span>
+                .setOperatorId(dbTargetTrans.getOperatorId()).setMerchantId(dbTargetTrans.getMerchantId() + &quot;&quot;)
+                .setTransType(dbTargetTrans.getType()).setCreateTime(dbTargetTrans.getCreateTime().getTime())
+                .setGameType(respCtx.getGameTypeIdIntValue());
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        if (dbTargetTrans.getGameId() != null) {</span>
+<span class="fc" id="L22">            origTransBuilder.setGameId(dbTargetTrans.getGameId());</span>
+        }
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">        if (dbTargetTrans.getTotalAmount() != null) {</span>
+<span class="fc" id="L25">            origTransBuilder.setTotalAmount(dbTargetTrans.getTotalAmount() + &quot;&quot;);</span>
+        }
+<span class="fc" id="L27">        cancelTransBuilder.setOrigTrans(origTransBuilder.build());</span>
+
+<span class="fc" id="L29">        return cancelTransBuilder.build();</span>
+    }
+
+    /**
+     * Build a AMQP message based on &lt;code&gt;Transaction&lt;/code&gt; instance.
+     */
+    public static TeTransactionMessage.Transaction assembleTransactionMsg(Context&lt;?&gt; respCtx) {
+<span class="fc" id="L36">        TeTransactionMessage.Transaction.Builder builder = TeTransactionMessage.Transaction.newBuilder();</span>
+<span class="fc" id="L37">        builder.setId(respCtx.getTransaction().getId()).setDevId(respCtx.getTransaction().getDeviceId() + &quot;&quot;)</span>
+                .setOperatorId(respCtx.getTransaction().getOperatorId())
+                .setMerchantId(respCtx.getTransaction().getMerchantId() + &quot;&quot;)
+                .setTransType(respCtx.getTransaction().getType())
+                .setCreateTime(respCtx.getTransaction().getCreateTime().getTime())
+                .setGameType(respCtx.getGameTypeIdIntValue());
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (respCtx.getTransaction().getGameId() != null) {</span>
+<span class="fc" id="L44">            builder.setGameId(respCtx.getTransaction().getGameId());</span>
+        }
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        if (respCtx.getTransaction().getTotalAmount() != null) {</span>
+<span class="fc" id="L47">            builder.setTotalAmount(respCtx.getTransaction().getTotalAmount() + &quot;&quot;);</span>
+        }
+<span class="fc" id="L49">        return builder.build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

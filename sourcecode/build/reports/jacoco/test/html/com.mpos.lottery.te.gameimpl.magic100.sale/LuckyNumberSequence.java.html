@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LuckyNumberSequence.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.magic100.sale</a> &gt; <span class="el_source">LuckyNumberSequence.java</span></div><h1>LuckyNumberSequence.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.magic100.sale;
+
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+/**
+ * This entity will be used to trace the current and next sequence of lucky number.
+ * 
+ * @author Ramon
+ */
+@Entity
+@Table(name = &quot;LK_PRIZE_STATUS&quot;)
+public class LuckyNumberSequence implements Serializable {
+    private static final long serialVersionUID = -5547782922325333017L;
+    // there should be only one instance, and the ID will be fixed to 1.
+    public static final String ID = &quot;1&quot;;
+
+    @Id
+    @Column(name = &quot;ID&quot;)
+    private String id;
+    @Column(name = &quot;GAME_ID&quot;)
+    private String gameId;
+    /**
+     * For each successful sale transaction, it will lookup lucky number by &lt;code&gt;nextSequence&lt;/code&gt;, and then update
+     * &lt;code&gt;nextSequence&lt;/code&gt; by increasing it by 1 if needed(not always updated it, as a lucky number maybe sold
+     * multiple times in a single cycle).
+     * &lt;p&gt;
+     * Cancellation request won't affect &lt;code&gt;nextSequence&lt;/code&gt;, as cancelled lucky number will be postponed to sell
+     * at next cycle.
+     * &lt;p&gt;
+     * The &lt;code&gt;nextSequence&lt;/code&gt; maps to &lt;code&gt;LuckyNumber.sequenceOfNumber&lt;/code&gt;;
+     */
+    @Column(name = &quot;NEXT_SEq&quot;)
+    private long nextSequence;
+    /**
+     * Who is the latest player? &lt;code&gt;latestPlayer&lt;/code&gt; will be set if &lt;code&gt;luckyNumber.cancelCounter&gt;0&lt;/code&gt;, and
+     * will be set to null if &lt;code&gt;nextSequence&lt;/code&gt; changed.
+     */
+    @Column(name = &quot;LAST_BUYER&quot;)
+    private String lastestPlayer;
+
+<span class="fc" id="L46">    public LuckyNumberSequence() {</span>
+<span class="fc" id="L47">    }</span>
+
+    public LuckyNumberSequence(long nextSequence) {
+<span class="nc" id="L50">        super();</span>
+<span class="nc" id="L51">        this.id = ID;</span>
+<span class="nc" id="L52">        this.nextSequence = nextSequence;</span>
+<span class="nc" id="L53">    }</span>
+
+    public String getId() {
+<span class="fc" id="L56">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="nc" id="L60">        this.id = id;</span>
+<span class="nc" id="L61">    }</span>
+
+    public long getNextSequence() {
+<span class="fc" id="L64">        return nextSequence;</span>
+    }
+
+    public void setNextSequence(long nextSequence) {
+<span class="fc" id="L68">        this.nextSequence = nextSequence;</span>
+<span class="fc" id="L69">    }</span>
+
+    public String getLastestPlayer() {
+<span class="fc" id="L72">        return lastestPlayer;</span>
+    }
+
+    public void setLastestPlayer(String lastestPlayer) {
+<span class="fc" id="L76">        this.lastestPlayer = lastestPlayer;</span>
+<span class="fc" id="L77">    }</span>
+
+    public String getGameId() {
+<span class="nc" id="L80">        return gameId;</span>
+    }
+
+    public void setGameId(String gameId) {
+<span class="nc" id="L84">        this.gameId = gameId;</span>
+<span class="nc" id="L85">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

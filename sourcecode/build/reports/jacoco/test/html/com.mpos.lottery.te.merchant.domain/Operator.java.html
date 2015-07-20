@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Operator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.merchant.domain</a> &gt; <span class="el_source">Operator.java</span></div><h1>Operator.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.merchant.domain;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+/**
+ * Entity of operator.
+ */
+@Entity(name = &quot;OPERATOR&quot;)
+<span class="fc" id="L18">public class Operator implements Serializable {</span>
+    private static final long serialVersionUID = -5225159120408352315L;
+    public static final int STATUS_INACTIVE = 0;
+    public static final int STATUS_ACTIVE = 1;
+
+    @Id
+    @Column(name = &quot;OPERATOR_ID&quot;)
+    private String id;
+
+    @Column(name = &quot;STATUS&quot;)
+    private int status;
+
+    @Column(name = &quot;OPERATOR_TYPE&quot;)
+    private String type;
+
+    @Column(name = &quot;LOGIN_NAME&quot;)
+    private String loginName;
+
+    @Column(name = &quot;PASSWORD&quot;)
+    private String password;
+
+    /* refer to Merchant.CREDIT_TYPE_XXX */
+<span class="fc" id="L40">    @Column(name = &quot;LIMIT_TYPE&quot;)</span>
+    private int creditType = Merchant.CREDIT_TYPE_DEFINITIVEVALUE;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;BD_CASH_GROUP_ID&quot;, nullable = true)
+    private PrizeGroup cashoutGroup; // payout group
+
+<span class="fc" id="L47">    @Column(name = &quot;CASH_OUT_DAY_LEVEL&quot;)</span>
+    private BigDecimal dailyCashoutLevel = new BigDecimal(&quot;0&quot;);
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;BD_PRIZE_GROUP_ID&quot;, nullable = true)
+    private PrizeGroup prizeGroup;
+
+    @Column(name = &quot;IS_NEED_DO_ENCROLLMENT&quot;)
+    private boolean needEnrollment;
+
+    @Column(name = &quot;IGNORE_CREDIT&quot;)
+    private boolean ignoreCredit;
+
+<span class="fc" id="L60">    @Column(name = &quot;SALE_BALANCE&quot;)</span>
+    private BigDecimal saleCreditLevel = new BigDecimal(&quot;0&quot;);
+<span class="fc" id="L62">    @Column(name = &quot;PAYOUT_BALANCE&quot;)</span>
+    private BigDecimal payoutCreditLevel = new BigDecimal(&quot;0&quot;);
+
+<span class="fc" id="L65">    @Column(name = &quot;CASHOUT_BALANCE&quot;)</span>
+    private BigDecimal cashoutBalance = new BigDecimal(&quot;0&quot;);
+
+<span class="fc" id="L68">    @Column(name = &quot;COMMISION_BALANCE&quot;)</span>
+    private BigDecimal commisionBalance = new BigDecimal(&quot;0&quot;);
+
+<span class="fc" id="L71">    @Column(name = &quot;TOPUP_RATE&quot;)</span>
+    private BigDecimal topupReat = new BigDecimal(&quot;0&quot;);
+
+<span class="fc" id="L74">    @Column(name = &quot;CASHOUT_RATE&quot;)</span>
+    private BigDecimal cashoutRate = new BigDecimal(&quot;0&quot;);
+
+<span class="fc" id="L77">    @Column(name = &quot;UPDATE_TIME&quot;, nullable = true)</span>
+    private Timestamp updateTime = new Timestamp(System.currentTimeMillis());
+
+    public String getId() {
+<span class="fc" id="L81">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="nc" id="L85">        this.id = id;</span>
+<span class="nc" id="L86">    }</span>
+
+    public int getStatus() {
+<span class="fc" id="L89">        return status;</span>
+    }
+
+    public void setStatus(int status) {
+<span class="nc" id="L93">        this.status = status;</span>
+<span class="nc" id="L94">    }</span>
+
+    public String getType() {
+<span class="nc" id="L97">        return type;</span>
+    }
+
+    public void setType(String type) {
+<span class="nc" id="L101">        this.type = type;</span>
+<span class="nc" id="L102">    }</span>
+
+    public String getLoginName() {
+<span class="nc" id="L105">        return loginName;</span>
+    }
+
+    public void setLoginName(String loginName) {
+<span class="nc" id="L109">        this.loginName = loginName;</span>
+<span class="nc" id="L110">    }</span>
+
+    public int getCreditType() {
+<span class="fc" id="L113">        return creditType;</span>
+    }
+
+    public void setCreditType(int creditType) {
+<span class="nc" id="L117">        this.creditType = creditType;</span>
+<span class="nc" id="L118">    }</span>
+
+    public BigDecimal getSaleCreditLevel() {
+<span class="fc" id="L121">        return saleCreditLevel;</span>
+    }
+
+    public void setSaleCreditLevel(BigDecimal saleCreditLevel) {
+<span class="fc" id="L125">        this.saleCreditLevel = saleCreditLevel;</span>
+<span class="fc" id="L126">    }</span>
+
+    public BigDecimal getPayoutCreditLevel() {
+<span class="fc" id="L129">        return payoutCreditLevel;</span>
+    }
+
+    public void setPayoutCreditLevel(BigDecimal payoutCreditLevel) {
+<span class="fc" id="L133">        this.payoutCreditLevel = payoutCreditLevel;</span>
+<span class="fc" id="L134">    }</span>
+
+    public PrizeGroup getCashoutGroup() {
+<span class="fc" id="L137">        return cashoutGroup;</span>
+    }
+
+    public void setCashoutGroup(PrizeGroup cashoutGroup) {
+<span class="nc" id="L141">        this.cashoutGroup = cashoutGroup;</span>
+<span class="nc" id="L142">    }</span>
+
+    public BigDecimal getDailyCashoutLevel() {
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">        return this.dailyCashoutLevel == null ? new BigDecimal(&quot;0&quot;) : this.dailyCashoutLevel;</span>
+    }
+
+    public void setDailyCashoutLevel(BigDecimal dailyCashoutLevel) {
+<span class="fc" id="L149">        this.dailyCashoutLevel = dailyCashoutLevel;</span>
+<span class="fc" id="L150">    }</span>
+
+    public PrizeGroup getPrizeGroup() {
+<span class="fc" id="L153">        return prizeGroup;</span>
+    }
+
+    public void setPrizeGroup(PrizeGroup prizeGroup) {
+<span class="nc" id="L157">        this.prizeGroup = prizeGroup;</span>
+<span class="nc" id="L158">    }</span>
+
+    public boolean isIgnoreCredit() {
+<span class="fc" id="L161">        return ignoreCredit;</span>
+    }
+
+    public void setIgnoreCredit(boolean ignoreCredit) {
+<span class="nc" id="L165">        this.ignoreCredit = ignoreCredit;</span>
+<span class="nc" id="L166">    }</span>
+
+    public boolean isNeedEnrollment() {
+<span class="nc" id="L169">        return needEnrollment;</span>
+    }
+
+    public void setNeedEnrollment(boolean needEnrollment) {
+<span class="nc" id="L173">        this.needEnrollment = needEnrollment;</span>
+<span class="nc" id="L174">    }</span>
+
+    public BigDecimal getCashoutBalance() {
+<span class="fc" id="L177">        return cashoutBalance;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L182">        return &quot;Operator [id=&quot; + id + &quot;, loginName=&quot; + loginName + &quot;, creditType=&quot; + creditType + &quot;, saleCreditLevel=&quot;</span>
+                + saleCreditLevel + &quot;, payoutCreditLevel=&quot; + payoutCreditLevel + &quot;, cashoutBalance=&quot; + cashoutBalance
+                + &quot;, commisionBalance=&quot; + commisionBalance + &quot;]&quot;;
+    }
+
+    public void setCashoutBalance(BigDecimal cashoutBalance) {
+<span class="fc" id="L188">        this.cashoutBalance = cashoutBalance;</span>
+<span class="fc" id="L189">    }</span>
+
+    public BigDecimal getCommisionBalance() {
+<span class="fc" id="L192">        return commisionBalance;</span>
+    }
+
+    public void setCommisionBalance(BigDecimal commisionBalance) {
+<span class="fc" id="L196">        this.commisionBalance = commisionBalance;</span>
+<span class="fc" id="L197">    }</span>
+
+    public BigDecimal getTopupReat() {
+<span class="fc" id="L200">        return topupReat;</span>
+    }
+
+    public void setTopupReat(BigDecimal topupReat) {
+<span class="nc" id="L204">        this.topupReat = topupReat;</span>
+<span class="nc" id="L205">    }</span>
+
+    public BigDecimal getCashoutRate() {
+<span class="fc" id="L208">        return cashoutRate;</span>
+    }
+
+    public void setCashoutRate(BigDecimal cashoutRate) {
+<span class="nc" id="L212">        this.cashoutRate = cashoutRate;</span>
+<span class="nc" id="L213">    }</span>
+
+    public Timestamp getUpdateTime() {
+<span class="nc" id="L216">        return updateTime;</span>
+    }
+
+    public void setUpdateTime(Timestamp updateTime) {
+<span class="fc" id="L220">        this.updateTime = updateTime;</span>
+<span class="fc" id="L221">    }</span>
+
+    public String getPassword() {
+<span class="nc" id="L224">        return password;</span>
+    }
+
+    public void setPassword(String password) {
+<span class="nc" id="L228">        this.password = password;</span>
+<span class="nc" id="L229">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

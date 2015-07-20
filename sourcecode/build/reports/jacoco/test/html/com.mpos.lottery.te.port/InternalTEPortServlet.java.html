@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>InternalTEPortServlet.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.port</a> &gt; <span class="el_source">InternalTEPortServlet.java</span></div><h1>InternalTEPortServlet.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.port;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.config.MLotteryContext;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.trans.domain.TransactionType;
+import com.mpos.lottery.te.workingkey.domain.Gpe;
+import com.mpos.lottery.te.workingkey.domain.WorkingKey;
+
+import org.perf4j.StopWatch;
+
+<span class="fc" id="L12">public class InternalTEPortServlet extends TEPortServlet {</span>
+    private static final long serialVersionUID = 4952687368857612962L;
+
+    /**
+     * Use a pre-defined working key for internal system integration.
+     */
+    @Override
+    protected void assembleWorkingKey(Context requestCtx, StopWatch watch) {
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        if (requestCtx.getTransType() == TransactionType.GET_WORKING_KEY.getRequestType()) {</span>
+<span class="nc" id="L21">            throw new SystemException(&quot;No transaction(Get Working Key) allowed in internal integration mode&quot;);</span>
+        }
+
+<span class="fc" id="L24">        MLotteryContext prop = MLotteryContext.getInstance();</span>
+<span class="fc" id="L25">        WorkingKey workingKey = new WorkingKey();</span>
+<span class="fc" id="L26">        workingKey.setDataKey(prop.get(&quot;te.datakey&quot;));</span>
+<span class="fc" id="L27">        workingKey.setMacKey(prop.get(&quot;te.mackey&quot;));</span>
+
+        // assemble GPE too
+<span class="fc" id="L30">        BaseJpaDao baseDao = (BaseJpaDao) prop.getBeanFactory().getBean(prop.get(MLotteryContext.ENTRY_BEAN_BASEDAO));</span>
+<span class="fc" id="L31">        Gpe gpe = baseDao.findById(Gpe.class, requestCtx.getGpe().getId());</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (gpe == null) {</span>
+<span class="nc" id="L33">            throw new SystemException(&quot;No Gpe found by id:&quot; + requestCtx.getGpe().getId());</span>
+        }
+<span class="fc" id="L35">        requestCtx.setGpe(gpe);</span>
+
+<span class="fc" id="L37">        requestCtx.setWorkingKey(workingKey);</span>
+<span class="fc" id="L38">        requestCtx.setInternalCall(true);</span>
+<span class="fc" id="L39">    }</span>
+
+    @Override
+    protected void printCopyright(String contextPath) {
+        // No need to print copyright information repeatedly
+<span class="nc" id="L44">    }</span>
+
+    @Override
+    protected void registerMBeans() {
+        // Don't register MBean repeatedly
+<span class="nc" id="L49">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

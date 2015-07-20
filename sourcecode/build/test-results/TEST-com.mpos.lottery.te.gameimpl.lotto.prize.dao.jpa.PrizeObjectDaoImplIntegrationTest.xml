@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.gameimpl.lotto.prize.dao.jpa.PrizeObjectDaoImplIntegrationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:28" hostname="Ramon-PC" time="0.016">
+  <properties/>
+  <testcase name="testFindByPrizeLogicAndLevel" classname="com.mpos.lottery.te.gameimpl.lotto.prize.dao.jpa.PrizeObjectDaoImplIntegrationTest" time="0.016"/>
+  <system-out><![CDATA[[2015-05-29 17:13:28,030][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:28,030][Test worker][DEBUG][BaseJpaDao] Retrieve database connection: net.sf.log4jdbc.ConnectionSpy@3673a817
+[2015-05-29 17:13:28,032][Test worker][DEBUG][BaseJpaDao] Retrieve database connection: net.sf.log4jdbc.ConnectionSpy@3673a817
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

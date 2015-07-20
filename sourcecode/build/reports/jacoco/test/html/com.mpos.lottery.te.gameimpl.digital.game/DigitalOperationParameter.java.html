@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DigitalOperationParameter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.digital.game</a> &gt; <span class="el_source">DigitalOperationParameter.java</span></div><h1>DigitalOperationParameter.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.digital.game;
+
+import com.mpos.lottery.te.gamespec.game.BaseOperationParameter;
+
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;FD_OPERATION_PARAMETERS&quot;)
+<span class="fc" id="L13">public class DigitalOperationParameter extends BaseOperationParameter {</span>
+    private static final long serialVersionUID = 937366293660209792L;
+<span class="fc" id="L15">    public static int ODD_EVEN_SUPPORT = 1;</span>
+<span class="fc" id="L16">    public static int ODD_EVEN_NO_SUPPORT = 2;</span>
+
+    // whether Odd&amp;Even bet options will be supported, refer to ODD_EVEN_XXX
+    @Column(name = &quot;IS_ODD_EVEN&quot;)
+    private boolean supportOddEven;
+
+    @Column(name = &quot;IS_SUPPORT_SUM&quot;)
+    private boolean supportSum;
+
+    /**
+     * Here column 'BASE_AMOUNT'/'MAX_BASE_AMOUNT' will be used to limit the range of bet amount.
+     */
+<span class="fc" id="L28">    @Column(name = &quot;MAX_BASE_AMOUNT&quot;)</span>
+    private BigDecimal maxBetAmount = new BigDecimal(&quot;0&quot;);
+
+    public boolean isSupportOddEven() {
+<span class="fc" id="L32">        return supportOddEven;</span>
+    }
+
+    public void setSupportOddEven(boolean supportOddEven) {
+<span class="nc" id="L36">        this.supportOddEven = supportOddEven;</span>
+<span class="nc" id="L37">    }</span>
+
+    public boolean isSupportSum() {
+<span class="fc" id="L40">        return supportSum;</span>
+    }
+
+    public void setSupportSum(boolean supportSum) {
+<span class="nc" id="L44">        this.supportSum = supportSum;</span>
+<span class="nc" id="L45">    }</span>
+
+    public BigDecimal getMaxBetAmount() {
+<span class="fc" id="L48">        return maxBetAmount;</span>
+    }
+
+    public void setMaxBetAmount(BigDecimal maxBetAmount) {
+<span class="nc" id="L52">        this.maxBetAmount = maxBetAmount;</span>
+<span class="nc" id="L53">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

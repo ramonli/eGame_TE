@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GameInstanceServiceFactory.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.game.support</a> &gt; <span class="el_source">GameInstanceServiceFactory.java</span></div><h1>GameInstanceServiceFactory.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.game.support;
+
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gamespec.game.GameType;
+import com.mpos.lottery.te.gamespec.game.service.GameInstanceService;
+import com.mpos.lottery.te.merchant.service.MerchantService;
+import com.mpos.lottery.te.port.Context;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Manage the implemnetation of &lt;code&gt;GameInstanceService&lt;/code&gt;. A implementation of &lt;code&gt;GameInstanceService&lt;/code&gt;
+ * should register itself to &lt;code&gt;GameInstanceServiceFactory&lt;/code&gt; by call &lt;code&gt;registerHandler&lt;/code&gt;. There is a
+ * base class &lt;code&gt;com.mpos.lottery.te.gamespec.game.service.impl&lt;/code&gt; for implementation to inherit, it is a good
+ * start point.
+ * 
+ * @author Ramon Li
+ */
+<span class="fc" id="L25">public class GameInstanceServiceFactory {</span>
+<span class="fc" id="L26">    private Log logger = LogFactory.getLog(GameInstanceServiceFactory.class);</span>
+    private MerchantService merchantService;
+<span class="fc" id="L28">    private Map&lt;GameType, GameInstanceService&gt; gameTypeHandler = new HashMap&lt;GameType, GameInstanceService&gt;();</span>
+
+    public void registerHandler(GameType gameType, GameInstanceService gameInstanceService) {
+<span class="fc" id="L31">        GameInstanceService target = gameTypeHandler.get(gameType);</span>
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">        if (target != null) {</span>
+<span class="nc" id="L33">            throw new IllegalStateException(&quot;A GameInstanceService(&quot; + target + &quot;) has been registered by gametype(&quot;</span>
+                    + gameType + &quot;).&quot;);
+        } else {
+<span class="fc" id="L36">            this.gameTypeHandler.put(gameType, gameInstanceService);</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L38">                logger.debug(&quot;Register a GameInstanceService(&quot; + gameInstanceService + &quot;) for game type:&quot; + gameType);</span>
+            }
+        }
+
+<span class="fc" id="L42">    }</span>
+
+    public GameInstanceService lookupService(Context respCtx, GameType gameType) throws ApplicationException {
+        // check whether merchant supported this game type
+<span class="fc" id="L46">        boolean merchantSupportted = false;</span>
+<span class="fc" id="L47">        List&lt;GameType&gt; supportedGameTypes = this.getMerchantService().supportedGameType(respCtx.getMerchant().getId());</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        for (GameType supportedGameType : supportedGameTypes) {</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">            if (supportedGameType.equals(gameType)) {</span>
+<span class="fc" id="L50">                merchantSupportted = true;</span>
+            }
+<span class="fc" id="L52">        }</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (!merchantSupportted) {</span>
+<span class="fc" id="L54">            return null;</span>
+        }
+
+<span class="fc" id="L57">        GameInstanceService service = this.gameTypeHandler.get(gameType);</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">        if (service == null) {</span>
+<span class="nc" id="L59">            throw new SystemException(&quot;No dedicated &quot; + GameInstanceService.class + &quot; found for game type:&quot; + gameType);</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">        } else if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L61">            logger.debug(&quot;Found GameInstanceService(&quot; + service + &quot;) for game type:&quot; + gameType);</span>
+        }
+<span class="fc" id="L63">        return service;</span>
+    }
+
+    // ------------------------------------------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // ------------------------------------------------------------------------
+
+    public MerchantService getMerchantService() {
+<span class="fc" id="L71">        return merchantService;</span>
+    }
+
+    public void setMerchantService(MerchantService merchantService) {
+<span class="fc" id="L75">        this.merchantService = merchantService;</span>
+<span class="fc" id="L76">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

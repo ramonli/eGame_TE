@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BasePrizeObjectDaoImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.lotto.prize.dao.jpa</a> &gt; <span class="el_source">BasePrizeObjectDaoImpl.java</span></div><h1>BasePrizeObjectDaoImpl.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package com.mpos.lottery.te.gameimpl.lotto.prize.dao.jpa;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gameimpl.lotto.prize.dao.BasePrizeObjectDao;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+/**
+ * 
+ * @author Ramon Li
+ */
+<span class="fc" id="L19">public class BasePrizeObjectDaoImpl extends BaseJpaDao implements BasePrizeObjectDao {</span>
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.mpos.lottery.te.gameimpl.lotto.prize.dao.BasePrizeObjectDao# findByParentObjectId (java.lang.String)
+     */
+    @Override
+    public int findByParentObjectId(final String parentObjectId) {
+<span class="nc" id="L28">        List result = this.queryList(&quot;select i.object_num from bd_prize_object p, &quot;</span>
+                + &quot;bd_prize_object_item i where p.id = i.bd_prize_object_item_id &quot; + &quot;and i.bd_prize_object_id=?&quot;,
+<span class="nc" id="L30">                new JdbcQueryCallback() {</span>
+
+                    @Override
+                    public void setParameter(PreparedStatement ps) throws SQLException {
+<span class="nc" id="L34">                        ps.setString(1, parentObjectId);</span>
+<span class="nc" id="L35">                    }</span>
+
+                    @Override
+                    public Object objectFromRow(ResultSet rs) throws SQLException {
+<span class="nc" id="L39">                        return new Integer(rs.getInt(1));</span>
+                    }
+                });
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (result.size() == 0) {</span>
+<span class="nc" id="L43">            throw new SystemException(&quot;can't find child prize object by parent prize object(id=&quot; + parentObjectId</span>
+                    + &quot;).&quot;);
+        }
+<span class="nc" id="L46">        return ((Integer) result.get(0)).intValue();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

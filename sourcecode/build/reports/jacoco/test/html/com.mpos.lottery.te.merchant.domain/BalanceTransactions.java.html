@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BalanceTransactions.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.merchant.domain</a> &gt; <span class="el_source">BalanceTransactions.java</span></div><h1>BalanceTransactions.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.merchant.domain;
+
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;BALANCE_TRANSACTIONS&quot;)
+<span class="fc" id="L16">public class BalanceTransactions implements java.io.Serializable {</span>
+    private static final long serialVersionUID = 6139641558287268977L;
+<span class="fc" id="L18">    public static int PAYMENT_TYPE_PLUSING_MONEY = 1;</span>
+<span class="fc" id="L19">    public static int PAYMENT_TYPE_DEDUCTING_MONEY = 2;</span>
+
+<span class="fc" id="L21">    public static int OWNER_TYPE_OPERATOR = 1;</span>
+<span class="fc" id="L22">    public static int OWNER_TYPE_MERCHANT = 2;</span>
+
+<span class="fc" id="L24">    public static int STATUS_INVALID = 0;</span>
+<span class="fc" id="L25">    public static int STATUS_VALID = 1;</span>
+<span class="fc" id="L26">    public static BigDecimal ZERO = new BigDecimal(&quot;0&quot;);</span>
+
+<span class="fc" id="L28">    public static int TRANSFER_SALE_BALANCE_TRANS_TYPE = 1161;</span>
+<span class="fc" id="L29">    public static int TRANSFER_PAYOUT_BALANCE_TRANS_TYPE = 1162;</span>
+<span class="fc" id="L30">    public static int TRANSFER_COMMISSION_BALANCE_TRANS_TYPE = 1163;</span>
+<span class="fc" id="L31">    public static int TRANSFER_CASHOUT_BALANCE_TRANS_TYPE = 1164;</span>
+
+    @Id
+    @Column(name = &quot;ID&quot;)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = &quot;balance_transaction_seq&quot;)
+    @SequenceGenerator(name = &quot;balance_transaction_seq&quot;, sequenceName = &quot;BALANCE_TRANSACTIONS_SEQ&quot;)
+    private long id;
+
+    @Column(name = &quot;TE_TRANSACTION_ID&quot;)
+    private String teTransactionId;
+
+    @Column(name = &quot;MERCHANT_ID&quot;)
+    private long merchantId;
+
+    @Column(name = &quot;DEVICE_ID&quot;)
+    private long deviceId;
+
+    @Column(name = &quot;OPERATOR_ID&quot;)
+    private String operatorId;
+
+    @Column(name = &quot;OWNER_ID&quot;)
+    private String ownerId;
+
+    @Column(name = &quot;OWNER_TYPE&quot;)
+    private int ownerType;
+
+    @Column(name = &quot;PAYMENT_TYPE&quot;)
+    private int paymentType;
+
+    @Column(name = &quot;TRANSACTION_TYPE&quot;)
+    private int transactionType;
+
+    @Column(name = &quot;ORG_TRANSACTION_TYPE&quot;)
+    private int originalTransType;
+
+    @Column(name = &quot;GAME_ID&quot;)
+    private String gameId;
+
+    @Column(name = &quot;STATUS&quot;)
+    private int status;
+
+<span class="fc" id="L72">    @Column(name = &quot;BALANCE_AMOUNT&quot;)</span>
+    private BigDecimal transactionAmount = new BigDecimal(&quot;0&quot;);
+
+<span class="fc" id="L75">    @Column(name = &quot;COMMISION_AMOUNT&quot;)</span>
+    private BigDecimal commissionAmount = new BigDecimal(&quot;0&quot;);
+
+<span class="fc" id="L78">    @Column(name = &quot;UPDATE_TIME&quot;, nullable = true)</span>
+    private Timestamp updateTime = new Timestamp(System.currentTimeMillis());
+
+<span class="fc" id="L81">    @Column(name = &quot;COMMISION_RATE&quot;)</span>
+    private BigDecimal commissionRate = new BigDecimal(&quot;0&quot;);
+
+    @Column(name = &quot;FROM_PARENT_MERCHANT_ID&quot;)
+    private Long fromParentMerchantId;
+
+    @Column(name = &quot;TO_PARENT_MERCHANT_ID&quot;)
+    private Long toParentMerchantId;
+
+    // refer to CREDIT_TYPE_XXX
+<span class="fc" id="L91">    @Column(name = &quot;CREATE_TIME&quot;)</span>
+    private Timestamp createTime = new Timestamp(System.currentTimeMillis());
+
+    public long getId() {
+<span class="nc" id="L95">        return id;</span>
+    }
+
+    public void setId(long id) {
+<span class="nc" id="L99">        this.id = id;</span>
+<span class="nc" id="L100">    }</span>
+
+    public String getTeTransactionId() {
+<span class="fc" id="L103">        return teTransactionId;</span>
+    }
+
+    public void setTeTransactionId(String teTransactionId) {
+<span class="fc" id="L107">        this.teTransactionId = teTransactionId;</span>
+<span class="fc" id="L108">    }</span>
+
+    public long getMerchantId() {
+<span class="fc" id="L111">        return merchantId;</span>
+    }
+
+    public void setMerchantId(long merchantId) {
+<span class="fc" id="L115">        this.merchantId = merchantId;</span>
+<span class="fc" id="L116">    }</span>
+
+    public long getDeviceId() {
+<span class="fc" id="L119">        return deviceId;</span>
+    }
+
+    public void setDeviceId(long deviceId) {
+<span class="fc" id="L123">        this.deviceId = deviceId;</span>
+<span class="fc" id="L124">    }</span>
+
+    public String getOperatorId() {
+<span class="fc" id="L127">        return operatorId;</span>
+    }
+
+    public void setOperatorId(String operatorId) {
+<span class="fc" id="L131">        this.operatorId = operatorId;</span>
+<span class="fc" id="L132">    }</span>
+
+    public String getOwnerId() {
+<span class="fc" id="L135">        return ownerId;</span>
+    }
+
+    public void setOwnerId(String ownerId) {
+<span class="fc" id="L139">        this.ownerId = ownerId;</span>
+<span class="fc" id="L140">    }</span>
+
+    public int getOwnerType() {
+<span class="fc" id="L143">        return ownerType;</span>
+    }
+
+    public void setOwnerType(int ownerType) {
+<span class="fc" id="L147">        this.ownerType = ownerType;</span>
+<span class="fc" id="L148">    }</span>
+
+    public int getPaymentType() {
+<span class="fc" id="L151">        return paymentType;</span>
+    }
+
+    public void setPaymentType(int paymentType) {
+<span class="fc" id="L155">        this.paymentType = paymentType;</span>
+<span class="fc" id="L156">    }</span>
+
+    public int getTransactionType() {
+<span class="fc" id="L159">        return transactionType;</span>
+    }
+
+    public void setTransactionType(int transactionType) {
+<span class="fc" id="L163">        this.transactionType = transactionType;</span>
+<span class="fc" id="L164">    }</span>
+
+    public BigDecimal getTransactionAmount() {
+<span class="fc" id="L167">        return transactionAmount;</span>
+    }
+
+    public void setTransactionAmount(BigDecimal balanceAmount) {
+<span class="fc" id="L171">        this.transactionAmount = balanceAmount;</span>
+<span class="fc" id="L172">    }</span>
+
+    public BigDecimal getCommissionAmount() {
+<span class="fc" id="L175">        return commissionAmount;</span>
+    }
+
+    public void setCommissionAmount(BigDecimal commisionAmount) {
+<span class="fc" id="L179">        this.commissionAmount = commisionAmount;</span>
+<span class="fc" id="L180">    }</span>
+
+    public Timestamp getUpdateTime() {
+<span class="fc" id="L183">        return updateTime;</span>
+    }
+
+    public void setUpdateTime(Timestamp updateTime) {
+<span class="fc" id="L187">        this.updateTime = updateTime;</span>
+<span class="fc" id="L188">    }</span>
+
+    public BigDecimal getCommissionRate() {
+<span class="fc" id="L191">        return commissionRate;</span>
+    }
+
+    public void setCommissionRate(BigDecimal commisionRate) {
+<span class="fc" id="L195">        this.commissionRate = commisionRate;</span>
+<span class="fc" id="L196">    }</span>
+
+    public Timestamp getCreateTime() {
+<span class="fc" id="L199">        return createTime;</span>
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+<span class="fc" id="L203">        this.createTime = createTime;</span>
+<span class="fc" id="L204">    }</span>
+
+    public int getStatus() {
+<span class="fc" id="L207">        return status;</span>
+    }
+
+    public void setStatus(int status) {
+<span class="fc" id="L211">        this.status = status;</span>
+<span class="fc" id="L212">    }</span>
+
+    public String getGameId() {
+<span class="fc" id="L215">        return gameId;</span>
+    }
+
+    public void setGameId(String gameId) {
+<span class="fc" id="L219">        this.gameId = gameId;</span>
+<span class="fc" id="L220">    }</span>
+
+    public int getOriginalTransType() {
+<span class="fc" id="L223">        return originalTransType;</span>
+    }
+
+    public void setOriginalTransType(int originalTransType) {
+<span class="fc" id="L227">        this.originalTransType = originalTransType;</span>
+<span class="fc" id="L228">    }</span>
+
+    public Long getFromParentMerchantId() {
+<span class="nc" id="L231">        return fromParentMerchantId;</span>
+    }
+
+    public void setFromParentMerchantId(Long fromParentMerchantId) {
+<span class="fc" id="L235">        this.fromParentMerchantId = fromParentMerchantId;</span>
+<span class="fc" id="L236">    }</span>
+
+    public Long getToParentMerchantId() {
+<span class="nc" id="L239">        return toParentMerchantId;</span>
+    }
+
+    public void setToParentMerchantId(Long toParentMerchantId) {
+<span class="fc" id="L243">        this.toParentMerchantId = toParentMerchantId;</span>
+<span class="fc" id="L244">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

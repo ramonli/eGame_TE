@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MultipleSelectedNumberValidator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.sale.support.validator</a> &gt; <span class="el_source">MultipleSelectedNumberValidator.java</span></div><h1>MultipleSelectedNumberValidator.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.sale.support.validator;
+
+import com.mpos.lottery.te.common.util.Combination;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gamespec.sale.BaseEntry;
+import com.mpos.lottery.te.port.Context;
+
+public class MultipleSelectedNumberValidator extends AbstractSelectedNumberValidator {
+
+    public MultipleSelectedNumberValidator(String numberFormat) {
+<span class="fc" id="L12">        super(numberFormat);</span>
+<span class="fc" id="L13">    }</span>
+
+    @Override
+    protected void customValidateBefore(Context respCtx, BaseEntry entry) throws ApplicationException {
+<span class="fc bfc" id="L17" title="All 2 branches covered.">        if (!this.getOperationParam().isMultipleBetOptionSupported()) {</span>
+<span class="fc" id="L18">            throw new ApplicationException(SystemException.CODE_UNSUPPORTED_BETOPTION,</span>
+                    &quot;Unsupported bet option: multiple, it has been disabled in operation parameters.&quot;);
+        }
+<span class="fc" id="L21">    }</span>
+
+    @Override
+    protected void customValidateAfter(Context respCtx, BaseEntry entry, SelectedNumber sNumber)
+            throws ApplicationException {
+        // Make sure the selected number is a legal multiple numbers.
+<span class="fc" id="L27">        int baseNumbers[] = sNumber.getBaseNumbers();</span>
+<span class="fc" id="L28">        int k = this.getFunType().getK();</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (sNumber.getSpecialNumber() == null) {</span>
+<span class="pc bpc" id="L30" title="2 of 4 branches missed.">            if (baseNumbers.length &lt;= k || baseNumbers.length &gt; this.getFunType().getN()) {</span>
+<span class="nc" id="L31">                throw new ApplicationException(SystemException.CODE_WRONGFORMAT_SELECTEDNUMBER,</span>
+                        &quot;The count of base part of  multiple selected number of entry(number=&quot;
+                                + entry.getSelectNumber() + &quot;,serialNo=&quot; + entry.getTicketSerialNo() + &quot;,betOption=&quot;
+                                + entry.getBetOption() + &quot;) should be between &quot; + k + &quot; and &quot;
+                                + this.getFunType().getN());
+            }
+        } else {
+<span class="fc" id="L38">            boolean isLegalMultiple = false;</span>
+<span class="fc" id="L39">            int specialNumbers[] = sNumber.getSpecialNumbers();</span>
+<span class="fc" id="L40">            int x = this.getFunType().getX();</span>
+<span class="fc" id="L41">            int y = this.getFunType().getY();</span>
+<span class="pc bpc" id="L42" title="5 of 6 branches missed.">            if (baseNumbers.length == k &amp;&amp; (specialNumbers.length &gt; x &amp;&amp; specialNumbers.length &lt; y)) {</span>
+<span class="nc" id="L43">                isLegalMultiple = true;</span>
+            }
+<span class="pc bpc" id="L45" title="4 of 8 branches missed.">            if ((baseNumbers.length &gt; k &amp;&amp; baseNumbers.length &lt; this.getFunType().getN())</span>
+                    &amp;&amp; (specialNumbers.length &gt;= x &amp;&amp; specialNumbers.length &lt; y)) {
+<span class="fc" id="L47">                isLegalMultiple = true;</span>
+            }
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">            if (!isLegalMultiple) {</span>
+<span class="nc" id="L50">                throw new ApplicationException(SystemException.CODE_WRONGFORMAT_SELECTEDNUMBER,</span>
+                        &quot;The multiple selected number of entry(number=&quot; + entry.getSelectNumber() + &quot;,serialNo=&quot;
+                                + entry.getTicketSerialNo() + &quot;,betOption=&quot; + entry.getBetOption()
+                                + &quot;) should follow K/N[&quot; + k + &quot;/&quot; + this.getFunType().getN() + &quot;] and X/Y[&quot; + x + &quot;/&quot;
+                                + y + &quot;]&quot;);
+            }
+
+        }
+<span class="fc" id="L58">    }</span>
+
+    @Override
+    public long calTotalBets(BaseEntry entry) throws ApplicationException {
+<span class="fc" id="L62">        SelectedNumber sNumber = entry.parseSelectedNumber();</span>
+<span class="fc" id="L63">        int baseNumbers[] = sNumber.getBaseNumbers();</span>
+        // The previous shoudl guarantee that numbers.length&lt;funType.k
+<span class="fc" id="L65">        Combination c = new Combination(baseNumbers.length, this.getFunType().getK());</span>
+<span class="fc" id="L66">        long totalCount = c.getTotal().longValue();</span>
+
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (sNumber.getSpecialNumber() != null) {</span>
+<span class="fc" id="L69">            int specialNumbers[] = sNumber.getSpecialNumbers();</span>
+            // The previous shoudl guarantee that numbers.length&lt;funType.k
+<span class="fc" id="L71">            Combination sc = new Combination(specialNumbers.length, this.getFunType().getX());</span>
+<span class="fc" id="L72">            totalCount = totalCount * sc.getTotal().longValue();</span>
+        }
+<span class="fc" id="L74">        return totalCount;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

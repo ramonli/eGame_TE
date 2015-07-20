@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>InstantPrize.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.instantgame.domain</a> &gt; <span class="el_source">InstantPrize.java</span></div><h1>InstantPrize.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.instantgame.domain;
+
+import com.mpos.lottery.te.gameimpl.instantgame.domain.dto.PrizeLevelDto;
+
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
+@Entity(name = &quot;INSTANT_TICKET_PRIZE&quot;)
+<span class="nc" id="L16">public class InstantPrize {</span>
+    public static final int TYPE_CASH = 1; // cash
+    public static final int TYPE_INVENTORY = 2; // Get prize from a dedicated
+                                                // prize system.
+    @Id
+    @Column(name = &quot;ID&quot;)
+    private String id;
+
+    @Column(name = &quot;PRIZE_LEVEL&quot;)
+    private Integer prizeLevel;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;IG_GAME_INSTANCE_ID&quot;, nullable = false)
+    private InstantGameDraw gameDraw;
+
+<span class="nc" id="L31">    @Column(name = &quot;PRIZE_AMOUNT&quot;)</span>
+    private BigDecimal prizeAmount = new BigDecimal(&quot;0&quot;); // before tax
+
+<span class="nc" id="L34">    @Column(name = &quot;TAX_AMOUNT&quot;)</span>
+    private BigDecimal taxAmount = new BigDecimal(&quot;0&quot;);
+
+<span class="nc" id="L37">    @Column(name = &quot;ACTUAL_PAYOUT&quot;)</span>
+    private BigDecimal actualPayout = new BigDecimal(&quot;0&quot;); // after tax
+
+    @Column(name = &quot;PRIZE_DETAIL&quot;)
+    private String detail;
+
+    // refer to InstantVIRNPrize.prizeType
+    @Column(name = &quot;PRIZE_TYPE&quot;)
+    private String prizeType;
+
+    @Transient
+    private InstantVIRNPrize virnPrize;
+
+    /**
+     * To be compitable with VIRN, and avoid changing the interface of ValidationStrategy, new field 'instantPrize' is
+     * introduced. Actually InstantPrize has been deprecated, the underlying table 'instant_ticket_prize' has been
+     * dropped too.
+     */
+    @Transient
+    private PrizeLevelDto instantPayoutDto;
+
+    public String getId() {
+<span class="nc" id="L59">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="nc" id="L63">        this.id = id;</span>
+<span class="nc" id="L64">    }</span>
+
+    public Integer getPrizeLevel() {
+<span class="nc" id="L67">        return prizeLevel;</span>
+    }
+
+    public void setPrizeLevel(Integer prizeLevel) {
+<span class="nc" id="L71">        this.prizeLevel = prizeLevel;</span>
+<span class="nc" id="L72">    }</span>
+
+    public InstantGameDraw getGameDraw() {
+<span class="nc" id="L75">        return gameDraw;</span>
+    }
+
+    public void setGameDraw(InstantGameDraw gameDraw) {
+<span class="nc" id="L79">        this.gameDraw = gameDraw;</span>
+<span class="nc" id="L80">    }</span>
+
+    public String getDetail() {
+<span class="nc" id="L83">        return detail;</span>
+    }
+
+    public void setDetail(String detail) {
+<span class="nc" id="L87">        this.detail = detail;</span>
+<span class="nc" id="L88">    }</span>
+
+    public BigDecimal getPrizeAmount() {
+<span class="nc" id="L91">        return prizeAmount;</span>
+    }
+
+    public void setPrizeAmount(BigDecimal prizeAmount) {
+<span class="nc" id="L95">        this.prizeAmount = prizeAmount;</span>
+<span class="nc" id="L96">    }</span>
+
+    public BigDecimal getTaxAmount() {
+<span class="nc" id="L99">        return taxAmount;</span>
+    }
+
+    public void setTaxAmount(BigDecimal taxAmount) {
+<span class="nc" id="L103">        this.taxAmount = taxAmount;</span>
+<span class="nc" id="L104">    }</span>
+
+    public BigDecimal getActualPayout() {
+<span class="nc" id="L107">        return actualPayout;</span>
+    }
+
+    public void setActualPayout(BigDecimal actualPayout) {
+<span class="nc" id="L111">        this.actualPayout = actualPayout;</span>
+<span class="nc" id="L112">    }</span>
+
+    public InstantVIRNPrize getVirnPrize() {
+<span class="nc" id="L115">        return virnPrize;</span>
+    }
+
+    public void setVirnPrize(InstantVIRNPrize virnPrize) {
+<span class="nc" id="L119">        this.virnPrize = virnPrize;</span>
+<span class="nc" id="L120">    }</span>
+
+    public String getPrizeType() {
+<span class="nc" id="L123">        return prizeType;</span>
+    }
+
+    public void setPrizeType(String prizeType) {
+<span class="nc" id="L127">        this.prizeType = prizeType;</span>
+<span class="nc" id="L128">    }</span>
+
+    public PrizeLevelDto getInstantPayoutDto() {
+<span class="nc" id="L131">        return instantPayoutDto;</span>
+    }
+
+    public void setInstantPayoutDto(PrizeLevelDto instantPrize) {
+<span class="nc" id="L135">        this.instantPayoutDto = instantPrize;</span>
+<span class="nc" id="L136">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

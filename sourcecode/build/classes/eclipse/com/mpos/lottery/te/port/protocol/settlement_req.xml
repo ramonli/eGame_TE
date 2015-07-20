@@ -1,0 +1,19 @@
+<Settlement afterBatchOfUpload="1">
+	<Payout numberOfTrans="10" totalAmount="12000.0" />
+	<InstantSale numberOfTrans="10" />
+	<Validation numberOfTrans="5" />
+	<SettlementDraw>
+		<GameDraw gameId="123089sdf" number="2009001" />
+		<SettlementItem transType="200" numberOfTrans="1"
+			totalAmount="15.0" />
+		<SettlementItem transType="201" numberOfTrans="1"
+			totalAmount="15.0" />
+	</SettlementDraw>
+	<SettlementDraw>
+		<GameDraw gameId="123089sdf" number="2009031601" />
+		<SettlementItem transType="200" numberOfTrans="1000"
+			totalAmount="2000.0" />
+		<SettlementItem transType="302" numberOfTrans="3"
+			totalAmount="3000.0" />
+	</SettlementDraw>
+</Settlement>

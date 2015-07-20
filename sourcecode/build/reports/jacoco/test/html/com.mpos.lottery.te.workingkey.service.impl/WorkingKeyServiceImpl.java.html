@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>WorkingKeyServiceImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.workingkey.service.impl</a> &gt; <span class="el_source">WorkingKeyServiceImpl.java</span></div><h1>WorkingKeyServiceImpl.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.workingkey.service.impl;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.common.encrypt.HMacMd5Cipher;
+import com.mpos.lottery.te.common.encrypt.TriperDESCipher;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.sequence.service.UUIDService;
+import com.mpos.lottery.te.workingkey.dao.WorkingKeyDao;
+import com.mpos.lottery.te.workingkey.domain.Gpe;
+import com.mpos.lottery.te.workingkey.domain.WorkingKey;
+import com.mpos.lottery.te.workingkey.service.WorkingKeyService;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+<span class="fc" id="L17">public class WorkingKeyServiceImpl implements WorkingKeyService {</span>
+<span class="fc" id="L18">    private Log logger = LogFactory.getLog(WorkingKeyServiceImpl.class);</span>
+    private WorkingKeyDao workingKeyDao;
+    private BaseJpaDao gpeDao;
+    private UUIDService uuidManager;
+
+    /**
+     * Fetch working key according to the GPE and current date, if no, generate it. DataKey is a 3DES secret key, which
+     * size is 24 bytes, and will be converted into base64 string. Also MACKey is HMacMd5 secret key, which size is 24
+     * bytes, and will be converted into base64 string.
+     * 
+     * NOTE: must announced this service as &lt;code&gt;synchronized&lt;/code&gt;, otherwise may generate multiple GPE keys for
+     * single GPE client of same day due to un-repeated read.
+     * 
+     * @see WorkingKeyService#fetchWorkingKey(String)
+     */
+    public synchronized WorkingKey fetchWorkingKey(String gpeId) throws ApplicationException {
+<span class="fc" id="L34">        String createDateStr = WorkingKey.getCurrentDateStr();</span>
+        // check whether the GPE exist
+<span class="fc" id="L36">        this.getGpe(gpeId);</span>
+<span class="fc" id="L37">        WorkingKey key = this.getWorkingKeyDao().getWorkingKey(createDateStr, gpeId);</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if (key == null) {</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L40">                logger.debug(&quot;can NOT find WorkingKey(gpeId=&quot; + gpeId + &quot;,createDateStr=&quot; + createDateStr</span>
+                        + &quot;), start to generate it.&quot;);
+            }
+            // generate working key
+<span class="nc" id="L44">            key = this.generateWorkingKey(gpeId);</span>
+<span class="nc" id="L45">            key.setCreateDateStr(createDateStr);</span>
+<span class="nc" id="L46">            this.getWorkingKeyDao().insert(key);</span>
+        }
+<span class="pc bpc" id="L48" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L49">            logger.debug(&quot;Got working key for GPE(id=&quot; + gpeId + &quot;) : &lt;DataKey&gt;&quot; + key.getDataKey()</span>
+                    + &quot;&lt;/DataKey&gt;&lt;MACKey&gt;&quot; + key.getMacKey() + &quot;&lt;/MACKey&gt;&quot;);
+        }
+        // just return it.
+<span class="fc" id="L53">        return key;</span>
+    }
+
+    /**
+     * @see WorkingKeyService#getGpe(String).
+     */
+    public Gpe getGpe(String id) throws ApplicationException {
+<span class="fc" id="L60">        Gpe gpe = this.getGpeDao().findById(Gpe.class, id);</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">        if (gpe == null) {</span>
+<span class="nc" id="L62">            throw new ApplicationException(SystemException.CODE_GPE_NOTEXIST, &quot;can NOT find GPE(id=&quot; + id + &quot;).&quot;);</span>
+        }
+<span class="fc" id="L64">        return gpe;</span>
+    }
+
+    @Override
+    public void checkAlive() throws ApplicationException {
+        try {
+<span class="nc" id="L70">            this.getGpeDao().all(Gpe.class);</span>
+<span class="nc" id="L71">        } catch (Exception e) {</span>
+<span class="nc" id="L72">            logger.warn(e);</span>
+<span class="nc" id="L73">            throw new ApplicationException(SystemException.CODE_INTERNAL_SERVER_ERROR, &quot;internal error&quot;);</span>
+<span class="nc" id="L74">        }</span>
+<span class="nc" id="L75">    }</span>
+
+    // --------------------------------------------------
+    // PRIVATE METHODS
+    // --------------------------------------------------
+
+    /**
+     * Generate a new working key for GPE.
+     */
+    private WorkingKey generateWorkingKey(String gpeId) {
+<span class="nc" id="L85">        WorkingKey key = new WorkingKey();</span>
+        try {
+<span class="nc" id="L87">            String macKey = HMacMd5Cipher.generateMACKey();</span>
+<span class="nc" id="L88">            String dataKey = TriperDESCipher.generateDataKey();</span>
+<span class="nc" id="L89">            key.setId(this.getUuidManager().getGeneralID());</span>
+<span class="nc" id="L90">            key.setGpeId(gpeId);</span>
+<span class="nc" id="L91">            key.setDataKey(dataKey);</span>
+<span class="nc" id="L92">            key.setMacKey(macKey);</span>
+<span class="nc" id="L93">            return key;</span>
+<span class="nc" id="L94">        } catch (Exception e) {</span>
+<span class="nc" id="L95">            throw new SystemException(e);</span>
+        }
+    }
+
+    // --------------------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // --------------------------------------------------
+    public WorkingKeyDao getWorkingKeyDao() {
+<span class="fc" id="L103">        return workingKeyDao;</span>
+    }
+
+    public void setWorkingKeyDao(WorkingKeyDao workingKeyDao) {
+<span class="fc" id="L107">        this.workingKeyDao = workingKeyDao;</span>
+<span class="fc" id="L108">    }</span>
+
+    public BaseJpaDao getGpeDao() {
+<span class="fc" id="L111">        return gpeDao;</span>
+    }
+
+    public void setGpeDao(BaseJpaDao gpeDao) {
+<span class="fc" id="L115">        this.gpeDao = gpeDao;</span>
+<span class="fc" id="L116">    }</span>
+
+    public UUIDService getUuidManager() {
+<span class="nc" id="L119">        return uuidManager;</span>
+    }
+
+    public void setUuidManager(UUIDService uuidManager) {
+<span class="fc" id="L123">        this.uuidManager = uuidManager;</span>
+<span class="fc" id="L124">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

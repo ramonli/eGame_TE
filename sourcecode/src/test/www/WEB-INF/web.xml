@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="Clinic4j" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+	<display-name>M.Lottery-PlayerAccount</display-name>
+
+    <!-- listener>
+        <listener-class>com.mpos.lottery.thirdparty.playeraccount.Log4jContextListener</listener-class>
+    </listener -->
+
+	<!-- ================================================== -->
+	<!-- SERVLET DEFINITION ............................... -->
+	<!-- ================================================== -->
+	<servlet>
+		<display-name>PlayerAccountPortServlet</display-name>
+		<servlet-name>PlayerAccountPortServlet</servlet-name>
+		<servlet-class>com.mpos.lottery.playeraccount.PlayerAccountPortServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PlayerAccountPortServlet</servlet-name>
+		<url-pattern>/pa/*</url-pattern>
+	</servlet-mapping>
+	
+    <servlet>
+        <display-name>CoobillPortServlet</display-name>
+        <servlet-name>CoobillPortServlet</servlet-name>
+        <servlet-class>com.mpos.lottery.te.valueaddservice.airtime.spi.coobill.CoobillPortServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CoobillPortServlet</servlet-name>
+        <url-pattern>/cb/*</url-pattern>
+    </servlet-mapping>	
+
+    <servlet>
+        <display-name>SmartPortServlet</display-name>
+        <servlet-name>SmartPortServlet</servlet-name>
+        <servlet-class>com.mpos.lottery.te.valueaddservice.airtime.spi.coobill.SmartPortServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SmartPortServlet</servlet-name>
+        <url-pattern>/smart/*</url-pattern>
+    </servlet-mapping>      
+
+</web-app>

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BaseJpaDao.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.common.dao</a> &gt; <span class="el_source">BaseJpaDao.java</span></div><h1>BaseJpaDao.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.common.dao;
+
+import com.jolbox.bonecp.ConnectionHandle;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.jdbc.datasource.DataSourceUtils;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
+import javax.persistence.NoResultException;
+import javax.persistence.NonUniqueResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.sql.DataSource;
+
+/**
+ * Multiple entities which inherit from same superclass, each entity will maps to different table.
+ * &lt;p/&gt;
+ * The &lt;code&gt;JpaDaoSupport&lt;/code&gt; of Spring has been deprecated since Springv4.0, the recommended way of coding JPA is
+ * depending on &lt;code&gt;EntityManager&lt;/code&gt; directly.
+ */
+<span class="fc" id="L33">public class BaseJpaDao implements DAO {</span>
+    /**
+     * The injected entity manager is a shared, thread-safe proxy for the actual transactional EntityManager.
+     */
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    /**
+     * Sometimes some DAO implementation needs to access underlying database connection directly, the helper class
+     * &lt;code&gt;DataSourceUtils.getConnction(ds:DataSource)&lt;/code&gt; can help.
+     */
+    private DataSource dataSource;
+<span class="fc" id="L45">    protected Log logger = LogFactory.getLog(BaseJpaDao.class);</span>
+
+    public EntityManager getEntityManager() {
+<span class="fc" id="L48">        return entityManager;</span>
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+<span class="nc" id="L52">        this.entityManager = entityManager;</span>
+<span class="nc" id="L53">    }</span>
+
+    @Override
+    public void insert(Object entity) {
+<span class="fc" id="L57">        this.getEntityManager().persist(entity);</span>
+<span class="fc" id="L58">    }</span>
+
+    @Override
+    public void insert(List entities) {
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        for (Object entity : entities) {</span>
+<span class="fc" id="L63">            this.insert(entity);</span>
+<span class="fc" id="L64">        }</span>
+<span class="fc" id="L65">    }</span>
+
+    @Override
+    public void update(Object entity) {
+<span class="fc" id="L69">        this.getEntityManager().merge(entity);</span>
+<span class="fc" id="L70">    }</span>
+
+    @Override
+    public void update(List entities) {
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        for (Object entity : entities) {</span>
+<span class="fc" id="L75">            this.update(entity);</span>
+<span class="fc" id="L76">        }</span>
+<span class="fc" id="L77">    }</span>
+
+    @Override
+    public &lt;T&gt; T findById(Class&lt;T&gt; clazz, Object id) {
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">        if (id == null) {</span>
+<span class="nc" id="L82">            throw new IllegalArgumentException(&quot;Argument 'id' can NOT be null(id=&quot; + id + &quot;,clazz=&quot; + clazz + &quot;).&quot;);</span>
+        }
+<span class="fc" id="L84">        return this.findById(clazz, id, true);</span>
+    }
+
+    /**
+     * Find entity by id. null will be returned if no found.
+     */
+    @Override
+    public &lt;T&gt; T findById(Class&lt;T&gt; clazz, Object id, LockModeType lockType) {
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (id == null) {</span>
+<span class="nc" id="L93">            throw new IllegalArgumentException(&quot;Argument 'id' can NOT be null(id=&quot; + id + &quot;,clazz=&quot; + clazz + &quot;).&quot;);</span>
+        }
+<span class="nc" id="L95">        return this.getEntityManager().find(clazz, id, lockType);</span>
+    }
+
+    @Override
+    public &lt;T&gt; T findById(Class&lt;T&gt; clazz, Object id, boolean allowNull) {
+<span class="fc" id="L100">        T entity = this.getEntityManager().find(clazz, id);</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        if (entity == null) {</span>
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">            if (!allowNull) {</span>
+<span class="nc" id="L103">                throw new DataIntegrityViolationException(&quot;No entity(&quot; + clazz + &quot;) found by id(&quot; + id + &quot;).&quot;);</span>
+            }
+        }
+<span class="fc" id="L106">        return entity;</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    @Override
+    public &lt;T&gt; List&lt;T&gt; all(Class&lt;T&gt; entityClass) {
+<span class="fc" id="L112">        Query query = this.getEntityManager().createQuery(&quot;from &quot; + entityClass.getCanonicalName());</span>
+<span class="fc" id="L113">        return query.getResultList();</span>
+    }
+
+    @Override
+    public &lt;T&gt; T single(Class&lt;T&gt; entityClass) {
+<span class="fc" id="L118">        List&lt;T&gt; entities = this.all(entityClass);</span>
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (entities.size() == 0) {</span>
+<span class="nc" id="L120">            throw new DataIntegrityViolationException(&quot;No entity found(&quot; + entityClass + &quot;).&quot;);</span>
+        }
+<span class="fc" id="L122">        return entities.get(0);</span>
+    }
+
+    /**
+     * Return single entity from multiple entities. The JPA interface always return a list of entities, however in some
+     * cases, we do want only one entity returned, this method will return the 1st entity in the list.
+     * 
+     * @param entities
+     *            The list of entities.
+     * @param allowMultiple
+     *            Whether there are multiple entities allowed when a querying criteria given. If true, this method will
+     *            return the 1sts entity, if false, a &lt;code&gt;DataIntegrityViolationException&lt;/code&gt; will be thrown out.
+     * @return the 1st entity or null if no entities at all.
+     */
+    protected &lt;T&gt; T single(List&lt;T&gt; entities, boolean allowMultiple) {
+<span class="fc" id="L137">        T result = null;</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">        if (entities.size() &gt; 1) {</span>
+<span class="fc" id="L139">            String msg = &quot;Should be at most only 1 entity(&quot; + entities.get(0).getClass().getCanonicalName()</span>
+                    + &quot;) found, however total &quot; + entities.size() + &quot; entities found.&quot;;
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">            if (allowMultiple) {</span>
+<span class="fc" id="L142">                result = entities.get(0);</span>
+<span class="fc" id="L143">                logger.warn(msg + &quot;.. the 1st entity(&quot; + result + &quot;) will be returned.&quot;);</span>
+            } else {
+<span class="nc" id="L145">                throw new DataIntegrityViolationException(msg);</span>
+            }
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        } else if (entities.size() == 1) {</span>
+<span class="fc" id="L148">            result = entities.get(0);</span>
+        }
+<span class="fc" id="L150">        return result;</span>
+    }
+
+    // ------------------------------------------------------------
+    // HELPER METHODS
+    // ------------------------------------------------------------
+
+    protected String getEntityName(Class&lt;? extends VersionEntity&gt; clazz) {
+<span class="nc bnc" id="L158" title="All 2 branches missed.">        if (clazz == null) {</span>
+<span class="nc" id="L159">            throw new IllegalArgumentException(&quot;argument 'clazz' can't be null.&quot;);</span>
+        }
+<span class="nc" id="L161">        return clazz.getCanonicalName();</span>
+    }
+
+    /**
+     * Only single result should be found by the querying criteria.
+     * 
+     * @param sql
+     *            The querying SQL.
+     * @param params
+     *            The parameter of querying.
+     * @return a single result, or null if no result found.
+     * @throws DataIntegrityViolationException
+     *             if found multiple results.
+     */
+    protected Object findSingleByNamedParams(String sql, Map&lt;String, Object&gt; params) {
+        // List result = this.findByNamedParams(sql, params);
+        // return single(result, false);
+<span class="fc" id="L178">        Query query = this.assembleQueryParameter(sql, params);</span>
+        try {
+<span class="fc" id="L180">            return query.getSingleResult();</span>
+<span class="fc" id="L181">        } catch (NoResultException e) {</span>
+<span class="fc" id="L182">            return null;</span>
+<span class="nc" id="L183">        } catch (NonUniqueResultException e) {</span>
+<span class="nc" id="L184">            throw new DataIntegrityViolationException(e.getMessage());</span>
+        }
+    }
+
+    /**
+     * Only single result should be returned if multiple or a single result found.
+     * 
+     * @param sql
+     *            The querying sql.
+     * @param params
+     *            The parameter of querying.
+     * @return a single result, or null if no result found.
+     * @throws DataIntegrityViolationException
+     *             if found multiple results and no allowing multiple entities.
+     */
+    protected Object findSingleFromListByNamedParams(String sql, Map&lt;String, Object&gt; params) {
+<span class="fc" id="L200">        List result = this.findByNamedParams(sql, params, 1);</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        if (result.size() &gt; 0) {</span>
+<span class="fc" id="L202">            return result.get(0);</span>
+        }
+<span class="fc" id="L204">        return null;</span>
+    }
+
+    /**
+     * Simulate the convenient method &lt;code&gt;findByNamedParams&lt;/code&gt; of Spring &lt;code&gt;LJpaDaoSupport&lt;/code&gt; which has
+     * been deprecated since Spring v4.x.
+     * 
+     * @param sql
+     *            The JPQL.
+     * @param params
+     *            THe parameters map of JPQL.
+     * @param maxResult
+     *            The max count of returned result. If wanna a single result, simply set it to 1(the official JPA API,
+     *            Query.getSingleResult() will throw &lt;code&gt;NonUniqueResultException&lt;/code&gt; if multiple result found.
+     */
+    protected List findByNamedParams(String sql, Map&lt;String, Object&gt; params, int maxResult) {
+<span class="fc" id="L220">        Query query = this.assembleQueryParameter(sql, params);</span>
+<span class="fc" id="L221">        query.setMaxResults(maxResult);</span>
+<span class="fc" id="L222">        return query.getResultList();</span>
+    }
+
+    protected List findByNamedParams(String sql, Map&lt;String, Object&gt; params) {
+<span class="fc" id="L226">        return this.findByNamedParams(sql, params, Integer.MAX_VALUE);</span>
+    }
+
+    protected Query assembleQueryParameter(String sql, Map&lt;String, Object&gt; params) {
+<span class="fc" id="L230">        Query query = this.getEntityManager().createQuery(sql);</span>
+<span class="fc" id="L231">        Iterator&lt;String&gt; keyIt = params.keySet().iterator();</span>
+<span class="fc bfc" id="L232" title="All 2 branches covered.">        while (keyIt.hasNext()) {</span>
+<span class="fc" id="L233">            String paramName = keyIt.next();</span>
+<span class="fc" id="L234">            query.setParameter(paramName, params.get(paramName));</span>
+<span class="fc" id="L235">        }</span>
+<span class="fc" id="L236">        return query;</span>
+    }
+
+    /**
+     * Query a result list by given raw SQL.
+     */
+    protected final List queryList(String nativeSql, JdbcQueryCallback callback) {
+        /**
+         * NOTE: Strange!! in my understanding no matter get connection by DataSourceUtils or Hibernate's
+         * JdbcConnectionAccess, the same connection should be returned. However they are different, to guarantee all
+         * operations are performed under same transaction, we must use DataSourceUtils to get connection if you want
+         * database connection directly.
+         */
+        // SessionImpl o = (SessionImpl) this.getEntityManager().getDelegate();
+        // ConnectionHandle conn = (ConnectionHandle)
+        // o.getJdbcConnectionAccess().obtainConnection();
+        // logger.debug(&quot;Retrieve database connection: &quot; + conn);
+        // logger.debug(&quot;Retrieve database connection: &quot; +
+        // conn.getInternalConnection());
+
+<span class="fc" id="L256">        Connection conn = DataSourceUtils.getConnection(this.getDataSource());</span>
+<span class="fc" id="L257">        logger.debug(&quot;Retrieve database connection: &quot; + ((ConnectionHandle) conn).getInternalConnection());</span>
+        try {
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">            if (logger.isTraceEnabled()) {</span>
+<span class="nc" id="L260">                logger.trace(&quot;Get a connection:&quot; + conn + &quot; from current transaction context.&quot;);</span>
+            }
+<span class="fc" id="L262">            PreparedStatement ps = conn.prepareStatement(nativeSql);</span>
+<span class="fc" id="L263">            callback.setParameter(ps);</span>
+<span class="fc" id="L264">            ResultSet rs = ps.executeQuery();</span>
+<span class="fc" id="L265">            List result = new ArrayList();</span>
+<span class="fc bfc" id="L266" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L267">                Object o = callback.objectFromRow(rs);</span>
+<span class="pc bpc" id="L268" title="1 of 2 branches missed.">                if (o != null) {</span>
+<span class="fc" id="L269">                    result.add(o);</span>
+                }
+<span class="fc" id="L271">            }</span>
+
+            // Due to we get connection from current entity manager, the
+            // transaction will be managed by entity manager.
+            // conn.commit();
+<span class="fc" id="L276">            rs.close();</span>
+<span class="fc" id="L277">            ps.close();</span>
+
+<span class="fc" id="L279">            return result;</span>
+<span class="nc" id="L280">        } catch (SQLException e) {</span>
+<span class="nc" id="L281">            throw new RuntimeException(e.getMessage(), e);</span>
+        } finally {
+<span class="pc" id="L283">            DataSourceUtils.releaseConnection(conn, this.getDataSource());</span>
+        }
+    }
+
+    /**
+     * Batch operation of native SQL.
+     */
+    protected void batch(BatchCallback batchCallback) {
+        // we must get the connection from current entity manager, otherwise
+        // all data manipulation will be executed in a new transaction
+<span class="nc" id="L293">        Connection conn = DataSourceUtils.getConnection(this.getDataSource());</span>
+<span class="nc" id="L294">        logger.debug(&quot;Retrieve database connection: &quot; + ((ConnectionHandle) conn).getInternalConnection());</span>
+        try {
+<span class="nc bnc" id="L296" title="All 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L297">                logger.debug(&quot;Get a connection:&quot; + conn + &quot; from current transaction context.&quot;);</span>
+            }
+<span class="nc" id="L299">            PreparedStatement ps = conn.prepareStatement(batchCallback.getQuery());</span>
+<span class="nc" id="L300">            batchCallback.assembleParameters(ps);</span>
+<span class="nc" id="L301">            ps.executeBatch();</span>
+<span class="nc" id="L302">            ps.close();</span>
+<span class="nc" id="L303">        } catch (SQLException e) {</span>
+<span class="nc" id="L304">            throw new RuntimeException(e.getMessage(), e);</span>
+        } finally {
+<span class="nc" id="L306">            DataSourceUtils.releaseConnection(conn, this.getDataSource());</span>
+<span class="nc" id="L307">        }</span>
+<span class="nc" id="L308">    }</span>
+
+    public DataSource getDataSource() {
+<span class="fc" id="L311">        return dataSource;</span>
+    }
+
+    public void setDataSource(DataSource dataSource) {
+<span class="fc" id="L315">        this.dataSource = dataSource;</span>
+<span class="fc" id="L316">    }</span>
+
+<span class="fc" id="L318">    public static abstract class JdbcQueryCallback {</span>
+
+        /**
+         * Set parameters to prepared statement.
+         */
+        public abstract void setParameter(PreparedStatement ps) throws SQLException;
+
+        /**
+         * Assemble a object from current result set row.
+         */
+        public abstract Object objectFromRow(ResultSet rs) throws SQLException;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

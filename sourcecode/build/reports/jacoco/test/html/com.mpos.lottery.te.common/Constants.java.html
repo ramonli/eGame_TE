@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Constants.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.common</a> &gt; <span class="el_source">Constants.java</span></div><h1>Constants.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.common;
+
+import com.mpos.lottery.te.gamespec.game.Game;
+
+<span class="nc" id="L5">public class Constants {</span>
+    /** * ID for game Type[lotto]. */
+<span class="fc" id="L7">    public static final int GAME_TYPE_LOTTO = Game.TYPE_LOTT;</span>
+
+    /** * ID for game Type[soccer]. */
+<span class="fc" id="L10">    public static final int GAME_TYPE_SOCCER = Game.TYPE_SOCCER;</span>
+
+    /** * ID for game Type[racing]. */
+<span class="fc" id="L13">    public static final int GAME_TYPE_HORSE_RACING = Game.TYPE_RACING;</span>
+
+    /** * ID for game Type[instant]. */
+<span class="fc" id="L16">    public static final int GAME_TYPE_INSTANT_GAME = Game.TYPE_INSTANT;</span>
+
+    /** * ID for game Type[toto]. */
+<span class="fc" id="L19">    public static final int GAME_TYPE_TOTO = Game.TYPE_TOTO;</span>
+
+    /** * ID for game Type[bingo]. */
+<span class="fc" id="L22">    public static final int GAME_TYPE_BINGO = Game.TYPE_BINGO;</span>
+
+    /** common game type. */
+<span class="fc" id="L25">    public static final int COMMON_GAME_TYPE = Game.TYPE_UNDEF;</span>
+
+    /** Invalid. */
+    public static final int STATUS_INVALID = 0;
+
+    /** Accepted. */
+    public static final int STATUS_ACCEPTED = 1;
+
+    /** Canceled. */
+    public static final int STATUS_CANCELED = 2;
+
+    /** Returned. */
+    public static final int STATUS_RETURNED = 3;
+
+    /** cancel declined. */
+    public static final int STATUS_CANCEL_DECLINED = 4;
+
+    /** Payed. */
+    public static final int STATUS_PAYED = 5;
+
+    /** ticket already settlement flag. * */
+    public static final int TICKET_SETTLEMENT_FLAG_YES = 5;
+
+    /** ticket not settlement flag. * */
+    public static final int TICKET_SETTLEMENT_FLAG_NO = 0;
+
+    public static final int ZERO_CONSTANT = 0;
+
+    public static final int ONE_CONSTANT = 1;
+
+    public static final int TWO_CONSTANT = 2;
+
+    public static final int THREE_CONSTANT = 3;
+
+    /** 4D game selected number flag. */
+    public static final String FOUR_DIGIT_FLAG = &quot;X&quot;;
+
+    /**
+     * if lience check is false then check hasp,else check lience[lience = true; hasp = false].
+     */
+    public static final boolean LIENCE_CHECK = false;
+
+    public static final String VERSION_OLD = &quot;1.4&quot;;
+    public static final String VERSION_NEW = &quot;1.5&quot;;
+    public static final int YES = 1;
+    public static final int NO = 0;
+
+    public static final int DESTINATION_TRANSTYPE_PREFIX = 9999;
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

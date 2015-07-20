@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PayoutDaoImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.prize.dao.jpa</a> &gt; <span class="el_source">PayoutDaoImpl.java</span></div><h1>PayoutDaoImpl.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.prize.dao.jpa;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.gamespec.prize.Payout;
+import com.mpos.lottery.te.gamespec.prize.dao.PayoutDao;
+import com.mpos.lottery.te.merchant.dao.ActivityReportDao;
+import com.mpos.lottery.te.merchant.web.ActivityReport;
+import com.mpos.lottery.te.merchant.web.ActivityReportItem;
+import com.mpos.lottery.te.merchant.web.DailyActivityReport;
+import com.mpos.lottery.te.trans.domain.Transaction;
+import com.mpos.lottery.te.trans.domain.TransactionType;
+
+import org.springframework.dao.DataAccessException;
+
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Query;
+
+<span class="fc" id="L24">public class PayoutDaoImpl extends BaseJpaDao implements PayoutDao, ActivityReportDao {</span>
+    @Override
+    public List&lt;Payout&gt; getByTicketSerialNo(String ticketSerialNo) throws DataAccessException {
+<span class="fc" id="L27">        Map params = new HashMap(0);</span>
+<span class="fc" id="L28">        params.put(&quot;ticketSerialNo&quot;, ticketSerialNo);</span>
+<span class="fc" id="L29">        return this.findByNamedParams(&quot;from Payout p where p.ticketSerialNo=:ticketSerialNo&quot;, params);</span>
+    }
+
+    @Override
+    public List&lt;Payout&gt; getByTicketSerialNoAndStatus(String ticketSerialNo, int status) throws DataAccessException {
+<span class="fc" id="L34">        Map params = new HashMap(0);</span>
+<span class="fc" id="L35">        params.put(&quot;ticketSerialNo&quot;, ticketSerialNo);</span>
+<span class="fc" id="L36">        params.put(&quot;status&quot;, status);</span>
+<span class="fc" id="L37">        return this.findByNamedParams(&quot;from Payout p where &quot;</span>
+                + &quot;p.ticketSerialNo=:ticketSerialNo and p.status=:status order by p.id&quot;, params);
+    }
+
+    @Override
+    public List&lt;Payout&gt; getByTransactionAndStatus(String transactionId, int status) throws DataAccessException {
+<span class="fc" id="L43">        Transaction trans = this.getEntityManager().getReference(Transaction.class, transactionId);</span>
+<span class="fc" id="L44">        Map params = new HashMap(0);</span>
+<span class="fc" id="L45">        params.put(&quot;transaction&quot;, trans);</span>
+<span class="fc" id="L46">        params.put(&quot;status&quot;, status);</span>
+<span class="fc" id="L47">        return this.findByNamedParams(&quot;from Payout p where p.transaction=:transaction and p.status=:status&quot;, params);</span>
+    }
+
+    @Override
+    public List&lt;Payout&gt; getByTransactionAndTicketAndStatus(String transactionId, String ticketSerialNo, int status)
+            throws DataAccessException {
+<span class="nc" id="L53">        Transaction trans = this.getEntityManager().getReference(Transaction.class, transactionId);</span>
+<span class="nc" id="L54">        Map params = new HashMap(0);</span>
+<span class="nc" id="L55">        params.put(&quot;transaction&quot;, trans);</span>
+<span class="nc" id="L56">        params.put(&quot;ticketSerialNo&quot;, ticketSerialNo);</span>
+<span class="nc" id="L57">        params.put(&quot;status&quot;, status);</span>
+<span class="nc" id="L58">        return this.findByNamedParams(&quot;from Payout p where  p.transaction=:transaction &quot;</span>
+                + &quot;and p.ticketSerialNo=:ticketSerialNo and p.status=:status&quot;, params);
+    }
+
+    @SuppressWarnings(&quot;deprecation&quot;)
+    @Override
+    public List&lt;DailyActivityReport&gt; findActivityReport(String operatorId, Date startTime, Date endTime) {
+<span class="fc" id="L65">        String strStartTime = new SimpleDateFormat(&quot;yyyyMMddHHmmss&quot;).format(startTime);</span>
+<span class="fc" id="L66">        String strEndTime = new SimpleDateFormat(&quot;yyyyMMddHHmmss&quot;).format(endTime);</span>
+
+<span class="fc" id="L68">        final String sql = &quot;select a.UPDATE_DATE,COUNT(DISTINCT(a.TICKET_SERIALNO)),SUM(a.PRIZE_AMOUNT),&quot;</span>
+                + &quot;SUM(a.TAX_AMOUNT) from (SELECT TO_CHAR(p.UPDATE_TIME,'YYYYMMDD') AS UPDATE_DATE, &quot;
+                + &quot;p.TOTAL_AMOUNT_B4_TAX as PRIZE_AMOUNT, (p.TOTAL_AMOUNT_B4_TAX-p.TOTAL_AMOUNT) as TAX_AMOUNT,&quot;
+                + &quot;p.TICKET_SERIALNO FROM PAYOUT p  WHERE p.OPERATOR_ID=:operatorId AND p.STATUS=:status &quot;
+                + &quot;AND (p.UPDATE_TIME between to_date('&quot; + strStartTime + &quot;','YYYYMMDDHH24MISS') and to_date('&quot;
+                + strEndTime + &quot;','YYYYMMDDHH24MISS'))) a GROUP BY a.UPDATE_DATE&quot;;
+
+<span class="fc" id="L75">        final Map&lt;String, Object&gt; params = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L76">        params.put(&quot;operatorId&quot;, operatorId);</span>
+<span class="fc" id="L77">        params.put(&quot;status&quot;, Payout.STATUS_PAID);</span>
+
+        // execute query
+<span class="fc" id="L80">        Query query = this.getEntityManager().createNativeQuery(sql);</span>
+        // set parameters
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        for (Map.Entry&lt;String, Object&gt; entry : params.entrySet()) {</span>
+<span class="fc" id="L83">            query.setParameter(entry.getKey(), entry.getValue());</span>
+<span class="fc" id="L84">        }</span>
+
+<span class="fc" id="L86">        List rows = query.getResultList();</span>
+<span class="fc" id="L87">        ActivityReport activityReport = new ActivityReport();</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        for (Object row : rows) {</span>
+<span class="fc" id="L89">            Object[] columns = (Object[]) row;</span>
+            // assemble activity report.
+<span class="fc" id="L91">            String date = (String) columns[0];</span>
+<span class="fc" id="L92">            DailyActivityReport gameReport = activityReport.getReportByDate(date, true);</span>
+            // must handle 'return' and 'payout'
+<span class="fc" id="L94">            ActivityReportItem reportItem = gameReport.getReportItemByTransType(</span>
+                    TransactionType.PAYOUT.getRequestType(), true);
+<span class="fc" id="L96">            reportItem.setAmount((BigDecimal) columns[2]);</span>
+<span class="fc" id="L97">            reportItem.setTax((BigDecimal) columns[3]);</span>
+<span class="fc" id="L98">            reportItem.setNumberOfTrans(((BigDecimal) columns[1]).intValue());</span>
+<span class="fc" id="L99">        }</span>
+
+<span class="fc" id="L101">        return activityReport.getDailyActivityReports();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

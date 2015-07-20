@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Utilities.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.common.util</a> &gt; <span class="el_source">Utilities.java</span></div><h1>Utilities.java</h1><pre class="source lang-java linenums">/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package com.mpos.lottery.te.common.util;
+
+import java.util.UUID;
+
+//import java.io.UnsupportedEncodingException;
+
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
+
+/**
+ * 
+ * @author Eric
+ */
+<span class="nc" id="L18">public class Utilities {</span>
+
+    /**
+     * Convert a HEX string to byte array
+     * 
+     * @param strContent
+     *            The HEX string to be converted
+     * @return byte[] The byte array.
+     */
+    public static byte[] ConvertStringToBytes(String strContent) {
+<span class="nc" id="L28">        int nLen = strContent.length();</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">        int nLastChar = (nLen % 2 == 0) ? nLen : nLen - 1;</span>
+<span class="nc" id="L30">        int nPos = 0;</span>
+        // byte bt;
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        byte[] btOut = new byte[(nLen % 2 == 0) ? nLen / 2 : (nLen + 1) / 2];// new byte[512];</span>
+<span class="nc" id="L33">        String strTemp = &quot;&quot;;</span>
+
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        for (int i = 0; i &lt; nLastChar; i += 2) {</span>
+<span class="nc" id="L36">            strTemp = strContent.substring(i, i + 2);</span>
+<span class="nc" id="L37">            btOut[nPos++] = (byte) Integer.parseInt(strTemp, 16);</span>
+        }
+
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        if (nLastChar &lt; nLen) {</span>
+<span class="nc" id="L41">            strTemp = strContent.substring(nLen - 1, nLen) + &quot;0&quot;;</span>
+<span class="nc" id="L42">            btOut[nPos++] = (byte) Integer.parseInt(strTemp, 16);</span>
+        }
+<span class="nc" id="L44">        return btOut;</span>
+    }
+
+    public static char Hex2Char(String strHex2bit) {
+<span class="nc" id="L48">        int iTmp = 0;</span>
+        char ar;
+
+<span class="nc" id="L51">        iTmp = Integer.parseInt(strHex2bit, 16);</span>
+<span class="nc" id="L52">        ar = (char) iTmp;</span>
+        // System.out.println(iTmp);
+        // System.out.println(ar);
+<span class="nc" id="L55">        return ar;</span>
+    }
+
+    public static String HexStr2AscStr(String strHex) {
+
+        int iLen, i;
+        char ar;
+<span class="nc" id="L62">        String strTmp = new String(&quot;&quot;);</span>
+<span class="nc" id="L63">        String strResult = new String(&quot;&quot;);</span>
+
+<span class="nc" id="L65">        iLen = strHex.length();</span>
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if ((iLen - (iLen / 2) * 2) == 1) {</span>
+<span class="nc" id="L67">            strHex = &quot;0&quot; + strHex;</span>
+        }
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        for (i = 0; i &lt; iLen; i = i + 2) {</span>
+<span class="nc" id="L70">            strTmp = strTmp + strHex.substring(i, i + 1);</span>
+<span class="nc" id="L71">            strTmp = strTmp + strHex.substring(i + 1, i + 2);</span>
+<span class="nc" id="L72">            ar = Hex2Char(strTmp);</span>
+<span class="nc" id="L73">            strResult = strResult + String.valueOf(ar);</span>
+<span class="nc" id="L74">            strTmp = &quot;&quot;;</span>
+        }
+<span class="nc" id="L76">        return strResult;</span>
+    }
+
+    public static String Str2HexStr(String strStr) {
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (strStr == null) {</span>
+<span class="nc" id="L81">            return &quot;&quot;;</span>
+        }
+<span class="nc" id="L83">        StringBuffer strbLine = new StringBuffer(&quot;&quot;);</span>
+<span class="nc" id="L84">        char[] cLine = strStr.toCharArray();</span>
+        int i;
+<span class="nc" id="L86">        String strLine = new String(&quot;&quot;);</span>
+
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        for (i = 0; i &lt; cLine.length; i++) {</span>
+<span class="nc" id="L89">            strLine = Integer.toHexString((int) cLine[i]);</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">            if (strLine.length() == 1) {</span>
+<span class="nc" id="L91">                strbLine.append(&quot;0&quot;);</span>
+<span class="nc" id="L92">                strbLine.append(strLine);</span>
+            } else {
+<span class="nc" id="L94">                strbLine.append(strLine);</span>
+            }
+        }
+        // System.out.println(strbLine.toString());
+
+<span class="nc" id="L99">        return strbLine.toString();</span>
+    }
+
+    public static String Str2HexStr(String strStr, int final_lenght) {
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        if (strStr == null) {</span>
+<span class="nc" id="L104">            return &quot;&quot;;</span>
+        }
+<span class="nc" id="L106">        StringBuffer strbLine = new StringBuffer(&quot;&quot;);</span>
+<span class="nc" id="L107">        char[] cLine = strStr.toCharArray();</span>
+        int i;
+<span class="nc" id="L109">        String strLine = new String(&quot;&quot;);</span>
+
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        for (i = 0; i &lt; cLine.length; i++) {</span>
+<span class="nc" id="L112">            strLine = Integer.toHexString((int) cLine[i]);</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            if (strLine.length() == 1) {</span>
+<span class="nc" id="L114">                strbLine.append(&quot;0&quot;);</span>
+<span class="nc" id="L115">                strbLine.append(strLine);</span>
+            } else {
+<span class="nc" id="L117">                strbLine.append(strLine);</span>
+            }
+        }
+
+<span class="nc" id="L121">        String tmp = strbLine.toString();</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        while (tmp.length() &lt; final_lenght) {</span>
+<span class="nc" id="L123">            tmp = tmp + &quot;00&quot;;</span>
+        }
+<span class="nc" id="L125">        return tmp;</span>
+    }
+
+    /**
+     * To pad zero in front of a string until the string length equal to returnStrLength
+     * 
+     * @param returnStrLength
+     *            The length of the processed string
+     * @param numberStr
+     *            The input string
+     * @return String
+     */
+    public static String AddZeroToNumberStr(int returnStrLength, String numberStr) {
+<span class="nc" id="L138">        int numberStrLengrh = numberStr.length();</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        for (int i = numberStrLengrh; i &lt; returnStrLength; i++) {</span>
+<span class="nc" id="L140">            numberStr = '0' + numberStr;</span>
+        }
+<span class="nc" id="L142">        return numberStr;</span>
+    }
+
+    /**
+     * Dump the byte array into a HEX string
+     * 
+     * @param bs
+     *            The byte array to dumped
+     * @return String The HEX string of the input byte array
+     */
+    public static String DumpBytes(byte[] bs) {
+<span class="nc" id="L153">        StringBuffer ret = new StringBuffer(bs.length);</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        for (int i = 0; i &lt; bs.length; i++) {</span>
+<span class="nc" id="L155">            String hex = Integer.toHexString(0x0100 + (bs[i] &amp; 0x00FF)).substring(1);</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">            ret.append((hex.length() &lt; 2 ? &quot;0&quot; : &quot;&quot;) + hex);</span>
+        }
+<span class="nc" id="L158">        return ret.toString().toUpperCase();</span>
+    }
+
+    /**
+     * Convert a byte arrray to base64 string
+     * 
+     * @param bs
+     *            The byte array to be converted
+     * @return String The converted Base64 string
+     */
+    public static String Byte2Base64String(byte[] bs) {
+<span class="nc" id="L169">        return new String(Base64Coder.encode(bs));</span>
+    }
+
+    /**
+     * Convert the base64 string to a byte array
+     * 
+     * @param str
+     *            The string to be converted
+     * @return byte[]
+     * 
+     */
+    public static byte[] Base64String2Byte(String str) {
+<span class="nc" id="L181">        return Base64Coder.decode(str);</span>
+    }
+
+    /**
+     * Generate a 32-length uuid based on UUID.
+     */
+    public static String uuid() {
+<span class="nc" id="L188">        String uuid = UUID.randomUUID().toString();</span>
+<span class="nc" id="L189">        return uuid.replace(&quot;-&quot;, &quot;&quot;);</span>
+    }
+
+    // public static void main(String[] args) throws Exception{
+    // try {
+    // System.out.println(Utilities.Byte2Base64String(&quot;醿炨儛醿犪儩醿氠儤 醿愥儬醿愥儭醿儩醿犪儤醿�.getBytes(&quot;UTF-16BE&quot;)));
+    // System.out.println(Utilities.Byte2Base64String(&quot;醿炨儛醿犪儩醿氠儤 醿愥儬醿愥儭醿儩醿犪儤醿�.getBytes(&quot;UTF-16LE&quot;)));
+    // System.out.println(Utilities.DumpBytes(&quot;醿炨儛醿犪儩醿氠儤 醿愥儬醿愥儭醿儩醿犪儤醿�.getBytes(&quot;UTF-16LE&quot;)));
+    // System.out.println(Utilities.DumpBytes(Utilities.Base64String2Byte(&quot;4hDgENAQ3BDWENAQ5RDqENgQ0BA=&quot;)));
+    // } catch (Exception ex) {
+    // System.out.println(ex.fillInStackTrace().toString());
+    // }
+    // }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

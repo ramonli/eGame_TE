@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+	<class name="com.mpos.lottery.te.merchant.web.CashOutByOperatorPassDto">
+		<map-to xml="CashOutByOperatorPass" />
+
+        <field name="barcode" type="java.lang.String" required="true">
+            <bind-xml name="barcode" node="attribute" />
+        </field>   
+        <field name="password" type="java.lang.String" required="true">
+            <bind-xml name="password" node="attribute" />
+        </field>     		
+	</class>
+
+</mapping>

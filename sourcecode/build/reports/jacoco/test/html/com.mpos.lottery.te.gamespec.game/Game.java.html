@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Game.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.game</a> &gt; <span class="el_source">Game.java</span></div><h1>Game.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.game;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name = &quot;GAME&quot;)
+<span class="fc" id="L11">public class Game&lt;T&gt; implements java.io.Serializable {</span>
+    private static final long serialVersionUID = -5049425494540471730L;
+<span class="fc" id="L13">    public static final int TYPE_UNDEF = GameType.UNDEF.getType();</span>
+<span class="fc" id="L14">    public static final int TYPE_VAT = GameType.VAT.getType();</span>
+<span class="fc" id="L15">    public static final int TYPE_LOTT = GameType.LOTTO.getType();</span>
+<span class="fc" id="L16">    public static final int TYPE_SOCCER = GameType.SOCCER.getType();</span>
+<span class="fc" id="L17">    public static final int TYPE_RACING = GameType.RACING.getType();</span>
+<span class="fc" id="L18">    public static final int TYPE_INSTANT = GameType.IG.getType();</span>
+<span class="fc" id="L19">    public static final int TYPE_TOTO = GameType.TOTO.getType();</span>
+<span class="fc" id="L20">    public static final int TYPE_UNION = GameType.UNION.getType();</span>
+<span class="fc" id="L21">    public static final int TYPE_BINGO = GameType.BINGO.getType();</span>
+<span class="fc" id="L22">    public static final int TYPE_DIGITAL = GameType.DIGITAL.getType();</span>
+<span class="fc" id="L23">    public static final int TYPE_VOUCHER = GameType.VOUCHER.getType();</span>
+<span class="fc" id="L24">    public static final int TYPE_EXTRABALL = GameType.EXTRABALL.getType();</span>
+<span class="fc" id="L25">    public static final int TYPE_RAFFLE = GameType.RAFFLE.getType();</span>
+<span class="fc" id="L26">    public static final int TYPE_LFN = GameType.LFN.getType();</span>
+<span class="fc" id="L27">    public static final int TYPE_LUCKYNUMBER = GameType.LUCKYNUMBER.getType();</span>
+
+    // public static final int TYPE_NUMBER = 5; // Number game, such as 3-D, 4-D
+    public static final int TAXMETHOD_ANALYSIS = 1;
+    public static final int TAXMETHOD_PAYOUT = 2;
+    public static final int TAXMETHOD_BASE_BET = 1;
+    public static final int TAXMETHOD_BASE_TICKET = 2;
+    public static final int STATUS_INACTIVE = 0;
+    public static final int STATUS_ACTIVE = 1;
+
+    @Id
+    @Column(name = &quot;GAME_ID&quot;)
+    private String id;
+
+    @Column(name = &quot;GAME_TYPE_ID&quot;)
+    private int type;
+
+    @Column(name = &quot;FUNDAMENTAL_TYPE_ID&quot;)
+    private String funTypeId;
+
+    @Column(name = &quot;OPERATION_PARAMETERS_ID&quot;)
+    private String operatorParameterId;
+
+    @Column(name = &quot;GAME_NAME&quot;)
+    private String name;
+
+    @Column(name = &quot;WINNER_TAX_POLICY_ID&quot;)
+    private String taxPolicyId;
+
+    @Column(name = &quot;TAX_CALCULATION_METHOD&quot;)
+    private Integer taxMethod;
+
+    /**
+     * refer to {@code Game#TAXMETHOD_BASE_BET and Game#TAXMETHOD_BASE_TICKET}
+     */
+    @Column(name = &quot;TAX_CALCULATION_BASED&quot;)
+    private int taxMethodBase;
+
+    // refer to STATUS_XXX
+    @Column(name = &quot;STATUS&quot;)
+    private int state;
+
+    @Column(name = &quot;LEGAL_NUM&quot;)
+    private String legalNum;
+
+    @Column(name = &quot;TICKET_LOGO&quot;)
+    private String ticketLogo;
+
+    @Column(name = &quot;NEED_PAYOUT&quot;)
+    private boolean needAutoPayout;
+
+    // @Column(name = &quot;EB_BALLS_INFO_ID&quot;)
+    @Transient
+    private String ballInfoId;
+
+    @Transient
+    private T funType;
+
+    public String getId() {
+<span class="fc" id="L86">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="fc" id="L90">        this.id = id;</span>
+<span class="fc" id="L91">    }</span>
+
+    public int getType() {
+<span class="fc" id="L94">        return type;</span>
+    }
+
+    public void setType(int type) {
+<span class="fc" id="L98">        this.type = type;</span>
+<span class="fc" id="L99">    }</span>
+
+    public String getFunTypeId() {
+<span class="fc" id="L102">        return funTypeId;</span>
+    }
+
+    public void setFunTypeId(String fundamentalId) {
+<span class="fc" id="L106">        this.funTypeId = fundamentalId;</span>
+<span class="fc" id="L107">    }</span>
+
+    public String getOperatorParameterId() {
+<span class="fc" id="L110">        return operatorParameterId;</span>
+    }
+
+    public void setOperatorParameterId(String operatorParameterId) {
+<span class="fc" id="L114">        this.operatorParameterId = operatorParameterId;</span>
+<span class="fc" id="L115">    }</span>
+
+    public String getName() {
+<span class="fc" id="L118">        return name;</span>
+    }
+
+    public void setName(String name) {
+<span class="fc" id="L122">        this.name = name;</span>
+<span class="fc" id="L123">    }</span>
+
+    public T getFunType() {
+<span class="fc" id="L126">        return funType;</span>
+    }
+
+    public void setFunType(T funType) {
+<span class="nc" id="L130">        this.funType = funType;</span>
+<span class="nc" id="L131">    }</span>
+
+    public String getTaxPolicyId() {
+<span class="fc" id="L134">        return taxPolicyId;</span>
+    }
+
+    public void setTaxPolicyId(String taxPolicyId) {
+<span class="fc" id="L138">        this.taxPolicyId = taxPolicyId;</span>
+<span class="fc" id="L139">    }</span>
+
+    public Integer getTaxMethod() {
+<span class="fc" id="L142">        return taxMethod;</span>
+    }
+
+    public void setTaxMethod(Integer taxMethod) {
+<span class="fc" id="L146">        this.taxMethod = taxMethod;</span>
+<span class="fc" id="L147">    }</span>
+
+    public int getState() {
+<span class="fc" id="L150">        return state;</span>
+    }
+
+    public void setState(int state) {
+<span class="fc" id="L154">        this.state = state;</span>
+<span class="fc" id="L155">    }</span>
+
+    public Integer getTaxMethodBase() {
+<span class="fc" id="L158">        return taxMethodBase;</span>
+    }
+
+    public void setTaxMethodBase(Integer taxMethodBase) {
+<span class="fc" id="L162">        this.taxMethodBase = taxMethodBase;</span>
+<span class="fc" id="L163">    }</span>
+
+    /**
+     * @return return legalNum
+     */
+    public String getLegalNum() {
+<span class="fc" id="L169">        return legalNum;</span>
+    }
+
+    public void setLegalNum(String legalNum) {
+<span class="nc" id="L173">        this.legalNum = legalNum;</span>
+<span class="nc" id="L174">    }</span>
+
+    /**
+     * @return return ticketLogo
+     */
+    public String getTicketLogo() {
+<span class="fc" id="L180">        return ticketLogo;</span>
+    }
+
+    public void setTicketLogo(String ticketLogo) {
+<span class="nc" id="L184">        this.ticketLogo = ticketLogo;</span>
+<span class="nc" id="L185">    }</span>
+
+    public String getBallInfoId() {
+<span class="fc" id="L188">        return ballInfoId;</span>
+    }
+
+    public void setBallInfoId(String ballInfoId) {
+<span class="nc" id="L192">        this.ballInfoId = ballInfoId;</span>
+<span class="nc" id="L193">    }</span>
+
+    public boolean isNeedAutoPayout() {
+<span class="fc" id="L196">        return needAutoPayout;</span>
+    }
+
+    public void setNeedAutoPayout(boolean needAutoPayout) {
+<span class="fc" id="L200">        this.needAutoPayout = needAutoPayout;</span>
+<span class="fc" id="L201">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

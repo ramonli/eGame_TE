@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ChanceOdds.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.sale.support</a> &gt; <span class="el_source">ChanceOdds.java</span></div><h1>ChanceOdds.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.sale.support;
+
+import java.math.BigDecimal;
+
+/**
+ * A single entry may have multiple chance to win prize, and a chance may has possibility to win one of multiple prize
+ * levels, for example a '4D' entry of digital game, may can win anyone of 'First 4D', 'First3D', 'Last3D' etc prize
+ * levels. This class will represent all possible prize levels that a given bet option may win.
+ * 
+ * @author Ramon
+ */
+<span class="fc" id="L12">public class ChanceOdds {</span>
+<span class="fc" id="L13">    private BigDecimal odds = new BigDecimal(&quot;0&quot;);</span>
+    /**
+     * The type of prize levels of the given bet option may win. To some game type, the value of
+     * &lt;code&gt;prizeLevelType&lt;/code&gt; may carry some extra information.
+     * &lt;p/&gt;
+     * For example to digital game, the prize type of (TypeB and TypeC) will be defined as below,
+     * &lt;table border=&quot;1&quot;&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;prizeLevelType&lt;/td&gt;
+     * &lt;td&gt;Description&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;41&lt;/td&gt;
+     * &lt;td&gt;First 4D&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;31&lt;/td&gt;
+     * &lt;td&gt;First 3D&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;32&lt;/td&gt;
+     * &lt;td&gt;Last 3D&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;21&lt;/td&gt;
+     * &lt;td&gt;First 2D&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;22&lt;/td&gt;
+     * &lt;td&gt;Last 2D&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;11&lt;/td&gt;
+     * &lt;td&gt;First 1D&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;12&lt;/td&gt;
+     * &lt;td&gt;Last1D&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;/table&gt;
+     * In above case, the first digital of &lt;code&gt;prizeLevelType&lt;/code&gt; is the count of betting number, the 2nd digit
+     * represents retrieve number from head or tail.
+     * &lt;p/&gt;
+     * However for 'TypeA'(
+     * {@link com.mpos.lottery.te.gameimpl.digital.sale.support.DigitalRiskControlService.ALGORITHM_TYPE_A} ) of digital
+     * game, the first digital of &lt;code&gt;prizeLevelType&lt;/code&gt; represents the prize level, for example '71' means the
+     * exactly matched of 7th prize level, '73' means the mixed matched of 7th prize level.
+     */
+    private String prizelLevelType;
+
+    /**
+     * The betting number associate with given prize level. For example a '4D' entry '2,0,1,4' may win 'First4D',
+     * 'first3D' and 'last3d', then the betting number of each prize level types will be,
+     * &lt;ul&gt;
+     * &lt;li&gt;first4d - 2,0,1,4&lt;/li&gt;
+     * &lt;li&gt;first3d - 2,0,1&lt;/li&gt;
+     * &lt;li&gt;last3d - 0,1,4&lt;/li&gt;
+     * &lt;/ul&gt;
+     */
+    private String bettingNumber;
+
+    public int getPrizeLevelTypeInt() {
+<span class="fc" id="L75">        return Integer.parseInt(this.prizelLevelType);</span>
+    }
+
+    public BigDecimal getOdds() {
+<span class="fc" id="L79">        return odds;</span>
+    }
+
+    public void setOdds(BigDecimal odds) {
+<span class="fc" id="L83">        this.odds = odds;</span>
+<span class="fc" id="L84">    }</span>
+
+    public String getPrizelLevelType() {
+<span class="fc" id="L87">        return prizelLevelType;</span>
+    }
+
+    public void setPrizelLevelType(String prizelLevelType) {
+<span class="fc" id="L91">        this.prizelLevelType = prizelLevelType;</span>
+<span class="fc" id="L92">    }</span>
+
+    public String getBettingNumber() {
+<span class="fc" id="L95">        return bettingNumber;</span>
+    }
+
+    public void setBettingNumber(String bettingNumber) {
+<span class="fc" id="L99">        this.bettingNumber = bettingNumber;</span>
+<span class="fc" id="L100">    }</span>
+
+    @Override
+    public String toString() {
+<span class="fc" id="L104">        return &quot;ChanceOdds [odds=&quot; + odds + &quot;, prizelLevelType=&quot; + prizelLevelType + &quot;, bettingNumber=&quot; + bettingNumber</span>
+                + &quot;]&quot;;
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

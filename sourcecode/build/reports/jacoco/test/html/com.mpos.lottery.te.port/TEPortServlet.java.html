@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TEPortServlet.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.port</a> &gt; <span class="el_source">TEPortServlet.java</span></div><h1>TEPortServlet.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.port;
+
+import com.mpos.lottery.te.common.Command;
+import com.mpos.lottery.te.common.KeyValuePair;
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.common.jmx.TransactionTimeout;
+import com.mpos.lottery.te.common.jmx.TransactionTimeoutMBean;
+import com.mpos.lottery.te.config.MLotteryContext;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.ExceptionHandler;
+import com.mpos.lottery.te.config.exception.MessageFormatException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gamespec.game.Game;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.port.protocol.ProtocolSerializer;
+import com.mpos.lottery.te.port.service.FacadeService;
+import com.mpos.lottery.te.sequence.domain.TicketSerialSpec;
+import com.mpos.lottery.te.trans.domain.TransactionType;
+import com.mpos.lottery.te.workingkey.domain.Gpe;
+import com.mpos.lottery.te.workingkey.domain.WorkingKey;
+import com.mpos.lottery.te.workingkey.domain.WorkingKeyCache;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.perf4j.StopWatch;
+import org.perf4j.commonslog.CommonsLogStopWatch;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.lang.management.ManagementFactory;
+import java.net.HttpURLConnection;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.locks.ReentrantLock;
+
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * This is only port exposed by TE. All requests will received by &lt;code&gt;TEPortServlet&lt;/code&gt;, and \ then the servlet
+ * will dispatch request to &lt;code&gt;DispatchController&lt;/code&gt;.
+ */
+<span class="fc" id="L56">public class TEPortServlet extends HttpServlet {</span>
+    private static final long serialVersionUID = 9086524025083659379L;
+
+<span class="fc" id="L59">    private static Log logger = LogFactory.getLog(TEPortServlet.class);</span>
+
+    // private Log accessLog = LogFactory.getLog(&quot;log.access&quot;);
+
+    /**
+     * Initialize PropertiesLoader and BeanFactory.
+     */
+    public void init(ServletConfig config) throws ServletException {
+<span class="fc" id="L67">        MLotteryContext prop = MLotteryContext.getInstance();</span>
+<span class="fc" id="L68">        ApplicationContext beanFactory = WebApplicationContextUtils</span>
+                .getWebApplicationContext(config.getServletContext());
+<span class="fc" id="L70">        prop.setBeanFactory(beanFactory);</span>
+
+        try {
+            // startup quartz scheduler
+<span class="fc" id="L74">            Scheduler scheduler = (Scheduler) beanFactory.getBean(prop.get(MLotteryContext.ENTRY_BEAN_JOB_SCHEDULER));</span>
+<span class="fc" id="L75">            scheduler.start();</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L77">                logger.debug(&quot;Startup job scheduer(&quot; + scheduler + &quot;) successfully.&quot;);</span>
+            }
+<span class="nc" id="L79">        } catch (SchedulerException e) {</span>
+<span class="nc" id="L80">            throw new ServletException(e);</span>
+<span class="fc" id="L81">        }</span>
+
+<span class="fc" id="L83">        this.printCopyright(config.getServletContext().getRealPath(&quot;/&quot;));</span>
+<span class="fc" id="L84">        this.registerMBeans();</span>
+<span class="fc" id="L85">    }</span>
+
+    /**
+     * The port of TE, only POST method is supported. The work flow is: 1) parse request to get a request Context
+     * instance(depends on transaction type). 2) dispatch request context to DispatchController. 3) convert response
+     * context into xml string (depends on transaction type). 4) return response xml string to client.
+     */
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+<span class="fc" id="L94">        StopWatch watch = new CommonsLogStopWatch();</span>
+<span class="fc" id="L95">        Context requestCtx = new Context();</span>
+<span class="fc" id="L96">        Context responseCtx = new Context();</span>
+
+<span class="fc" id="L98">        KeyValuePair&lt;String, ReentrantLock&gt; lockMap = null;</span>
+        try {
+            // parse protocol
+<span class="fc" id="L101">            this.parseHeader(requestCtx, request);</span>
+
+<span class="fc" id="L103">            this.assembleWorkingKey(requestCtx, watch);</span>
+<span class="fc" id="L104">            watch.start();</span>
+<span class="fc" id="L105">            requestCtx.setEncrptedBody(this.getRequestBody(request, requestCtx.getTransType()));</span>
+<span class="fc" id="L106">            watch.stop(&quot;getRequestBody&quot;);</span>
+<span class="fc" id="L107">            watch.start();</span>
+<span class="fc" id="L108">            new ProtocolSerializer().deserialize(requestCtx);</span>
+<span class="fc" id="L109">            watch.stop(&quot;deserializeRequest&quot;);</span>
+            // write access log
+            // accessLog.info(requestCtx.getMacString());
+
+            // dispatch request to service
+<span class="fc" id="L114">            MLotteryContext prop = MLotteryContext.getInstance();</span>
+<span class="fc" id="L115">            FacadeService dispatcher = (FacadeService) prop.getBeanFactory().getBean(</span>
+                    prop.get(MLotteryContext.ENTRY_BEAN_SERVICEFACADE));
+            // lockMap = this.acquireTransactionLock(requestCtx);
+
+<span class="fc" id="L119">            watch.start();</span>
+
+<span class="fc" id="L121">            dispatcher.facade(requestCtx, responseCtx);</span>
+<span class="fc" id="L122">            watch.stop(&quot;Transaction{&quot; + TransactionType.getTransactionType(requestCtx.getTransType()) + &quot;.&quot;</span>
+                    + responseCtx.getGameTypeId() + &quot;}&quot;);
+            // execute all commands
+<span class="fc" id="L125">            List&lt;Command&gt; commandList = responseCtx.getCommandList();</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">            for (Command cmd : commandList) {</span>
+<span class="nc" id="L127">                cmd.exec();</span>
+<span class="nc" id="L128">            }</span>
+
+            // apply MBeans...shit, why the name of attribute is 'Timeout', not
+            // 'timeout'?
+<span class="fc" id="L132">            long timeout = (Long) ManagementFactory.getPlatformMBeanServer().getAttribute(</span>
+                    new ObjectName(TransactionTimeoutMBean.objectName), &quot;Timeout&quot;);
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">            if (timeout &gt; 0) {</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">                if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L136">                    logger.debug(&quot;TE will wait &quot; + timeout + &quot; seconds.&quot;);</span>
+                }
+<span class="nc" id="L138">                Thread.currentThread().sleep(timeout * 1000);</span>
+            }
+<span class="fc" id="L140">        } catch (Exception e) {</span>
+<span class="fc" id="L141">            logger.error(e.getMessage(), ExceptionHandler.getCause(e));</span>
+            // assemble response context from requestContext
+<span class="fc" id="L143">            ExceptionHandler exHandler = new ExceptionHandler(e);</span>
+<span class="fc" id="L144">            exHandler.handle(requestCtx, responseCtx);</span>
+<span class="fc" id="L145">            responseCtx.setResponseCode(exHandler.getErrorCode());</span>
+<span class="nc" id="L146">        } finally {</span>
+            // release transaction lock
+            // Java5TransactionLocker.getInstance().release(lockMap);
+<span class="fc" id="L149">        }</span>
+
+<span class="fc" id="L151">        PrintWriter pw = response.getWriter();</span>
+        try {
+            // write response to client
+            // serialize response
+<span class="fc" id="L155">            watch.start();</span>
+<span class="fc" id="L156">            new ProtocolSerializer().serialize(responseCtx);</span>
+<span class="fc" id="L157">            watch.stop(&quot;serializeResponse&quot;);</span>
+<span class="fc" id="L158">            this.assembleResponseHeader(responseCtx, response);</span>
+
+<span class="fc bfc" id="L160" title="All 2 branches covered.">            if (responseCtx.getEncrptedBody() != null) {</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">                if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L162">                    logger.debug(&quot;Write response to client(host1=&quot; + request.getRemoteHost() + &quot;,sizeOfPack=&quot;</span>
+                            + responseCtx.getEncrptedBody().length() + &quot;) succesfully.&quot;);
+                }
+<span class="fc" id="L165">                pw.println(responseCtx.getEncrptedBody());</span>
+                // write access log, if response is returned successfully
+                // accessLog.info(responseCtx.getMacString());
+            }
+<span class="nc" id="L169">        } catch (Exception e) {</span>
+<span class="nc" id="L170">            logger.error(e.getMessage(), e);</span>
+<span class="nc" id="L171">            response.setHeader(Context.HEADER_REPONSE_CODE, SystemException.CODE_INTERNAL_SERVER_ERROR + &quot;&quot;);</span>
+<span class="nc" id="L172">            response.sendError(HttpURLConnection.HTTP_OK);</span>
+        } finally {
+<span class="pc" id="L174">            pw.close();</span>
+<span class="pc" id="L175">        }</span>
+<span class="fc" id="L176">    }</span>
+
+    // ---------------------------------------
+    // PRIVATE METHODS
+    // ---------------------------------------
+
+    /**
+     * Determine the game type of current request. This method will try to determine game type by following order.
+     * &lt;ol&gt;
+     * &lt;li&gt;If there is a header 'X-Game-Type-Id' and non -1 has been set, then set game type as the value of
+     * 'X-Game-Type-Id', else go to next step.&lt;/li&gt;
+     * &lt;li&gt;Try to determine game type by model of request.
+     * &lt;ul&gt;
+     * &lt;li&gt;If the mode of request is instance of &lt;code&gt;BaseTicket&lt;/code&gt;, and the serialNo field is set, try to retrieve
+     * game type from serialNo.&lt;/li&gt;
+     * &lt;li&gt;If the mode of request is instance of &lt;code&gt;Transaction&lt;/code&gt;, and the fields 'devId' and 'traceMsgId' are
+     * set, try to retrieve game type from transaction.&lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;/li&gt;
+     * &lt;li&gt;If all above steps fail, set game type to -1.&lt;/li&gt;
+     * &lt;/ol&gt;
+     * 
+     * @param reqCtx
+     *            The context of request.
+     * @return the final game type.
+     */
+    protected int determineGameType(Context reqCtx) throws ApplicationException {
+<span class="nc" id="L203">        int gameType = Game.TYPE_UNDEF;</span>
+        // NO 'X-Game-Type-Id' set in headers
+<span class="nc bnc" id="L205" title="All 2 branches missed.">        if (Game.TYPE_UNDEF == reqCtx.getGameTypeIdIntValue()) {</span>
+<span class="nc" id="L206">            Object model = reqCtx.getModel();</span>
+            // try to find game type in serial number first
+<span class="nc bnc" id="L208" title="All 2 branches missed.">            if (model instanceof BaseTicket) {</span>
+<span class="nc" id="L209">                BaseTicket ticket = (BaseTicket) model;</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">                if (ticket.getRawSerialNo() != null) {</span>
+<span class="nc" id="L211">                    TicketSerialSpec spec = new TicketSerialSpec(ticket.getRawSerialNo());</span>
+<span class="nc" id="L212">                    gameType = Integer.parseInt(spec.getGameTypeOrSecond());</span>
+                }
+            }
+        }
+<span class="nc bnc" id="L216" title="All 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L217">            logger.debug(&quot;Determine the game type as &quot; + gameType);</span>
+        }
+<span class="nc bnc" id="L219" title="All 2 branches missed.">        if (Game.TYPE_UNDEF != gameType) {</span>
+<span class="nc" id="L220">            reqCtx.setGameTypeId(gameType + &quot;&quot;);</span>
+        }
+<span class="nc" id="L222">        return gameType;</span>
+    }
+
+    /**
+     * Retrieve a header from request. Some headers are required for each request, then this method will check if these
+     * headers are present in request. Some headers are required for some specific transaction, then the transaction
+     * service will check if the header (in server, it is a context field) is present in request.
+     * 
+     * @param header
+     *            The name of request header.
+     * @param request
+     *            The HTTP request.
+     * @param isRequired
+     *            If this header is required for each request.
+     * @return the value of request header.
+     */
+    protected String getHeader(String header, HttpServletRequest request, boolean isRequired) {
+<span class="fc" id="L239">        String value = request.getHeader(header);</span>
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L241">            logger.debug(&quot;Got request header(name=&quot; + header + &quot;, value=&quot; + value + &quot;).&quot;);</span>
+        }
+
+<span class="fc bfc" id="L244" title="All 2 branches covered.">        if (value != null) {</span>
+<span class="fc" id="L245">            value = value.trim();</span>
+        }
+<span class="pc bpc" id="L247" title="1 of 2 branches missed.">        if (&quot;&quot;.equals(value)) {</span>
+<span class="nc" id="L248">            value = null;</span>
+        }
+<span class="pc bpc" id="L250" title="1 of 4 branches missed.">        if (value == null &amp;&amp; isRequired) {</span>
+<span class="nc" id="L251">            throw new MessageFormatException(SystemException.CODE_REQUIRED_HEADER_MISS, &quot;Required header '&quot; + header</span>
+                    + &quot;' is missed.&quot;);
+        }
+
+<span class="fc" id="L255">        return value;</span>
+    }
+
+    /**
+     * Get http message body, except Get_Working_Key, Reversal, TransactionEnquiry.
+     */
+    protected String getRequestBody(HttpServletRequest request, int transType) throws IOException {
+<span class="fc" id="L262">        TransactionType transacionType = TransactionType.getTransactionType(transType);</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">        if (!transacionType.isRequireBody()) {</span>
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L265">                logger.debug(&quot;Ignore the message body for transaction(type=&quot; + transacionType + &quot;).&quot;);</span>
+            }
+<span class="fc" id="L267">            return null;</span>
+        }
+<span class="fc" id="L269">        BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));</span>
+<span class="fc" id="L270">        StringBuffer buffer = new StringBuffer();</span>
+<span class="fc bfc" id="L271" title="All 2 branches covered.">        for (String tmp = br.readLine(); tmp != null; tmp = br.readLine()) {</span>
+<span class="fc" id="L272">            buffer.append(tmp);</span>
+        }
+<span class="pc bpc" id="L274" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L275">            logger.debug(&quot;Got request from &quot; + request.getRemoteHost() + &quot;, and the message body is:&quot;</span>
+                    + buffer.toString() + &quot;.&quot;);
+        }
+<span class="fc" id="L278">        return buffer.toString().trim();</span>
+    }
+
+    /**
+     * Get the working key for the GPE with specified identifier.
+     */
+    protected void assembleWorkingKey(Context requestCtx, StopWatch watch) {
+<span class="fc bfc" id="L285" title="All 2 branches covered.">        if (requestCtx.getTransType() == TransactionType.GET_WORKING_KEY.getRequestType()) {</span>
+<span class="fc" id="L286">            return;</span>
+        }
+        // String beanName = prop.get(MLotteryContext.ENTRY_BEAN_WORKINGKEYDAO);
+<span class="fc" id="L289">        String gpeId = requestCtx.getGpe().getId();</span>
+        // WorkingKeyDao dao = (WorkingKeyDao)
+        // prop.getBeanFactory().getBean(beanName);
+        // WorkingKey key = dao.getWorkingKey(WorkingKey.getCurrentDateStr(),
+        // gpeId);
+<span class="fc" id="L294">        watch.start();</span>
+<span class="fc" id="L295">        WorkingKeyCache workingKeyCache = WorkingKeyCache.getInstance();</span>
+<span class="fc" id="L296">        WorkingKey key = workingKeyCache.getDailyWorkingKey(gpeId, WorkingKey.getCurrentDateStr());</span>
+<span class="fc" id="L297">        watch.stop(&quot;assembleWorkingKey&quot;);</span>
+<span class="pc bpc" id="L298" title="1 of 2 branches missed.">        if (key == null) {</span>
+<span class="nc" id="L299">            throw new SystemException(SystemException.CODE_NOLEGAL_WORKINGKEY, &quot;can NOT found working key with(gpeId=&quot;</span>
+                    + gpeId + &quot;,createDateStr=&quot; + new Date() + &quot;).&quot;);
+        }
+
+<span class="fc" id="L303">        MLotteryContext prop = MLotteryContext.getInstance();</span>
+        // assemble GPE too
+<span class="fc" id="L305">        BaseJpaDao baseDao = (BaseJpaDao) prop.getBeanFactory().getBean(prop.get(MLotteryContext.ENTRY_BEAN_BASEDAO));</span>
+<span class="fc" id="L306">        Gpe gpe = baseDao.findById(Gpe.class, requestCtx.getGpe().getId());</span>
+<span class="pc bpc" id="L307" title="1 of 2 branches missed.">        if (gpe == null) {</span>
+<span class="nc" id="L308">            throw new SystemException(&quot;No Gpe found by id:&quot; + requestCtx.getGpe().getId());</span>
+        }
+<span class="fc" id="L310">        requestCtx.setGpe(gpe);</span>
+
+<span class="fc" id="L312">        requestCtx.setWorkingKey(key);</span>
+<span class="fc" id="L313">    }</span>
+
+    /**
+     * Assemble reponse headers defined by 'TE Transaction Interface Definition'. All headers will be copyed from
+     * response Context.
+     */
+    private void assembleResponseHeader(Context responseCtx, HttpServletResponse response) {
+<span class="pc bpc" id="L320" title="1 of 2 branches missed.">        if (responseCtx.getProtocalVersion() != null) {</span>
+<span class="fc" id="L321">            response.setHeader(Context.HEADER_PROTOCAL_VERSION, responseCtx.getProtocalVersion());</span>
+        }
+<span class="pc bpc" id="L323" title="1 of 4 branches missed.">        if (responseCtx.getGpe() != null &amp;&amp; responseCtx.getGpe().getId() != null) {</span>
+<span class="fc" id="L324">            response.setHeader(Context.HEADER_GPE_ID, responseCtx.getGpe().getId());</span>
+        }
+<span class="fc bfc" id="L326" title="All 2 branches covered.">        if (responseCtx.getMac() != null) {</span>
+<span class="fc" id="L327">            response.setHeader(Context.HEADER_MAC, responseCtx.getMac());</span>
+        }
+<span class="fc bfc" id="L329" title="All 2 branches covered.">        if (responseCtx.getOperatorId() != null) {</span>
+<span class="fc" id="L330">            response.setHeader(Context.HEADER_OPERATOR_ID, responseCtx.getOperatorId());</span>
+        }
+<span class="fc" id="L332">        response.setHeader(Context.HEADER_REPONSE_CODE, responseCtx.getResponseCode() + &quot;&quot;);</span>
+<span class="fc bfc" id="L333" title="All 2 branches covered.">        if (responseCtx.getTerminalId() != Context.UNINITIAL_VALUE) {</span>
+<span class="fc" id="L334">            response.setHeader(Context.HEADER_TERMINAL_ID, responseCtx.getTerminalId() + &quot;&quot;);</span>
+        }
+<span class="fc bfc" id="L336" title="All 2 branches covered.">        if (responseCtx.getStrTimestamp() != null) {</span>
+<span class="fc" id="L337">            response.setHeader(Context.HEADER_TIMESTAMP, responseCtx.getStrTimestamp());</span>
+        }
+<span class="pc bpc" id="L339" title="1 of 2 branches missed.">        if (responseCtx.getStrTransType() != null) {</span>
+<span class="fc" id="L340">            response.setHeader(Context.HEADER_TRANSACTION_TYPE, responseCtx.getStrTransType());</span>
+        }
+<span class="fc bfc" id="L342" title="All 2 branches covered.">        if (responseCtx.getTraceMessageId() != null) {</span>
+<span class="fc" id="L343">            response.setHeader(Context.HEADER_TRACE_MESSAGE_ID, responseCtx.getTraceMessageId());</span>
+        }
+<span class="fc bfc" id="L345" title="All 2 branches covered.">        if (responseCtx.getTransactionID() != null) {</span>
+<span class="fc" id="L346">            response.setHeader(Context.HEADER_TRANSACTION_ID, responseCtx.getTransactionID());</span>
+        }
+<span class="fc bfc" id="L348" title="All 2 branches covered.">        if (responseCtx.getBatchNumber() != null) {</span>
+<span class="fc" id="L349">            response.setHeader(Context.HEADER_BATCHNUMBER, responseCtx.getBatchNumber());</span>
+        }
+<span class="fc bfc" id="L351" title="All 2 branches covered.">        if (responseCtx.getGameTypeId() != null) {</span>
+<span class="fc" id="L352">            response.setHeader(Context.HEADER_GAME_TYPE_ID, responseCtx.getGameTypeId());</span>
+        }
+<span class="fc" id="L354">    }</span>
+
+    /**
+     * Extract header from HTTP request.
+     */
+    private void parseHeader(Context requestContext, HttpServletRequest request) {
+        // transaction type
+<span class="fc" id="L361">        requestContext.setStrTransType(getHeader(Context.HEADER_TRANSACTION_TYPE, request, true));</span>
+        // protocal version
+<span class="fc" id="L363">        requestContext.setProtocalVersion(this.getHeader(Context.HEADER_PROTOCAL_VERSION, request, true));</span>
+        // timestamp
+<span class="fc" id="L365">        requestContext.setStrTimestamp(this.getHeader(Context.HEADER_TIMESTAMP, request, true));</span>
+        // gpe id
+<span class="fc" id="L367">        String gpeId = getHeader(Context.HEADER_GPE_ID, request, true);</span>
+<span class="fc" id="L368">        Gpe gpe = new Gpe();</span>
+<span class="fc" id="L369">        gpe.setId(gpeId);</span>
+<span class="fc" id="L370">        requestContext.setGpe(gpe);</span>
+
+        // above headers are mandatory for all requests.
+<span class="fc" id="L373">        TransactionType transType = TransactionType.getTransactionType(requestContext.getTransType());</span>
+        // trace message id
+<span class="fc" id="L375">        requestContext.setTraceMessageId(getHeader(Context.HEADER_TRACE_MESSAGE_ID, request,</span>
+                transType.isRequiredHeader(RequestHeaders.HEADER_TRACE_MESSAGE_ID)));
+        // operator id
+<span class="fc" id="L378">        requestContext.setOperatorId(getHeader(Context.HEADER_OPERATOR_ID, request,</span>
+                transType.isRequiredHeader(RequestHeaders.HEADER_OPERATOR_ID)));
+        // terminal id
+<span class="fc" id="L381">        requestContext.setStrTerminalId(getHeader(Context.HEADER_TERMINAL_ID, request,</span>
+                transType.isRequiredHeader(RequestHeaders.HEADER_TERMINAL_ID)));
+        // MAC
+<span class="fc" id="L384">        requestContext.setMac(getHeader(Context.HEADER_MAC, request,</span>
+                transType.isRequiredHeader(RequestHeaders.HEADER_MAC)));
+        // game type
+<span class="fc" id="L387">        requestContext.setGameTypeId(getHeader(Context.HEADER_GAME_TYPE_ID, request,</span>
+                transType.isRequiredHeader(RequestHeaders.HEADER_GAME_TYPE_ID)));
+        // batch number
+<span class="fc" id="L390">        requestContext.setBatchNumber(getHeader(Context.HEADER_BATCHNUMBER, request,</span>
+                transType.isRequiredHeader(RequestHeaders.HEADER_BATCHNUMBER)));
+<span class="fc" id="L392">        requestContext.setGpsLocation(getHeader(RequestHeaders.HEADER_GPS_LOCATION, request,</span>
+                transType.isRequiredHeader(RequestHeaders.HEADER_GPS_LOCATION)));
+<span class="fc" id="L394">    }</span>
+
+    protected void printCopyright(String contextPath) {
+        try {
+<span class="fc" id="L398">            String pathSeperator = System.getProperty(&quot;file.separator&quot;);</span>
+<span class="fc" id="L399">            String metafile = contextPath + pathSeperator + &quot;META-INF&quot; + pathSeperator + &quot;MANIFEST.MF&quot;;</span>
+<span class="fc" id="L400">            File metaFile = new File(metafile);</span>
+<span class="pc bpc" id="L401" title="1 of 2 branches missed.">            if (!metaFile.exists()) {</span>
+                // just ignore this
+<span class="fc" id="L403">                logger.warn(&quot;can NOT find META file:&quot; + metafile);</span>
+<span class="fc" id="L404">                return;</span>
+            }
+
+<span class="nc" id="L407">            String lineOperator = System.getProperty(&quot;line.separator&quot;);</span>
+<span class="nc" id="L408">            String blockOperator = &quot;---------------------------------------&quot;;</span>
+<span class="nc" id="L409">            StringBuffer buffer = new StringBuffer(lineOperator);</span>
+<span class="nc" id="L410">            buffer.append(blockOperator).append(lineOperator);</span>
+<span class="nc" id="L411">            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(metafile)));</span>
+<span class="nc bnc" id="L412" title="All 2 branches missed.">            for (String line = br.readLine(); line != null;) {</span>
+<span class="nc" id="L413">                buffer.append(line).append(lineOperator);</span>
+<span class="nc" id="L414">                line = br.readLine();</span>
+            }
+<span class="nc" id="L416">            buffer.append(lineOperator).append(blockOperator);</span>
+
+<span class="nc" id="L418">            logger.info(buffer.toString());</span>
+<span class="nc" id="L419">        } catch (Exception e) {</span>
+<span class="nc" id="L420">            logger.warn(e.getMessage(), e);</span>
+<span class="nc" id="L421">        }</span>
+<span class="nc" id="L422">    }</span>
+
+    protected void registerMBeans() {
+        try {
+<span class="fc" id="L426">            MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();</span>
+<span class="fc" id="L427">            ObjectName objectName = new ObjectName(TransactionTimeoutMBean.objectName);</span>
+<span class="fc" id="L428">            TransactionTimeoutMBean mbean = new TransactionTimeout();</span>
+<span class="fc bfc" id="L429" title="All 2 branches covered.">            if (!mbs.isRegistered(objectName)) {</span>
+<span class="fc" id="L430">                mbs.registerMBean(mbean, objectName);</span>
+            }
+<span class="pc bpc" id="L432" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L433">                logger.debug(&quot;Register MBean(&quot; + mbean + &quot;) with name(&quot; + objectName + &quot;) successfully.&quot;);</span>
+            }
+
+<span class="nc" id="L436">        } catch (Exception e) {</span>
+<span class="nc" id="L437">            throw new RuntimeException(e);</span>
+<span class="fc" id="L438">        }</span>
+<span class="fc" id="L439">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

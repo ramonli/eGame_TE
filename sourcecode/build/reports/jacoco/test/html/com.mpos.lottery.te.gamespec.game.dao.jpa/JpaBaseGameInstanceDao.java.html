@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>JpaBaseGameInstanceDao.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.game.dao.jpa</a> &gt; <span class="el_source">JpaBaseGameInstanceDao.java</span></div><h1>JpaBaseGameInstanceDao.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.game.dao.jpa;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gameimpl.lotto.draw.domain.LottoGameInstance;
+import com.mpos.lottery.te.gamespec.game.BaseGameInstance;
+import com.mpos.lottery.te.gamespec.game.Game;
+import com.mpos.lottery.te.gamespec.game.dao.BaseGameInstanceDao;
+
+import org.springframework.dao.DataIntegrityViolationException;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Query;
+
+@SuppressWarnings({ &quot;unchecked&quot;, &quot;rawtypes&quot; })
+<span class="fc" id="L21">public class JpaBaseGameInstanceDao extends BaseJpaDao implements BaseGameInstanceDao {</span>
+
+    @Override
+    public &lt;T extends BaseGameInstance&gt; List&lt;T&gt; lookupActiveByGame(long merchantId, Class&lt;T&gt; clazz, String gameId) {
+<span class="fc" id="L25">        String sql = &quot;select t from &quot; + clazz.getCanonicalName()</span>
+                + &quot; as t, MerchantCommission c where t.state=:state and t.game.id=:gameId and &quot;
+                + &quot;t.game.id=c.game.id and c.merchantId=:merchantId&quot;;
+<span class="fc" id="L28">        Map&lt;String, Object&gt; params = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L29">        params.put(&quot;state&quot;, BaseGameInstance.STATE_ACTIVE);</span>
+<span class="fc" id="L30">        params.put(&quot;gameId&quot;, gameId);</span>
+<span class="fc" id="L31">        params.put(&quot;merchantId&quot;, merchantId);</span>
+
+<span class="fc" id="L33">        List&lt;T&gt; result = this.findByNamedParams(sql, params);</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">        if (result.size() == 0) {</span>
+<span class="nc" id="L35">            return null;</span>
+        }
+        // assemble gameId
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        for (BaseGameInstance gameInstance : result) {</span>
+<span class="fc" id="L39">            gameInstance.setGameId(gameId);</span>
+<span class="fc" id="L40">        }</span>
+<span class="fc" id="L41">        return result;</span>
+    }
+
+    @Override
+    public &lt;T extends BaseGameInstance&gt; List&lt;T&gt; lookupActiveByGameType(long merchantId, Class&lt;T&gt; clazz) {
+<span class="fc" id="L46">        String sql = &quot;select t from &quot; + clazz.getCanonicalName()</span>
+                + &quot; as t, MerchantCommission c where t.state=:state and t.game.state=:gameState and &quot;
+                + &quot;t.game.id=c.game.id and c.merchantId=:merchantID ORDER by t.endTime&quot;;
+<span class="fc" id="L49">        Map&lt;String, Object&gt; params = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L50">        params.put(&quot;state&quot;, BaseGameInstance.STATE_ACTIVE);</span>
+<span class="fc" id="L51">        params.put(&quot;gameState&quot;, Game.STATUS_ACTIVE);</span>
+<span class="fc" id="L52">        params.put(&quot;merchantID&quot;, merchantId);</span>
+
+<span class="fc" id="L54">        return (List&lt;T&gt;) this.findByNamedParams(sql, params);</span>
+    }
+
+    @Override
+    public &lt;T extends BaseGameInstance&gt; T lookupByGameAndNumber(long merchantId, Class&lt;T&gt; clazz, String gameId,
+            String number) {
+<span class="fc" id="L60">        String sql = &quot;select t from &quot; + clazz.getCanonicalName()</span>
+                + &quot; as t, MerchantCommission c where t.number=:number and t.game.id=:gameId &quot;
+                + &quot;and t.game.id=c.game.id and c.merchantId=:merchantId&quot;;
+<span class="fc" id="L63">        Map&lt;String, Object&gt; params = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L64">        params.put(&quot;number&quot;, number);</span>
+<span class="fc" id="L65">        params.put(&quot;gameId&quot;, gameId);</span>
+<span class="fc" id="L66">        params.put(&quot;merchantId&quot;, merchantId);</span>
+
+<span class="fc" id="L68">        List result = this.findByNamedParams(sql, params);</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (result.size() == 0) {</span>
+<span class="fc" id="L70">            return null;</span>
+        }
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        if (result.size() &gt; 1) {</span>
+<span class="nc" id="L73">            throw new DataIntegrityViolationException(&quot;Multiple(&quot; + result.size() + &quot;) game instance(&quot; + clazz</span>
+                    + &quot;) found, either multiple game instances of game(Id=&quot; + gameId + &quot;) have been assigned number(&quot;
+                    + number + &quot;), or the game has been assigned to merchant(id=&quot; + merchantId + &quot;) multiple time.&quot;);
+        }
+<span class="fc" id="L77">        T gameInstance = (T) result.get(0);</span>
+<span class="fc" id="L78">        gameInstance.setGameId(gameId);</span>
+<span class="fc" id="L79">        return gameInstance;</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    @Override
+    public &lt;T extends BaseGameInstance&gt; List&lt;T&gt; lookupFutureByGameAndNumber(final long merchantId,
+            final Class&lt;T&gt; clazz, final String gameId, final String number, final int multipleDraws)
+            throws ApplicationException {
+<span class="fc" id="L87">        final T currentDraw = this.lookupByGameAndNumber(merchantId, clazz, gameId, number);</span>
+<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        if (currentDraw == null) {</span>
+<span class="nc" id="L89">            throw new ApplicationException(SystemException.CODE_NO_GAMEDRAW, &quot;No game instance of type(&quot; + clazz</span>
+                    + &quot;) found by(gameId=&quot; + gameId + &quot;,number=&quot; + number
+                    + &quot;) or game hasn't been allocated to merchant(id=&quot; + merchantId + &quot;).&quot;);
+        }
+<span class="fc" id="L93">        currentDraw.setGameId(gameId);</span>
+<span class="fc" id="L94">        List&lt;T&gt; draws = new LinkedList&lt;T&gt;();</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        if (multipleDraws == 1) {</span>
+<span class="fc" id="L96">            draws.add(currentDraw);</span>
+<span class="fc" id="L97">            return draws;</span>
+        }
+
+        // lookup advanced draws
+<span class="fc" id="L101">        int futureMultiple = multipleDraws - 1;</span>
+<span class="fc" id="L102">        Query query = this</span>
+                .getEntityManager()
+                .createQuery(
+                        &quot;select a from &quot; + clazz.getCanonicalName() + &quot; as a, MerchantCommission c where a.endTime&gt;?1 &quot;
+                                + &quot;and (a.state=?2 or a.state=?3) and a.game.id=?4 and a.game.id=c.game.id &quot;
+                                + &quot;and c.merchantId=?5 &quot; + &quot;ORDER BY a.endTime&quot;).setMaxResults(futureMultiple);
+<span class="fc" id="L108">        query.setParameter(1, currentDraw.getEndTime());</span>
+<span class="fc" id="L109">        query.setParameter(2, BaseGameInstance.STATE_NEW);</span>
+<span class="fc" id="L110">        query.setParameter(3, BaseGameInstance.STATE_ACTIVE);</span>
+<span class="fc" id="L111">        query.setParameter(4, gameId);</span>
+<span class="fc" id="L112">        query.setParameter(5, merchantId);</span>
+<span class="fc" id="L113">        List&lt;T&gt; futureDraws = query.getResultList();</span>
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L115">            logger.debug(&quot;Query future game instance(&quot; + clazz + &quot;) by(number=&quot; + number + &quot;,gameId=&quot; + gameId</span>
+                    + &quot;, multipleDraws=&quot; + multipleDraws + &quot;, state=&quot; + LottoGameInstance.STATE_NEW + &quot;||&quot;
+                    + LottoGameInstance.STATE_ACTIVE + &quot;):&quot; + futureDraws.size());
+        }
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        for (T gameInstance : futureDraws) {</span>
+<span class="fc" id="L120">            gameInstance.setGameId(gameId);</span>
+<span class="fc" id="L121">        }</span>
+
+<span class="fc" id="L123">        futureDraws.add(0, currentDraw);</span>
+<span class="fc" id="L124">        return futureDraws;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

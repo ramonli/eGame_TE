@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TransferActivityReportDaoImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.merchant.dao.jpa</a> &gt; <span class="el_source">TransferActivityReportDaoImpl.java</span></div><h1>TransferActivityReportDaoImpl.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.merchant.dao.jpa;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.merchant.dao.ActivityReportDao;
+import com.mpos.lottery.te.merchant.domain.BalanceTransactions;
+import com.mpos.lottery.te.merchant.web.ActivityReport;
+import com.mpos.lottery.te.merchant.web.ActivityReportItem;
+import com.mpos.lottery.te.merchant.web.DailyActivityReport;
+
+import net.mpos.fk.util.StringUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Query;
+
+<span class="fc" id="L24">public class TransferActivityReportDaoImpl extends BaseJpaDao implements ActivityReportDao {</span>
+<span class="fc" id="L25">    private Log logger = LogFactory.getLog(GeneralActivityReportDaoImpl.class);</span>
+
+    /**
+     * Only statistics cashout,topop,sale,payout
+     * 
+     * @param operatorId
+     * @param startTime
+     * @param endTime
+     * @return list
+     */
+    @Override
+    public List&lt;DailyActivityReport&gt; findActivityReport(String operatorId, Date startTime, Date endTime) {
+<span class="fc" id="L37">        String strStartTime = new SimpleDateFormat(&quot;yyyyMMddHHmmss&quot;).format(startTime);</span>
+<span class="fc" id="L38">        String strEndTime = new SimpleDateFormat(&quot;yyyyMMddHHmmss&quot;).format(endTime);</span>
+<span class="fc" id="L39">        StringBuffer sql = new StringBuffer();</span>
+
+<span class="fc" id="L41">        sql.append(&quot;select type, create_time, sum(total_amount), count(id)&quot;)</span>
+           .append(&quot;     from (select te.id,&quot;)
+           .append(&quot;             d.transaction_type type,&quot;)
+         //  .append(&quot;             te.virn,&quot;)
+           .append(&quot;             NVL(te.total_amount, 0) as total_AMOUNT,&quot;)
+           .append(&quot;             TO_CHAR(te.create_time, 'YYYYMMDD') AS create_time&quot;)
+                   .append(&quot;        from balance_transactions d, te_transaction te&quot;)
+                           .append(&quot; where te.id = d.te_transaction_id&quot;)
+                                   .append(&quot;         and te.type = 116&quot;)
+                                           .append(&quot;            and te.response_code = 200&quot;)
+                                                   .append(&quot;           and te.OPERATOR_ID = :operatorId&quot;)
+                                                           .append(&quot;               and d.owner_id=:operatorId&quot;)
+                                                                   .append(&quot;                  and d.status=:status&quot;)
+        .append(&quot;           AND (te.create_time between to_date('&quot; + strStartTime
+                        + &quot;', 'YYYYMMDDHH24MISS') and to_date('&quot; + strEndTime + &quot;', 'YYYYMMDDHH24MISS') &quot;)
+       .append(&quot;) )&quot;)
+  .append(&quot; group by type,  create_time&quot;);
+
+<span class="fc" id="L59">        final Map&lt;String, Object&gt; params = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L60">        params.put(&quot;operatorId&quot;, operatorId);</span>
+
+<span class="fc" id="L62">        params.put(&quot;status&quot;, BalanceTransactions.STATUS_VALID);</span>
+
+        // execute query
+<span class="fc" id="L65">        Query query = this.getEntityManager().createNativeQuery(sql.toString());</span>
+        // set parameters
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        for (Map.Entry&lt;String, Object&gt; entry : params.entrySet()) {</span>
+<span class="fc" id="L68">            query.setParameter(entry.getKey(), entry.getValue());</span>
+<span class="fc" id="L69">        }</span>
+
+<span class="fc" id="L71">        List rows = query.getResultList();</span>
+<span class="fc" id="L72">        ActivityReport activityReport = new ActivityReport();</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        for (Object row : rows) {</span>
+<span class="fc" id="L74">            Object[] columns = (Object[]) row;</span>
+            //select type, create_time, sum(total_amount), count(id)
+            // assemble activity report.
+<span class="fc" id="L77">            int transType = ((BigDecimal) columns[0]).intValue();</span>
+
+<span class="fc" id="L79">            String date = (String) columns[1];</span>
+            //String virn=(String)columns[1];
+            
+
+<span class="fc" id="L83">            BigDecimal amount = (BigDecimal) columns[2];</span>
+<span class="fc" id="L84">            int numberOfTrans = ((BigDecimal) columns[3]).intValue();</span>
+
+            
+<span class="fc" id="L87">            int lastType=transType;</span>
+     
+
+<span class="fc" id="L90">            DailyActivityReport dailyActivityReport = activityReport.getReportByDate(date, true);</span>
+<span class="fc" id="L91">            ActivityReportItem reportItem = dailyActivityReport.getReportItemByTransType(transType, true);</span>
+<span class="fc" id="L92">            reportItem.setTransType(lastType);</span>
+<span class="fc" id="L93">            reportItem.setAmount(amount);</span>
+<span class="fc" id="L94">            reportItem.setNumberOfTrans(reportItem.getNumberOfTrans() + numberOfTrans);</span>
+<span class="fc" id="L95">        }</span>
+
+<span class="fc" id="L97">        return activityReport.getDailyActivityReports();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

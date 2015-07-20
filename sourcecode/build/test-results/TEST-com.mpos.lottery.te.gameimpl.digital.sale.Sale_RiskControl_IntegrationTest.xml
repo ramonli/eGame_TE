@@ -1,0 +1,910 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.gameimpl.digital.sale.Sale_RiskControl_IntegrationTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:05" hostname="Ramon-PC" time="1.314">
+  <properties/>
+  <testcase name="testSell_FixLossRisk_TypeA_Cancel_OK" classname="com.mpos.lottery.te.gameimpl.digital.sale.Sale_RiskControl_IntegrationTest" time="0.368"/>
+  <testcase name="testSell_FixLossRisk_TypeA_Fail" classname="com.mpos.lottery.te.gameimpl.digital.sale.Sale_RiskControl_IntegrationTest" time="0.077"/>
+  <testcase name="testSell_FixLossRisk_TypeA_OK" classname="com.mpos.lottery.te.gameimpl.digital.sale.Sale_RiskControl_IntegrationTest" time="0.267"/>
+  <testcase name="testSell_FixLossRisk_TypeB_OK" classname="com.mpos.lottery.te.gameimpl.digital.sale.Sale_RiskControl_IntegrationTest" time="0.112"/>
+  <testcase name="testSell_FixLossRisk_TypeC_OK" classname="com.mpos.lottery.te.gameimpl.digital.sale.Sale_RiskControl_IntegrationTest" time="0.174"/>
+  <testcase name="testSell_FixLossRisk_TypeB_Cancel_OK" classname="com.mpos.lottery.te.gameimpl.digital.sale.Sale_RiskControl_IntegrationTest" time="0.314"/>
+  <system-out><![CDATA[[2015-05-29 17:13:05,791][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:05,792][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:05,792][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@288ee601) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:05,799][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:05,799][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:05,799][Test worker][INFO ][BaseTransactionalIntegrationTest] | Sale_RiskControl_IntegrationTest.testSell_FixLossRisk_TypeA_Cancel_OK                                                  |
+[2015-05-29 17:13:05,799][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:05,812][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:05,813][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket, mappingFile=xml-mapping/game/digital/SellTicket_Req.xml).
+[2015-05-29 17:13:05,814][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890785812|Timestamp:20150529171305|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="120" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>,hash=-1301571115), get digest:4b61401f4c5317dc5e58a698387c90f4
+[2015-05-29 17:13:05,814][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:05,814][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:05,814][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171305).
+[2015-05-29 17:13:05,814][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:05,814][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890785812).
+[2015-05-29 17:13:05,814][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:05,815][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:05,815][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=4b61401f4c5317dc5e58a698387c90f4).
+[2015-05-29 17:13:05,815][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=7).
+[2015-05-29 17:13:05,815][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:05,815][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:05,817][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfncNCEmxnE1Ou0qcmJ+qutg928b2RPFNgStLSbvTwBF7uImLI6OBKDrkyFBHUcB/OM8dSGLLJpp3S8Sfo8m2+ek1l/fUzwtEKcAb8blsrnXH2UcovVxHSfKNiu79nfkzyr+Y5KZ0KiGUXiWcaK1ifoeMFQf8EouOB5XD2OFhuObWV2lOH/Gn1cZF5PRQq4ckjMDiWVXjKRyebIDDK7fopFSygBBsPhhXVgmgYl3fPfl9uLoNoKmNEtAlDvYayZlMikLcXOzZk4Zmw5Oe28fqRpb07neRztvthaymURxIiW1HqN1U+O8rN2oRn3llfqxLyBU=.
+[2015-05-29 17:13:05,817][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890785812|Timestamp:20150529171305|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:05,817][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="120" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>
+[2015-05-29 17:13:05,818][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890785812|Timestamp:20150529171305|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="120" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>,hash=-1301571115), get digest:4b61401f4c5317dc5e58a698387c90f4
+[2015-05-29 17:13:05,818][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:05,818][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/digital/SellTicket_Req.xml
+[2015-05-29 17:13:05,818][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:05,833][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_200_1.5.0).
+[2015-05-29 17:13:05,833][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_200_).
+[2015-05-29 17:13:05,833][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(7_200_), found controller(com.mpos.lottery.te.gameimpl.digital.DigitalController@2c507c91) and method(public void com.mpos.lottery.te.gameimpl.digital.DigitalController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:05,838][Test worker][DEBUG][BaseJpaDao] Query future game instance(class com.mpos.lottery.te.gameimpl.digital.game.DigitalGameInstance) by(number=11002,gameId=FD-1, multipleDraws=2, state=1||2):1
+[2015-05-29 17:13:05,842][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:05,842][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745719300004320
+[2015-05-29 17:13:05,848][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:05,851][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(aHhDkgTyIu50A2BrZKmpP3hbbKDqBLBp) as 400000
+[2015-05-29 17:13:05,857][Test worker][DEBUG][DigitalRiskControlService] There total 9 possible prize levels found, determine the final loss amount of prize level as 44444.44=400000/9
+[2015-05-29 17:13:05,857][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=41, bettingNumber=null]
+[2015-05-29 17:13:05,857][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 50
+[2015-05-29 17:13:05,859][Test worker][DEBUG][AbstractRiskControlService] found risk control log RiskControlLog [gameInstanceId=GII-112, selectedNumber=0,3,2,8, totalAmount=50, prizeLevelType=41]
+[2015-05-29 17:13:05,860][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=31, bettingNumber=null]
+[2015-05-29 17:13:05,860][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 30
+[2015-05-29 17:13:05,867][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=33, bettingNumber=null]
+[2015-05-29 17:13:05,867][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 30
+[2015-05-29 17:13:05,874][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=20, prizelLevelType=21, bettingNumber=null]
+[2015-05-29 17:13:05,875][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 20
+[2015-05-29 17:13:05,881][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=53, prizelLevelType=53, bettingNumber=null]
+[2015-05-29 17:13:05,881][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 53
+[2015-05-29 17:13:05,888][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=10, prizelLevelType=11, bettingNumber=null]
+[2015-05-29 17:13:05,888][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 10
+[2015-05-29 17:13:05,895][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=10, prizelLevelType=13, bettingNumber=null]
+[2015-05-29 17:13:05,895][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 10
+[2015-05-29 17:13:05,902][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=51, bettingNumber=null]
+[2015-05-29 17:13:05,902][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 50
+[2015-05-29 17:13:05,908][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=20, prizelLevelType=23, bettingNumber=null]
+[2015-05-29 17:13:05,909][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 20
+[2015-05-29 17:13:05,915][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(aHhDkgTyIu50A2BrZKmpP3hbbKDqBLBp) as 400000
+[2015-05-29 17:13:05,918][Test worker][DEBUG][DigitalRiskControlService] There total 9 possible prize levels found, determine the final loss amount of prize level as 44444.44=400000/9
+[2015-05-29 17:13:05,918][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=41, bettingNumber=null]
+[2015-05-29 17:13:05,919][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 50
+[2015-05-29 17:13:05,925][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=31, bettingNumber=null]
+[2015-05-29 17:13:05,925][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 30
+[2015-05-29 17:13:05,931][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=33, bettingNumber=null]
+[2015-05-29 17:13:05,931][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 30
+[2015-05-29 17:13:05,938][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=20, prizelLevelType=21, bettingNumber=null]
+[2015-05-29 17:13:05,938][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 20
+[2015-05-29 17:13:05,945][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=53, prizelLevelType=53, bettingNumber=null]
+[2015-05-29 17:13:05,945][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 53
+[2015-05-29 17:13:05,954][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=10, prizelLevelType=11, bettingNumber=null]
+[2015-05-29 17:13:05,954][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 10
+[2015-05-29 17:13:05,962][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=10, prizelLevelType=13, bettingNumber=null]
+[2015-05-29 17:13:05,962][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 10
+[2015-05-29 17:13:05,970][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=51, bettingNumber=null]
+[2015-05-29 17:13:05,970][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 50
+[2015-05-29 17:13:05,977][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=20, prizelLevelType=23, bettingNumber=null]
+[2015-05-29 17:13:05,977][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 20
+[2015-05-29 17:13:06,003][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:06,003][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:06,003][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999880, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:06,010][Test worker][WARN ][BaseJpaDao] Should be at most only 1 entity(com.mpos.lottery.te.merchant.domain.OperatorCommission) found, however total 2 entities found... the 1st entity(com.mpos.lottery.te.merchant.domain.OperatorCommission@211b600f) will be returned.
+[2015-05-29 17:13:06,021][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.7]: transaction {
+  id: "0115052900000000000305"
+  dev_id: "111"
+  operator_id: "OPERATOR-111"
+  merchant_id: "111"
+  create_time: 1432890785000
+  trans_type: 200
+  game_id: "FD-1"
+  game_type: 7
+  total_amount: "120"
+}
+multi_draw: 2
+total_amount: "120"
+serial_no: "aHhDkgTyIu50A2BrZKmpP3hbbKDqBLBp"
+game_instance {
+  id: "GII-112"
+}
+entries {
+  selected_number: "0,3,2,8"
+  bet_option: 4
+  total_bets: 1
+  entry_amount: "60.0"
+  input_channel: "2"
+}
+
+[2015-05-29 17:13:06,021][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:06,022][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Res.xml) by key(7.transtype.4200).
+[2015-05-29 17:13:06,022][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket),mappingFile=xml-mapping/game/digital/SellTicket_Res.xml
+[2015-05-29 17:13:06,022][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Res.xml) by key(7.transtype.4200).
+[2015-05-29 17:13:06,023][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket, mappingFile=xml-mapping/game/digital/SellTicket_Res.xml).
+[2015-05-29 17:13:06,023][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890785812|Timestamp:20150529171305|Transaction-Type:4200|Transaction-Id:0115052900000000000305|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745719300004320" type="1" lastDrawNo="11003" barcode="07cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKcp3InwF+WYqVy4qBfjJHtcM=" validationCode="428151" multipleDraws="2" totalBets="2" totalAmount="120"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/></Ticket>):06d66d82b004384d6e42607fb282c3e3
+[2015-05-29 17:13:06,023][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=544) succesfully.
+[2015-05-29 17:13:06,024][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=544): <?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745719300004320" type="1" lastDrawNo="11003" barcode="07cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKcp3InwF+WYqVy4qBfjJHtcM=" validationCode="428151" multipleDraws="2" totalBets="2" totalAmount="120"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/></Ticket>
+[2015-05-29 17:13:06,024][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Res.xml) by key(7.transtype.4200).
+[2015-05-29 17:13:06,031][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/CancelTicket_Req.xml) by key(7.transtype.201).
+[2015-05-29 17:13:06,032][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket, mappingFile=xml-mapping/game/digital/CancelTicket_Req.xml).
+[2015-05-29 17:13:06,032][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786031|Timestamp:20150529171306|Transaction-Type:201|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745719300004320" isMannul="0"/>,hash=650018692), get digest:f1e23d6e61e8e630340a792a8c5d0f31
+[2015-05-29 17:13:06,033][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=201).
+[2015-05-29 17:13:06,033][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:06,033][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171306).
+[2015-05-29 17:13:06,033][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:06,033][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890786031).
+[2015-05-29 17:13:06,033][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:06,033][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:06,033][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=f1e23d6e61e8e630340a792a8c5d0f31).
+[2015-05-29 17:13:06,033][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=7).
+[2015-05-29 17:13:06,033][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:06,033][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:06,035][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6ttFDFcpmi1MamgAomcAmY7eTM16XgcUTrKw+NrMY+zMCOAytxzmco1bUyVJHLhYt6Kl7sI2NUna.
+[2015-05-29 17:13:06,036][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786031|Timestamp:20150529171306|Transaction-Type:201|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:06,036][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745719300004320" isMannul="0"/>
+[2015-05-29 17:13:06,036][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786031|Timestamp:20150529171306|Transaction-Type:201|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745719300004320" isMannul="0"/>,hash=650018692), get digest:f1e23d6e61e8e630340a792a8c5d0f31
+[2015-05-29 17:13:06,036][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/CancelTicket_Req.xml) by key(7.transtype.201).
+[2015-05-29 17:13:06,036][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/digital/CancelTicket_Req.xml
+[2015-05-29 17:13:06,036][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/CancelTicket_Req.xml) by key(7.transtype.201).
+[2015-05-29 17:13:06,054][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_201_1.5.0).
+[2015-05-29 17:13:06,054][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_201_).
+[2015-05-29 17:13:06,055][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(7_201_), found controller(com.mpos.lottery.te.gameimpl.digital.DigitalController@2c507c91) and method(public void com.mpos.lottery.te.gameimpl.digital.DigitalController.cancelByTicket(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:06,063][Test worker][DEBUG][ReversalOrCancelStrategyFactory] Found ReversalStrategy(class com.mpos.lottery.te.gameimpl.digital.sale.service.DigitalSaleService) to cancel transaction(gameType=7,terminalId=111,transType=200,protocolVersion=1.5.0).
+[2015-05-29 17:13:06,076][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999880, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:06,076][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:06,077][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:06,115][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.CANCEL.200.7]: origTrans {
+  id: "0115052900000000000305"
+  dev_id: "111"
+  operator_id: "OPERATOR-111"
+  merchant_id: "111"
+  create_time: 1432890785000
+  trans_type: 200
+  game_id: "FD-1"
+  game_type: 7
+  total_amount: "120"
+}
+cancelTrans {
+  id: "0115052900000000000326"
+  dev_id: "111"
+  operator_id: "OPERATOR-111"
+  merchant_id: "111"
+  create_time: 1432890786000
+  trans_type: 201
+  game_id: "FD-1"
+  game_type: 7
+  total_amount: "120"
+}
+
+[2015-05-29 17:13:06,115][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:06,116][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786031|Timestamp:20150529171306|Transaction-Type:4201|Transaction-Id:0115052900000000000326|Response-Code:200|):19c9c1cb7c3e2407762ad6e2e76ae3be
+[2015-05-29 17:13:06,116][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=0): 
+[2015-05-29 17:13:06,152][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:06,153][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:06,153][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@6b6f8c6e) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:06,161][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:06,161][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:06,161][Test worker][INFO ][BaseTransactionalIntegrationTest] | Sale_RiskControl_IntegrationTest.testSell_FixLossRisk_TypeA_Fail                                                       |
+[2015-05-29 17:13:06,161][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:06,174][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:06,175][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket, mappingFile=xml-mapping/game/digital/SellTicket_Req.xml).
+[2015-05-29 17:13:06,176][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786174|Timestamp:20150529171306|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="120" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>,hash=-2116241406), get digest:8274569f206f08758f8a8945625e9186
+[2015-05-29 17:13:06,176][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:06,176][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:06,176][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171306).
+[2015-05-29 17:13:06,176][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:06,176][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890786174).
+[2015-05-29 17:13:06,176][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:06,176][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:06,176][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=8274569f206f08758f8a8945625e9186).
+[2015-05-29 17:13:06,176][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=7).
+[2015-05-29 17:13:06,176][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:06,176][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:06,178][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfncNCEmxnE1Ou0qcmJ+qutg928b2RPFNgStLSbvTwBF7uImLI6OBKDrkyFBHUcB/OM8dSGLLJpp3S8Sfo8m2+ek1l/fUzwtEKcAb8blsrnXH2UcovVxHSfKNiu79nfkzyr+Y5KZ0KiGUXiWcaK1ifoeMFQf8EouOB5XD2OFhuObWV2lOH/Gn1cZF5PRQq4ckjMDiWVXjKRyebIDDK7fopFSygBBsPhhXVgmgYl3fPfl9uLoNoKmNEtAlDvYayZlMikLcXOzZk4Zmw5Oe28fqRpb07neRztvthaymURxIiW1HqN1U+O8rN2oRn3llfqxLyBU=.
+[2015-05-29 17:13:06,178][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786174|Timestamp:20150529171306|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:06,179][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="120" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>
+[2015-05-29 17:13:06,179][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786174|Timestamp:20150529171306|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="120" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>,hash=-2116241406), get digest:8274569f206f08758f8a8945625e9186
+[2015-05-29 17:13:06,179][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:06,179][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/digital/SellTicket_Req.xml
+[2015-05-29 17:13:06,179][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:06,195][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_200_1.5.0).
+[2015-05-29 17:13:06,195][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_200_).
+[2015-05-29 17:13:06,195][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(7_200_), found controller(com.mpos.lottery.te.gameimpl.digital.DigitalController@2c507c91) and method(public void com.mpos.lottery.te.gameimpl.digital.DigitalController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:06,199][Test worker][DEBUG][BaseJpaDao] Query future game instance(class com.mpos.lottery.te.gameimpl.digital.game.DigitalGameInstance) by(number=11002,gameId=FD-1, multipleDraws=2, state=1||2):1
+[2015-05-29 17:13:06,204][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:06,204][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745719300004460
+[2015-05-29 17:13:06,211][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:06,213][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(aHhDkgTyIu50A2BrZKmpP0CLWO+I3i63) as 40000
+[2015-05-29 17:13:06,219][Test worker][DEBUG][DigitalRiskControlService] There total 9 possible prize levels found, determine the final loss amount of prize level as 4444.44=40000/9
+[2015-05-29 17:13:06,219][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=41, bettingNumber=null]
+[2015-05-29 17:13:06,219][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 50
+[2015-05-29 17:13:06,221][Test worker][DEBUG][AbstractRiskControlService] found risk control log RiskControlLog [gameInstanceId=GII-112, selectedNumber=0,3,2,8, totalAmount=50, prizeLevelType=41]
+[2015-05-29 17:13:06,221][Test worker][ERROR][TEPortServlet] The riskPrizeAmount(5500.00) of bettng number(0,3,2,8) of entry(BaseEntry [ticketSerialNo=aHhDkgTyIu50A2BrZKmpP0CLWO+I3i63, selectNumber=0,3,2,8, betOption=4, totalBets=1, entryAmount=60.0]) exceeds the risk limit(4444.44) of prizelelve type:41.
+com.mpos.lottery.te.config.exception.ApplicationException: The riskPrizeAmount(5500.00) of bettng number(0,3,2,8) of entry(BaseEntry [ticketSerialNo=aHhDkgTyIu50A2BrZKmpP0CLWO+I3i63, selectNumber=0,3,2,8, betOption=4, totalBets=1, entryAmount=60.0]) exceeds the risk limit(4444.44) of prizelelve type:41.
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractRiskControlService.doRiskConrolOnEntry(AbstractRiskControlService.java:183)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractRiskControlService.riskControl(AbstractRiskControlService.java:65)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy64.riskControl(Unknown Source)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.sell(AbstractTicketService.java:144)
+	at sun.reflect.GeneratedMethodAccessor130.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy58.sell(Unknown Source)
+	at com.mpos.lottery.te.gameimpl.digital.DigitalController.sell(DigitalController.java:37)
+	at sun.reflect.GeneratedMethodAccessor191.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.gameimpl.digital.sale.Sale_RiskControl_IntegrationTest.testSell_FixLossRisk_TypeA_Fail(Sale_RiskControl_IntegrationTest.java:274)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:06,223][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786174|Timestamp:20150529171306|Transaction-Type:4200|Transaction-Id:0115052900000000000327|Response-Code:237|):d8119bdb16f6f8f1c95dc2c2b2ae6d35
+[2015-05-29 17:13:06,224][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=237,length=0): 
+[2015-05-29 17:13:06,230][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:06,230][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:06,231][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@286588c3) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:06,239][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:06,240][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:06,240][Test worker][INFO ][BaseTransactionalIntegrationTest] | Sale_RiskControl_IntegrationTest.testSell_FixLossRisk_TypeA_OK                                                         |
+[2015-05-29 17:13:06,240][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:06,255][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:06,256][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket, mappingFile=xml-mapping/game/digital/SellTicket_Req.xml).
+[2015-05-29 17:13:06,257][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786255|Timestamp:20150529171306|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="120" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>,hash=1576566526), get digest:5db71afc3fa59ff5dc8561b354d69e45
+[2015-05-29 17:13:06,257][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:06,257][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:06,257][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171306).
+[2015-05-29 17:13:06,257][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:06,257][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890786255).
+[2015-05-29 17:13:06,257][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:06,257][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:06,257][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=5db71afc3fa59ff5dc8561b354d69e45).
+[2015-05-29 17:13:06,257][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=7).
+[2015-05-29 17:13:06,257][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:06,257][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:06,259][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfncNCEmxnE1Ou0qcmJ+qutg928b2RPFNgStLSbvTwBF7uImLI6OBKDrkyFBHUcB/OM8dSGLLJpp3S8Sfo8m2+ek1l/fUzwtEKcAb8blsrnXH2UcovVxHSfKNiu79nfkzyr+Y5KZ0KiGUXiWcaK1ifoeMFQf8EouOB5XD2OFhuObWV2lOH/Gn1cZF5PRQq4ckjMDiWVXjKRyebIDDK7fopFSygBBsPhhXVgmgYl3fPfl9uLoNoKmNEtAlDvYayZlMikLcXOzZk4Zmw5Oe28fqRpb07neRztvthaymURxIiW1HqN1U+O8rN2oRn3llfqxLyBU=.
+[2015-05-29 17:13:06,259][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786255|Timestamp:20150529171306|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:06,260][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="120" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>
+[2015-05-29 17:13:06,260][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786255|Timestamp:20150529171306|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="120" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>,hash=1576566526), get digest:5db71afc3fa59ff5dc8561b354d69e45
+[2015-05-29 17:13:06,260][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:06,260][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/digital/SellTicket_Req.xml
+[2015-05-29 17:13:06,260][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:06,277][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_200_1.5.0).
+[2015-05-29 17:13:06,277][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_200_).
+[2015-05-29 17:13:06,277][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(7_200_), found controller(com.mpos.lottery.te.gameimpl.digital.DigitalController@2c507c91) and method(public void com.mpos.lottery.te.gameimpl.digital.DigitalController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:06,282][Test worker][DEBUG][BaseJpaDao] Query future game instance(class com.mpos.lottery.te.gameimpl.digital.game.DigitalGameInstance) by(number=11002,gameId=FD-1, multipleDraws=2, state=1||2):1
+[2015-05-29 17:13:06,287][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:06,287][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745719300004584
+[2015-05-29 17:13:06,294][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:06,296][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(aHhDkgTyIu50A2BrZKmpP/o/muVft+hl) as 400000
+[2015-05-29 17:13:06,301][Test worker][DEBUG][DigitalRiskControlService] There total 9 possible prize levels found, determine the final loss amount of prize level as 44444.44=400000/9
+[2015-05-29 17:13:06,301][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=51, bettingNumber=null]
+[2015-05-29 17:13:06,301][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 50
+[2015-05-29 17:13:06,309][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=53, prizelLevelType=53, bettingNumber=null]
+[2015-05-29 17:13:06,309][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 53
+[2015-05-29 17:13:06,316][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=41, bettingNumber=null]
+[2015-05-29 17:13:06,316][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 50
+[2015-05-29 17:13:06,318][Test worker][DEBUG][AbstractRiskControlService] found risk control log RiskControlLog [gameInstanceId=GII-112, selectedNumber=0,3,2,8, totalAmount=50, prizeLevelType=41]
+[2015-05-29 17:13:06,319][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=31, bettingNumber=null]
+[2015-05-29 17:13:06,320][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 30
+[2015-05-29 17:13:06,326][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=10, prizelLevelType=13, bettingNumber=null]
+[2015-05-29 17:13:06,326][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 10
+[2015-05-29 17:13:06,333][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=20, prizelLevelType=21, bettingNumber=null]
+[2015-05-29 17:13:06,333][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 20
+[2015-05-29 17:13:06,340][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=20, prizelLevelType=23, bettingNumber=null]
+[2015-05-29 17:13:06,340][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 20
+[2015-05-29 17:13:06,347][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=10, prizelLevelType=11, bettingNumber=null]
+[2015-05-29 17:13:06,347][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 10
+[2015-05-29 17:13:06,353][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=33, bettingNumber=null]
+[2015-05-29 17:13:06,354][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 30
+[2015-05-29 17:13:06,360][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(aHhDkgTyIu50A2BrZKmpP/o/muVft+hl) as 400000
+[2015-05-29 17:13:06,364][Test worker][DEBUG][DigitalRiskControlService] There total 9 possible prize levels found, determine the final loss amount of prize level as 44444.44=400000/9
+[2015-05-29 17:13:06,364][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=51, bettingNumber=null]
+[2015-05-29 17:13:06,364][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 50
+[2015-05-29 17:13:06,371][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=53, prizelLevelType=53, bettingNumber=null]
+[2015-05-29 17:13:06,371][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 53
+[2015-05-29 17:13:06,378][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=41, bettingNumber=null]
+[2015-05-29 17:13:06,379][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 50
+[2015-05-29 17:13:06,385][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=31, bettingNumber=null]
+[2015-05-29 17:13:06,385][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 30
+[2015-05-29 17:13:06,392][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=10, prizelLevelType=13, bettingNumber=null]
+[2015-05-29 17:13:06,392][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 10
+[2015-05-29 17:13:06,399][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=20, prizelLevelType=21, bettingNumber=null]
+[2015-05-29 17:13:06,399][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 20
+[2015-05-29 17:13:06,407][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=20, prizelLevelType=23, bettingNumber=null]
+[2015-05-29 17:13:06,407][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 20
+[2015-05-29 17:13:06,414][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=10, prizelLevelType=11, bettingNumber=null]
+[2015-05-29 17:13:06,414][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 10
+[2015-05-29 17:13:06,421][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=33, bettingNumber=null]
+[2015-05-29 17:13:06,421][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,2,3,8, amount=60.0) is 30
+[2015-05-29 17:13:06,439][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:06,439][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:06,440][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999880, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:06,443][Test worker][WARN ][BaseJpaDao] Should be at most only 1 entity(com.mpos.lottery.te.merchant.domain.OperatorCommission) found, however total 2 entities found... the 1st entity(com.mpos.lottery.te.merchant.domain.OperatorCommission@23032f55) will be returned.
+[2015-05-29 17:13:06,454][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.7]: transaction {
+  id: "0115052900000000000328"
+  dev_id: "111"
+  operator_id: "OPERATOR-111"
+  merchant_id: "111"
+  create_time: 1432890786000
+  trans_type: 200
+  game_id: "FD-1"
+  game_type: 7
+  total_amount: "120"
+}
+multi_draw: 2
+total_amount: "120"
+serial_no: "aHhDkgTyIu50A2BrZKmpP/o/muVft+hl"
+game_instance {
+  id: "GII-112"
+}
+entries {
+  selected_number: "0,3,2,8"
+  bet_option: 4
+  total_bets: 1
+  entry_amount: "60.0"
+  input_channel: "2"
+}
+
+[2015-05-29 17:13:06,454][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:06,454][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Res.xml) by key(7.transtype.4200).
+[2015-05-29 17:13:06,454][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket),mappingFile=xml-mapping/game/digital/SellTicket_Res.xml
+[2015-05-29 17:13:06,454][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Res.xml) by key(7.transtype.4200).
+[2015-05-29 17:13:06,455][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket, mappingFile=xml-mapping/game/digital/SellTicket_Res.xml).
+[2015-05-29 17:13:06,455][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786255|Timestamp:20150529171306|Transaction-Type:4200|Transaction-Id:0115052900000000000328|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745719300004584" type="1" lastDrawNo="11003" barcode="07cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKcp3InwF+WYqVngZjC2eesUI=" validationCode="388997" multipleDraws="2" totalBets="2" totalAmount="120"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/></Ticket>):372331487851cc4e5e0ddfafb68a8fe2
+[2015-05-29 17:13:06,456][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=544) succesfully.
+[2015-05-29 17:13:06,456][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=544): <?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745719300004584" type="1" lastDrawNo="11003" barcode="07cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKcp3InwF+WYqVngZjC2eesUI=" validationCode="388997" multipleDraws="2" totalBets="2" totalAmount="120"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/></Ticket>
+[2015-05-29 17:13:06,456][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Res.xml) by key(7.transtype.4200).
+[2015-05-29 17:13:06,498][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:06,498][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:06,498][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@14210fd) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:06,506][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:06,506][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:06,506][Test worker][INFO ][BaseTransactionalIntegrationTest] | Sale_RiskControl_IntegrationTest.testSell_FixLossRisk_TypeB_OK                                                         |
+[2015-05-29 17:13:06,506][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:06,512][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:06,512][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket, mappingFile=xml-mapping/game/digital/SellTicket_Req.xml).
+[2015-05-29 17:13:06,513][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786511|Timestamp:20150529171306|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="120" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>,hash=-1125703653), get digest:d22be83d5aac05978c0f8eeaaa2ac0b3
+[2015-05-29 17:13:06,513][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:06,513][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:06,513][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171306).
+[2015-05-29 17:13:06,513][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:06,513][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890786511).
+[2015-05-29 17:13:06,513][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:06,513][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:06,513][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=d22be83d5aac05978c0f8eeaaa2ac0b3).
+[2015-05-29 17:13:06,513][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=7).
+[2015-05-29 17:13:06,513][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:06,513][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:06,515][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfncNCEmxnE1Ou0qcmJ+qutg928b2RPFNgStLSbvTwBF7uImLI6OBKDrkyFBHUcB/OM8dSGLLJpp3S8Sfo8m2+ek1l/fUzwtEKcAb8blsrnXH2UcovVxHSfKNiu79nfkzyr+Y5KZ0KiGUXiWcaK1ifoeMFQf8EouOB5XD2OFhuObWV2lOH/Gn1cZF5PRQq4ckjMDiWVXjKRyebIDDK7fopFSygBBsPhhXVgmgYl3fPfl9uLoNoKmNEtAlDvYayZlMikLcXOzZk4Zmw5Oe28fqRpb07neRztvthaymURxIiW1HqN1U+O8rN2oRn3llfqxLyBU=.
+[2015-05-29 17:13:06,515][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786511|Timestamp:20150529171306|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:06,516][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="120" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>
+[2015-05-29 17:13:06,516][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786511|Timestamp:20150529171306|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="120" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>,hash=-1125703653), get digest:d22be83d5aac05978c0f8eeaaa2ac0b3
+[2015-05-29 17:13:06,516][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:06,516][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/digital/SellTicket_Req.xml
+[2015-05-29 17:13:06,516][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:06,532][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_200_1.5.0).
+[2015-05-29 17:13:06,532][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_200_).
+[2015-05-29 17:13:06,532][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(7_200_), found controller(com.mpos.lottery.te.gameimpl.digital.DigitalController@2c507c91) and method(public void com.mpos.lottery.te.gameimpl.digital.DigitalController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:06,537][Test worker][DEBUG][BaseJpaDao] Query future game instance(class com.mpos.lottery.te.gameimpl.digital.game.DigitalGameInstance) by(number=11002,gameId=FD-1, multipleDraws=2, state=1||2):1
+[2015-05-29 17:13:06,542][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:06,542][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745719300004609
+[2015-05-29 17:13:06,548][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:06,550][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(aHhDkgTyIu50A2BrZKmpP/u6B1PD4YyC) as 40000
+[2015-05-29 17:13:06,555][Test worker][DEBUG][DigitalRiskControlService] There total 7 possible prize levels found, determine the final loss amount of prize level as 5714.29=40000/7
+[2015-05-29 17:13:06,556][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=10, prizelLevelType=11, bettingNumber=null]
+[2015-05-29 17:13:06,556][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0, amount=60.0) is 10
+[2015-05-29 17:13:06,563][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=10, prizelLevelType=12, bettingNumber=null]
+[2015-05-29 17:13:06,563][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(8, amount=60.0) is 10
+[2015-05-29 17:13:06,569][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=20, prizelLevelType=21, bettingNumber=null]
+[2015-05-29 17:13:06,569][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3, amount=60.0) is 20
+[2015-05-29 17:13:06,576][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=20, prizelLevelType=22, bettingNumber=null]
+[2015-05-29 17:13:06,576][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,8, amount=60.0) is 20
+[2015-05-29 17:13:06,583][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=31, bettingNumber=null]
+[2015-05-29 17:13:06,583][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2, amount=60.0) is 30
+[2015-05-29 17:13:06,589][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=32, bettingNumber=null]
+[2015-05-29 17:13:06,589][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(3,2,8, amount=60.0) is 30
+[2015-05-29 17:13:06,596][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=41, bettingNumber=null]
+[2015-05-29 17:13:06,596][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 50
+[2015-05-29 17:13:06,598][Test worker][DEBUG][AbstractRiskControlService] found risk control log RiskControlLog [gameInstanceId=GII-112, selectedNumber=0,3,2,8, totalAmount=100, prizeLevelType=41]
+[2015-05-29 17:13:06,598][Test worker][ERROR][TEPortServlet] The riskPrizeAmount(8000.00) of bettng number(0,3,2,8) of entry(BaseEntry [ticketSerialNo=aHhDkgTyIu50A2BrZKmpP/u6B1PD4YyC, selectNumber=0,3,2,8, betOption=4, totalBets=1, entryAmount=60.0]) exceeds the risk limit(5714.29) of prizelelve type:41.
+com.mpos.lottery.te.config.exception.ApplicationException: The riskPrizeAmount(8000.00) of bettng number(0,3,2,8) of entry(BaseEntry [ticketSerialNo=aHhDkgTyIu50A2BrZKmpP/u6B1PD4YyC, selectNumber=0,3,2,8, betOption=4, totalBets=1, entryAmount=60.0]) exceeds the risk limit(5714.29) of prizelelve type:41.
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractRiskControlService.doRiskConrolOnEntry(AbstractRiskControlService.java:183)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractRiskControlService.riskControl(AbstractRiskControlService.java:65)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy64.riskControl(Unknown Source)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.sell(AbstractTicketService.java:144)
+	at sun.reflect.GeneratedMethodAccessor130.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy58.sell(Unknown Source)
+	at com.mpos.lottery.te.gameimpl.digital.DigitalController.sell(DigitalController.java:37)
+	at sun.reflect.GeneratedMethodAccessor191.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.gameimpl.digital.sale.Sale_RiskControl_IntegrationTest.testSell_FixLossRisk_TypeB_OK(Sale_RiskControl_IntegrationTest.java:380)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:06,600][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786511|Timestamp:20150529171306|Transaction-Type:4200|Transaction-Id:0115052900000000000349|Response-Code:237|):d881e6429c6b1516501bb4b4c78a0f47
+[2015-05-29 17:13:06,600][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=237,length=0): 
+[2015-05-29 17:13:06,610][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:06,610][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:06,610][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@471569a4) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:06,654][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:06,655][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:06,655][Test worker][INFO ][BaseTransactionalIntegrationTest] | Sale_RiskControl_IntegrationTest.testSell_FixLossRisk_TypeC_OK                                                         |
+[2015-05-29 17:13:06,655][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:06,659][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:06,660][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket, mappingFile=xml-mapping/game/digital/SellTicket_Req.xml).
+[2015-05-29 17:13:06,661][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786659|Timestamp:20150529171306|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="400.0" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><Entry selectedNumber="25" betOption="-3" inputChannel="2" entryAmount="140.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>,hash=-383654685), get digest:36d46a09d1b94f046a1dea7fe7038e27
+[2015-05-29 17:13:06,661][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:06,661][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:06,661][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171306).
+[2015-05-29 17:13:06,661][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:06,661][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890786659).
+[2015-05-29 17:13:06,661][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:06,661][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:06,661][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=36d46a09d1b94f046a1dea7fe7038e27).
+[2015-05-29 17:13:06,661][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=7).
+[2015-05-29 17:13:06,661][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:06,661][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:06,664][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfncNCEmxnE1Ou0qcmJ+qutg9btrOyNtL8dAXOsCAt2VNz1Y3CyjizpWI1I8nQlwlEa8u3GnJdhPFqIwM+Go3KKjwWeZYUIZCCRGWj1yuQpJlzXfrBcB0y+SIx9BCcDqX9Cq9c2sM8doKNf2KfW5C60akmrLPtm4ds3wtET6JtIywgiNFKLcIdAG//+8JPC3fMLps3JnYw9/PChBNW4+JKSio1UkYGHWQMW8cZ8cWTDtVXm8ZINTl4bZYkVQl+v2xOSZWJfSo5PoTuCSV8U4FP7D/T6UDilZ4acW94+RrdCzF5xCwRJMMncqK4YeX8axPGnJNj8CfPsIS98AxpAtzOKg4eGW58K3qGmGJNAC9vxn2hqlnhCJ/guYLb6ysfRvd83y7AzPJ8taL+kqG6YmonjVwLMGX5NAyO1SNZJurVU7P5dRbgGIQtziq.
+[2015-05-29 17:13:06,664][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786659|Timestamp:20150529171306|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:06,664][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="400.0" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><Entry selectedNumber="25" betOption="-3" inputChannel="2" entryAmount="140.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>
+[2015-05-29 17:13:06,664][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786659|Timestamp:20150529171306|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="400.0" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><Entry selectedNumber="25" betOption="-3" inputChannel="2" entryAmount="140.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>,hash=-383654685), get digest:36d46a09d1b94f046a1dea7fe7038e27
+[2015-05-29 17:13:06,665][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:06,665][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/digital/SellTicket_Req.xml
+[2015-05-29 17:13:06,665][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:06,681][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_200_1.5.0).
+[2015-05-29 17:13:06,681][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_200_).
+[2015-05-29 17:13:06,681][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(7_200_), found controller(com.mpos.lottery.te.gameimpl.digital.DigitalController@2c507c91) and method(public void com.mpos.lottery.te.gameimpl.digital.DigitalController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:06,686][Test worker][DEBUG][BaseJpaDao] Query future game instance(class com.mpos.lottery.te.gameimpl.digital.game.DigitalGameInstance) by(number=11002,gameId=FD-1, multipleDraws=2, state=1||2):1
+[2015-05-29 17:13:06,691][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:06,692][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745719300004793
+[2015-05-29 17:13:06,700][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:06,703][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(aHhDkgTyIu50A2BrZKmpP32iXgbDLb5e) as 40000
+[2015-05-29 17:13:06,708][Test worker][DEBUG][DigitalRiskControlService] There total 1 possible prize levels found, determine the final loss amount of prize level as 40000.00=40000/1
+[2015-05-29 17:13:06,708][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=41, bettingNumber=null]
+[2015-05-29 17:13:06,708][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 50
+[2015-05-29 17:13:06,710][Test worker][DEBUG][AbstractRiskControlService] found risk control log RiskControlLog [gameInstanceId=GII-112, selectedNumber=0,3,2,8, totalAmount=50, prizeLevelType=41]
+[2015-05-29 17:13:06,711][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(aHhDkgTyIu50A2BrZKmpP32iXgbDLb5e) as 40000
+[2015-05-29 17:13:06,714][Test worker][DEBUG][DigitalRiskControlService] There total 1 possible prize levels found, determine the final loss amount of prize level as 40000.00=40000/1
+[2015-05-29 17:13:06,715][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=-3, bettingNumber=25]
+[2015-05-29 17:13:06,715][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(25, amount=140.0) is 50
+[2015-05-29 17:13:06,716][Test worker][DEBUG][AbstractRiskControlService] found risk control log RiskControlLog [gameInstanceId=GII-112, selectedNumber=25, totalAmount=100, prizeLevelType=-3]
+[2015-05-29 17:13:06,718][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(aHhDkgTyIu50A2BrZKmpP32iXgbDLb5e) as 40000
+[2015-05-29 17:13:06,721][Test worker][DEBUG][DigitalRiskControlService] There total 1 possible prize levels found, determine the final loss amount of prize level as 40000.00=40000/1
+[2015-05-29 17:13:06,721][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=41, bettingNumber=null]
+[2015-05-29 17:13:06,721][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 50
+[2015-05-29 17:13:06,729][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(aHhDkgTyIu50A2BrZKmpP32iXgbDLb5e) as 40000
+[2015-05-29 17:13:06,734][Test worker][DEBUG][DigitalRiskControlService] There total 1 possible prize levels found, determine the final loss amount of prize level as 40000.00=40000/1
+[2015-05-29 17:13:06,734][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=-3, bettingNumber=25]
+[2015-05-29 17:13:06,734][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(25, amount=140.0) is 50
+[2015-05-29 17:13:06,753][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:06,753][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:06,753][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999600.0, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:06,757][Test worker][WARN ][BaseJpaDao] Should be at most only 1 entity(com.mpos.lottery.te.merchant.domain.OperatorCommission) found, however total 2 entities found... the 1st entity(com.mpos.lottery.te.merchant.domain.OperatorCommission@259253ff) will be returned.
+[2015-05-29 17:13:06,766][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.7]: transaction {
+  id: "0115052900000000000356"
+  dev_id: "111"
+  operator_id: "OPERATOR-111"
+  merchant_id: "111"
+  create_time: 1432890786000
+  trans_type: 200
+  game_id: "FD-1"
+  game_type: 7
+  total_amount: "400.0"
+}
+multi_draw: 2
+total_amount: "400.0"
+serial_no: "aHhDkgTyIu50A2BrZKmpP32iXgbDLb5e"
+game_instance {
+  id: "GII-112"
+}
+entries {
+  selected_number: "0,3,2,8"
+  bet_option: 4
+  total_bets: 1
+  entry_amount: "60.0"
+  input_channel: "2"
+}
+entries {
+  selected_number: "25"
+  bet_option: -3
+  total_bets: 1
+  entry_amount: "140.0"
+  input_channel: "2"
+}
+
+[2015-05-29 17:13:06,766][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:06,766][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Res.xml) by key(7.transtype.4200).
+[2015-05-29 17:13:06,766][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket),mappingFile=xml-mapping/game/digital/SellTicket_Res.xml
+[2015-05-29 17:13:06,766][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Res.xml) by key(7.transtype.4200).
+[2015-05-29 17:13:06,767][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket, mappingFile=xml-mapping/game/digital/SellTicket_Res.xml).
+[2015-05-29 17:13:06,767][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786659|Timestamp:20150529171306|Transaction-Type:4200|Transaction-Id:0115052900000000000356|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745719300004793" type="1" lastDrawNo="11003" barcode="07cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKcp3InwF+WYqV7REqqidtvs4=" validationCode="228611" multipleDraws="2" totalBets="4" totalAmount="400.0"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><Entry selectedNumber="25" betOption="-3" inputChannel="2" entryAmount="140.0"/></Ticket>):bedd972fda41be10ffe8f2d3c3fd217d
+[2015-05-29 17:13:06,768][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=652) succesfully.
+[2015-05-29 17:13:06,768][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=652): <?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745719300004793" type="1" lastDrawNo="11003" barcode="07cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKcp3InwF+WYqV7REqqidtvs4=" validationCode="228611" multipleDraws="2" totalBets="4" totalAmount="400.0"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><Entry selectedNumber="25" betOption="-3" inputChannel="2" entryAmount="140.0"/></Ticket>
+[2015-05-29 17:13:06,768][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Res.xml) by key(7.transtype.4200).
+[2015-05-29 17:13:06,785][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:06,785][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:06,785][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@6ef29318) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:06,793][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:06,793][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:06,793][Test worker][INFO ][BaseTransactionalIntegrationTest] | Sale_RiskControl_IntegrationTest.testSell_FixLossRisk_TypeB_Cancel_OK                                                  |
+[2015-05-29 17:13:06,793][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:06,798][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:06,799][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket, mappingFile=xml-mapping/game/digital/SellTicket_Req.xml).
+[2015-05-29 17:13:06,800][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786798|Timestamp:20150529171306|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="120" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>,hash=-348877254), get digest:cb66ee7c656274f27199c9cd54719391
+[2015-05-29 17:13:06,800][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:06,800][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:06,800][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171306).
+[2015-05-29 17:13:06,800][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:06,800][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890786798).
+[2015-05-29 17:13:06,800][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:06,800][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:06,800][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=cb66ee7c656274f27199c9cd54719391).
+[2015-05-29 17:13:06,800][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=7).
+[2015-05-29 17:13:06,800][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:06,800][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:06,802][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfncNCEmxnE1Ou0qcmJ+qutg928b2RPFNgStLSbvTwBF7uImLI6OBKDrkyFBHUcB/OM8dSGLLJpp3S8Sfo8m2+ek1l/fUzwtEKcAb8blsrnXH2UcovVxHSfKNiu79nfkzyr+Y5KZ0KiGUXiWcaK1ifoeMFQf8EouOB5XD2OFhuObWV2lOH/Gn1cZF5PRQq4ckjMDiWVXjKRyebIDDK7fopFSygBBsPhhXVgmgYl3fPfl9uLoNoKmNEtAlDvYayZlMikLcXOzZk4Zmw5Oe28fqRpb07neRztvthaymURxIiW1HqN1U+O8rN2oRn3llfqxLyBU=.
+[2015-05-29 17:13:06,802][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786798|Timestamp:20150529171306|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:06,803][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="120" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>
+[2015-05-29 17:13:06,803][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786798|Timestamp:20150529171306|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="120" PIN="!!!"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/><User mobile="13800138000" creditCardSN="09812091283120123" id="lai"/></Ticket>,hash=-348877254), get digest:cb66ee7c656274f27199c9cd54719391
+[2015-05-29 17:13:06,803][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:06,803][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/digital/SellTicket_Req.xml
+[2015-05-29 17:13:06,803][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Req.xml) by key(7.transtype.200).
+[2015-05-29 17:13:06,818][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_200_1.5.0).
+[2015-05-29 17:13:06,818][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_200_).
+[2015-05-29 17:13:06,818][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(7_200_), found controller(com.mpos.lottery.te.gameimpl.digital.DigitalController@2c507c91) and method(public void com.mpos.lottery.te.gameimpl.digital.DigitalController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:06,824][Test worker][DEBUG][BaseJpaDao] Query future game instance(class com.mpos.lottery.te.gameimpl.digital.game.DigitalGameInstance) by(number=11002,gameId=FD-1, multipleDraws=2, state=1||2):1
+[2015-05-29 17:13:06,828][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:06,829][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745719300004842
+[2015-05-29 17:13:06,835][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:06,837][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(aHhDkgTyIu50A2BrZKmpP1tBSFDCiEsn) as 40000
+[2015-05-29 17:13:06,843][Test worker][DEBUG][DigitalRiskControlService] There total 7 possible prize levels found, determine the final loss amount of prize level as 5714.29=40000/7
+[2015-05-29 17:13:06,843][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=10, prizelLevelType=11, bettingNumber=null]
+[2015-05-29 17:13:06,843][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0, amount=60.0) is 10
+[2015-05-29 17:13:06,850][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=10, prizelLevelType=12, bettingNumber=null]
+[2015-05-29 17:13:06,850][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(8, amount=60.0) is 10
+[2015-05-29 17:13:06,857][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=20, prizelLevelType=21, bettingNumber=null]
+[2015-05-29 17:13:06,857][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3, amount=60.0) is 20
+[2015-05-29 17:13:06,864][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=20, prizelLevelType=22, bettingNumber=null]
+[2015-05-29 17:13:06,864][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,8, amount=60.0) is 20
+[2015-05-29 17:13:06,871][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=31, bettingNumber=null]
+[2015-05-29 17:13:06,871][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2, amount=60.0) is 30
+[2015-05-29 17:13:06,879][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=32, bettingNumber=null]
+[2015-05-29 17:13:06,879][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(3,2,8, amount=60.0) is 30
+[2015-05-29 17:13:06,886][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=41, bettingNumber=null]
+[2015-05-29 17:13:06,886][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 50
+[2015-05-29 17:13:06,888][Test worker][DEBUG][AbstractRiskControlService] found risk control log RiskControlLog [gameInstanceId=GII-112, selectedNumber=0,3,2,8, totalAmount=50, prizeLevelType=41]
+[2015-05-29 17:13:06,890][Test worker][DEBUG][AbstractRiskControlService] Determine the final risk control limit of ticket(aHhDkgTyIu50A2BrZKmpP1tBSFDCiEsn) as 40000
+[2015-05-29 17:13:06,894][Test worker][DEBUG][DigitalRiskControlService] There total 7 possible prize levels found, determine the final loss amount of prize level as 5714.29=40000/7
+[2015-05-29 17:13:06,894][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=10, prizelLevelType=11, bettingNumber=null]
+[2015-05-29 17:13:06,894][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0, amount=60.0) is 10
+[2015-05-29 17:13:06,901][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=10, prizelLevelType=12, bettingNumber=null]
+[2015-05-29 17:13:06,901][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(8, amount=60.0) is 10
+[2015-05-29 17:13:06,908][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=20, prizelLevelType=21, bettingNumber=null]
+[2015-05-29 17:13:06,908][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3, amount=60.0) is 20
+[2015-05-29 17:13:06,915][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=20, prizelLevelType=22, bettingNumber=null]
+[2015-05-29 17:13:06,915][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(2,8, amount=60.0) is 20
+[2015-05-29 17:13:06,922][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=31, bettingNumber=null]
+[2015-05-29 17:13:06,923][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2, amount=60.0) is 30
+[2015-05-29 17:13:06,929][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=30, prizelLevelType=32, bettingNumber=null]
+[2015-05-29 17:13:06,929][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(3,2,8, amount=60.0) is 30
+[2015-05-29 17:13:06,936][Test worker][DEBUG][AbstractRiskControlService] Prepare to generate risk control log of ChanceOdds [odds=50, prizelLevelType=41, bettingNumber=null]
+[2015-05-29 17:13:06,936][Test worker][DEBUG][AbstractRiskControlService] Determine the odds of betting number(0,3,2,8, amount=60.0) is 50
+[2015-05-29 17:13:06,953][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:06,953][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:06,953][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999880, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:06,957][Test worker][WARN ][BaseJpaDao] Should be at most only 1 entity(com.mpos.lottery.te.merchant.domain.OperatorCommission) found, however total 2 entities found... the 1st entity(com.mpos.lottery.te.merchant.domain.OperatorCommission@299e72) will be returned.
+[2015-05-29 17:13:06,969][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.7]: transaction {
+  id: "0115052900000000000363"
+  dev_id: "111"
+  operator_id: "OPERATOR-111"
+  merchant_id: "111"
+  create_time: 1432890786000
+  trans_type: 200
+  game_id: "FD-1"
+  game_type: 7
+  total_amount: "120"
+}
+multi_draw: 2
+total_amount: "120"
+serial_no: "aHhDkgTyIu50A2BrZKmpP1tBSFDCiEsn"
+game_instance {
+  id: "GII-112"
+}
+entries {
+  selected_number: "0,3,2,8"
+  bet_option: 4
+  total_bets: 1
+  entry_amount: "60.0"
+  input_channel: "2"
+}
+
+[2015-05-29 17:13:06,970][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:06,970][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Res.xml) by key(7.transtype.4200).
+[2015-05-29 17:13:06,970][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket),mappingFile=xml-mapping/game/digital/SellTicket_Res.xml
+[2015-05-29 17:13:06,970][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Res.xml) by key(7.transtype.4200).
+[2015-05-29 17:13:06,971][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket, mappingFile=xml-mapping/game/digital/SellTicket_Res.xml).
+[2015-05-29 17:13:06,971][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786798|Timestamp:20150529171306|Transaction-Type:4200|Transaction-Id:0115052900000000000363|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745719300004842" type="1" lastDrawNo="11003" barcode="07cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKcp3InwF+WYqVfIzuIB32sH0=" validationCode="094002" multipleDraws="2" totalBets="2" totalAmount="120"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/></Ticket>):eea814d4e222823d46eed1d25c0db9be
+[2015-05-29 17:13:06,972][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=544) succesfully.
+[2015-05-29 17:13:06,972][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=544): <?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745719300004842" type="1" lastDrawNo="11003" barcode="07cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKcp3InwF+WYqVfIzuIB32sH0=" validationCode="094002" multipleDraws="2" totalBets="2" totalAmount="120"><GameDraw number="11002" gameId="FD-1"/><Entry selectedNumber="0,3,2,8" betOption="4" inputChannel="2" entryAmount="60.0"/></Ticket>
+[2015-05-29 17:13:06,972][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/SellTicket_Res.xml) by key(7.transtype.4200).
+[2015-05-29 17:13:06,982][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/CancelTicket_Req.xml) by key(7.transtype.201).
+[2015-05-29 17:13:06,983][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.digital.sale.DigitalTicket, mappingFile=xml-mapping/game/digital/CancelTicket_Req.xml).
+[2015-05-29 17:13:06,983][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786982|Timestamp:20150529171306|Transaction-Type:201|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745719300004842" isMannul="0"/>,hash=-1668585212), get digest:0df13347e4a46556d720aaa82dcf0f81
+[2015-05-29 17:13:06,983][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=201).
+[2015-05-29 17:13:06,983][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:06,983][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171306).
+[2015-05-29 17:13:06,983][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:06,983][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890786982).
+[2015-05-29 17:13:06,983][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:06,983][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:06,983][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=0df13347e4a46556d720aaa82dcf0f81).
+[2015-05-29 17:13:06,984][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=7).
+[2015-05-29 17:13:06,984][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:06,984][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:06,987][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6ttFDFcpmi1MamgAomcAmY7eTM16XgcUTrKw+NrMY+zMkEDdENQNbZiLg8TlgHfqkvjNHBPFdUpc.
+[2015-05-29 17:13:06,987][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786982|Timestamp:20150529171306|Transaction-Type:201|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:06,987][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745719300004842" isMannul="0"/>
+[2015-05-29 17:13:06,987][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786982|Timestamp:20150529171306|Transaction-Type:201|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745719300004842" isMannul="0"/>,hash=-1668585212), get digest:0df13347e4a46556d720aaa82dcf0f81
+[2015-05-29 17:13:06,987][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/CancelTicket_Req.xml) by key(7.transtype.201).
+[2015-05-29 17:13:06,988][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/digital/CancelTicket_Req.xml
+[2015-05-29 17:13:06,988][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/digital/CancelTicket_Req.xml) by key(7.transtype.201).
+[2015-05-29 17:13:07,004][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_201_1.5.0).
+[2015-05-29 17:13:07,004][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(7_201_).
+[2015-05-29 17:13:07,004][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(7_201_), found controller(com.mpos.lottery.te.gameimpl.digital.DigitalController@2c507c91) and method(public void com.mpos.lottery.te.gameimpl.digital.DigitalController.cancelByTicket(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:07,013][Test worker][DEBUG][ReversalOrCancelStrategyFactory] Found ReversalStrategy(class com.mpos.lottery.te.gameimpl.digital.sale.service.DigitalSaleService) to cancel transaction(gameType=7,terminalId=111,transType=200,protocolVersion=1.5.0).
+[2015-05-29 17:13:07,027][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999880, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:07,027][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:07,027][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:07,063][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.CANCEL.200.7]: origTrans {
+  id: "0115052900000000000363"
+  dev_id: "111"
+  operator_id: "OPERATOR-111"
+  merchant_id: "111"
+  create_time: 1432890786000
+  trans_type: 200
+  game_id: "FD-1"
+  game_type: 7
+  total_amount: "120"
+}
+cancelTrans {
+  id: "0115052900000000000380"
+  dev_id: "111"
+  operator_id: "OPERATOR-111"
+  merchant_id: "111"
+  create_time: 1432890786000
+  trans_type: 201
+  game_id: "FD-1"
+  game_type: 7
+  total_amount: "120"
+}
+
+[2015-05-29 17:13:07,063][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:07,063][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890786982|Timestamp:20150529171306|Transaction-Type:4201|Transaction-Id:0115052900000000000380|Response-Code:200|):ab728fd857974d20d7517fb70cc3a640
+[2015-05-29 17:13:07,064][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=0): 
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

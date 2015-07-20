@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>HttpClientProtoBuffChannel.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.common.http</a> &gt; <span class="el_source">HttpClientProtoBuffChannel.java</span></div><h1>HttpClientProtoBuffChannel.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.common.http;
+
+import com.google.protobuf.Message;
+
+import com.mpos.lottery.te.common.encrypt.TriperDESCipher;
+import com.mpos.lottery.te.common.util.Base64Coder;
+import com.mpos.lottery.te.config.MLotteryContext;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.thirdpartyservice.HttpHeader;
+import com.mpos.lottery.te.thirdpartyservice.PaymentTransactionType;
+import com.mpos.lottery.te.thirdpartyservice.playeraccount.web.PlayerAccountHttpHeader;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpRequest;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Map;
+
+public class HttpClientProtoBuffChannel {
+<span class="fc" id="L38">    private static Log logger = LogFactory.getLog(HttpClientProtoBuffChannel.class);</span>
+    public static final String CTX_MESSAGE = &quot;CTX_MESSAGE_BODY&quot;;
+    private DefaultHttpClient httpClient;
+    private URI uri;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L46">    public HttpClientProtoBuffChannel() {</span>
+<span class="fc" id="L47">        httpClient = new DefaultHttpClient();</span>
+        // configure default connection parameters
+        // timeout of waiting for data
+<span class="fc" id="L50">        this.httpClient.getParams().setIntParameter(CoreConnectionPNames.SO_TIMEOUT,</span>
+                MLotteryContext.getInstance().getInt(&quot;remoteservice.read.timeout&quot;, 30) * 1000);
+        // timeout of establishing connection
+<span class="fc" id="L53">        this.httpClient.getParams().setIntParameter(CoreConnectionPNames.CONNECTION_TIMEOUT,</span>
+                MLotteryContext.getInstance().getInt(&quot;remoteservice.connection.timeout&quot;, 30) * 1000);
+<span class="fc" id="L55">    }</span>
+
+    public HttpClientProtoBuffChannel(URI uri) {
+<span class="nc" id="L58">        this();</span>
+<span class="nc" id="L59">        this.uri = uri;</span>
+<span class="nc" id="L60">    }</span>
+
+    public HttpClientProtoBuffChannel(String uri) throws URISyntaxException {
+<span class="fc" id="L63">        this();</span>
+<span class="fc" id="L64">        this.uri = new URI(uri);</span>
+<span class="fc" id="L65">    }</span>
+
+    /**
+     * Construct channel with given HTTP parameters. Refer to {@link DefaultHttpClient} for supported parameter key.
+     */
+    public HttpClientProtoBuffChannel(Map&lt;String, Object&gt; httpParams) {
+<span class="nc" id="L71">        this();</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (httpParams != null) {</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">            for (String key : httpParams.keySet()) {</span>
+<span class="nc" id="L74">                this.httpClient.getParams().setParameter(key, httpParams.get(key));</span>
+<span class="nc" id="L75">            }</span>
+        }
+
+<span class="nc" id="L78">        this.httpClient.setHttpRequestRetryHandler(new DefaultHttpRequestRetryHandler());</span>
+<span class="nc" id="L79">    }</span>
+
+    public HttpClientProtoBuffChannel(URI uri, Map&lt;String, Object&gt; httpParams) {
+<span class="nc" id="L82">        this(httpParams);</span>
+<span class="nc" id="L83">        this.uri = uri;</span>
+<span class="nc" id="L84">    }</span>
+
+    // ---------------------------------------------------------
+    // PUBLIC METHODS
+    // ---------------------------------------------------------
+
+    /**
+     * All requests issued by a single instance of &lt;code&gt;HttpClient&lt;/code&gt; share the same URI.
+     * 
+     * @param transType
+     *            THe transaction type.
+     * @param httpMethod
+     *            Http request method.
+     * @param httpHeaders
+     *            The headers definition of HTTP.
+     * @param entity
+     *            THe entity which will be attached to HTTP message.
+     * @param responseHandler
+     *            THe handler which is responsible of handling response.
+     * @return a response determined by handler.
+     * @throws IOException
+     *             if connection failed.
+     */
+    public &lt;T&gt; T send(PaymentTransactionType transType, HttpMethod httpMethod, PlayerAccountHttpHeader httpHeaders,
+            Message entity, ResponseHandler&lt;T&gt; responseHandler, ReversalHandler&lt;T&gt; reversalHandler) throws IOException {
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">        if (this.uri == null) {</span>
+<span class="nc" id="L110">            throw new SystemException(&quot;No host definition found&quot;);</span>
+        }
+<span class="fc" id="L112">        return this.send(transType, this.uri, httpMethod, httpHeaders, entity, responseHandler, reversalHandler);</span>
+    }
+
+    /**
+     * Executes a request to the target using the given context and processes the response using the given response
+     * handler.
+     * 
+     * @param transType
+     *            The transaction type defined by {@link PaymentTransactionType} .
+     * @param uri
+     *            The target URI.
+     * @param httpMethod
+     *            THe http method defined by {@link HttpMethod}
+     * @param httpHeaders
+     *            THe customized HTTP headers.
+     * @param entity
+     *            THe HTTP entity.
+     * @param responseHandler
+     *            A handler which is responsible of handling response.
+     * @param reversalHandler
+     *            A handler which trigger reversal once fail to read response data(read timeout).
+     * @return A appropriate response instance which is determined by &lt;code&gt;ResponseHandler&lt;/code&gt;
+     * @throws ClientProtocolException
+     *             in case of an http protocol error
+     * @throws IOException
+     *             in case of a problem or the connection was aborted
+     */
+    public &lt;T&gt; T send(PaymentTransactionType transType, URI uri, HttpMethod httpMethod,
+            PlayerAccountHttpHeader httpHeaders, Message entity, ResponseHandler&lt;T&gt; responseHandler,
+            ReversalHandler&lt;T&gt; reversalHandler) throws IOException, ClientProtocolException {
+<span class="fc" id="L142">        HttpUriRequest request = httpMethod.getRequest(uri);</span>
+        // set HTTP headers
+<span class="fc" id="L144">        assembleHttpHeaders(httpHeaders, request);</span>
+
+<span class="fc" id="L146">        this.assembleRequestEntity(transType, request, entity);</span>
+
+<span class="pc bpc" id="L148" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L149">            logger.debug(&quot;CoreConnectionPNames.SO_TIMEOUT:&quot;</span>
+                    + this.httpClient.getParams().getParameter(CoreConnectionPNames.SO_TIMEOUT));
+<span class="fc" id="L151">            logger.debug(&quot;CoreConnectionPNames.CONNECTION_TIMEOUT:&quot;</span>
+                    + this.httpClient.getParams().getParameter(CoreConnectionPNames.CONNECTION_TIMEOUT));
+<span class="fc" id="L153">            logger.debug(&quot;Request URL:&quot; + this.uri);</span>
+        }
+
+        try {
+            // configure HTTP execution context
+<span class="fc" id="L158">            HttpContext localContext = new BasicHttpContext();</span>
+<span class="fc" id="L159">            localContext.setAttribute(HttpHeader.TRANS_TYPE.getHeader(), transType);</span>
+<span class="fc" id="L160">            localContext.setAttribute(CTX_MESSAGE, entity);</span>
+
+<span class="fc" id="L162">            T result = this.httpClient.execute(request, responseHandler, localContext);</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L164">                logger.debug(&quot;Finish sending request to &quot; + this.uri + &quot;.&quot;);</span>
+            }
+<span class="fc" id="L166">            return result;</span>
+<span class="nc" id="L167">        } catch (IOException e) {</span>
+<span class="nc bnc" id="L168" title="All 4 branches missed.">            if ((e instanceof InterruptedIOException) &amp;&amp; reversalHandler != null) {</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">                if (logger.isInfoEnabled()) {</span>
+<span class="nc" id="L170">                    logger.info(&quot;Read timeout or fail to get response, the reqeust(&quot; + transType</span>
+                            + &quot;) will be reversed automatically.&quot;);
+                }
+                // read response timeout, need to reverse.
+<span class="nc" id="L174">                reversalHandler.reverse(uri, entity);</span>
+                // Even reverse the timeout message successfully, the original
+                // exception must be thrown out exception to let client know
+                // that this request is reversed.
+<span class="nc bnc" id="L178" title="All 2 branches missed.">                if (logger.isInfoEnabled()) {</span>
+<span class="nc" id="L179">                    logger.info(&quot;Reverse successfully.&quot;);</span>
+                }
+            }
+<span class="nc" id="L182">            throw e;</span>
+        }
+    }
+
+    protected void assembleHttpHeaders(PlayerAccountHttpHeader httpHeaders, HttpUriRequest request) {
+<span class="pc bpc" id="L187" title="1 of 2 branches missed.">        if (httpHeaders == null) {</span>
+<span class="nc" id="L188">            return;</span>
+        }
+<span class="fc" id="L190">        request.setHeader(PlayerAccountHttpHeader.HEADER_PROTOCOL_VERSION,</span>
+                this.encryptHeader(httpHeaders.getProtocolVersion(), true));
+<span class="fc" id="L192">        request.setHeader(PlayerAccountHttpHeader.HEADER_REQ_MSGID,</span>
+                this.encryptHeader(httpHeaders.getRequestMsgId(), true));
+<span class="fc" id="L194">        request.setHeader(PlayerAccountHttpHeader.HEADER_SYSTEM_ID, this.encryptHeader(httpHeaders.getSystemId(), true));</span>
+<span class="fc" id="L195">        request.setHeader(PlayerAccountHttpHeader.HEADER_TIME_STAMP,</span>
+                this.encryptHeader(httpHeaders.getTimestamp(), true));
+<span class="fc bfc" id="L197" title="All 2 branches covered.">        if (httpHeaders.getUserId() != null) {</span>
+<span class="fc" id="L198">            request.setHeader(PlayerAccountHttpHeader.HEADER_USER_ID, this.encryptHeader(httpHeaders.getUserId(), true));</span>
+        }
+<span class="fc" id="L200">        request.setHeader(PlayerAccountHttpHeader.HEADER_TRANS_TYPE,</span>
+                this.encryptHeader(httpHeaders.getTransType() + &quot;&quot;, true));
+
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L204">            logger.debug(&quot;[Prepare Http request Headers]:&quot;);</span>
+<span class="fc" id="L205">            logger.debug(httpHeaders);</span>
+            // print all http headers
+<span class="fc" id="L207">            Header[] headers = request.getAllHeaders();</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">            for (Header header : headers) {</span>
+<span class="fc" id="L209">                logger.debug(header.getName() + &quot;: &quot; + header.getValue());</span>
+            }
+        }
+<span class="fc" id="L212">    }</span>
+
+    // ---------------------------------------------------------
+    // HELPER METHODS
+    // ---------------------------------------------------------
+
+    protected HttpEntity assembleRequestEntity(PaymentTransactionType transType, HttpRequest request, Message body) {
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">        if (body != null) {</span>
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">            if (!(request instanceof HttpEntityEnclosingRequestBase)) {</span>
+<span class="nc" id="L221">                throw new SystemException(&quot;Can NOT set entity to a none &quot; + HttpEntityEnclosingRequestBase.class</span>
+                        + &quot; request.&quot;);
+            }
+
+<span class="fc" id="L225">            HttpEntity entity = new ByteArrayEntity(this.encryptMessage(body));</span>
+<span class="fc" id="L226">            ((HttpEntityEnclosingRequestBase) request).setEntity(entity);</span>
+<span class="pc bpc" id="L227" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L228">                logger.debug(&quot;Assemble entity for transaction(&quot; + transType + &quot;):&quot; + ProtoMessageUtil.toString(body));</span>
+            }
+<span class="fc" id="L230">            return entity;</span>
+        } else {
+<span class="nc" id="L232">            return null;</span>
+        }
+    }
+
+    protected byte[] encryptMessage(Message body) {
+        try {
+<span class="fc" id="L238">            MLotteryContext mContext = MLotteryContext.getInstance();</span>
+<span class="fc" id="L239">            return TriperDESCipher.encrypt(Base64Coder.decode(mContext.get(&quot;3rdpart.key&quot;)), body.toByteArray(),</span>
+                    TriperDESCipher.IV);
+<span class="nc" id="L241">        } catch (Exception e) {</span>
+<span class="nc" id="L242">            throw new SystemException(e);</span>
+        }
+    }
+
+    protected static String encryptHeader(String headerValue, boolean isEncrypt) {
+        try {
+<span class="fc" id="L248">            MLotteryContext mContext = MLotteryContext.getInstance();</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">            if (isEncrypt) {</span>
+<span class="fc" id="L250">                return TriperDESCipher.encrypt(mContext.get(&quot;3rdpart.key&quot;), headerValue, TriperDESCipher.STR_IV);</span>
+            } else {
+<span class="fc" id="L252">                return TriperDESCipher.decrypt(mContext.get(&quot;3rdpart.key&quot;), headerValue, TriperDESCipher.STR_IV);</span>
+            }
+<span class="fc" id="L254">        } catch (Exception e) {</span>
+<span class="fc" id="L255">            throw new SystemException(e);</span>
+        }
+    }
+
+    // ---------------------------------------------------------
+    // HELPER CLASSES
+    // ---------------------------------------------------------
+
+    public static class MessageResponseHandler implements ResponseHandler&lt;MessageResponse&gt; {
+        private Message responsePrototype;
+
+<span class="fc" id="L266">        public MessageResponseHandler(Message responsePrototype) {</span>
+<span class="fc" id="L267">            this.responsePrototype = responsePrototype;</span>
+<span class="fc" id="L268">        }</span>
+
+        @Override
+        public MessageResponse handleResponse(HttpResponse httpResponse) throws ClientProtocolException, IOException {
+<span class="pc bpc" id="L272" title="1 of 2 branches missed.">            if (httpResponse.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK) {</span>
+<span class="nc" id="L273">                logger.warn(&quot;Response StatusLine: &quot; + httpResponse.getStatusLine());</span>
+            }
+
+<span class="fc" id="L276">            MessageResponse response = new MessageResponse();</span>
+<span class="fc" id="L277">            response.setHttpResponse(httpResponse);</span>
+
+            // print header information
+<span class="pc bpc" id="L280" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L281">                logger.debug(&quot;[The HTTP headers of response]:&quot;);</span>
+<span class="fc" id="L282">                Header[] headers = httpResponse.getAllHeaders();</span>
+<span class="fc bfc" id="L283" title="All 2 branches covered.">                for (Header header : headers) {</span>
+<span class="fc" id="L284">                    String headerValue = header.getValue();</span>
+                    try {
+<span class="fc" id="L286">                        String plainValue = encryptHeader(headerValue, false);</span>
+<span class="fc" id="L287">                        headerValue = plainValue;</span>
+<span class="fc" id="L288">                    } catch (Exception e) {</span>
+                        // simply ignore this exception, as there are also many
+                        // HTTP predefined headers.
+<span class="fc" id="L291">                    }</span>
+<span class="fc" id="L292">                    logger.debug(header.getName() + &quot;: &quot; + headerValue);</span>
+                }
+            }
+
+            // whether the remote service has handled request successfully
+<span class="fc" id="L297">            Header respCodeHeader = response.getHttpResponse().getFirstHeader(</span>
+                    PlayerAccountHttpHeader.HEADER_RESPONSE_CODE);
+<span class="pc bpc" id="L299" title="1 of 2 branches missed.">            if (respCodeHeader == null) {</span>
+<span class="nc" id="L300">                throw new IOException(&quot;No response code header found &quot;);</span>
+            } else {
+<span class="fc" id="L302">                PlayerAccountHttpHeader respHeader = new PlayerAccountHttpHeader();</span>
+<span class="fc" id="L303">                respHeader.setResponseCode(Integer.parseInt(HttpClientProtoBuffChannel.encryptHeader(</span>
+                        respCodeHeader.getValue().trim(), false).trim()));
+<span class="fc" id="L305">                Header respDescHeader = response.getHttpResponse().getFirstHeader(</span>
+                        PlayerAccountHttpHeader.HEADER_RESPONSE_DESC);
+<span class="pc bpc" id="L307" title="1 of 2 branches missed.">                respHeader.setResponseDesc(respDescHeader != null ? HttpClientProtoBuffChannel.encryptHeader(</span>
+                        respDescHeader.getValue().trim(), false) : &quot;&quot;);
+<span class="fc" id="L309">                response.setRespHeader(respHeader);</span>
+            }
+            // if carrying entity
+<span class="pc bpc" id="L312" title="1 of 2 branches missed.">            if (httpResponse.getEntity() != null) {</span>
+<span class="fc" id="L313">                byte[] entityByte = EntityUtils.toByteArray(httpResponse.getEntity());</span>
+<span class="pc bpc" id="L314" title="1 of 2 branches missed.">                if (entityByte.length != 0) {</span>
+                    // decrypt message body
+<span class="fc" id="L316">                    Message messageBody = responsePrototype.newBuilderForType()</span>
+                            .mergeFrom(this.decryptMessage(entityByte)).build();
+<span class="pc bpc" id="L318" title="1 of 2 branches missed.">                    if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L319">                        logger.debug(&quot;Reponsed message body: &quot; + messageBody);</span>
+                    }
+<span class="fc" id="L321">                    response.setMessageBody(messageBody);</span>
+<span class="fc" id="L322">                } else {</span>
+                    // fix bug#6961
+<span class="nc bnc" id="L324" title="All 2 branches missed.">                    if (logger.isInfoEnabled()) {</span>
+<span class="nc" id="L325">                        logger.info(&quot;No any data carried in response body(content length: &quot;</span>
+                                + httpResponse.getEntity().getContentLength() + &quot;)&quot;);
+                    }
+                }
+            }
+<span class="fc" id="L330">            return response;</span>
+        }
+
+        protected byte[] decryptMessage(byte[] messageBody) {
+            try {
+<span class="fc" id="L335">                MLotteryContext mContext = MLotteryContext.getInstance();</span>
+<span class="fc" id="L336">                return TriperDESCipher.decrypt(Base64Coder.decode(mContext.get(&quot;3rdpart.key&quot;)), messageBody,</span>
+                        TriperDESCipher.IV);
+<span class="nc" id="L338">            } catch (Exception e) {</span>
+<span class="nc" id="L339">                throw new SystemException(e);</span>
+            }
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

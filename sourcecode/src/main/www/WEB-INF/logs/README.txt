@@ -1,0 +1,1 @@
+The log files of TE will be placed here. There are two type of log: transaction log and access log.

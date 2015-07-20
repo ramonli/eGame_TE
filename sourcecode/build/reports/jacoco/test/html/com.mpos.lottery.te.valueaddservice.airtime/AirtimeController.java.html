@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AirtimeController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.valueaddservice.airtime</a> &gt; <span class="el_source">AirtimeController.java</span></div><h1>AirtimeController.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.valueaddservice.airtime;
+
+import com.mpos.lottery.common.router.RequestMap;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.valueaddservice.airtime.service.AirtimeService;
+
+import org.springframework.stereotype.Controller;
+
+import javax.annotation.Resource;
+
+@SuppressWarnings({ &quot;unchecked&quot;, &quot;rawtypes&quot; })
+@Controller
+<span class="fc" id="L14">public class AirtimeController {</span>
+    @Resource(name = &quot;airtimeService&quot;)
+    private AirtimeService airtimeService;
+
+    /**
+     * Controller for airtime topup. Multiple airtime providers are supported.
+     */
+    @RequestMap(&quot;{transType:455}&quot;)
+    public void topup(Context request, Context response) throws ApplicationException {
+<span class="fc" id="L23">        AirtimeTopup dto = (AirtimeTopup) request.getModel();</span>
+<span class="fc" id="L24">        AirtimeTopup respDto = this.getAirtimeService().topup(response, dto);</span>
+
+<span class="fc" id="L26">        response.setModel(respDto);</span>
+<span class="fc" id="L27">    }</span>
+
+    // -----------------------------------------------------------------
+    // HELPER METHODS
+    // -----------------------------------------------------------------
+
+    // -----------------------------------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // -----------------------------------------------------------------
+
+    public AirtimeService getAirtimeService() {
+<span class="fc" id="L38">        return airtimeService;</span>
+    }
+
+    public void setAirtimeService(AirtimeService airtimeService) {
+<span class="nc" id="L42">        this.airtimeService = airtimeService;</span>
+<span class="nc" id="L43">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

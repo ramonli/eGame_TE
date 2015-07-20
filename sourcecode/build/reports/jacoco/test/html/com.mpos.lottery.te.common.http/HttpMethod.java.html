@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>HttpMethod.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.common.http</a> &gt; <span class="el_source">HttpMethod.java</span></div><h1>HttpMethod.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.common.http;
+
+import com.mpos.lottery.te.config.exception.SystemException;
+
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpUriRequest;
+
+import java.net.URI;
+
+<span class="pc" id="L13">public enum HttpMethod {</span>
+<span class="fc" id="L14">    GET,</span>
+<span class="fc" id="L15">    POST,</span>
+<span class="fc" id="L16">    DELETE,</span>
+<span class="fc" id="L17">    PUT;</span>
+
+    public HttpUriRequest getRequest(URI uri) {
+<span class="pc bpc" id="L20" title="4 of 5 branches missed.">        switch (this) {</span>
+            case GET :
+<span class="nc" id="L22">                return new HttpGet(uri);</span>
+            case POST :
+<span class="fc" id="L24">                return new HttpPost(uri);</span>
+            case DELETE :
+<span class="nc" id="L26">                return new HttpDelete(uri);</span>
+            case PUT :
+<span class="nc" id="L28">                return new HttpPut(uri);</span>
+            default :
+<span class="pc" id="L30">                throw new SystemException(&quot;Unsupported http method:&quot; + this);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

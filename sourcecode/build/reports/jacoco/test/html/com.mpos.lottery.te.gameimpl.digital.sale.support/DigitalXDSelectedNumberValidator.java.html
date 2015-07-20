@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DigitalXDSelectedNumberValidator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.digital.sale.support</a> &gt; <span class="el_source">DigitalXDSelectedNumberValidator.java</span></div><h1>DigitalXDSelectedNumberValidator.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.digital.sale.support;
+
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gameimpl.digital.game.DigitalOperationParameter;
+import com.mpos.lottery.te.gamespec.game.Game;
+import com.mpos.lottery.te.gamespec.sale.BaseEntry;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.gamespec.sale.support.validator.AbstractSelectedNumberValidator;
+import com.mpos.lottery.te.gamespec.sale.support.validator.SelectedNumber;
+import com.mpos.lottery.te.port.Context;
+
+import java.math.BigDecimal;
+
+public class DigitalXDSelectedNumberValidator extends AbstractSelectedNumberValidator {
+
+    public DigitalXDSelectedNumberValidator(String numberFormat) {
+<span class="fc" id="L18">        super(numberFormat);</span>
+<span class="fc" id="L19">    }</span>
+
+    @Override
+    public void validate(Context respCtx, BaseTicket ticket, Game game, BaseEntry entry) throws ApplicationException {
+        // check format
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (!this.checkFormat(entry.getSelectNumber(), this.getNumberFormat())) {</span>
+<span class="fc" id="L25">            throw new SystemException(SystemException.CODE_WRONGFORMAT_SELECTEDNUMBER, &quot;The selected number(&quot;</span>
+                    + entry.getSelectNumber() + &quot;) of bet option(&quot; + entry.getBetOption() + &quot;) of ticket(serialNo=&quot;
+                    + entry.getTicketSerialNo() + &quot;) is not match to '&quot; + this.getNumberFormat() + &quot;'.&quot;);
+        }
+
+<span class="fc" id="L30">        this.checkNumbers(entry);</span>
+<span class="fc" id="L31">        this.checkEntryAmount(entry);</span>
+<span class="fc" id="L32">    }</span>
+
+    protected void checkEntryAmount(BaseEntry entry) throws ApplicationException {
+<span class="fc bfc" id="L35" title="All 4 branches covered.">        if (entry.getEntryAmount().compareTo(this.getOperationParam().getBaseAmount()) &lt; 0</span>
+                || entry.getEntryAmount().compareTo(
+                        ((DigitalOperationParameter) this.getOperationParam()).getMaxBetAmount()) &gt; 0) {
+<span class="fc" id="L38">            throw new ApplicationException(SystemException.CODE_UNMATCHED_SALEAMOUNT,</span>
+                    &quot;The entry amount must be in range(&quot; + this.getOperationParam().getBaseAmount() + &quot;,&quot;
+                            + ((DigitalOperationParameter) this.getOperationParam()).getMaxBetAmount()
+                            + &quot;), however the amount is &quot; + entry.getEntryAmount());
+        }
+<span class="fc" id="L43">    }</span>
+
+    protected void checkNumbers(BaseEntry entry) throws ApplicationException {
+        // verify whether XD is supported
+<span class="pc bpc" id="L47" title="2 of 4 branches missed.">        if (entry.getBetOption() &gt; this.getFunType().getN() || entry.getBetOption() &lt; this.getFunType().getK()) {</span>
+<span class="nc" id="L48">            throw new SystemException(SystemException.CODE_UNSUPPORTED_BETOPTION, &quot;Unsupported digital &quot;</span>
+                    + entry.getBetOption() + &quot;D bet option, only &quot; + this.getFunType().getK() + &quot;D to &quot;
+                    + this.getFunType().getN() + &quot;D is supported.&quot;);
+        }
+<span class="fc" id="L52">        SelectedNumber sNumber = entry.parseSelectedNumber();</span>
+<span class="fc" id="L53">        this.checkCountOfNumber(entry, sNumber);</span>
+<span class="fc" id="L54">        this.checkRangeOfNumber(entry, sNumber);</span>
+<span class="fc" id="L55">    }</span>
+
+    protected void checkRangeOfNumber(BaseEntry entry, SelectedNumber sNumber) {
+
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (int numberItem : sNumber.getBaseNumbers()) {</span>
+<span class="pc bpc" id="L60" title="1 of 4 branches missed.">            if (numberItem &lt; this.getFunType().getX() || numberItem &gt; this.getFunType().getY()) {</span>
+<span class="fc" id="L61">                throw new SystemException(SystemException.CODE_WRONGFORMAT_SELECTEDNUMBER,</span>
+                        &quot;The number of single selected number(&quot; + entry.getSelectNumber() + &quot;) must be in range of (&quot;
+                                + this.getFunType().getX() + &quot;,&quot; + this.getFunType().getY() + &quot;)&quot;);
+            }
+        }
+<span class="fc" id="L66">    }</span>
+
+    protected void checkCountOfNumber(BaseEntry entry, SelectedNumber sNumber) {
+        // the format of selected number has restricted the count of number,
+        // refer to mlottery_te.properties
+
+        // if (sNumber.getBaseNumbers().length != this.getFunType().getK()) {
+        // throw new
+        // SystemException(SystemException.CODE_WRONGFORMAT_SELECTEDNUMBER,
+        // &quot;The count of single selected number(&quot; + entry.getSelectNumber() +
+        // &quot;) must be &quot;
+        // + this.getFunType().getK());
+        // }
+<span class="fc" id="L79">    }</span>
+
+    @Override
+    public long calTotalBets(BaseEntry entry) throws ApplicationException {
+<span class="fc" id="L83">        return 1;</span>
+    }
+
+    @Override
+    public BigDecimal calEntryAmount(BaseEntry entry) throws ApplicationException {
+<span class="fc" id="L88">        return entry.getEntryAmount();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

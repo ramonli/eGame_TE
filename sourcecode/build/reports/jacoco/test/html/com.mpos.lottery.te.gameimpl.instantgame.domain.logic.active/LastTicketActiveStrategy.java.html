@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LastTicketActiveStrategy.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.instantgame.domain.logic.active</a> &gt; <span class="el_source">LastTicketActiveStrategy.java</span></div><h1>LastTicketActiveStrategy.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.instantgame.domain.logic.active;
+
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.IgOperationParameter;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.InstantTicketSerialNo;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.dto.ActiveCriteria;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.dto.ActiveResult;
+
+import org.json.simple.JSONObject;
+
+<span class="nc" id="L12">public class LastTicketActiveStrategy extends AbstractCriteriaActiveStrategy {</span>
+
+    public ActiveResult active(ActiveCriteria criteria) throws ApplicationException {
+<span class="nc" id="L15">        InstantTicketSerialNo no = new InstantTicketSerialNo(criteria.getValue());</span>
+
+        // check if the criteria supports the first ticket serial
+<span class="nc" id="L18">        IgOperationParameter param = this.getIgOperationParameter(no.getGGG());</span>
+<span class="nc" id="L19">        checkCriteria(criteria, no, param);</span>
+
+        // find the tickets by first and last ticket
+<span class="nc" id="L22">        String beginSerial = this.assembleSerialNo(no, param.getBeginTicketIndex());</span>
+<span class="nc" id="L23">        String endSerial = this.assembleSerialNo(no, param.getEndTicketIndex());</span>
+
+<span class="nc" id="L25">        ActiveResult result = this.batchActive(beginSerial, endSerial, criteria.getTrans());</span>
+
+<span class="nc" id="L27">        JSONObject jsonObject = new JSONObject();</span>
+<span class="nc" id="L28">        jsonObject.put(criteria.getValue(), result.getErrorCode());</span>
+<span class="nc" id="L29">        result.setActiveResult(criteria.toJSONString(jsonObject));</span>
+<span class="nc" id="L30">        return result;</span>
+    }
+
+    protected void checkCriteria(ActiveCriteria criteria, InstantTicketSerialNo no, IgOperationParameter param)
+            throws ApplicationException {
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        if (no.getLongIndex() != param.getEndTicketIndex()) {</span>
+<span class="nc" id="L36">            throw new ApplicationException(SystemException.CODE_NOT_LAST_SERIAL, &quot;The serial number(&quot;</span>
+                    + criteria.getValue() + &quot;) isn't the last &quot; + &quot;serial in book(number=&quot; + no.getGGG() + no.getBBB()
+                    + &quot;) of game instance(&quot; + no.getGGG() + &quot;).&quot;);
+        }
+<span class="nc" id="L40">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

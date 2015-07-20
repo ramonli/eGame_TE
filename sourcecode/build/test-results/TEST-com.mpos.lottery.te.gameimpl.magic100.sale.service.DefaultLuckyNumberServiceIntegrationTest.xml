@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.gameimpl.magic100.sale.service.DefaultLuckyNumberServiceIntegrationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:33" hostname="Ramon-PC" time="0.065">
+  <properties/>
+  <testcase name="testDetermine_NoCancelCounter" classname="com.mpos.lottery.te.gameimpl.magic100.sale.service.DefaultLuckyNumberServiceIntegrationTest" time="0.065"/>
+  <system-out><![CDATA[[2015-05-29 17:13:33,059][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:33,060][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,060][Test worker][INFO ][BaseTransactionalIntegrationTest] | DefaultLuckyNumberServiceIntegrationTest.testDetermine_NoCancelCounter                                                 |
+[2015-05-29 17:13:33,060][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,093][Test worker][DEBUG][DefaultLuckyNumberService] Use lucky number from REQUEUED RANGE(id=2) instead of main cycle.
+[2015-05-29 17:13:33,107][Test worker][DEBUG][BaseJpaDao] Reach the tail of main cycle and will start from begining to get enough lucky numbers:1
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

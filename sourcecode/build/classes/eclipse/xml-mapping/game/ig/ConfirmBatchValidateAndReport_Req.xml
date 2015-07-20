@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+	<class
+		name="com.mpos.lottery.te.gameimpl.instantgame.domain.dto.InstantBatchReportDto">
+		<map-to xml="ConfirmBatch" />
+        <field name="batchNumber" type="long" required="true">
+			<bind-xml name="batchNumber" node="attribute" />
+		</field>
+	</class>
+
+</mapping>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LfnPmodeSelectedNumberValidator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.lfn.sale.support.validator</a> &gt; <span class="el_source">LfnPmodeSelectedNumberValidator.java</span></div><h1>LfnPmodeSelectedNumberValidator.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.lfn.sale.support.validator;
+
+import com.mpos.lottery.te.common.util.Combination;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gameimpl.lfn.sale.LfnEntry;
+import com.mpos.lottery.te.gamespec.sale.BaseEntry;
+import com.mpos.lottery.te.gamespec.sale.support.validator.SelectedNumber;
+import com.mpos.lottery.te.port.Context;
+
+/**
+ * Verify bet options of N1...N5.
+ * 
+ * @author Ramon
+ * 
+ */
+public class LfnPmodeSelectedNumberValidator extends LfnNmodeSelectedNumberValidator {
+
+    public LfnPmodeSelectedNumberValidator(String numberFormat, int betOption) {
+<span class="fc" id="L20">        super(numberFormat, betOption);</span>
+<span class="fc" id="L21">    }</span>
+
+    @Override
+    public long calTotalBets(BaseEntry entry) throws ApplicationException {
+<span class="fc" id="L25">        SelectedNumber sNumber = entry.parseSelectedNumber();</span>
+<span class="fc" id="L26">        Combination c = new Combination(sNumber.getBaseNumbers().length, this.getBetOption()</span>
+                - LfnEntry.BETOPTION_INTERVAL);
+<span class="fc" id="L28">        return c.getTotal().longValue();</span>
+    }
+
+    /**
+     * Compare the count of selected balls.
+     */
+    @Override
+    protected void customValidateAfter(Context respCtx, BaseEntry entry, SelectedNumber selectedNumber)
+            throws ApplicationException {
+<span class="fc" id="L37">        int allowCountOfNumber = this.getBetOption() - LfnEntry.BETOPTION_INTERVAL;</span>
+
+        // value of bet option P must be less than (K+50) of K/N
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        if ((this.getFunType().getK() + LfnEntry.BETOPTION_INTERVAL) &lt; this.getBetOption()) {</span>
+<span class="fc" id="L41">            throw new SystemException(SystemException.CODE_UNSUPPORTED_BETOPTION, &quot;Unsupported bet option:&quot;</span>
+                    + this.getBetOption() + &quot;, the P bet option can't be greater than K(&quot;
+                    + (this.getFunType().getK() + LfnEntry.BETOPTION_INTERVAL) + &quot;)&quot;);
+        }
+
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        if (selectedNumber.getAllNumbers().length &lt; allowCountOfNumber) {</span>
+<span class="nc" id="L47">            throw new SystemException(SystemException.CODE_WRONGFORMAT_SELECTEDNUMBER, &quot;The count of P&quot;</span>
+                    + this.getBetOption() + &quot; selected number(&quot; + entry.getSelectNumber() + &quot;) of ticket(serialNo=&quot;
+                    + entry.getTicketSerialNo() + &quot;) must be greater than or equivalent with &quot; + allowCountOfNumber);
+        }
+
+<span class="fc" id="L52">        this.checkAmount(entry);</span>
+<span class="fc" id="L53">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

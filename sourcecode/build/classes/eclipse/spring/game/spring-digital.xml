@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+            
+    <!-- ============================================================= -->
+    <!-- GAME INSTANCE ............................................... -->
+    <!-- ============================================================= -->  
+    
+    <bean id="digitalGameInstanceService"
+        class="com.mpos.lottery.te.gameimpl.digital.game.service.DigitalGameInstanceService">
+        <property name="gameInstanceServiceFactory" ref="gameInstanceServiceFactory" />
+        <property name="channelGameInstanceTimeDao" ref="channelGameInstanceTimeDao" />
+        <property name="gameInstanceDao" ref="baseGameInstanceDao" />
+        <property name="baseJpaDao" ref="baseJpaDao" />
+        <property name="merchantService" ref="merchantService" />
+    </bean>
+
+	<!-- ============================================================= -->
+	<!-- SALE ........................................................ -->
+	<!-- ============================================================= -->
+
+	<bean id="digitalSaleService"
+		class="com.mpos.lottery.te.gameimpl.digital.sale.service.DigitalSaleService">
+		<property name="reversalStrategyFactory" ref="reversalStrategyFactory" />
+		<property name="baseTicketDao" ref="baseTicketDao" />
+		<property name="merchantService" ref="merchantService" />
+		<property name="uuidService" ref="uuidManager" />
+		<property name="gameInstanceService" ref="digitalGameInstanceService" />
+		<property name="transactionService" ref="transService" />
+		<property name="baseJpaDao" ref="baseJpaDao" />
+		<property name="ticketValidator" ref="digitalTicketValidator" />
+		<property name="baseEntryDao" ref="baseEntryDao" />
+		<property name="riskControlService" ref="digitalRiskControlService" />
+		<property name="statOfSelectedNumberDao" ref="digitalStatOfSelectedNumberDao" />
+	</bean>
+
+	<bean id="digitalTicketValidator"
+		class="com.mpos.lottery.te.gamespec.sale.support.validator.DefaultTicketValidator">
+		<property name="selectedNumberValidatorFactory" ref="digitalSelectedNumberValidatorFactory" />
+		<property name="baseJpaDao" ref="baseJpaDao" />
+	</bean>
+
+	<bean id="digitalSelectedNumberValidatorFactory"
+		class="com.mpos.lottery.te.gameimpl.digital.sale.support.DigitalSelectedNumberValidatorFactory">
+	</bean>
+	
+    <bean id="digitalRiskControlService"
+        class="com.mpos.lottery.te.gameimpl.digital.sale.support.DigitalRiskControlService">
+        <property name="instantaneousSaleDao" ref="instantaneousSaleDao" />
+        <property name="riskControlLogDao" ref="riskControlLogDao" />
+        <property name="riskControlLogServiceAsyn" ref="defaultRiskControlLogServiceAsyn" />
+    </bean>	
+
+	<!-- ============================================================= -->
+	<!-- PAYOUT ...................................................... -->
+	<!-- ============================================================= -->
+	<bean id="digitalPrizeService"
+		class="com.mpos.lottery.te.gameimpl.digital.prize.service.DigitalPrizeService">
+		<property name="reversalStrategyFactory" ref="reversalStrategyFactory" />
+		<property name="baseTicketDao" ref="baseTicketDao" />
+		<property name="baseEntryDao" ref="baseEntryDao" />
+		<property name="creditService" ref="creditService" />
+		<property name="merchantService" ref="merchantService" />
+		<property name="gameInstanceService" ref="digitalGameInstanceService" />
+		<property name="baseJpaDao" ref="baseJpaDao" />
+		<property name="baseWinningItemDao" ref="baseWinningItemDao" />
+		<property name="baseWinningStatisticsDao" ref="baseWinningStatisticsDao" />
+		<property name="taxService" ref="taxService" />
+		<property name="payoutStrategyFactory" ref="digitalPayoutStrategyFactory" />
+		<property name="prizeLevelDao" ref="prizeLevelDao" />
+	</bean>
+
+	<bean id="digitalPayoutStrategyFactory"
+		class="com.mpos.lottery.te.gamespec.prize.support.payoutstrategy.DefaultPayoutStrategyFactory">
+		<property name="newprintPayoutStrategy" ref="defaultNewprintPayoutStrategy" />
+		<property name="refundPayoutStrategy" ref="defaultRefundPayoutStrategy" />
+	</bean>
+
+    <!-- ============================================================= -->
+    <!-- PAYOUT ...................................................... -->
+    <!-- ============================================================= -->
+
+	<bean id="digitalActivityReportHandler"
+		class="com.mpos.lottery.te.merchant.domain.logic.DefaultGameTypeActivityReportHandler">
+		<property name="activityReportDao" ref="digitalActivityReportDao" />
+		<property name="activityReportService" ref="activityReportService" />
+		<property name="supportedGameType" value="DIGITAL" />
+	</bean>
+
+	<!-- ==================================================== -->
+	<!-- DAO DEFINITION ..................................... -->
+	<!-- ==================================================== -->
+
+	<bean id="digitalActivityReportDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.merchant.dao.BaseActivityReportJpaDao">
+		<property name="ticketTableName" value="TE_FD_TICKET" />
+	</bean>
+	
+    <bean id="digitalStatOfSelectedNumberDao" parent="baseJpaDao"
+        class="com.mpos.lottery.te.gameimpl.digital.sale.dao.jpa.JpaDigitalStatOfSelectedNumberDao">
+    </bean> 	
+</beans>
+

@@ -1,0 +1,405 @@
+MLOTTERY-TE CHANGELOG
+==========================
+http://www.egame-solutions.com
+
+Change in version(2.5.2-rc7)
+--------------------------------------
+** BUG
+    *(rc7) 0007608: once sold a voucher, the remaining count should be updated.
+    *(rc3) 0007574: CommissionBalanceTransfer and CashoutBalanceTransfer have not roll back when fail
+    *(rc7) 0007604: cashout成功，金额增加错误
+** NEW FEATURE
+    *(rc1) Support digit game from 1D to 9D. 
+    *(rc4) Support SMART airtime topup.
+    *(rc5) Support sale on new game instance.
+    *(rc5) Support winner analysis algorithm typeE of digit game.
+** PATCH
+    *(rc6) 0007590: cashout成功后，operator账户cashout账户金额不增加，还有Cancel逻辑
+
+Change in version(2.5.1-rc7)
+--------------------------------------
+** BUG
+    *(rc5) Fix bug#7518 - Introduce a dedicated response code for 'no payout allowed'.
+    *(rc2) Fix bug#7501 - payout got 921 if there is '倍投' entry(sale generate extendTxt based on single entry, 
+    however payout is based on multiple entries).
+    *(rc2) Fix bug#7495 - No 'type' field in responsed XML of vat sale.
+    *(rc2) Fix bug#7508 - same request data(amount) will get same voucher.
+** NEW FEATURE
+    *(rc7) Finish implementing TELECO voucher business.
+    *(rc6) Added Selling vouchers for Telco (456) && Airtime topup(455) in Activity report.
+	*(rc3) vat sale response body add gameTypeId
+    *(rc2) Implement SMS player topup.
+** PATCH
+    *(rc2) TransferCredit redefined the transactionType SALE_BALANCE_TRANS_TYPE = 1161;PAYOUT_BALANCE_TRANS_TYPE = 
+    1162;COMMISSION_BALANCE_TRANS_TYPE = 1163;CASHOUT_BALANCE_TRANS_TYPE = 1164;FOR TE
+    *(rc4) Verify the sale/payout permission for each allocated game of a merchant.
+    *(rc4) Return the game type in response of Vat Reprint Ticket.
+    
+Change in version(2.5.0-rc5)
+--------------------------------------
+** BUG
+    *(rc3) Fix bug#7427 - Topup successfully even no airtime game allocated.
+    *(rc3) Fix bug#7430 - Conflict response code when topup to a unregistered user.
+    *(rc3) Fix bug#7427 - topup successfully even no game allocated.
+    *(rc2) Fix bug#7416 - Incorrect step-amount checking rule.
+    *(rc2) Fix bug#7415 - Wrong formated refTrx in request to Coobill service.
+    *(rc2) Fix bug#7405 - Fail to enquiry ticket.
+    *(rc2) Fix bug#7019 - If checked previous day, TE will response 354.
+    *(rc1) Fix bug#7397 - Support gpe type:9(tgpe).
+** NEW FEATURE
+    *(rc1) Implement airtime topup VAS.
+** PATCH
+    *(rc4) Enlarge the precision of commission amount from 2 to 6.
+    *(rc5) Modify payout drawdate field formatted as "yyyyMMddhhmmss".
+
+Change in version(2.4.4-rc4)(2015/01/06)
+--------------------------------------
+** BUG
+    *(rc4)0007358: IG Batch Validation：如果选择的Merchant Card是master，payout时候会检查是否需要做enrollment的字段. 
+    *(rc4)0007353: Batch Validation Report ： count of failure 没有统计失败的数据.
+    *(rc3)0007316: [Cambodia] 在POS机上可以Withdraw金额为0   
+    *(rc3)0007317: [Cambodia] POS Withdraw - 做Withdraw时，如果纸不过做Reversal Cancel后，给Operator退回的
+     Commission Amount显示为小数点后多位
+    *(rc2)0007214: 使用IGPE测试发现sale交易显示正值-it should be positive amount.
+	*(rc1)0007235: transfer 交易，在SaleAndPayout.xml中显示不正确.正负取反了.
+** NEW FEATURE
+    *(rc1)Notify zabbix monitoring system(long transaction and internal server error).
+** PATCH
+
+Change in version(2.4.3-rc3)
+--------------------------------------
+** BUG
+    *(rc3) Fix bug#7227 - unmatched extendTxt when payout. 
+	*(rc2) 0007226: Sale balance transfer: Sale balance全部转出提示‘insufficient balance’。
+    *(rc2) 0007212: DB存储cashout Balance目前保留为三位小数
+    *(rc2) 0007214:0007214: 使用IGPE测试发现sale交易显示正值
+	*(rc1) Credit Transfer add balance transaction record
+** NEW FEATURE
+** PATCH 
+
+Change in version(2.4.2-rc5)
+--------------------------------------
+** BUG
+    *(rc4) 0007134: POS做Income Balance transfer打印时失败，cancel成功，金额没有回滚
+    *(rc3) Fix bug#7133 - Fail to handle risk control of digital(TYPEA) if the count of winning number is greater than K/N.
+    *(rc2) Fix bug#7126 - System will cancel the commission of magic100 sale twice.
+    *(rc1) Need to maintain the payout balance if ticket of magic100 wins, and the commission calculation as well.
+** NEW FEATURE
+    *(rc4) Support user provided entry amount(Lotto game).
+    *(rc1) Refactor the CommissionBalanceService to support IG batch validation.
+    *(rc1) Added commission calculation for IG Batch validation and IG validation
+    *(rc3) Activity Report add the following types of transactions :
+            Operator Cash Out By Pass(352),
+            Operator Cash Out Manually(363),
+            Cashout of customer(445)
+            cashout withdraw(365), 
+            Top up by voucher(447),
+            portal top up(360))    
+** PATCH 
+   
+Change in version(2.4.1-rc6)
+--------------------------------------
+** BUG
+    *(rc6) Fix bug#7065 - The risk control strategy doesn't handle cancellation yet.
+    *(rc6) Fix bug#7067 - To LFN risk control, a given entry will win only a single prize level, different from digital game.
+    *(rc3) Fix bug#6994 - Got exception 'Unsupported prize level type:3' when making digital sale.
+    *(rc3) Fix bug#0006988: IncomeTransfer时，CommissionBalance为负值，Transfer成功后，CommissionBalance变成0了
+    *(rc3) Fix bug#0006986: Operator Topup - Body发送不存在的Operatorid和voucherSN，返回200，topup成功
+    *(rc2) Fix bug#6961 - Can't handle failed player-cashout response.
+    *(rc2) Fix bug#0006978	Cashout by Pass时，如果输入错误密码超过Cashout错误的最大值，仍然Cashout成功
+    *(rc2) Fix bug#0006970	Cashout时，CommissionBalance为负值，Cashout成功后，CommissionBalance变成0了
+    *(rc2) Fix bug#0006917	Cashout by Manually交易时，8002(Card)到8001(Card)Cashout时，8001没有获得cashout Commission
+    *(rc1) Fix bug#6971 - No AMQP message of 'payout reversal' published.
+** NEW FEATURE
+    *(rc4) -change the request parameter of transaction 'cashout by manual' 'operatorid' to 'operator login name' 
+    *(rc1) Implement new risk control strategy, refer to SRS doc.
+** PATCH
+    *(rc5) bug#7023 - Write the cancellation transaction for both cancelled and cancelling transaction, for example if cancel 
+    a sale transaction, the sale transaction will record who cancelled it, and cancellation transaction will record 
+    who has been cancelled by it.
+    *(rc1) Refactor the implementation of com.mpos.lottery.te.merchant.service.balance.BalanceService(
+    will replace CreditService).
+
+Change in version(2.4.0-rc2)
+--------------------------------------
+** BUG
+    *(rc1) Fix#6562 - set the default bingo entry as QP(entries picked by the backend).
+    *(rc2)0006918: Credit Transfer缂哄皯commission balance鍜宑ashout balanceTransfer鍔熻兘
+	*(rc2)0006915: Commission Balance Enquiry鏄剧ず鐨刅alid Commission Amount鏁版嵁寤鸿淇濈暀灏忔暟鐐瑰悗闈�浣�
+	*(rc2)0006917: Cashout by Manually浜ゆ槗鏃讹紝8002(Card)鍒�001(Card)Cashout鏃讹紝8001娌℃湁鑾峰緱cashout Commission
+** NEW FEATURE
+    *(rc1) Implement commission balance calculation(sale, payout and operator cashout).
+    *(rc1) Implement Operator cashout.
+    *(rc1) Implement transfer income balance.
+    *(rc1) Implement activity report to response commission summary, operator cashout/topup summary.
+** PATCH
+    *(rc1) Refactor AMQP message publishing mechanism and unify the protobuff message format(all 
+    message will be Transaction/Cancellation, except sale).
+    *(rc1) Refactor 'cancel by ticket' to make it call TransactionService#reverseOrCancel(..).
+    *(rc1) Refactor Tranaction#reversalOrCancel(..) to record cancelTransactionId and targetTransTypeOfCancel.
+ 
+Change in version(2.2.2-rc1)
+--------------------------------------
+** BUG
+    *(rc1) Fix bug#6654 - Encryption error when VAT sale ticket
+    *(rc1) Fix bug#6658 - NullPointerException when CancelByTrans
+    *(rc1) Fix bug#6655 - Incorrect response message of VAT Category enquiry
+    *(rc1) Fix bug#35 - the entry amount of LFN must be greater than base amount.
+    *(rc1) Fix bug#6651 - message format exception of VAT sale request, the 'rate' shouldn't be mandatory.
+    *(rc1) Fix bug#6578 - should verify the value of input channel of entry when parse sale request.
+    *(rc1) Fix bug#6444 - No payout allowed after settlement(Betting Center).
+** NEW FEATURE
+    *(rc1) Sale and payout must be performed under same distributor if distributor ask it.
+** PATCH
+    *(rc1) If prize logic of a game type is fixed amount or odds, ignore the checking on allowed prize level. At 
+    present Magic100, Digital and LFN will be ignored.
+
+Change in version(2.2.1-rc1)
+--------------------------------------
+** BUG
+    *(rc1)Fix bug#6422 - unsupported bet option. TE will dynamically determine the supported bet option by K of K/N.
+    *(rc1)Fix bug#6364 - Upgrade the client library of player account system again.
+    *(rc1)Fix bug#6485 - Can't do winner analysis of Bingo game(Write 'gameInstanceId' and 'ticketId' to bingo 
+    entry(if so only single-draw allowed)).
+** NEW FEATURE
+    *(rc1) Implement offline VAT transaction upload.
+    *(rc1) Implement VAT sale refunding.
+** PATCH
+    *(rc1) Refactor to support new VAT logic(Both B2B and B2C can by either Raffle or Magic100 Game; offline sale etc).
+
+Change in version(2.2.0-rc2)
+--------------------------------------
+** BUG
+    *(rc2) Fix bug#6412 - No 'totalAmount' returned in response of sale, it doesn't match with TE interface document.
+** NEW FEATURE
+    *(rc1) Implement Bingo game.
+** PATCH
+    *(rc1) Upgrade the client library of player account system.
+
+Change in version(2.1.1-rc1)
+--------------------------------------
+** BUG
+    *(rc1) Fix bug#6207 - If prize group is follow parent, the parent's 'no allow payout' doesn't work.
+    *(rc1) Fix bug#6182 - Incorrect response format of cashout.
+    *(rc1) Fix bug#6244 - keep selling a lucky number#1(Resolved by retrieving lucky numbers by game instance);
+** NEW FEATURE
+** PATCH
+    *(rc1) Refactor VAT sale to support with or without auto-payout handling.
+
+Change in version(2.1.0-rc1)
+--------------------------------------
+** BUG
+** NEW FEATURE
+    *(rc1) Implement VAT.
+    *(rc1) support Confirm Batch validation.
+** PATCH
+
+Change in version(2.0.0-rc1)
+--------------------------------------
+** BUG
+** NEW FEATURE
+    *(rc1) Upgrade Spring framework to v4.0.5 which supports JPA2.1, Servlet3.0
+    *(rc1) Upgrade Hibernate framework to v4.3.5 which supports JPA2.1
+** PATCH
+    *(rc1) Mark the operator/merchant/device of new-printed ticket as same with sale transaction.
+
+Change in version(1.6.1-rc1)
+--------------------------------------
+** BUG
+** NEW FEATURE
+** PATCH
+    * (rc1) upgrade spring framework to v3.2.9
+
+Change in version(1.6.0-rc6)
+--------------------------------------
+** BUG
+    * (rc6)Fix bug - No tax amount persisted to neither entry(Magic100) table nor client response. 
+    * (rc3)Fix bug#5656 - No entries generated for new printed ticket when payout.
+    * (rc3)Fix bug#5653 - Incorrect activity report when payout multi-draw ticket.
+** NEW FEATURE
+    * (rc1)Support new tax calculation rule 'based on per ticket of per draw' when payout. New column 
+    'TAX_CALCULATION_BASED' is added to table 'game' to maintain the configuration.
+    * (rc1)Supports Union game.
+** PATCH
+    * (rc5)Mark the create-time of new-printed ticket as same as old ticket.
+    * (rc5)Allow negative payout balance with reversal payout. 
+    * (rc4)Support payout of 'cancel-declined' ticket.
+    * (rc2)Supports 'voucherSN' in request of 'operator topup'.
+
+Change in version(1.5.4-rc5)
+--------------------------------------
+** BUG
+    * (rc4)Fix bug#5032 - 240 returned when payout reversal.
+    * (rc4)Fix bug - NullpointerException when sale if device hasn't been allocated to merchant yet.
+    * (rc3)Fix bug#5025 - 327 returned when reverse a payout transaction.
+    * (rc2)Fix bug#4697 - Return dedicated response code if game instance channel stopped sale.
+    * (rc2)Fix bug#4982 - Return dedicated response code if game instance suspended.
+** NEW FEATURE
+    * (rc4)Support multiple draw of raffle game.
+    * (rc1)Refactor cashoutService to follow latest API of PlayerAccount.
+** PATCH
+    * (rc5)Refactor QP of digital game(put 90% numbers in QP sample) 
+    * (rc5)Generate test coverage report by JaCoCo.
+    * (rc4)Support 'minMultkDraw' and 'maxMultiDraw' of operation parameters.
+    * (rc1)Return 'lastDrawNo' in response of both 'ticketEnquiry' and 'transactionEnquiry'.
+
+Change in version(1.5.3-rc6)
+--------------------------------------
+** BUG
+    *(rc6) Fix bug - Modify match bet option of TOTO game from 0,1,2 to 0,1,3
+    *(rc6) Fix bug#4517 - dedicated response message if no game allocated to merchant.
+    *(rc5) Fix bug - THe LFN QP number generated by TE is 0,0.
+    *(rc3) Fix bug#4742 - TE response 'not winning ticket' if the game instance is 'stop sale' status.
+    *(rc3) Fix bug#4759 - Sort daily activity reports in response of 'enquiry activity report' by date.
+** NEW FEATURE
+    *(rc4) Implement SRS#TRNE001 - Switch Control of Validation Code.
+** PATCH
+    *(rc5) Validate the max allowed bets instead of count of multiple selected-number when sale.
+    *(rc2) Change the attribute 'amount' to 'entryAmount' in both request and response of sale.
+    *(rc1) Return 'entryAmount' in response of sale, ticket enquiry and transaction enquiry.
+    *(rc1) Return 'entryAmount' and 'totalBets' in response of payout if new ticket needs to be printed.
+
+Change in version(1.5.2-rc6)
+--------------------------------------
+** BUG
+    *(rc6) Fix bug#4420 - No cancellation allowed if remove a operator during POS power off.
+    *(rc5) Fix bug of concurrent access to credit service, a 'repeatable-read' problem(Even lock the merchant, JPA 
+    persistence context won't reload entity from underlying database). 
+    *(rc5) Fix bug#4426 - Even suspend sale of a game instance, sale is still approved by the backend.
+    *(rc5) Fix bug#4522 - No any biz transactions should be approved by the backend if any merchant(any node in the 
+    tree isn't active.
+    *(rc5) Fix bug#4450,#4451,#4435 - No manual cancellation should be approved if game doesn's allow manual cancellation.
+    *(rc5) Fix bug#4425,#4561 - No manual cancellation should be approved if game instance doesn's allow manual cancellation.
+    *(rc5) Fix bug#4600 - Can't make sale of digital game if the there is only mixture prize level.
+** NEW FEATURE
+    *(rc6) Support boost amount of LOTTO game.
+    *(rc2) Implemented QP number enquiry of L590 and Digital games.
+    *(rc3) Implement batch sale mode of Raffle game.
+** PATCH
+    *(rc4) Support 'IS_NEED_DO_ENCROLLMENT' of table 'operator'.
+    *(rc3) Return detailed ticket information in response of transaction enquiry.
+    *(rc3) Use 'isWinning' and 'isLuckyWinning' of table ticket to avoid scanning of table winning if a ticket wins no prize.
+    *(rc3) Persist GPS location.
+    *(rc3) Persist 'totalBets' to all ticket tables.
+    *(rc1) Supports range number sale in Magic100. 
+
+Change in version(1.5.1-rc7)
+--------------------------------------
+** BUG
+    *(rc7) Fix bug of NullpointerException when no game instance found.
+    *(rc5) Fix bug of incorrect game channel setting looking-up strategy.
+    *(rc5) Fix bug#4266 - get incorrect odds for digital game(typeA).
+    *(rc4) Fix bug#4164 - No privilege to payout a lucky prize.
+    *(rc3) Fix bug of 'get working key' which requires client to provide header 'X-Terminal-Id'.
+** NEW FEATURE
+    *(rc6) Implement QP number generation at the backend for digital and lfn games.
+    *(rc1) Risk control on sale of fixed odds games, such as digital and l590.
+** PATCH
+    *(rc2) Refactor prize enquiry and payout to support validation code.
+
+Change in version(1.5.0-rc5)
+--------------------------------------
+** BUG
+** NEW FEATURE
+    *(rc1) Implement global lucky draw.
+    *(rc2) Implement payout of raffle game.
+    *(rc3) Refactor to follow new digital game rule.
+    *(rc3) Implement operator topup.
+    *(rc4) Enhance activity report to support daily summary.
+    *(rc5) Generate barcode of sale; refactor payout to support barcode.
+    *(rc5) Support userId in sale request.
+** PATCH
+    *(rc5) Generate serialNo in AFM format.
+
+Change in version(1.4.1-rc2)
+--------------------------------------
+** BUG
+    * (rc2)fix bug#3948 - response a dedicated code for no enough future game draws.
+** NEW FEATURE
+    * (rc1)Upgrade to Spring3.2.5 and Hibernate4.2.7
+    * (rc2)Publish transaction message to 3rd party by AMQP.
+** PATCH
+
+Change in version(1.4.0-rc7)
+--------------------------------------
+** BUG
+    * (rc7) fix bug#3804 - Write incorrect transaction type when manually cancel ticket from client.
+    * (rc6) fix bug#2894 - no pos locked if exceeds max allowed failed validation attempts.
+    * (rc6) fix bug#3263 - transfer payout credit can deduct the payout balance of source operator to negative amount
+    * (rc5) unmatched extend text when payout. WHen system runs in 'non-ticket-encryption' mode, no extendText comparation needed.
+    * (rc4) generate incorrect default PIN(!!!!) when sale.
+** NEW FEATURE
+    * (rc1)Support digital game type(3d/4d).
+** PATCH
+    * (rc1)Refactor cashout to support both by amount and by reference No.
+    * (rc2)Refactor to use perf4j to persist performance data.
+    * (rc3)Refactor digital game to follow new business rule(variable betting amount&multiplier winning amount).
+
+Change in version(1.3.0-rc3)
+--------------------------------------
+** BUG
+    * (rc2)Fix bug#2894 - Nullpointer exception when enquiry IG prize.
+** NEW FEATURE
+    * (rc1)Migrate Lotto/TOTO sale into uniform SaleService design(all inherit from AbstractTicketService).
+    * (rc2)Migrate Lotto/TOTO payout to uniform PrizeService design.
+    * (rc3)Migrate Raffle/Magic100/Lfn to unifrom SaleService design.
+** PATCH
+
+Change in version(1.2.2-rc2)
+--------------------------------------
+** BUG
+    * (rc2)Fix bug#2996 - if game is inactive, payout shouldn't be allowed.
+** NEW FEATURE
+    * Apply new 'allow type' definition of prize group(1:unlimited, 4:use parent,5:definitive amount).
+** PATCH
+    * (rc1)Add a new column(IS_CARD) to table(DW_MERCHANT_TOPUP_LOG) to identify the target type.
+
+Change in version(1.2.1-rc2)
+--------------------------------------
+** BUG
+    * (rc2)Fix bug#2906 - No cashout amount added to daily cashout level after a successful cashout.
+    * (rc2)Fix bug#2990 - payout successfully even card's prize group definition is 'no payout allowed'.
+** NEW FEATURE
+    * Refactor the 'GameInstanceService' to return only those supported by the merchant(game has been allocated to merchant).
+** PATCH
+
+Change in version(1.2.0-rc6)
+--------------------------------------
+** BUG
+    * (rc6) Fix a bug for' transaction enquiry' of lotto sale(java.lang.ClassCastException:com.mpos.lottery.te.
+    gamespec.sale.DummyTicket cannot be cast to com.mpos.lottery.te.gameimpl.lotto.sale.domain.LottoTicket).
+    * (rc5) Sync TOTO implementation with interface definition document.
+    * (rc5) Fix bug#2893 - payout even game is inactive.
+    * (rc5) Fix bug#2894 - No max allowed validation times checking for EGame validation.
+** NEW FEATURE
+    * Implement manual cancellation from client.
+    * Implement activity report.
+    * Implement publishing transaction message to 3rd party systems
+    * Introduce new web service to simplify internal system call.
+** PATCH
+
+Change in version(1.1.0-rc3)
+--------------------------------------
+** BUG
+** NEW FEATURE
+    * Refactor IG and pass integration test.
+    * Refactor Raffle and pass integration test.
+    * Refactor Magic100 and pass integration test.
+    * Refactor L590 and pass integration test.
+    * Migrate Lotto game to new ROUTINE design and pass integration test.
+    * Migrate TOTO game to new ROUTINE design and pass integration test.
+    * Implement transfer credit services.
+** PATCH
+    * Support new switch of merchant. If player buy ticket by credit card, the switch of merchant will 
+    control whether need to deduct sale credit.
+
+Change in version(1.0.0)
+--------------------------------------
+** BUG
+** NEW FEATURE
+    * Support game type 5/90. 
+    * Support SMS-Raffle game
+    * Adopt common-router to replace old and cumbersome dispatcher design.
+** PATCH
+
+

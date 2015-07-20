@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.gameimpl.instantgame.BatchValidationVIRNIntegrationTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:09" hostname="Ramon-PC" time="0.033">
+  <properties/>
+  <testcase name="testBatchValidate_CASH_OBJECT_AllSuccess" classname="com.mpos.lottery.te.gameimpl.instantgame.BatchValidationVIRNIntegrationTest" time="0.019"/>
+  <testcase name="testBatchValidate_CASH_OBJECT_PartialSuccess" classname="com.mpos.lottery.te.gameimpl.instantgame.BatchValidationVIRNIntegrationTest" time="0.013"/>
+  <system-out><![CDATA[[2015-05-29 17:13:09,922][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:09,922][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:09,922][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@103d1e5f) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:09,923][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:09,923][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:09,923][Test worker][INFO ][BaseTransactionalIntegrationTest] | BatchValidationVIRNIntegrationTest.testBatchValidate_CASH_OBJECT_AllSuccess                                            |
+[2015-05-29 17:13:09,923][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:09,936][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:09,936][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:09,936][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@4951c0e) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:09,937][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:09,937][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:09,937][Test worker][INFO ][BaseTransactionalIntegrationTest] | BatchValidationVIRNIntegrationTest.testBatchValidate_CASH_OBJECT_PartialSuccess                                        |
+[2015-05-29 17:13:09,937][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

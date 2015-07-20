@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.gamespec.game.dao.JpaBaseGameInstanceDaoIntegrationTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:50" hostname="Ramon-PC" time="0.122">
+  <properties/>
+  <testcase name="testLookupActiveByGame" classname="com.mpos.lottery.te.gamespec.game.dao.JpaBaseGameInstanceDaoIntegrationTest" time="0.033"/>
+  <testcase name="testLookupActiveByGameType" classname="com.mpos.lottery.te.gamespec.game.dao.JpaBaseGameInstanceDaoIntegrationTest" time="0.029"/>
+  <testcase name="testLookupByGameAndNumber" classname="com.mpos.lottery.te.gamespec.game.dao.JpaBaseGameInstanceDaoIntegrationTest" time="0.024"/>
+  <testcase name="testLookupActiveByGameType_NoGameAllocated" classname="com.mpos.lottery.te.gamespec.game.dao.JpaBaseGameInstanceDaoIntegrationTest" time="0.012"/>
+  <testcase name="testLookupFutureByGameAndNumber" classname="com.mpos.lottery.te.gamespec.game.dao.JpaBaseGameInstanceDaoIntegrationTest" time="0.013"/>
+  <testcase name="testLookupByGameAndNumber_NoGameAllocated" classname="com.mpos.lottery.te.gamespec.game.dao.JpaBaseGameInstanceDaoIntegrationTest" time="0.008"/>
+  <system-out><![CDATA[[2015-05-29 17:13:50,801][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:50,801][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:50,801][Test worker][INFO ][BaseTransactionalIntegrationTest] | JpaBaseGameInstanceDaoIntegrationTest.testLookupActiveByGame                                                           |
+[2015-05-29 17:13:50,801][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:50,828][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:50,828][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:50,828][Test worker][INFO ][BaseTransactionalIntegrationTest] | JpaBaseGameInstanceDaoIntegrationTest.testLookupActiveByGameType                                                       |
+[2015-05-29 17:13:50,828][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:50,863][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:50,863][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:50,863][Test worker][INFO ][BaseTransactionalIntegrationTest] | JpaBaseGameInstanceDaoIntegrationTest.testLookupByGameAndNumber                                                        |
+[2015-05-29 17:13:50,863][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:50,881][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:50,881][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:50,881][Test worker][INFO ][BaseTransactionalIntegrationTest] | JpaBaseGameInstanceDaoIntegrationTest.testLookupActiveByGameType_NoGameAllocated                                       |
+[2015-05-29 17:13:50,881][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:50,890][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:50,891][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:50,891][Test worker][INFO ][BaseTransactionalIntegrationTest] | JpaBaseGameInstanceDaoIntegrationTest.testLookupFutureByGameAndNumber                                                  |
+[2015-05-29 17:13:50,891][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:50,897][Test worker][DEBUG][BaseJpaDao] Query future game instance(class com.mpos.lottery.te.gameimpl.lotto.draw.domain.LottoGameInstance) by(number=20090408,gameId=GAME-111, multipleDraws=2, state=1||2):1
+[2015-05-29 17:13:50,903][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:50,903][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:50,903][Test worker][INFO ][BaseTransactionalIntegrationTest] | JpaBaseGameInstanceDaoIntegrationTest.testLookupByGameAndNumber_NoGameAllocated                                        |
+[2015-05-29 17:13:50,903][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

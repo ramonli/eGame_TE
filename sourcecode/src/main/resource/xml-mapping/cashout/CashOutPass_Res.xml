@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+	<class name="com.mpos.lottery.te.merchant.web.CashOutPassDto">
+		<map-to xml="CashOutPass" />
+
+		<field name="amount" type="java.math.BigDecimal" required="true">
+			<bind-xml name="amount" node="attribute" />
+		</field>
+		<field name="expireTime" type="java.lang.String" required="true">
+			<bind-xml name="expireTime" node="attribute" />
+		</field>
+		<field name="barcode" type="java.lang.String" required="true">
+			<bind-xml name="barcode" node="attribute" />
+		</field>
+	</class>
+
+</mapping>

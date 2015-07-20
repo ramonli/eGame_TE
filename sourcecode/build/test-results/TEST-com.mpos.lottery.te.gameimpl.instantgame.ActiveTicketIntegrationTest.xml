@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.gameimpl.instantgame.ActiveTicketIntegrationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:10" hostname="Ramon-PC" time="0.083">
+  <properties/>
+  <testcase name="testActiveInstantTicket" classname="com.mpos.lottery.te.gameimpl.instantgame.ActiveTicketIntegrationTest" time="0.083"/>
+  <system-out><![CDATA[[2015-05-29 17:13:10,098][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:10,099][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:10,099][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@5e2d7b75) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:10,100][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:10,100][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:10,100][Test worker][INFO ][BaseTransactionalIntegrationTest] | ActiveTicketIntegrationTest.testActiveInstantTicket                                                                    |
+[2015-05-29 17:13:10,100][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:10,104][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/ig/Active_InstantTicket_Req.xml) by key(transtype.406).
+[2015-05-29 17:13:10,117][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.instantgame.domain.InstantTicket, mappingFile=xml-mapping/game/ig/Active_InstantTicket_Req.xml).
+[2015-05-29 17:13:10,117][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890790104|Timestamp:20150529171310|Transaction-Type:406|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="78MPOsEOwlfbMTWefC18Zw=="/>,hash=-1765255453), get digest:b9018d076f170465277ad719ae9b1284
+[2015-05-29 17:13:10,117][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=406).
+[2015-05-29 17:13:10,117][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:10,117][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171310).
+[2015-05-29 17:13:10,118][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:10,118][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890790104).
+[2015-05-29 17:13:10,118][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:10,118][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:10,118][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=b9018d076f170465277ad719ae9b1284).
+[2015-05-29 17:13:10,118][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:13:10,118][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:10,118][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:10,120][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6ttFDFcpmi1MamgAomcAmY5lYbhl2ooSh+uVE8PnpCoBs4H717Oixv5ohyTi7rgD5w==.
+[2015-05-29 17:13:10,120][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890790104|Timestamp:20150529171310|Transaction-Type:406|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:10,121][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="78MPOsEOwlfbMTWefC18Zw=="/>
+[2015-05-29 17:13:10,121][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890790104|Timestamp:20150529171310|Transaction-Type:406|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="78MPOsEOwlfbMTWefC18Zw=="/>,hash=-1765255453), get digest:b9018d076f170465277ad719ae9b1284
+[2015-05-29 17:13:10,121][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/ig/Active_InstantTicket_Req.xml) by key(transtype.406).
+[2015-05-29 17:13:10,121][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/ig/Active_InstantTicket_Req.xml
+[2015-05-29 17:13:10,121][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/ig/Active_InstantTicket_Req.xml) by key(transtype.406).
+[2015-05-29 17:13:10,137][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_406_1.5.0).
+[2015-05-29 17:13:10,137][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_406_).
+[2015-05-29 17:13:10,137][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_406_), found controller(com.mpos.lottery.te.gameimpl.instantgame.InstantGameController@484e7001) and method(public void com.mpos.lottery.te.gameimpl.instantgame.InstantGameController.activeTicket(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:10,155][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(ACTIVE_INSTANT_TICKET)
+[2015-05-29 17:13:10,155][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/ig/Active_InstantTicket_Req.xml) by key(transtype.4406).
+[2015-05-29 17:13:10,155][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.instantgame.domain.InstantTicket),mappingFile=xml-mapping/game/ig/Active_InstantTicket_Req.xml
+[2015-05-29 17:13:10,155][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/ig/Active_InstantTicket_Req.xml) by key(transtype.4406).
+[2015-05-29 17:13:10,156][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.instantgame.domain.InstantTicket, mappingFile=xml-mapping/game/ig/Active_InstantTicket_Req.xml).
+[2015-05-29 17:13:10,156][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890790104|Timestamp:20150529171310|Transaction-Type:4406|Transaction-Id:0115052900000000000456|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="78MPOsEOwlfbMTWefC18Zw==" amount="10"/>):6501fa2e7fdfa4c270966188e74be9ae
+[2015-05-29 17:13:10,156][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=140) succesfully.
+[2015-05-29 17:13:10,157][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=140): <?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="78MPOsEOwlfbMTWefC18Zw==" amount="10"/>
+[2015-05-29 17:13:10,157][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/ig/Active_InstantTicket_Req.xml) by key(transtype.4406).
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

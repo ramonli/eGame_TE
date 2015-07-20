@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BalanceTransactionsDaoImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.merchant.dao.jpa</a> &gt; <span class="el_source">BalanceTransactionsDaoImpl.java</span></div><h1>BalanceTransactionsDaoImpl.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.merchant.dao.jpa;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.merchant.dao.BalanceTransactionsDao;
+import com.mpos.lottery.te.merchant.domain.BalanceTransactions;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.sequence.service.UUIDService;
+import com.mpos.lottery.te.trans.domain.TransactionType;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Query;
+
+<span class="fc" id="L19">public class BalanceTransactionsDaoImpl extends BaseJpaDao implements BalanceTransactionsDao {</span>
+    private UUIDService uuidService;
+
+    @Override
+    public List&lt;BalanceTransactions&gt; findBalanceTransactions(String teTransactionId) {
+<span class="fc" id="L24">        String sql = &quot;from BalanceTransactions bt where bt.teTransactionId=:teTransactionId&quot;;</span>
+<span class="fc" id="L25">        Map params = new HashMap();</span>
+<span class="fc" id="L26">        params.put(&quot;teTransactionId&quot;, teTransactionId);</span>
+<span class="fc" id="L27">        return this.findByNamedParams(sql, params);</span>
+    }
+
+    @Override
+    public void updateBalanceTransactionsStatusByteTransactionId(String teTransactionId) {
+<span class="fc" id="L32">        String sql = &quot;update BalanceTransactions bt set bt.status=:status where bt.teTransactionId=:teTransactionId&quot;;</span>
+<span class="fc" id="L33">        Map params = new HashMap();</span>
+<span class="fc" id="L34">        params.put(&quot;status&quot;, BalanceTransactions.STATUS_INVALID);</span>
+<span class="fc" id="L35">        params.put(&quot;teTransactionId&quot;, teTransactionId);</span>
+<span class="fc" id="L36">        Query query = this.getEntityManager().createQuery(sql);</span>
+<span class="fc" id="L37">        Iterator&lt;String&gt; keyIt = params.keySet().iterator();</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        while (keyIt.hasNext()) {</span>
+<span class="fc" id="L39">            String paramName = keyIt.next();</span>
+<span class="fc" id="L40">            query.setParameter(paramName, params.get(paramName));</span>
+<span class="fc" id="L41">        }</span>
+<span class="fc" id="L42">        query.executeUpdate();</span>
+
+<span class="fc" id="L44">    }</span>
+
+    public BalanceTransactions assembleBalanceTransactions(Context respCtx, BigDecimal amount)
+            throws ApplicationException {
+<span class="fc" id="L48">        BalanceTransactions balanceTransactions = new BalanceTransactions();</span>
+        // balanceTransactions.setId(this.getUuidService().getGeneralID());
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">        if (respCtx != null) {</span>
+<span class="fc" id="L51">            balanceTransactions.setOwnerId(respCtx.getOperatorId());</span>
+<span class="fc" id="L52">            balanceTransactions.setOwnerType(BalanceTransactions.OWNER_TYPE_OPERATOR);</span>
+<span class="fc" id="L53">            balanceTransactions.setTeTransactionId(respCtx.getTransactionID());</span>
+<span class="fc" id="L54">            balanceTransactions.setMerchantId(respCtx.getMerchant().getId());</span>
+<span class="fc" id="L55">            balanceTransactions.setOperatorId(respCtx.getOperatorId());</span>
+<span class="fc" id="L56">            balanceTransactions.setDeviceId(respCtx.getTerminalId());</span>
+<span class="fc" id="L57">            balanceTransactions.setTransactionType(respCtx.getTransaction().getType());</span>
+<span class="fc" id="L58">            balanceTransactions.setStatus(BalanceTransactions.STATUS_VALID);</span>
+<span class="fc" id="L59">            balanceTransactions.setPaymentType(BalanceTransactions.PAYMENT_TYPE_PLUSING_MONEY);</span>
+<span class="fc" id="L60">            balanceTransactions.setOriginalTransType(respCtx.getTransaction().getType());</span>
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">            if (respCtx.getTransType() == TransactionType.CANCEL_BY_TRANSACTION.getRequestType()) {</span>
+<span class="nc" id="L62">                balanceTransactions.setPaymentType(BalanceTransactions.PAYMENT_TYPE_DEDUCTING_MONEY);</span>
+            }
+        }
+<span class="fc" id="L65">        balanceTransactions.setTransactionAmount(amount);</span>
+
+<span class="fc" id="L67">        return balanceTransactions;</span>
+
+    }
+
+    @Override
+    public void addBalanceTransactionRecord(Context respCtx, BigDecimal cashoutAmount, int transType,
+            String operatorMerchantid, int ownerType, int paymentType, BigDecimal commissionAmount,
+            BigDecimal commissionRate) throws ApplicationException {
+<span class="nc" id="L75">        BalanceTransactions bt = new BalanceTransactions();</span>
+<span class="nc" id="L76">        bt.setTeTransactionId(respCtx.getTransaction().getId());</span>
+<span class="nc" id="L77">        bt.setMerchantId(respCtx.getTransaction().getMerchantId());</span>
+<span class="nc" id="L78">        bt.setDeviceId(respCtx.getTransaction().getDeviceId());</span>
+<span class="nc" id="L79">        bt.setOperatorId(respCtx.getTransaction().getOperatorId());</span>
+<span class="nc" id="L80">        bt.setOwnerId(operatorMerchantid);</span>
+<span class="nc" id="L81">        bt.setOwnerType(ownerType);</span>
+<span class="nc" id="L82">        bt.setPaymentType(paymentType);</span>
+<span class="nc" id="L83">        bt.setTransactionType(transType);</span>
+<span class="nc" id="L84">        bt.setTransactionAmount(cashoutAmount);</span>
+<span class="nc" id="L85">        bt.setCommissionAmount(commissionAmount);</span>
+<span class="nc" id="L86">        bt.setCommissionRate(commissionRate);</span>
+<span class="nc" id="L87">        bt.setCreateTime(net.mpos.fk.util.DateUtils.getNowTimestamp());</span>
+<span class="nc" id="L88">        bt.setStatus(BalanceTransactions.STATUS_VALID);</span>
+<span class="nc" id="L89">        this.insert(bt);</span>
+<span class="nc" id="L90">    }</span>
+
+    public UUIDService getUuidService() {
+<span class="nc" id="L93">        return uuidService;</span>
+    }
+
+    public void setUuidService(UUIDService uuidService) {
+<span class="fc" id="L97">        this.uuidService = uuidService;</span>
+<span class="fc" id="L98">    }</span>
+
+    @Override
+    public List&lt;BalanceTransactions&gt; findByOwnerAndTransaction(String transactionId, String ownerId) {
+<span class="fc" id="L102">        String jpql = &quot;from BalanceTransactions b where b.ownerId=:ownerId and b.teTransactionId=:transactionId&quot;;</span>
+<span class="fc" id="L103">        Query query = this.getEntityManager().createQuery(jpql);</span>
+<span class="fc" id="L104">        query.setParameter(&quot;ownerId&quot;, ownerId);</span>
+<span class="fc" id="L105">        query.setParameter(&quot;transactionId&quot;, transactionId);</span>
+<span class="fc" id="L106">        return (List&lt;BalanceTransactions&gt;) query.getResultList();</span>
+    }
+
+    @Override
+    public BalanceTransactions findByTransactionAndOwnerAndGameAndOrigTransType(String transactionId, String ownerId,
+            String gameId, int origTransType) {
+<span class="fc" id="L112">        String jpql = &quot;from BalanceTransactions l where l.teTransactionId=:transactionId and &quot;</span>
+                + &quot;l.ownerId=:commissionOwnerId and l.originalTransType=:transType&quot;;
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        if (gameId != null) {</span>
+<span class="fc" id="L115">            jpql += &quot; and l.gameId=:gameId&quot;;</span>
+        }
+<span class="fc" id="L117">        Query query = this.getEntityManager().createQuery(jpql);</span>
+<span class="fc" id="L118">        query.setParameter(&quot;transactionId&quot;, transactionId);</span>
+<span class="fc" id="L119">        query.setParameter(&quot;commissionOwnerId&quot;, ownerId + &quot;&quot;);</span>
+<span class="fc" id="L120">        query.setParameter(&quot;transType&quot;, origTransType);</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        if (gameId != null) {</span>
+<span class="fc" id="L122">            query.setParameter(&quot;gameId&quot;, gameId);</span>
+        }
+<span class="fc" id="L124">        return (BalanceTransactions) this.single(query.getResultList(), false);</span>
+    }
+
+    @Override
+    public void addBalanceTransferBalanceTransactionRecord(Context reqCtx, BigDecimal balanceAmount, int transType,
+            int orgTransType, Long fromParentMerchantid, Long toParentMerchantid, String operatorid, String ownerid,
+            int ownerType, int paymentType) throws ApplicationException {
+<span class="fc" id="L131">        BalanceTransactions bt = new BalanceTransactions();</span>
+<span class="fc" id="L132">        bt.setTeTransactionId(reqCtx.getTransaction().getId());</span>
+<span class="fc" id="L133">        bt.setMerchantId(reqCtx.getTransaction().getMerchantId());</span>
+<span class="fc" id="L134">        bt.setDeviceId(reqCtx.getTransaction().getDeviceId());</span>
+<span class="fc" id="L135">        bt.setOperatorId(operatorid);</span>
+<span class="fc" id="L136">        bt.setOwnerId(ownerid);</span>
+<span class="fc" id="L137">        bt.setOwnerType(BalanceTransactions.OWNER_TYPE_OPERATOR);</span>
+<span class="fc" id="L138">        bt.setPaymentType(paymentType);</span>
+<span class="fc" id="L139">        bt.setTransactionType(transType);</span>
+<span class="fc" id="L140">        bt.setOriginalTransType(orgTransType);</span>
+<span class="fc" id="L141">        bt.setTransactionAmount(balanceAmount);</span>
+<span class="fc" id="L142">        bt.setCommissionAmount(new BigDecimal(&quot;0&quot;));</span>
+<span class="fc" id="L143">        bt.setCommissionRate(new BigDecimal(&quot;0&quot;));</span>
+<span class="fc" id="L144">        bt.setFromParentMerchantId(fromParentMerchantid);</span>
+<span class="fc" id="L145">        bt.setToParentMerchantId(toParentMerchantid);</span>
+<span class="fc" id="L146">        bt.setCreateTime(net.mpos.fk.util.DateUtils.getNowTimestamp());</span>
+<span class="fc" id="L147">        bt.setStatus(BalanceTransactions.STATUS_VALID);</span>
+<span class="fc" id="L148">        this.insert(bt);</span>
+<span class="fc" id="L149">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

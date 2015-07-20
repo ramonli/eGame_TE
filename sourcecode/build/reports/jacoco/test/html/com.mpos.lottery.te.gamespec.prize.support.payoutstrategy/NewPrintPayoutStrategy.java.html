@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>NewPrintPayoutStrategy.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.prize.support.payoutstrategy</a> &gt; <span class="el_source">NewPrintPayoutStrategy.java</span></div><h1>NewPrintPayoutStrategy.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.prize.support.payoutstrategy;
+
+import com.mpos.lottery.te.common.util.Barcoder;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gameimpl.lotto.draw.domain.LottoGameInstance;
+import com.mpos.lottery.te.gameimpl.lotto.sale.domain.LottoTicket;
+import com.mpos.lottery.te.gamespec.game.GameType;
+import com.mpos.lottery.te.gamespec.prize.NewPrintTicket;
+import com.mpos.lottery.te.gamespec.prize.dao.NewPrintTicketDao;
+import com.mpos.lottery.te.gamespec.prize.web.PrizeDto;
+import com.mpos.lottery.te.gamespec.sale.BaseEntry;
+import com.mpos.lottery.te.gamespec.sale.BaseTamperProofTicket;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.gamespec.sale.dao.BaseEntryDao;
+import com.mpos.lottery.te.gamespec.sale.dao.BaseTicketDao;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.trans.domain.TransactionType;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+<span class="fc" id="L28">public class NewPrintPayoutStrategy extends AbstractPayoutStrategy {</span>
+<span class="fc" id="L29">    private Log logger = LogFactory.getLog(NewPrintPayoutStrategy.class);</span>
+    private BaseEntryDao baseEntryDao;
+    private BaseTicketDao baseTicketDao;
+    private NewPrintTicketDao newPrintTicketDao;
+
+    @Override
+    public final void confirm(Context respCtx, GameType supportedGameType, List&lt;? extends BaseTicket&gt; hostTickets)
+            throws ApplicationException {
+<span class="fc" id="L37">        BaseTicket soldTicket = hostTickets.get(0);</span>
+        // check if the ticket has been paid. Anyway if a ticket has been
+        // paid, the first ticket record of multiple-draw should be 'paid'
+        // status.
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (BaseTicket.STATUS_PAID != soldTicket.getStatus()) {</span>
+<span class="nc" id="L42">            throw new ApplicationException(SystemException.CODE_CONFIRM_NONPAYEDTIKCET, &quot;LottoTicket(serialNo=&quot;</span>
+                    + soldTicket.getSerialNo() + &quot;) hasn't been paid, can NOT confim payout.&quot;);
+        }
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        for (BaseTicket ticket : hostTickets) {</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">            if (BaseTicket.STATUS_ACCEPTED == ticket.getStatus()) {</span>
+                /**
+                 * if it has passed freezing time of game instance, that says the ticket may has joined winner analysis,
+                 * no need to confirm payout any more, go into 'company absorption' process.
+                 */
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">                if (new Date().before(ticket.getGameInstance().getFreezeTime())) {</span>
+<span class="fc" id="L52">                    ticket.setStatus(BaseTicket.STATUS_INVALID);</span>
+<span class="fc" id="L53">                    ticket.setUpdateTime(respCtx.getTransaction().getCreateTime());</span>
+<span class="fc" id="L54">                    ticket.setCountInPool(false);</span>
+<span class="fc" id="L55">                    this.customizeConfirmPayoutOldTicket(respCtx, ticket);</span>
+<span class="fc" id="L56">                    this.getBaseTicketDao().update(ticket);</span>
+
+                    // update NewPrintTicket
+<span class="fc" id="L59">                    NewPrintTicket newTicket = this.getNewPrintTicketDao().getByOldTicket(ticket.getSerialNo());</span>
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">                    if (newTicket != null) {</span>
+<span class="fc" id="L61">                        newTicket.setStatus(NewPrintTicket.STATUS_CONFIRMED);</span>
+<span class="fc" id="L62">                        this.getNewPrintTicketDao().update(newTicket);</span>
+                    }
+<span class="fc" id="L64">                } else {</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">                    if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L66">                        logger.debug(&quot;Game instance(id=&quot; + ticket.getGameInstance().getId() + &quot;), &quot;</span>
+                                + ticket.getGameInstance()
+                                + &quot; has passed freezing time, its associated ticket may has joined &quot;
+                                + &quot;winner analysis, mark it as company absorption.&quot;);
+                    }
+                }
+            }
+<span class="fc" id="L73">        }</span>
+<span class="fc" id="L74">    }</span>
+
+    // ----------------------------------------------------------
+    // HELPER METHODS
+    // ----------------------------------------------------------
+    /**
+     * A subclass should override this method to implement required logic of a specific payout mode.
+     */
+    @Override
+    protected void doPayout(Context&lt;?&gt; respCtx, GameType supportedGameType, PrizeDto prize,
+            List&lt;? extends BaseTicket&gt; hostTickets) throws ApplicationException {
+        // update tickets
+<span class="fc bfc" id="L86" title="All 2 branches covered.">        for (BaseTicket ticket : prize.getPaidTickets()) {</span>
+            /**
+             * If internal payout, only when all game instances are payout-started, this operation will be allowed.
+             */
+<span class="fc bfc" id="L90" title="All 2 branches covered.">            if (respCtx.isInternalCall()) {</span>
+                // won't update the status and updatetime of ticket, otherwise
+                // it may affect activity report.
+<span class="fc" id="L93">                ticket.setAbsorptionPaid(true);</span>
+            } else {
+<span class="fc" id="L95">                ticket.setStatus(BaseTicket.STATUS_PAID);</span>
+<span class="fc" id="L96">                ticket.setUpdateTime(respCtx.getTransaction().getCreateTime());</span>
+            }
+<span class="fc" id="L98">        }</span>
+<span class="fc" id="L99">        this.getBaseTicketDao().update(prize.getPaidTickets());</span>
+
+        // generate new tickets if needed
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        if (prize.getFutureTickets().size() &gt; 0) {</span>
+<span class="fc" id="L103">            String newSerialNo = this.getUuidService().getTicketSerialNo(supportedGameType.getType());</span>
+<span class="fc" id="L104">            List&lt;BaseEntry&gt; newEntries = this.assembleEntries(supportedGameType, prize.getWinningTicket(), newSerialNo);</span>
+<span class="fc" id="L105">            String extendText = BaseTicket.generateExtendText(newEntries);</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">            for (int i = 0; i &lt; prize.getFutureTickets().size(); i++) {</span>
+<span class="fc" id="L107">                BaseTicket ticket = prize.getFutureTickets().get(i);</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">                int multiDraw = i == 0 ? prize.getFutureTickets().size() : 0;</span>
+<span class="fc" id="L109">                prize.getGeneratedTickets().add(</span>
+                        this.generateNewTicket(respCtx, prize, ticket, newSerialNo, newEntries, extendText, multiDraw,
+                                supportedGameType));
+            }
+            // insert new generated tickets and entries
+<span class="fc" id="L114">            this.getBaseTicketDao().insert(prize.getGeneratedTickets());</span>
+<span class="fc" id="L115">            this.getBaseEntryDao().insert(newEntries);</span>
+
+            // generate new printed physical ticket
+<span class="fc" id="L118">            BaseTicket newPrintTicket = (BaseTicket) prize.getGeneratedTickets().get(0).clone();</span>
+<span class="fc" id="L119">            newPrintTicket.setMultipleDraws(prize.getGeneratedTickets().size());</span>
+<span class="fc" id="L120">            newPrintTicket.setTotalAmount(newPrintTicket.getTotalAmount().multiply(</span>
+                    new BigDecimal(newPrintTicket.getMultipleDraws())));
+<span class="fc" id="L122">            newPrintTicket.getGameInstance().setGameId(newPrintTicket.getGameInstance().getGame().getId());</span>
+            // set last draw number
+<span class="fc" id="L124">            newPrintTicket.setLastDrawNo(prize.getGeneratedTickets().get(prize.getGeneratedTickets().size() - 1)</span>
+                    .getGameInstance().getNumber());
+<span class="fc" id="L126">            this.customizePrintedPhysicalTicket(respCtx, newPrintTicket);</span>
+
+<span class="fc" id="L128">            prize.setNewPrintTicket(newPrintTicket);</span>
+
+            // generate new print log
+<span class="fc" id="L131">            this.logNewPrintTicket(respCtx, prize);</span>
+        }
+
+<span class="fc" id="L134">    }</span>
+
+    protected void customizePrintedPhysicalTicket(Context&lt;?&gt; respCtx, BaseTicket newPrintTicket) {
+        // template method for subclass to customized assembling
+<span class="fc" id="L138">    }</span>
+
+    @Override
+    protected void doReversal(Context respCtx, GameType supportedGameType, List&lt;? extends BaseTicket&gt; hostTickets)
+            throws ApplicationException {
+<span class="fc bfc" id="L143" title="All 2 branches covered.">        for (BaseTicket ticket : hostTickets) {</span>
+            // only 'paid' ticket will be restored
+<span class="fc bfc" id="L145" title="All 2 branches covered.">            if (BaseTicket.STATUS_PAID == ticket.getStatus()) {</span>
+<span class="fc" id="L146">                ticket.setStatus(BaseTicket.STATUS_ACCEPTED);</span>
+<span class="fc" id="L147">                ticket.setUpdateTime(new Date());</span>
+            }
+<span class="fc" id="L149">        }</span>
+<span class="fc" id="L150">        this.getBaseTicketDao().update(hostTickets);</span>
+<span class="fc" id="L151">        this.reverseNewPrintTicket(respCtx, supportedGameType, hostTickets.get(0).getSerialNo());</span>
+<span class="fc" id="L152">    }</span>
+
+    protected void reverseNewPrintTicket(Context respCtx, GameType supportedGameType, String ticketSerialNo)
+            throws ApplicationException {
+        // set new printed ticket to false
+<span class="fc" id="L157">        NewPrintTicket newTicket = this.getNewPrintTicketDao().getByOldTicket(ticketSerialNo);</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        if (newTicket != null) {</span>
+<span class="fc" id="L159">            List&lt;? extends BaseTicket&gt; newTickets = this.lookupTickets(supportedGameType,</span>
+                    newTicket.getNewTicketSerialNo());
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">            if (newTickets.size() &gt; 0) {</span>
+<span class="fc" id="L162">                int firstState = newTickets.get(0).getGameInstance().getState();</span>
+<span class="pc bpc" id="L163" title="2 of 4 branches missed.">                if (firstState == LottoGameInstance.STATE_NEW || firstState == LottoGameInstance.STATE_ACTIVE) {</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">                    for (BaseTicket ticket : newTickets) {</span>
+<span class="fc" id="L165">                        ticket.setStatus(LottoTicket.STATUS_INVALID);</span>
+<span class="fc" id="L166">                        ticket.setCountInPool(false);</span>
+<span class="fc" id="L167">                        this.customizeReversePayoutNewTicket(respCtx, ticket);</span>
+<span class="fc" id="L168">                        this.getBaseTicketDao().update(ticket);</span>
+<span class="fc" id="L169">                    }</span>
+                }
+                // or the ticket has joined winning analysis, can NOT reverse
+                // it.
+            }
+            // mark the NewPrintTicket as invalid
+<span class="fc" id="L175">            newTicket.setStatus(NewPrintTicket.STATUS_REVERSED);</span>
+<span class="fc" id="L176">            this.getNewPrintTicketDao().update(newTicket);</span>
+        }
+<span class="fc" id="L178">    }</span>
+
+    /**
+     * Template method for subclass to override to customize the process of payout confirm.
+     */
+    protected void customizeConfirmPayoutOldTicket(Context&lt;?&gt; respCtx, BaseTicket oldTicket) {
+        // template method
+<span class="fc" id="L185">    }</span>
+
+    protected void customizeReversePayoutNewTicket(Context&lt;?&gt; respCtx, BaseTicket newTicket) {
+        // template method
+<span class="fc" id="L189">    }</span>
+
+    protected void logNewPrintTicket(Context respCtx, PrizeDto prize) throws ApplicationException {
+        // check if there is already one record with same old ticket
+<span class="fc" id="L193">        NewPrintTicket newTicket = this.getNewPrintTicketDao().getByOldTicket(prize.getWinningTicket().getSerialNo());</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">        if (newTicket == null) {</span>
+            // save new print tickets map
+<span class="fc" id="L196">            newTicket = new NewPrintTicket();</span>
+<span class="fc" id="L197">            newTicket.setId(this.getUuidService().getGeneralID());</span>
+<span class="fc" id="L198">            newTicket.setCreateTime(new Date());</span>
+<span class="fc" id="L199">            newTicket.setOldTicketSerialNo(prize.getWinningTicket().getSerialNo());</span>
+<span class="fc" id="L200">            newTicket.setNewTicketSerialNo(prize.getNewPrintTicket().getSerialNo());</span>
+<span class="fc" id="L201">            newTicket.setStatus(NewPrintTicket.STATUS_WAITCONFIRM);</span>
+<span class="fc" id="L202">            this.getNewPrintTicketDao().insert(newTicket);</span>
+        } else {
+<span class="nc" id="L204">            newTicket.setNewTicketSerialNo(prize.getNewPrintTicket().getSerialNo());</span>
+<span class="nc" id="L205">            newTicket.setUpdateTime(new Date());</span>
+<span class="nc" id="L206">            newTicket.setStatus(NewPrintTicket.STATUS_WAITCONFIRM);</span>
+<span class="nc" id="L207">            this.getNewPrintTicketDao().update(newTicket);</span>
+        }
+<span class="fc" id="L209">    }</span>
+
+    /**
+     * Generate new ticket record for future game instance.
+     */
+    protected BaseTicket generateNewTicket(Context&lt;?&gt; respCtx, PrizeDto prize, BaseTicket hostTicket,
+            String newSerialNo, List&lt;BaseEntry&gt; newEntries, String extendTxt, int multiDraw, GameType supportedGameType)
+            throws ApplicationException {
+<span class="fc" id="L217">        BaseTicket generatedTicket = (BaseTicket) hostTicket.clone();</span>
+        // assemble generated ticket
+<span class="fc" id="L219">        generatedTicket.setId(this.getUuidService().getGeneralID());</span>
+<span class="fc" id="L220">        generatedTicket.setMultipleDraws(multiDraw);</span>
+<span class="fc" id="L221">        generatedTicket.setRawSerialNo(newSerialNo);</span>
+        /**
+         * make the create time of new-generated ticket same as old one, otherwise many reports of M.Lottery will fail.
+         * As M.Lottery count sale by create time, it will count the new-generated ticket as sale of the date of payout.
+         */
+        // generatedTicket.setCreateTime(new Date());
+<span class="fc" id="L227">        generatedTicket.setUpdateTime(respCtx.getTransaction().getCreateTime());</span>
+<span class="fc" id="L228">        generatedTicket.setPIN(hostTicket.getPIN());</span>
+<span class="fc" id="L229">        generatedTicket.setStatus(BaseTicket.STATUS_ACCEPTED);</span>
+<span class="fc" id="L230">        generatedTicket.setTransaction(respCtx.getTransaction());</span>
+<span class="fc" id="L231">        generatedTicket.setValidationCode(BaseTicket.generateValidationCode());</span>
+<span class="fc" id="L232">        generatedTicket.setWinning(false);</span>
+        // make operator/merchant/device same with sale transaction
+<span class="fc" id="L234">        generatedTicket.setOperatorId(hostTicket.getTransaction().getOperatorId());</span>
+<span class="fc" id="L235">        generatedTicket.setMerchantId(hostTicket.getTransaction().getMerchantId());</span>
+<span class="fc" id="L236">        generatedTicket.setDevId(hostTicket.getTransaction().getDeviceId());</span>
+        // generatedTicket.setOperatorId(respCtx.getTransaction().getOperatorId());
+        // generatedTicket.setMerchantId(respCtx.getTransaction().getMerchantId());
+        // generatedTicket.setDevId(respCtx.getTransaction().getDeviceId());
+<span class="fc" id="L240">        generatedTicket.setTransType(TransactionType.PAYOUT.getRequestType());</span>
+        // set barcode
+<span class="fc" id="L242">        generatedTicket.setBarcode(new Barcoder(supportedGameType.getType(), generatedTicket.getRawSerialNo())</span>
+                .getBarcode());
+        // lookup entries
+<span class="fc" id="L245">        generatedTicket.setEntries(newEntries);</span>
+<span class="fc" id="L246">        this.customizeGenerateNewTicket(respCtx, generatedTicket, hostTicket, extendTxt);</span>
+
+<span class="fc" id="L248">        return generatedTicket;</span>
+    }
+
+    protected void customizeGenerateNewTicket(Context&lt;?&gt; respCtx, BaseTicket generatedTicket, BaseTicket hostTicket,
+            String extendTxt) {
+        // template method for subclass to customize the new ticket generation
+        // logic
+
+        // set extendTxt if TamperProofTicket
+<span class="fc bfc" id="L257" title="All 2 branches covered.">        if (generatedTicket instanceof BaseTamperProofTicket) {</span>
+<span class="fc" id="L258">            ((BaseTamperProofTicket) generatedTicket).setExtendText(extendTxt);</span>
+        }
+<span class="fc" id="L260">    }</span>
+
+    /**
+     * Game type specific implementation can override this method.
+     */
+    protected List&lt;? extends BaseEntry&gt; lookupEntries(GameType supportedGameType, BaseTicket hostTicket)
+            throws ApplicationException {
+<span class="fc" id="L267">        return this.getBaseEntryDao().findByTicketSerialNo(supportedGameType.getTicketEntryType(),</span>
+                hostTicket.getSerialNo(), false);
+    }
+
+    /**
+     * Game type specific implementation can override this method.
+     */
+    protected List&lt;? extends BaseTicket&gt; lookupTickets(GameType supportedGameType, String ticketSerialNo)
+            throws ApplicationException {
+<span class="fc" id="L276">        return this.getBaseTicketDao().findBySerialNo(supportedGameType.getTicketType(), ticketSerialNo, false);</span>
+    }
+
+    protected List&lt;BaseEntry&gt; assembleEntries(GameType supportedGameType, BaseTicket oldHostTicket, String newSerialNo)
+            throws ApplicationException {
+<span class="fc" id="L281">        List&lt;? extends BaseEntry&gt; entries = this.lookupEntries(supportedGameType, oldHostTicket);</span>
+<span class="fc" id="L282">        List&lt;BaseEntry&gt; newEntries = new ArrayList&lt;BaseEntry&gt;();</span>
+<span class="fc bfc" id="L283" title="All 2 branches covered.">        for (BaseEntry entry : entries) {</span>
+<span class="fc" id="L284">            BaseEntry newEntry = (BaseEntry) entry.clone();</span>
+<span class="fc" id="L285">            newEntry.setCreateTime(new Date());</span>
+<span class="fc" id="L286">            newEntry.setUpdateTime(newEntry.getCreateTime());</span>
+<span class="fc" id="L287">            newEntry.setId(this.getUuidService().getGeneralID());</span>
+<span class="fc" id="L288">            newEntry.setTicketSerialNo(BaseTicket.encryptSerialNo(newSerialNo));</span>
+<span class="fc" id="L289">            newEntries.add(newEntry);</span>
+<span class="fc" id="L290">        }</span>
+<span class="fc" id="L291">        return newEntries;</span>
+    }
+
+    public BaseEntryDao getBaseEntryDao() {
+<span class="fc" id="L295">        return baseEntryDao;</span>
+    }
+
+    public void setBaseEntryDao(BaseEntryDao baseEntryDao) {
+<span class="fc" id="L299">        this.baseEntryDao = baseEntryDao;</span>
+<span class="fc" id="L300">    }</span>
+
+    public BaseTicketDao getBaseTicketDao() {
+<span class="fc" id="L303">        return baseTicketDao;</span>
+    }
+
+    public void setBaseTicketDao(BaseTicketDao baseTicketDao) {
+<span class="fc" id="L307">        this.baseTicketDao = baseTicketDao;</span>
+<span class="fc" id="L308">    }</span>
+
+    public NewPrintTicketDao getNewPrintTicketDao() {
+<span class="fc" id="L311">        return newPrintTicketDao;</span>
+    }
+
+    public void setNewPrintTicketDao(NewPrintTicketDao newPrintTicketDao) {
+<span class="fc" id="L315">        this.newPrintTicketDao = newPrintTicketDao;</span>
+<span class="fc" id="L316">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

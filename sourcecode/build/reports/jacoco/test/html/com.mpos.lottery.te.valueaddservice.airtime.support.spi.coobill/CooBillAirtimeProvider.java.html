@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CooBillAirtimeProvider.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.valueaddservice.airtime.support.spi.coobill</a> &gt; <span class="el_source">CooBillAirtimeProvider.java</span></div><h1>CooBillAirtimeProvider.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.valueaddservice.airtime.support.spi.coobill;
+
+import static org.quartz.JobBuilder.newJob;
+import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
+import static org.quartz.TriggerBuilder.newTrigger;
+
+import com.mpos.lottery.te.config.MLotteryContext;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.valueaddservice.airtime.AirtimeTopup;
+import com.mpos.lottery.te.valueaddservice.airtime.support.AbstractAirtimeProvider;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.quartz.JobDetail;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
+import org.springframework.stereotype.Component;
+
+import java.math.BigDecimal;
+import java.net.SocketTimeoutException;
+
+import javax.annotation.Resource;
+
+@Component(&quot;cooBillAirtimeProvider&quot;)
+<span class="fc" id="L29">public class CooBillAirtimeProvider extends AbstractAirtimeProvider {</span>
+<span class="fc" id="L30">    private Log logger = LogFactory.getLog(CooBillAirtimeProvider.class);</span>
+    private static final int COOBILL_PROVIDER_ID = 1;
+    public static final int COOBILL_TOPOUP_STATUS_OK = 0;
+    // all other value of COOBILL_QUERY_STATUS is failure
+    public static final int COOBILL_QUERY_STATUS_PENDING = -1;
+    public static final int COOBILL_QUERY_STATUS_SUCCESS = 0;
+    @Resource(name = &quot;teJobScheduler&quot;)
+    private Scheduler scheduler;
+
+    @Override
+    public int supportProvider() {
+<span class="fc" id="L41">        return COOBILL_PROVIDER_ID;</span>
+    }
+
+    /**
+     * Call CooBill topup serivce. If get read timeout, a quartz job will be created, which will keep calling
+     * 'transaction enquiry' interface of CooBill till get a definite result.
+     */
+    @Override
+    public AirtimeTopup topup(Context respCtx, AirtimeTopup topupReq) throws ApplicationException {
+        // each provider may request a different refNo algorithm.
+<span class="fc" id="L51">        topupReq.setSerialNo(this.generateRefNo());</span>
+<span class="fc" id="L52">        MLotteryContext context = MLotteryContext.getInstance();</span>
+        try {
+<span class="fc" id="L54">            TopupMsisdnReq coobillReq = new TopupMsisdnReq();</span>
+<span class="fc" id="L55">            coobillReq.setAgent(context.get(&quot;coobill.agent&quot;));</span>
+<span class="fc" id="L56">            coobillReq.setPassword(context.get(&quot;coobill.password&quot;));</span>
+<span class="fc" id="L57">            coobillReq.setRefTrx(topupReq.getSerialNo());</span>
+            // the unit of topup amount of Coobill must be cent
+<span class="fc" id="L59">            coobillReq.setAmout(topupReq.getAmount().multiply(new BigDecimal(&quot;100.0&quot;)).intValue());</span>
+<span class="fc" id="L60">            coobillReq.setMsisdn(topupReq.getMobileNo());</span>
+
+            // access remote service
+<span class="fc" id="L63">            CoobillClient client = new CoobillClient(context.get(&quot;coobill.wsdl&quot;), context.getInt(</span>
+                    &quot;coobill.connection.timeout&quot;, 10) * 1000, context.getInt(&quot;coobill.read.timeout&quot;, 30) * 1000);
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L66">                logger.debug(&quot;Request of transaction(&quot; + coobillReq.getRefTrx() + &quot;):&quot;</span>
+                        + ToStringBuilder.reflectionToString(coobillReq));
+            }
+<span class="fc" id="L69">            TopupMsisdnResult result = client.topupMsisdn(coobillReq);</span>
+<span class="pc bpc" id="L70" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L71">                logger.debug(&quot;Result of transaction(&quot; + coobillReq.getRefTrx() + &quot;):&quot;</span>
+                        + ToStringBuilder.reflectionToString(result));
+            }
+
+            // assemble response
+<span class="fc bfc" id="L76" title="All 2 branches covered.">            topupReq.setStatus(COOBILL_TOPOUP_STATUS_OK == result.getStatus()</span>
+                    ? AirtimeTopup.STATUS_SUCCESS
+                    : AirtimeTopup.STATUS_FAIL);
+<span class="fc" id="L79">            topupReq.setRespMessageOfRemoteService(result.getDescription());</span>
+<span class="fc" id="L80">            topupReq.setTelcCommTransId(result.getTransactionId());</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">            if (result.getStatus() != COOBILL_TOPOUP_STATUS_OK) {</span>
+<span class="fc" id="L82">                logger.warn(&quot;Failed result of transaction(&quot; + coobillReq.getRefTrx() + &quot;) from Coobill:&quot;</span>
+                        + result.getDescription());
+            }
+<span class="fc" id="L85">        } catch (SocketTimeoutException e) {</span>
+            // read timeoout
+<span class="fc" id="L87">            topupReq.setStatus(AirtimeTopup.STATUS_PENDING);</span>
+            // create a quartz job for timeout response.
+<span class="fc" id="L89">            this.createPendingJob(respCtx, topupReq);</span>
+<span class="nc" id="L90">        } catch (Exception e) {</span>
+<span class="nc" id="L91">            throw new SystemException(SystemException.CODE_REMOTE_SERVICE_FAILUER, e.getMessage(), e);</span>
+<span class="fc" id="L92">        }</span>
+<span class="fc" id="L93">        return topupReq;</span>
+    }
+
+    /**
+     * Create a quartz job with name 'airtime_job_${TRANS_ID}' and job data,
+     * &lt;ul&gt;
+     * &lt;li&gt;key(transactionId):value(${TRANS_ID})
+     * &lt;/ul&gt;
+     * and a trigger with name 'airtime_trigger_${TRANS_ID}'. Both job and trigger will be in group 'airtime'.
+     */
+    private void createPendingJob(Context respCtx, AirtimeTopup topupReq) {
+<span class="fc" id="L104">        String transactionId = respCtx.getTransaction().getId();</span>
+        // define the job and tie it to our HelloJob class
+<span class="fc" id="L106">        JobDetail job = newJob(CoobillAirtimePendingJob.class)</span>
+                .withIdentity(JOB_GROUP + &quot;_job_&quot; + transactionId, JOB_GROUP)
+                .usingJobData(JOB_DATA_KEY_TRANSID, transactionId).build();
+
+        // Trigger the job to run now, and then repeat every 40 seconds
+<span class="fc" id="L111">        Trigger trigger = newTrigger()</span>
+                .withIdentity(JOB_GROUP + &quot;_trigger_&quot; + transactionId, JOB_GROUP)
+                .startNow()
+                .withSchedule(
+                        simpleSchedule().withIntervalInSeconds(
+                                MLotteryContext.getInstance().getInt(&quot;airtime.job.interval&quot;, 30)).repeatForever())
+                .build();
+        try {
+<span class="fc" id="L119">            this.getScheduler().scheduleJob(job, trigger);</span>
+<span class="nc" id="L120">        } catch (SchedulerException e) {</span>
+<span class="nc" id="L121">            throw new RuntimeException(e);</span>
+<span class="fc" id="L122">        }</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        if (logger.isInfoEnabled()) {</span>
+<span class="fc" id="L124">            logger.info(&quot;Read timeout of transaction(&quot; + respCtx.getTransaction().getId() + &quot;), has scheduled a job(&quot;</span>
+                    + job.getJobClass() + &quot;:&quot; + job.getKey() + &quot;) for this transaction.&quot;);
+        }
+<span class="fc" id="L127">    }</span>
+
+    public Scheduler getScheduler() {
+<span class="fc" id="L130">        return scheduler;</span>
+    }
+
+    public void setScheduler(Scheduler scheduler) {
+<span class="nc" id="L134">        this.scheduler = scheduler;</span>
+<span class="nc" id="L135">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

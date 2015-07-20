@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>IGPayoutTempDaoImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.instantgame.dao.jpa</a> &gt; <span class="el_source">IGPayoutTempDaoImpl.java</span></div><h1>IGPayoutTempDaoImpl.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.instantgame.dao.jpa;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.gameimpl.instantgame.dao.IGPayoutTempDao;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.IGPayoutTemp;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.InstantTicket;
+import com.mpos.lottery.te.gamespec.game.Game;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+<span class="fc" id="L17">public class IGPayoutTempDaoImpl extends BaseJpaDao implements IGPayoutTempDao {</span>
+
+<span class="fc" id="L19">    private Log logger = LogFactory.getLog(IGPayoutTempDaoImpl.class);</span>
+
+    @SuppressWarnings({ &quot;unchecked&quot;, &quot;rawtypes&quot; })
+    @Override
+    public IGPayoutTemp getPayoutTempByCondition(long batchNumber, String operatorId, String serialNumber) {
+        // TODO Auto-generated method stub
+<span class="fc" id="L25">        Map params = new HashMap();</span>
+<span class="fc" id="L26">        params.put(&quot;packetSerialNo&quot;, serialNumber);</span>
+<span class="fc" id="L27">        params.put(&quot;operatorId&quot;, operatorId);</span>
+<span class="fc" id="L28">        params.put(&quot;iGBatchNumber&quot;, batchNumber);</span>
+<span class="fc" id="L29">        String q = &quot;from IGPayoutTemp t where t.ticketSerialNo=:packetSerialNo and t.operatorId=:operatorId and t.iGBatchNumber=:iGBatchNumber&quot;;</span>
+<span class="fc" id="L30">        return (IGPayoutTemp) this.findSingleByNamedParams(q, params);</span>
+
+    }
+
+    @Override
+    public boolean isUsedByAnotherOperatorId(String operatorId, String serialNumber) {
+<span class="fc" id="L36">        boolean returnValue = false;</span>
+<span class="fc" id="L37">        Map params = new HashMap();</span>
+<span class="fc" id="L38">        params.put(&quot;packetSerialNo&quot;, serialNumber);</span>
+<span class="fc" id="L39">        params.put(&quot;operatorId&quot;, operatorId);</span>
+        // params.put(&quot;iGBatchNumber&quot;, batchNumber);
+<span class="fc" id="L41">        String q = &quot;from IGPayoutTemp t where t.ticketSerialNo=:packetSerialNo and t.operatorId!=:operatorId &quot;;</span>
+<span class="fc" id="L42">        IGPayoutTemp payoutTemp = (IGPayoutTemp) this.findSingleByNamedParams(q, params);</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        if (payoutTemp != null) {</span>
+<span class="nc" id="L44">            returnValue = true;</span>
+        }
+<span class="fc" id="L46">        return returnValue;</span>
+    }
+
+    @Override
+    public BigDecimal getActualAmount(long batchNumber, String operatorId) {
+        // TODO Auto-generated method stub
+        /*
+         * Map params = new HashMap();
+         * 
+         * params.put(&quot;operatorId&quot;, operatorId); params.put(&quot;iGBatchNumber&quot;, batchNumber);
+         */
+        // params.put(&quot;iGBatchNumber&quot;, batchNumber);
+<span class="fc" id="L58">        String q = &quot;select sum(tt.total_amount) from ig_payout_temp tt where tt.operator_id=:operatorId and tt.ig_batch_number=:iGBatchNumber &quot;;</span>
+<span class="fc" id="L59">        BigDecimal actualAmount = (BigDecimal) this.getEntityManager().createNativeQuery(q)</span>
+                .setParameter(&quot;operatorId&quot;, operatorId).setParameter(&quot;iGBatchNumber&quot;, batchNumber).getSingleResult();
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">        return actualAmount != null ? actualAmount : new BigDecimal(0);</span>
+
+    }
+
+    @Override
+    public BigDecimal getTotoalAmountBeforeTax(long batchNumber, String operatorId) {
+        // TODO Auto-generated method stub
+<span class="fc" id="L68">        String q = &quot;select sum(tt.total_amount_b4_tax) from ig_payout_temp tt where tt.operator_id=:operatorId and tt.ig_batch_number=:iGBatchNumber &quot;;</span>
+<span class="fc" id="L69">        BigDecimal beforTaxAmount = (BigDecimal) this.getEntityManager().createNativeQuery(q)</span>
+                .setParameter(&quot;operatorId&quot;, operatorId).setParameter(&quot;iGBatchNumber&quot;, batchNumber).getSingleResult();
+<span class="pc bpc" id="L71" title="1 of 2 branches missed.">        return beforTaxAmount != null ? beforTaxAmount : new BigDecimal(0);</span>
+    }
+
+    @Override
+    public void movePayoutData(long batchNumber, String operatorId) {
+        // TODO Auto-generated method stub
+
+<span class="fc" id="L78">        String sql = &quot;insert into  payout(id,version, create_time, update_time, game_instance_id, transaction_id, ticket_serialno, total_amount, type, is_valid, status, total_amount_b4_tax, is_by_manual, winner_id, winner_name, has_detail, dev_id, merchant_id, operator_id, is_payout_confirmation, object_num, object_amount, batch_no2, game_id, utc_createtime)  select id,version, create_time, update_time, game_instance_id, transaction_id, ticket_serialno, total_amount, type, is_valid, status, total_amount_b4_tax, is_by_manual, winner_id, winner_name, has_detail, dev_id, merchant_id, operator_id, is_payout_confirmation, object_num, object_amount, batch_no2, game_id, utc_createtime from ig_payout_temp  where operator_id=:operatorId and ig_batch_number=:iGBatchNumber&quot;;</span>
+<span class="fc" id="L79">        int records = this.getEntityManager().createNativeQuery(sql).setParameter(&quot;operatorId&quot;, operatorId)</span>
+                .setParameter(&quot;iGBatchNumber&quot;, batchNumber).executeUpdate();
+<span class="fc" id="L81">        logger.info(&quot;moved &quot; + records + &quot; records under batch number(&quot; + batchNumber + &quot;) and operator id(&quot;</span>
+                + operatorId + &quot;) from payout temp table.&quot;);
+
+<span class="fc" id="L84">    }</span>
+
+    @Override
+    public void validateAllTicket(long batchNumber, String operatorId) {
+        // TODO Auto-generated method stub
+        /*
+         * String sql=
+         * &quot;update  instant_ticket t set t.status=:status where t.ticket_serial in (select ticket_serialno  from ig_payout_temp  where operator_id=:operatorId and ig_batch_number=:iGBatchNumber)&quot;
+         * ; int records= this.getEntityManager().createNativeQuery(sql) .setParameter(&quot;operatorId&quot;,
+         * operatorId).setParameter(&quot;iGBatchNumber&quot;, batchNumber).setParameter(&quot;status&quot;,
+         * InstantTicket.STATUS_VALIDATED).executeUpdate(); logger.info(&quot;changed status of  &quot;
+         * +records+&quot; records under batch number(&quot;
+         * +batchNumber+&quot;) and operator id(&quot;+operatorId+&quot;) in IG tickets  table.&quot;);
+<span class="fc" id="L97">         */this.changeStatusOfAllIGTickets(InstantTicket.STATUS_VALIDATED, batchNumber, operatorId);</span>
+<span class="fc" id="L98">    }</span>
+
+    @Override
+    public void changeStatusOfAllIGTickets(int status, long batchNumber, String operatorId) {
+<span class="fc" id="L102">        String sql = &quot;update  instant_ticket t set t.status=:status where t.ticket_serial in (select ticket_serialno  from ig_payout_temp  where operator_id=:operatorId and ig_batch_number=:iGBatchNumber)&quot;;</span>
+<span class="fc" id="L103">        int records = this.getEntityManager().createNativeQuery(sql).setParameter(&quot;operatorId&quot;, operatorId)</span>
+                .setParameter(&quot;iGBatchNumber&quot;, batchNumber).setParameter(&quot;status&quot;, status).executeUpdate();
+<span class="fc" id="L105">        logger.info(&quot;changed status(&quot; + status + &quot;) of  &quot; + records + &quot; records under batch number(&quot; + batchNumber</span>
+                + &quot;) and operator id(&quot; + operatorId + &quot;) in IG tickets  table.&quot;);
+
+<span class="fc" id="L108">    }</span>
+
+    @Override
+    public List&lt;Game&gt; getAllGamesOfThisBatch(long batchNumber, String operatorId) {
+        // TODO Auto-generated method stub
+<span class="fc" id="L113">        String sql = &quot;select g.* from game g where g.game_id in (select ig.game_id from ig_game_instance ig where ig.ig_game_instance_id in ( select distinct(ig_game_instance_id) from instant_ticket it ,ig_payout_temp ip where ip.ticket_serialno=it.ticket_serial and ip.operator_id=:operatorId and ip.ig_batch_number=:iGBatchNumber))  &quot;;</span>
+<span class="fc" id="L114">        List&lt;Game&gt; list = this.getEntityManager().createNativeQuery(sql, Game.class)</span>
+                .setParameter(&quot;operatorId&quot;, operatorId).setParameter(&quot;iGBatchNumber&quot;, batchNumber).getResultList();
+<span class="fc" id="L116">        return list;</span>
+
+    }
+
+    @Override
+    public BigDecimal getActualAmountByGame(Game game, long batchNumber, String operatorId) {
+<span class="fc" id="L122">        String q = &quot;select sum(tt.total_amount) from ig_payout_temp tt,instant_ticket it ,ig_game_instance ig  where tt.ticket_serialno=it.ticket_serial and it.ig_game_instance_id=ig.ig_game_instance_id and ig.game_id= :gameId and  tt.operator_id=:operatorId and tt.ig_batch_number=:iGBatchNumber &quot;;</span>
+<span class="fc" id="L123">        BigDecimal actualAmount = (BigDecimal) this.getEntityManager().createNativeQuery(q)</span>
+                .setParameter(&quot;operatorId&quot;, operatorId).setParameter(&quot;iGBatchNumber&quot;, batchNumber)
+                .setParameter(&quot;gameId&quot;, game.getId()).getSingleResult();
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        return actualAmount != null ? actualAmount : new BigDecimal(0);</span>
+    }
+
+    @Override
+    public Long getSucceededTicketsCount(long batchNumber, String operatorId) {
+<span class="fc" id="L131">        String q = &quot;select count(*) from ig_payout_temp tt where tt.operator_id=:operatorId and tt.ig_batch_number=:iGBatchNumber &quot;;</span>
+<span class="fc" id="L132">        BigDecimal actualAmount = (BigDecimal) this.getEntityManager().createNativeQuery(q)</span>
+                .setParameter(&quot;operatorId&quot;, operatorId).setParameter(&quot;iGBatchNumber&quot;, batchNumber).getSingleResult();
+<span class="pc bpc" id="L134" title="1 of 2 branches missed.">        return actualAmount != null ? actualAmount.longValue() : 0;</span>
+    }
+
+    @Override
+    public void deleteDataByOperatorId(long batchNumber, String operatorId) {
+<span class="fc" id="L139">        String sql = &quot;delete from ig_payout_temp t where t.operator_id = :operatorId and t.ig_batch_number=:batchNumber&quot;;</span>
+<span class="fc" id="L140">        int records = this.getEntityManager().createNativeQuery(sql).setParameter(&quot;operatorId&quot;, operatorId)</span>
+                .setParameter(&quot;batchNumber&quot;, batchNumber).executeUpdate();
+<span class="fc" id="L142">        logger.info(&quot;delete ig_payout_temp of  &quot; + records + &quot; records under batchNumber(&quot; + batchNumber</span>
+                + &quot;) operator id(&quot; + operatorId + &quot;) in ig_payout_temp  table.&quot;);
+<span class="fc" id="L144">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

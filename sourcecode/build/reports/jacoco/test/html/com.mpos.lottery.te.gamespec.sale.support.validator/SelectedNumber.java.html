@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SelectedNumber.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.sale.support.validator</a> &gt; <span class="el_source">SelectedNumber.java</span></div><h1>SelectedNumber.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.sale.support.validator;
+
+import com.mpos.lottery.te.common.util.SimpleToolkit;
+import com.mpos.lottery.te.gamespec.sale.BaseEntry;
+
+public class SelectedNumber {
+    public static final String DELEMETER_BASE = &quot;-&quot;;
+    public static final String DELEMETER_NUMBER = &quot;,&quot;;
+
+    private BaseEntry entry;
+    private String selectedNumber;
+    private String baseNumber;
+    private String specialNumber;
+<span class="fc" id="L14">    private String baseDelemeter = DELEMETER_BASE;</span>
+<span class="fc" id="L15">    private String numberDelemeter = DELEMETER_NUMBER;</span>
+<span class="fc" id="L16">    private int[] baseNumbers = new int[] {};</span>
+<span class="fc" id="L17">    private int[] specialNumbers = new int[] {};</span>
+
+    public SelectedNumber(BaseEntry entry) {
+<span class="fc" id="L20">        this(entry, DELEMETER_BASE, DELEMETER_NUMBER);</span>
+<span class="fc" id="L21">    }</span>
+
+    /**
+     * The base construcutor.
+     */
+<span class="fc" id="L26">    public SelectedNumber(BaseEntry entry, String baseDelemeter, String numberDelemeter) {</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        if (entry == null) {</span>
+<span class="nc" id="L28">            throw new IllegalArgumentException(&quot;argument 'entry' can NOT be null&quot;);</span>
+        }
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">        if (baseDelemeter == null) {</span>
+<span class="nc" id="L31">            throw new IllegalArgumentException(&quot;argument 'baseDelemeter' can NOT be null&quot;);</span>
+        }
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">        if (numberDelemeter == null) {</span>
+<span class="nc" id="L34">            throw new IllegalArgumentException(&quot;argument 'numberDelemeter' can NOT be null&quot;);</span>
+        }
+
+<span class="fc" id="L37">        this.entry = entry;</span>
+<span class="fc" id="L38">        this.selectedNumber = this.entry.getSelectNumber();</span>
+<span class="fc" id="L39">        this.baseDelemeter = baseDelemeter;</span>
+<span class="fc" id="L40">        this.numberDelemeter = numberDelemeter;</span>
+
+        // parse selected number
+<span class="fc" id="L43">        String[] numberParts = this.selectedNumber.split(this.baseDelemeter);</span>
+<span class="fc" id="L44">        this.setBaseNumber(numberParts[0]);</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (numberParts.length == 2) {</span>
+<span class="fc" id="L46">            this.setSpecialNumber(numberParts[1]);</span>
+        }
+<span class="fc" id="L48">        this.setBaseNumbers(SimpleToolkit.string2IntArray(this.getBaseNumber(), this.numberDelemeter, true));</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (this.specialNumber != null) {</span>
+<span class="fc" id="L50">            this.setSpecialNumbers(SimpleToolkit.string2IntArray(this.getSpecialNumber(), this.numberDelemeter, true));</span>
+        }
+
+        // generate formatted selected number
+<span class="fc" id="L54">        this.getEntry().setSelectNumber(this.formatSelectedNumber());</span>
+<span class="fc" id="L55">    }</span>
+
+    /**
+     * If a selected number is started with '0', remove it. For example if selected number is '01,20,10,09', will be
+     * formatted to '1,20,10,9'.
+     */
+    private String formatSelectedNumber() {
+<span class="fc" id="L62">        StringBuffer formattedNumber = new StringBuffer(&quot;&quot;);</span>
+<span class="fc" id="L63">        formattedNumber.append(SimpleToolkit.formatNumericString(this.getBaseNumber(), this.getNumberDelemeter()));</span>
+<span class="pc bpc" id="L64" title="1 of 4 branches missed.">        if (this.getSpecialNumber() != null &amp;&amp; !&quot;&quot;.equals(this.getSpecialNumber())) {</span>
+<span class="fc" id="L65">            formattedNumber.append(this.getBaseDelemeter()).append(</span>
+                    SimpleToolkit.formatNumericString(this.getSpecialNumber(), this.getNumberDelemeter()));
+        }
+<span class="fc" id="L68">        return formattedNumber.toString();</span>
+    }
+
+    public String getBaseNumber() {
+<span class="fc" id="L72">        return baseNumber;</span>
+    }
+
+    private void setBaseNumber(String baseNumber) {
+<span class="fc" id="L76">        this.baseNumber = baseNumber;</span>
+<span class="fc" id="L77">    }</span>
+
+    public String getSpecialNumber() {
+<span class="fc" id="L80">        return specialNumber;</span>
+    }
+
+    private void setSpecialNumber(String specialNumber) {
+<span class="fc" id="L84">        this.specialNumber = specialNumber;</span>
+<span class="fc" id="L85">    }</span>
+
+    public int[] getBaseNumbers() {
+<span class="fc" id="L88">        return baseNumbers;</span>
+    }
+
+    private void setBaseNumbers(int[] baseNumbers) {
+<span class="fc" id="L92">        this.baseNumbers = baseNumbers;</span>
+<span class="fc" id="L93">    }</span>
+
+    public int[] getSpecialNumbers() {
+<span class="fc" id="L96">        return specialNumbers;</span>
+    }
+
+    private void setSpecialNumbers(int[] specialNumbers) {
+<span class="fc" id="L100">        this.specialNumbers = specialNumbers;</span>
+<span class="fc" id="L101">    }</span>
+
+    public String getSelectedNumber() {
+<span class="fc" id="L104">        return selectedNumber;</span>
+    }
+
+    public String getBaseDelemeter() {
+<span class="fc" id="L108">        return baseDelemeter;</span>
+    }
+
+    public String getNumberDelemeter() {
+<span class="fc" id="L112">        return numberDelemeter;</span>
+    }
+
+    public BaseEntry getEntry() {
+<span class="fc" id="L116">        return entry;</span>
+    }
+
+    /**
+     * Return a int array of all numbers.
+     */
+    public int[] getAllNumbers() {
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        int baseLength = baseNumbers != null ? baseNumbers.length : 0;</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">        int specialLength = specialNumbers != null ? specialNumbers.length : 0;</span>
+<span class="fc" id="L125">        int[] target = new int[baseLength + specialLength];</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        if (baseNumbers != null) {</span>
+<span class="fc" id="L127">            System.arraycopy(baseNumbers, 0, target, 0, baseLength);</span>
+        }
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        if (specialNumber != null) {</span>
+<span class="fc" id="L130">            System.arraycopy(specialNumbers, 0, target, baseLength, specialLength);</span>
+        }
+<span class="fc" id="L132">        return target;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

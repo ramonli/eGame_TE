@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DefaultTaxService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.prize.service.impl</a> &gt; <span class="el_source">DefaultTaxService.java</span></div><h1>DefaultTaxService.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.prize.service.impl;
+
+import com.mpos.lottery.te.common.util.SimpleToolkit;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gamespec.game.Game;
+import com.mpos.lottery.te.gamespec.game.dao.GameDao;
+import com.mpos.lottery.te.gamespec.prize.TaxThreshold;
+import com.mpos.lottery.te.gamespec.prize.dao.TaxThresholdDao;
+import com.mpos.lottery.te.gamespec.prize.service.TaxService;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+/**
+ * A default implementation to support both tax policies: fixed amount and percentage. As the algorithm isn't
+ * complicated, only one implementing class to handle all.
+ * 
+ * @author Ramon Li
+ */
+<span class="fc" id="L23">public class DefaultTaxService implements TaxService {</span>
+<span class="fc" id="L24">    private Log logger = LogFactory.getLog(DefaultTaxService.class);</span>
+
+    // sprint dependencies
+    private TaxThresholdDao taxThresholdDao;
+    private GameDao gameDao;
+
+    /**
+     * @see TaxService#tax(BigDecimal, String)
+     */
+    @Override
+    public BigDecimal tax(BigDecimal amount, String gameId) {
+<span class="fc" id="L35">        Game game = this.getGameDao().findById(Game.class, gameId);</span>
+
+<span class="fc" id="L37">        BigDecimal tax = new BigDecimal(&quot;0&quot;);</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (amount.compareTo(new BigDecimal(&quot;0&quot;)) &gt; 0) {</span>
+<span class="fc" id="L39">            TaxThreshold taxThreshold = this.getTaxThresholdDao().getByPolicyAndAmountAndDateRange(</span>
+                    game.getTaxPolicyId(), amount, new Date());
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">            if (taxThreshold == null) {</span>
+<span class="nc" id="L42">                throw new SystemException(&quot;can NOT find Tax-Threshold definition by (taxPolicyId=&quot;</span>
+                        + game.getTaxPolicyId() + &quot;,prizeAmount=&quot; + amount + &quot;,currentDate:&quot; + new Date().toString()
+                        + &quot;).&quot;);
+            }
+<span class="fc" id="L46">            tax = this.calculate(amount, taxThreshold);</span>
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L48">                logger.debug(&quot;Calculate tax for amount:&quot; + amount + &quot; based on threshold(&quot; + taxThreshold.toString()</span>
+                        + &quot;)...tax:&quot; + tax);
+            }
+        }
+<span class="fc" id="L52">        return tax;</span>
+    }
+
+    /**
+     * Calculate tax upon the given amount and tax policy(only vat and levy).
+     * 
+     * @param inputAmount
+     *            The given amount will be calculate tax upon.
+     * @param taxPolicyId
+     *            Represents the tax policy: fixed amount of percentage.
+     * @return the final tax after calculating.
+     * @author Lee
+     */
+    public BigDecimal VatAndLevyTax(BigDecimal inputAmount, String taxPolicyId) {
+<span class="nc" id="L66">        TaxThreshold taxThreshold = this.getTaxThresholdDao().getByPolicyAndAmountAndDateRange(taxPolicyId,</span>
+                inputAmount, new Date());
+<span class="nc bnc" id="L68" title="All 2 branches missed.">        if (taxThreshold == null) {</span>
+<span class="nc" id="L69">            throw new SystemException(&quot;can NOT find vat or levy Tax-Threshold definition by (taxPolicyId=&quot;</span>
+                    + taxPolicyId + &quot;,prizeAmount=&quot; + inputAmount + &quot;,currentDate:&quot; + new Date().toString() + &quot;).&quot;);
+        }
+<span class="nc" id="L72">        BigDecimal tax = this.calculateVatAndLevy(inputAmount, taxThreshold);</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L74">            logger.debug(&quot;Calculate vat or levy tax for amount:&quot; + inputAmount + &quot; based on threshold(&quot;</span>
+                    + taxThreshold.toString() + &quot;)...tax:&quot; + tax);
+        }
+<span class="nc" id="L77">        return tax;</span>
+    }
+
+    /**
+     * calculate the tax based on give policy and amount.
+     * 
+     * @param inputAmount
+     *            The give amount need to calculate tax.
+     * @param taxThreshold
+     *            The tax threshold.
+     * @return the final tax after calculating.
+     */
+    protected BigDecimal calculateVatAndLevy(BigDecimal inputAmount, TaxThreshold taxThreshold) {
+<span class="nc" id="L90">        BigDecimal tax = null;</span>
+        // calculate the tax based on given amount
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (TaxThreshold.RULETYPE_FIXAMOUNT == taxThreshold.getRuleType()) {</span>
+<span class="nc" id="L93">            tax = taxThreshold.getTaxAmount();</span>
+        } else {
+<span class="nc" id="L95">            tax = SimpleToolkit.mathMultiple(inputAmount, taxThreshold.getTaxAmount());</span>
+        }
+<span class="nc" id="L97">        return tax.setScale(2, BigDecimal.ROUND_HALF_EVEN);</span>
+    }
+
+    /**
+     * calculate the tax based on give policy and amount.
+     * 
+     * @param inputAmount
+     *            The give amount need to calculate tax.
+     * @param taxThreshold
+     *            The tax threshold.
+     * @return the final tax after calculating.
+     */
+    protected BigDecimal calculate(BigDecimal inputAmount, TaxThreshold taxThreshold) {
+<span class="fc" id="L110">        BigDecimal tax = null;</span>
+        // calculate the tax based on given amount
+<span class="pc bpc" id="L112" title="1 of 2 branches missed.">        if (TaxThreshold.RULETYPE_FIXAMOUNT == taxThreshold.getRuleType()) {</span>
+<span class="nc" id="L113">            tax = taxThreshold.getTaxAmount();</span>
+        } else {
+<span class="pc bpc" id="L115" title="1 of 2 branches missed.">            if (TaxThreshold.TAXBASE_PRIZE == taxThreshold.getTaxBase()) {</span>
+                // tax = inputAmount.multiply(taxThreshold.getTaxAmount());
+<span class="nc" id="L117">                tax = SimpleToolkit.mathMultiple(inputAmount, taxThreshold.getTaxAmount());</span>
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">            } else if (TaxThreshold.TAXBASE_PAYOUT == taxThreshold.getTaxBase()) {</span>
+                // tax = inputAmount.divide(new
+                // BigDecimal(&quot;1&quot;).add(taxThreshold.getTaxAmount()), 2,
+                // BigDecimal.ROUND_HALF_EVEN).multiply(taxThreshold.getTaxAmount());
+<span class="fc" id="L122">                tax = SimpleToolkit.mathMultiple(</span>
+                        SimpleToolkit.mathDivide(inputAmount, new BigDecimal(&quot;1&quot;).add(taxThreshold.getTaxAmount())),
+                        taxThreshold.getTaxAmount());
+            }
+        }
+<span class="fc" id="L127">        return tax.setScale(2, BigDecimal.ROUND_HALF_EVEN);</span>
+    }
+
+    // -------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // -------------------------------------
+
+    public TaxThresholdDao getTaxThresholdDao() {
+<span class="fc" id="L135">        return taxThresholdDao;</span>
+    }
+
+    public void setTaxThresholdDao(TaxThresholdDao taxThresholdDao) {
+<span class="fc" id="L139">        this.taxThresholdDao = taxThresholdDao;</span>
+<span class="fc" id="L140">    }</span>
+
+    public GameDao getGameDao() {
+<span class="fc" id="L143">        return gameDao;</span>
+    }
+
+    public void setGameDao(GameDao gameDao) {
+<span class="fc" id="L147">        this.gameDao = gameDao;</span>
+<span class="fc" id="L148">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

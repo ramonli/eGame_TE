@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+	<class name="com.mpos.lottery.te.merchant.web.VatTransferDto">
+		<map-to xml="VATTransfer" />
+
+		<field name="creditType" type="integer" required="true">
+			<bind-xml name="creditType" node="attribute" />
+		</field>
+		<field name="amount" type="java.math.BigDecimal" required="true">
+			<bind-xml name="amount" node="attribute" />
+		</field>
+		<field name="creditBalanceOfFromOperator" type="java.math.BigDecimal"
+			required="true">
+			<bind-xml name="creditBalanceOfFromOperator" node="attribute" />
+		</field>
+		<field name="creditBalanceOfToOperator" type="java.math.BigDecimal"
+			required="true">
+			<bind-xml name="creditBalanceOfToOperator" node="attribute" />
+		</field>
+	</class>
+
+</mapping>

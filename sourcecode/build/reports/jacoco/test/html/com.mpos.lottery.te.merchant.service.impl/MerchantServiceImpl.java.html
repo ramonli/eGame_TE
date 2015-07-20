@@ -1,0 +1,1005 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MerchantServiceImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.merchant.service.impl</a> &gt; <span class="el_source">MerchantServiceImpl.java</span></div><h1>MerchantServiceImpl.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.merchant.service.impl;
+
+import com.google.gson.Gson;
+
+import com.mpos.lottery.te.common.util.Barcoder;
+import com.mpos.lottery.te.common.util.DateUtils;
+import com.mpos.lottery.te.common.util.SecurityMeasurements;
+import com.mpos.lottery.te.common.util.SimpleToolkit;
+import com.mpos.lottery.te.config.MLotteryContext;
+import com.mpos.lottery.te.config.SysConfiguration;
+import com.mpos.lottery.te.config.dao.SysConfigurationDao;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gamespec.game.Game;
+import com.mpos.lottery.te.gamespec.game.GameType;
+import com.mpos.lottery.te.gamespec.prize.PrizeGroupItem;
+import com.mpos.lottery.te.gamespec.prize.dao.PrizeGroupItemDao;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.merchant.dao.BalanceTransactionsDao;
+import com.mpos.lottery.te.merchant.dao.CashoutPassDao;
+import com.mpos.lottery.te.merchant.dao.MerchantCommissionDao;
+import com.mpos.lottery.te.merchant.dao.MerchantDao;
+import com.mpos.lottery.te.merchant.dao.OperatorDao;
+import com.mpos.lottery.te.merchant.dao.OperatorMerchantDao;
+import com.mpos.lottery.te.merchant.domain.BalanceTransactions;
+import com.mpos.lottery.te.merchant.domain.CashoutPass;
+import com.mpos.lottery.te.merchant.domain.GsonCashOutOperator;
+import com.mpos.lottery.te.merchant.domain.Merchant;
+import com.mpos.lottery.te.merchant.domain.MerchantCommission;
+import com.mpos.lottery.te.merchant.domain.Operator;
+import com.mpos.lottery.te.merchant.domain.OperatorMerchant;
+import com.mpos.lottery.te.merchant.domain.PrizeGroup;
+import com.mpos.lottery.te.merchant.service.MerchantService;
+import com.mpos.lottery.te.merchant.web.CashOutByManualDto;
+import com.mpos.lottery.te.merchant.web.CashOutByOperatorPassDto;
+import com.mpos.lottery.te.merchant.web.CashOutPassDto;
+import com.mpos.lottery.te.merchant.web.PayoutLevelAllowRequest;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.sequence.service.UUIDService;
+import com.mpos.lottery.te.trans.dao.TransactionMessageDao;
+import com.mpos.lottery.te.trans.domain.Transaction;
+import com.mpos.lottery.te.trans.domain.TransactionMessage;
+import com.mpos.lottery.te.trans.domain.TransactionType;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+<span class="fc" id="L54">public class MerchantServiceImpl implements MerchantService {</span>
+<span class="fc" id="L55">    private Log logger = LogFactory.getLog(MerchantServiceImpl.class);</span>
+    private MerchantDao merchantDao;
+    private MerchantCommissionDao merchantCommissionDao;
+    private PrizeGroupItemDao prizeGroupItemDao;
+    private UUIDService uuidManager;
+    private OperatorDao operatorDao;
+    private OperatorMerchantDao operatorMerchantDao;
+    private CashoutPassDao cashoutPassDao;
+    private SysConfigurationDao sysConfigurationDao;
+    private BalanceTransactionsDao balanceTransactionsDao;
+    private TransactionMessageDao transMessageDao;
+
+    @Override
+    public void allowCashout(Context respCtx, BigDecimal actualCashout) throws ApplicationException {
+<span class="fc" id="L69">        this.allowCashoutByLimit(respCtx, actualCashout);</span>
+<span class="fc" id="L70">        this.allowDailyCashout(respCtx, actualCashout);</span>
+<span class="fc" id="L71">    }</span>
+
+    @Override
+    public void allowSale(Transaction context, BaseTicket ticket) throws ApplicationException {
+<span class="fc" id="L75">        MerchantCommission comm = this.getMerchantCommissionDao().getByMerchantAndGame(context.getMerchantId(),</span>
+                ticket.getGameInstance().getGame().getId());
+<span class="pc bpc" id="L77" title="1 of 4 branches missed.">        if (comm == null || !comm.isAllowSale()) {</span>
+<span class="fc" id="L78">            throw new SystemException(SystemException.CODE_OPERATOR_SELL_NOPRIVILEDGE, &quot;operator(id=&quot;</span>
+                    + context.getOperatorId() + &quot;) has no priviledge to sell ticket of game '&quot;
+                    + ticket.getGameInstance().getGame().getId() + &quot;', allocate the game to its merchant first.&quot;);
+        }
+<span class="fc" id="L82">    }</span>
+
+    @Override
+    public void allowPayout(Context respCtx, Game game, PayoutLevelAllowRequest[] levelAllowRequests,
+            BigDecimal actualPayout) throws ApplicationException {
+        // verify whether the game has been allocated
+<span class="fc" id="L88">        MerchantCommission comm = this.getMerchantCommissionDao().getByMerchantAndGame(</span>
+                respCtx.getTransaction().getMerchantId(), game.getId());
+<span class="pc bpc" id="L90" title="1 of 4 branches missed.">        if (comm == null || !comm.isAllowPayout()) {</span>
+<span class="fc" id="L91">            throw new SystemException(SystemException.CODE_OPERATOR_PAYOUT_NOPRIVILEDGE, &quot;operator(id=&quot;</span>
+                    + respCtx.getOperatorId() + &quot;) has no priviledge to payout ticket of game '&quot; + game.getId()
+                    + &quot;', allocate the game to its merchant(id=&quot; + respCtx.getTransaction().getMerchantId()
+                    + &quot;) first.&quot;);
+        }
+<span class="fc" id="L96">        GameType gameType = GameType.fromType(game.getType());</span>
+        // only need to check the prize group constraints of operator
+<span class="fc" id="L98">        PrizeGroup prizeGroup = respCtx.getOperator().getPrizeGroup();</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (!prizeGroup.isPayoutAllowed()) {</span>
+<span class="nc" id="L100">            throw new ApplicationException(SystemException.CODE_MERCHANT_UNALLOWED_PAY, &quot;Operator(&quot;</span>
+                    + respCtx.getOperator() + &quot;) doesn't allow payout.&quot;);
+        }
+        // ** both conditions must be satisfied
+        // by payout limit
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (new BigDecimal(&quot;0&quot;).compareTo(actualPayout) != 0) {</span>
+<span class="fc" id="L106">            this.verifyPayoutByLimit(respCtx, actualPayout, respCtx.getOperator());</span>
+        }
+        // for odds and fix-prize game, no need to check prize level.
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        if (!gameType.isFixedPrize()) {</span>
+            // by prize level
+<span class="fc bfc" id="L111" title="All 2 branches covered.">            if (levelAllowRequests != null) {</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">                for (PayoutLevelAllowRequest levelAllowRequest : levelAllowRequests) {</span>
+<span class="fc" id="L113">                    this.verifyPayoutByLevel(respCtx, respCtx.getOperator(),</span>
+                            levelAllowRequest.getRequestedPrizeLevels(), levelAllowRequest.getGameType(),
+                            levelAllowRequest.getPrizeGroupType());
+                }
+            }
+        }
+<span class="fc" id="L119">    }</span>
+
+    @Override
+    public Merchant getMerchant(long merchantId) throws ApplicationException {
+<span class="fc" id="L123">        return this.getMerchantDao().findById(Merchant.class, merchantId);</span>
+    }
+
+    public void update(Merchant merchant) throws ApplicationException {
+<span class="nc" id="L127">        this.getMerchantDao().update(merchant);</span>
+<span class="nc" id="L128">    }</span>
+
+    @Override
+    public Merchant getMerchantByOperator(String operatorId, boolean forUpdate) throws ApplicationException {
+<span class="fc" id="L132">        OperatorMerchant operatorMerchant = this.getOperatorMerchantDao().findByOperator(operatorId);</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">        if (operatorMerchant == null) {</span>
+<span class="nc" id="L134">            throw new ApplicationException(SystemException.CODE_OPERATOR_NO_MERCHANT, &quot;operator(id=&quot; + operatorId</span>
+                    + &quot;) doesn't belong to any merchant, allocate it first.&quot;);
+        }
+
+<span class="fc" id="L138">        Merchant merchant = null;</span>
+<span class="pc bpc" id="L139" title="1 of 2 branches missed.">        if (!forUpdate) {</span>
+<span class="nc" id="L140">            merchant = this.getMerchantDao().findById(Merchant.class, operatorMerchant.getMerchantID());</span>
+        } else {
+<span class="fc" id="L142">            merchant = this.getMerchantDao().findByIdForUpdate(operatorMerchant.getMerchantID());</span>
+        }
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        if (merchant == null) {</span>
+<span class="nc" id="L145">            throw new ApplicationException(SystemException.CODE_NO_MERCHANT, &quot;merchant(id=&quot;</span>
+                    + operatorMerchant.getMerchantID() + &quot;) doesn't exist.&quot;);
+        }
+<span class="fc" id="L148">        return merchant;</span>
+    }
+
+    @Override
+    public List&lt;GameType&gt; supportedGameType(long merchantId) throws ApplicationException {
+<span class="fc" id="L153">        List&lt;MerchantCommission&gt; mcList = this.getMerchantCommissionDao().getByMerchant(merchantId);</span>
+<span class="fc" id="L154">        List&lt;GameType&gt; gameTypes = new LinkedList&lt;GameType&gt;();</span>
+<span class="fc bfc" id="L155" title="All 2 branches covered.">        for (MerchantCommission mc : mcList) {</span>
+<span class="fc" id="L156">            Game game = mc.getGame();</span>
+            // remove duplicated item.
+<span class="pc bpc" id="L158" title="1 of 2 branches missed.">            if (game != null) {</span>
+<span class="fc" id="L159">                GameType gameType = GameType.fromType(game.getType());</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">                if (!gameTypes.contains(gameType)) {</span>
+<span class="fc" id="L161">                    gameTypes.add(gameType);</span>
+                }
+            }
+<span class="fc" id="L164">        }</span>
+<span class="fc" id="L165">        return gameTypes;</span>
+    }
+
+    // ----------------------------------------------------
+    // HELPER METHODS
+    // ----------------------------------------------------
+
+    /**
+     * When cash out, a merchant can only cashout a given max amount.
+     * 
+     * @param respCtx
+     *            The context of cashout transaction.
+     * @param actualCashout
+     *            The actual amount of cashout.
+     * @throws ApplicationException
+     *             when encounter any business exception.
+     */
+    protected void allowDailyCashout(Context respCtx, BigDecimal actualCashout) throws ApplicationException {
+<span class="fc" id="L183">        PrizeGroup cashoutGroup = respCtx.getOperator().getCashoutGroup();</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">        if (cashoutGroup == null) {</span>
+<span class="nc" id="L185">            throw new ApplicationException(SystemException.CODE_MERCHANT_UNALLOWED_CASHOUT, &quot;Operator(&quot;</span>
+                    + respCtx.getOperator() + &quot;) can't perform cashout, no any cashout &quot; + &quot;group definition found.&quot;);
+        }
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L189">            logger.debug(&quot;Before cash out[dailyCashoutLevel: &quot; + respCtx.getOperator().getDailyCashoutLevel()</span>
+                    + &quot;, dailyCashoutLimit: &quot; + cashoutGroup.getDailyCashoutLimit() + &quot;, cashoutAmount: &quot;
+                    + actualCashout + &quot;] of Operator( &quot; + respCtx.getOperator() + &quot;).&quot;);
+        }
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">        if (actualCashout.add(respCtx.getOperator().getDailyCashoutLevel()).compareTo(</span>
+                cashoutGroup.getDailyCashoutLimit()) &gt; 0) {
+<span class="nc" id="L195">            throw new ApplicationException(SystemException.CODE_EXCEED_ALLOWED_MERCHANT_DAILY_CASHOUT_LIMIT,</span>
+                    &quot;Cash out amount(&quot; + actualCashout + &quot;) + current cashout level(&quot;
+                            + respCtx.getOperator().getDailyCashoutLevel() + &quot;) has exceeded allowed limit(&quot;
+                            + cashoutGroup.getDailyCashoutLimit() + &quot;) of Operator(&quot; + respCtx.getOperator() + &quot;).&quot;);
+        }
+<span class="fc" id="L200">    }</span>
+
+    /**
+     * When cash out, system check the cashout-limit of the merchant.
+     * 
+     * @param respCtx
+     *            The context of cashout transaction.
+     * @param actualCashout
+     *            The actual amount of cashout.
+     * @throws ApplicationException
+     *             when encounter any business exception.
+     */
+    protected void allowCashoutByLimit(Context respCtx, BigDecimal actualCashout) throws ApplicationException {
+<span class="fc" id="L213">        PrizeGroup cashoutGroup = respCtx.getOperator().getCashoutGroup();</span>
+<span class="pc bpc" id="L214" title="1 of 2 branches missed.">        if (cashoutGroup == null) {</span>
+<span class="nc" id="L215">            throw new ApplicationException(SystemException.CODE_MERCHANT_UNALLOWED_CASHOUT, &quot;Operator(&quot;</span>
+                    + respCtx.getOperator() + &quot;) can't perform cashout, no any cashout group definition found.&quot;);
+        }
+<span class="pc bpc" id="L218" title="2 of 4 branches missed.">        if (cashoutGroup.getMaxPayoutAmount() != null</span>
+                &amp;&amp; cashoutGroup.getMaxPayoutAmount().compareTo(new BigDecimal(&quot;0&quot;)) &gt;= 0) {
+<span class="pc bpc" id="L220" title="1 of 2 branches missed.">            if (actualCashout.compareTo(cashoutGroup.getMaxPayoutAmount()) &gt; 0) {</span>
+<span class="nc" id="L221">                throw new ApplicationException(SystemException.CODE_MERCHANT_UNALLOWED_CASHOUT_SCOPE,</span>
+                        &quot;The prize actual amount(&quot; + actualCashout + &quot;) exceed the max &quot; + &quot;allowed cashout amount(&quot;
+                                + cashoutGroup.getMaxPayoutAmount() + &quot;) of the Operator(&quot; + respCtx.getOperator()
+                                + &quot;).&quot;);
+            }
+        }
+<span class="pc bpc" id="L227" title="2 of 4 branches missed.">        if (cashoutGroup.getMinPayoutAmount() != null</span>
+                &amp;&amp; cashoutGroup.getMinPayoutAmount().compareTo(new BigDecimal(&quot;0&quot;)) &gt;= 0) {
+<span class="pc bpc" id="L229" title="1 of 2 branches missed.">            if (actualCashout.compareTo(cashoutGroup.getMinPayoutAmount()) &lt; 0) {</span>
+<span class="nc" id="L230">                throw new ApplicationException(SystemException.CODE_MERCHANT_UNALLOWED_CASHOUT_SCOPE,</span>
+                        &quot;The prize actual amount(&quot; + actualCashout + &quot;) is less than min cashout amount(&quot;
+                                + cashoutGroup.getMinPayoutAmount() + &quot;) of Operator(&quot; + respCtx.getOperator() + &quot;).&quot;);
+            }
+        }
+<span class="fc" id="L235">    }</span>
+
+    /**
+     * When do payout/validation, system check the payout-limit of the merchant. A merchant maybe follow its parent's
+     * payout-limit setting, system should handle this case.
+     * 
+     * @param respCtx
+     *            The context of current transaction.
+     * @param actualPayout
+     *            The actual amount of payout.
+     * @param operator
+     *            The operator who do payout.
+     * @throws ApplicationException
+     *             when encounter any business exception.
+     */
+    private void verifyPayoutByLimit(Context respCtx, BigDecimal actualPayout, Operator operator)
+            throws ApplicationException {
+<span class="fc" id="L252">        PrizeGroup prizeGroup = this.determinePrizeGroup(respCtx, operator);</span>
+<span class="pc bpc" id="L253" title="1 of 2 branches missed.">        if (PrizeGroup.ALLOWTYPE_UNLIMIT == prizeGroup.getAllowType()) {</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L255">                logger.debug(&quot;the prize group definition(&quot; + prizeGroup.getId() + &quot;) is no limited&quot;);</span>
+            }
+<span class="nc" id="L257">            return;</span>
+        }
+<span class="pc bpc" id="L259" title="2 of 4 branches missed.">        if (prizeGroup.getMaxPayoutAmount() != null</span>
+                &amp;&amp; prizeGroup.getMaxPayoutAmount().compareTo(new BigDecimal(&quot;0&quot;)) &gt;= 0) {
+<span class="fc bfc" id="L261" title="All 2 branches covered.">            if (actualPayout.compareTo(prizeGroup.getMaxPayoutAmount()) &gt; 0) {</span>
+<span class="fc" id="L262">                throw new ApplicationException(SystemException.CODE_EXCEED_MAX_PAYOUT, &quot;The prize actual amount(&quot;</span>
+                        + actualPayout + &quot;) exceed the max &quot; + &quot;allowed payout amount(&quot;
+                        + prizeGroup.getMaxPayoutAmount() + &quot;).&quot;);
+            }
+        }
+<span class="pc bpc" id="L267" title="2 of 4 branches missed.">        if (prizeGroup.getMinPayoutAmount() != null</span>
+                &amp;&amp; prizeGroup.getMinPayoutAmount().compareTo(new BigDecimal(&quot;0&quot;)) &gt;= 0) {
+<span class="fc bfc" id="L269" title="All 2 branches covered.">            if (actualPayout.compareTo(prizeGroup.getMinPayoutAmount()) &lt; 0) {</span>
+<span class="fc" id="L270">                throw new ApplicationException(SystemException.CODE_EXCEED_MAX_PAYOUT, &quot;The prize actual amount(&quot;</span>
+                        + actualPayout + &quot;) is less than min &quot; + &quot;payout amount(&quot; + prizeGroup.getMinPayoutAmount()
+                        + &quot;).&quot;);
+            }
+        }
+<span class="fc" id="L275">    }</span>
+
+    /**
+     * This operation will check whether a merchant has privilege to payout a set of specific prize levels.
+     * 
+     * @param respCtx
+     *            The context of current transaction.
+     * @param operator
+     *            The operator who try to perform payout.
+     * @param requestedPrizeLevels
+     *            The requested prize levels which the merchant try to payout.
+     * @param gameType
+     *            The game type of prize.
+     * @param groupType
+     *            Refer to PrizeGroupItem.GROUP_TYPE_XXX
+     * @throws ApplicationException
+     *             if any of the requested prize level is rejected.
+     */
+    protected void verifyPayoutByLevel(Context respCtx, Operator operator, Set&lt;Integer&gt; requestedPrizeLevels,
+            int gameType, int groupType) throws ApplicationException {
+<span class="fc" id="L295">        List&lt;PrizeGroupItem&gt; prizeGroupItems = this.getPrizeGroupItemDao().findByGroupAndGameTypeAndGroupType(</span>
+                operator.getPrizeGroup().getId(), gameType, groupType);
+        // if no any prize group items found for given groupType, merchant and
+        // gameType, simply let the merchant perform payout.
+<span class="pc bpc" id="L299" title="1 of 4 branches missed.">        if (prizeGroupItems == null || prizeGroupItems.size() == 0) {</span>
+<span class="fc" id="L300">            throw new ApplicationException(SystemException.CODE_MERCHANT_UNALLOWED_PAY,</span>
+                    &quot;No any prize group definition found by (operatorId=&quot; + operator.getId() + &quot;,prizeGroupId=&quot;
+                            + operator.getPrizeGroup().getId() + &quot;,gameType=&quot; + gameType + &quot;,prizeGroupType=&quot;
+                            + groupType + &quot;), System will simply reject this payout request.&quot;);
+        }
+<span class="fc bfc" id="L305" title="All 2 branches covered.">        for (int prizeLevel : requestedPrizeLevels) {</span>
+<span class="pc bpc" id="L306" title="1 of 2 branches missed.">            if (!PrizeGroupItem.allow(prizeLevel, prizeGroupItems)) {</span>
+<span class="nc" id="L307">                throw new ApplicationException(SystemException.CODE_MERCHANT_UNALLOWED_PAY, &quot;Operator(&quot; + operator</span>
+                        + &quot;) has no priviledge to pay prize (level:&quot; + prizeLevel + &quot;,groupType=&quot; + groupType
+                        + &quot;,gameType=&quot; + gameType + &quot;)&quot;);
+            }
+<span class="fc" id="L311">        }</span>
+<span class="fc" id="L312">    }</span>
+
+    /**
+     * If the payout-limit of current merchant is 'follow parent', TE should query its parent merchant till find a
+     * parent merchant whose payout-limit isn't 'follow parent'.
+     * 
+     * @return the PrizeGroup which will be applied at final.
+     */
+    private PrizeGroup determinePrizeGroup(Context respCtx, Operator operator) throws ApplicationException {
+<span class="fc" id="L321">        PrizeGroup prizeGroup = operator.getPrizeGroup();</span>
+<span class="pc bpc" id="L322" title="1 of 2 branches missed.">        if (prizeGroup == null) {</span>
+<span class="nc" id="L323">            throw new ApplicationException(SystemException.CODE_MERCHANT_UNALLOWED_PAY,</span>
+                    &quot;No any prize group definition found of Operator(&quot; + operator
+                            + &quot;), System will simply reject this payout request.&quot;);
+        }
+<span class="pc bpc" id="L327" title="1 of 2 branches missed.">        if (PrizeGroup.ALLOWTYPE_USEPARENT == prizeGroup.getAllowType()) {</span>
+            // lookup prize group definition of operator's parent merchant
+<span class="nc" id="L329">            Merchant leafMerchant = this.getMerchantDao().findById(Merchant.class,</span>
+                    respCtx.getTransaction().getMerchantId());
+<span class="nc bnc" id="L331" title="All 2 branches missed.">            if (leafMerchant == null) {</span>
+<span class="nc" id="L332">                throw new ApplicationException(SystemException.CODE_NO_MERCHANT, &quot;can NOT find merhcant by id=&quot;</span>
+                        + respCtx.getTransaction().getMerchantId());
+            }
+<span class="nc" id="L335">            prizeGroup = this.determinePrizeGroup(leafMerchant);</span>
+<span class="nc" id="L336">        } else {</span>
+<span class="pc bpc" id="L337" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L338">                logger.debug(&quot;Use the payout-limit setting(max=&quot; + prizeGroup.getMaxPayoutAmount() + &quot;,min=&quot;</span>
+                        + prizeGroup.getMinPayoutAmount() + &quot;) of Operator(&quot; + operator + &quot;) to verify payout limit.&quot;);
+            }
+        }
+<span class="fc" id="L342">        return prizeGroup;</span>
+    }
+
+    /**
+     * Found the valid prize group definition recursively.
+     */
+    private PrizeGroup determinePrizeGroup(Merchant merchant) throws ApplicationException {
+<span class="nc bnc" id="L349" title="All 2 branches missed.">        if (Merchant.SUPER_MERCHANT_ID == merchant.getId()) {</span>
+<span class="nc" id="L350">            return null;</span>
+        }
+<span class="nc" id="L352">        PrizeGroup prizeGroup = merchant.getPrizeGroup();</span>
+<span class="nc bnc" id="L353" title="All 2 branches missed.">        if (prizeGroup == null) {</span>
+<span class="nc" id="L354">            throw new ApplicationException(SystemException.CODE_MERCHANT_UNALLOWED_PAY,</span>
+                    &quot;No any prize group definition found of Merchant(&quot; + merchant
+                            + &quot;), System will simply reject this payout request.&quot;);
+        }
+<span class="nc bnc" id="L358" title="All 2 branches missed.">        if (PrizeGroup.ALLOWTYPE_USEPARENT == prizeGroup.getAllowType()) {</span>
+<span class="nc" id="L359">            prizeGroup = this.determinePrizeGroup(merchant.getParentMerchant());</span>
+        } else {
+<span class="nc bnc" id="L361" title="All 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L362">                logger.debug(&quot;Use the payout-limit setting(max=&quot; + prizeGroup.getMaxPayoutAmount() + &quot;,min=&quot;</span>
+                        + prizeGroup.getMinPayoutAmount() + &quot;) of merhcant(&quot; + merchant + &quot;) to verify payout limit.&quot;);
+            }
+
+<span class="nc bnc" id="L366" title="All 2 branches missed.">            if (!prizeGroup.isPayoutAllowed()) {</span>
+<span class="nc" id="L367">                throw new ApplicationException(SystemException.CODE_MERCHANT_UNALLOWED_PAY, &quot;Merchant(&quot; + merchant</span>
+                        + &quot;) doesn't allow payout.&quot;);
+            }
+        }
+
+<span class="nc" id="L372">        return prizeGroup;</span>
+    }
+
+    @Override
+    public CashOutPassDto getCashoutPass(Context respCtx, CashOutPassDto cashoutDto) throws ApplicationException {
+<span class="nc" id="L377">        String cashoutOperatorid = respCtx.getOperatorId();</span>
+<span class="nc" id="L378">        Operator operator = this.operatorDao.findById(Operator.class, cashoutOperatorid);</span>
+<span class="nc bnc" id="L379" title="All 2 branches missed.">        if (operator == null) {</span>
+<span class="nc" id="L380">            throw new ApplicationException(SystemException.CODE_NO_OPERATOR, &quot;operator(id=&quot; + cashoutOperatorid</span>
+                    + &quot;) doesn't exist.&quot;);
+        }
+
+        // cashout amount must greater than 0
+<span class="nc bnc" id="L385" title="All 2 branches missed.">        if (cashoutDto.getAmount().doubleValue() &lt;= 0) {</span>
+<span class="nc" id="L386">            throw new ApplicationException(SystemException.CODE_CASHOUT_AMOUNT_LESSTHAN_ZERO,</span>
+                    &quot;GetCashoutPass,OPERATOR(id=&quot; + operator.getId() + &quot;) can't accept cashout amount less or equal 0&quot;);
+        }
+
+<span class="nc bnc" id="L390" title="All 2 branches missed.">        if (operator.getCreditType() == Merchant.CREDIT_TYPE_DEFINITIVEVALUE) {</span>
+            // check operator balance
+<span class="nc" id="L392">            BigDecimal totalBalance = new BigDecimal(&quot;0&quot;);</span>
+<span class="nc" id="L393">            totalBalance = totalBalance.add(operator.getCommisionBalance());</span>
+<span class="nc" id="L394">            totalBalance = totalBalance.add(operator.getCashoutBalance());</span>
+<span class="nc" id="L395">            totalBalance = totalBalance.add(operator.getPayoutCreditLevel());</span>
+
+<span class="nc bnc" id="L397" title="All 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L398">                logger.debug(&quot;current operator :operator_id:&quot; + operator.getId() + &quot;,totalbalance=&quot;</span>
+                        + totalBalance.toPlainString());
+            }
+
+            // judge the balance whether or not sufficient
+<span class="nc bnc" id="L403" title="All 2 branches missed.">            if (totalBalance.compareTo(cashoutDto.getAmount()) &lt; 0) {</span>
+<span class="nc" id="L404">                throw new ApplicationException(SystemException.CODE_INSUFFICIENT_BALANCE, &quot;OPERATOR(id=&quot;</span>
+                        + operator.getId()
+                        + &quot;) insufficient balance[commission balance,cashout balance,payout balance].&quot;);
+            }
+
+<span class="nc bnc" id="L409" title="All 2 branches missed.">        } else if (operator.getCreditType() == Merchant.CREDIT_TYPE_USE_PARENT) {</span>
+            // lookup the merchant
+<span class="nc" id="L411">            Merchant originmerchant = getMerchantByOperator(cashoutOperatorid, false);</span>
+<span class="nc" id="L412">            Merchant finalMerchant = this.merchantDao.findDistributeMerchantByMerchantId(originmerchant.getId());</span>
+<span class="nc bnc" id="L413" title="All 2 branches missed.">            if (finalMerchant == null) {</span>
+<span class="nc" id="L414">                throw new ApplicationException(SystemException.CODE_NO_MERCHANT, &quot;operator(id=&quot; + cashoutOperatorid</span>
+                        + &quot;) doesn't exist parent merchant.&quot;);
+            }
+            // check merchant balance
+<span class="nc" id="L418">            BigDecimal totalBalance = new BigDecimal(&quot;0&quot;);</span>
+<span class="nc" id="L419">            totalBalance = totalBalance.add(finalMerchant.getCommisionBalance());</span>
+<span class="nc" id="L420">            totalBalance = totalBalance.add(finalMerchant.getCashoutBalance());</span>
+<span class="nc" id="L421">            totalBalance = totalBalance.add(finalMerchant.getPayoutCreditLevel());</span>
+
+<span class="nc bnc" id="L423" title="All 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L424">                logger.debug(&quot;current merchant :final_merchant_id:&quot; + finalMerchant.getId() + &quot;,totalbalance=&quot;</span>
+                        + totalBalance.toPlainString());
+            }
+
+            // judge the balance whether or not sufficient
+<span class="nc bnc" id="L429" title="All 2 branches missed.">            if (totalBalance.compareTo(cashoutDto.getAmount()) &lt; 0) {</span>
+<span class="nc" id="L430">                throw new ApplicationException(SystemException.CODE_INSUFFICIENT_BALANCE, &quot;MERCHANT(id=&quot;</span>
+                        + finalMerchant.getId()
+                        + &quot;) insufficient balance[commission balance,cashout balance,payout balance].&quot;);
+            }
+        }
+
+        // Get sys_configuration
+<span class="nc" id="L437">        SysConfiguration sysConf = this.getSysConfigurationDao().getSysConfiguration();</span>
+
+        // successful record the data to 'CASHOUT_PASS'
+        // MAX_EXPIRE_TIME_CASHOUT_PASS (unit: minute)
+<span class="nc" id="L441">        String teTransactionID = respCtx.getTransaction().getId();</span>
+
+<span class="nc" id="L443">        CashoutPass cashoutpass = new CashoutPass();</span>
+<span class="nc" id="L444">        String generalid = this.getUuidManager().getGeneralID();</span>
+<span class="nc" id="L445">        cashoutpass.setId(generalid);</span>
+<span class="nc" id="L446">        cashoutpass.setOperatorId(cashoutOperatorid);</span>
+<span class="nc" id="L447">        cashoutpass.setCashoutAmount(cashoutDto.getAmount());</span>
+<span class="nc" id="L448">        cashoutpass.setCashoutPassword(cashoutDto.getPassword());</span>
+<span class="nc" id="L449">        cashoutpass.setExpireTime(DateUtils.addMinute(new Date(), sysConf.getMaxExpireTimeCashoutPass()));</span>
+<span class="nc" id="L450">        cashoutpass.setTriedTimes(0);</span>
+<span class="nc" id="L451">        cashoutpass.setTeTransactionId(teTransactionID);</span>
+<span class="nc" id="L452">        cashoutpass.setCashoutBarCode(new Barcoder(0, generalid).getBarcode()); // barcode</span>
+<span class="nc" id="L453">        cashoutpass.setCreateBy(respCtx.getOperatorId());</span>
+<span class="nc" id="L454">        cashoutpass.setCreateTime(net.mpos.fk.util.DateUtils.getCurrentDate());</span>
+
+<span class="nc" id="L456">        this.cashoutPassDao.insert(cashoutpass);</span>
+
+        // assemble the response bean
+<span class="nc" id="L459">        CashOutPassDto respCashoutDto = new CashOutPassDto();</span>
+<span class="nc" id="L460">        respCashoutDto.setAmount(cashoutDto.getAmount());</span>
+<span class="nc" id="L461">        respCashoutDto.setExpireTime(net.mpos.fk.util.DateUtils.convertTimestampToString(cashoutpass.getExpireTime()));</span>
+<span class="nc" id="L462">        respCashoutDto.setBarcode(cashoutpass.getCashoutBarCode());</span>
+
+<span class="nc" id="L464">        return respCashoutDto;</span>
+    }
+
+    @Override
+    public CashOutByOperatorPassDto cashoutOperatorByPass(Context respCtx, Context responseCtx,
+            CashOutByOperatorPassDto cashoutDto) throws ApplicationException {
+        // tried times add 1
+<span class="fc" id="L471">        this.cashoutPassDao.increaseTriedTimes(cashoutDto.getBarcode());</span>
+
+        // lookup the 'CASHOUT_PASS' according to field 'BARCODE' &amp; 'password'
+<span class="fc" id="L474">        CashoutPass cashoutpass = this.cashoutPassDao.findByBarcode(cashoutDto.getBarcode());</span>
+<span class="pc bpc" id="L475" title="3 of 6 branches missed.">        if (cashoutpass == null || cashoutpass.getId() == null || &quot;&quot;.equals(cashoutpass.getId())) {</span>
+            // throw new ApplicationException(SystemException.CODE_CASHOUTPASS_NO_EXIST_BARCODE,
+            // &quot;[CashoutByPassword](barcode=&quot;
+            // + cashoutDto.getBarcode() + &quot;) not exist the barcode].&quot;);
+<span class="nc" id="L479">            responseCtx.setResponseCode(SystemException.CODE_CASHOUTPASS_NO_EXIST_BARCODE);</span>
+<span class="nc" id="L480">            logger.error(&quot;======================================&quot;);</span>
+<span class="nc" id="L481">            logger.error(&quot;[CashoutByPassword](barcode=&quot; + cashoutDto.getBarcode() + &quot;) not exist the barcode].&quot;);</span>
+<span class="nc" id="L482">            logger.error(&quot;======================================&quot;);</span>
+<span class="nc" id="L483">            return null;</span>
+        }
+
+        // check whether or not used
+<span class="pc bpc" id="L487" title="3 of 4 branches missed.">        if (cashoutpass.getCashoutTeTransactionId() != null &amp;&amp; !&quot;&quot;.equals(cashoutpass.getCashoutTeTransactionId())) {</span>
+            // throw new ApplicationException(SystemException.CODE_CASHOUTPASS_ALREADY_USED,
+            // &quot;[CashoutByPassword](barcode=&quot;
+            // + cashoutDto.getBarcode() + &quot;) is already used].&quot;);
+<span class="nc" id="L491">            responseCtx.setResponseCode(SystemException.CODE_CASHOUTPASS_ALREADY_USED);</span>
+<span class="nc" id="L492">            logger.error(&quot;======================================&quot;);</span>
+<span class="nc" id="L493">            logger.error(&quot;[CashoutByPassword](barcode=&quot; + cashoutDto.getBarcode() + &quot;) is already used].&quot;);</span>
+<span class="nc" id="L494">            logger.error(&quot;======================================&quot;);</span>
+<span class="nc" id="L495">            return null;</span>
+        }
+
+        // check expired time
+<span class="pc bpc" id="L499" title="1 of 2 branches missed.">        if (new Date().compareTo(cashoutpass.getExpireTime()) &gt; 0) {</span>
+            // throw new ApplicationException(SystemException.CODE_CASHOUTPASS_EXPIRETIME,
+            // &quot;[CashoutByPassword] The cashout password is expiry !&quot;);
+<span class="nc" id="L502">            responseCtx.setResponseCode(SystemException.CODE_CASHOUTPASS_EXPIRETIME);</span>
+<span class="nc" id="L503">            logger.error(&quot;======================================&quot;);</span>
+<span class="nc" id="L504">            logger.error(&quot;[CashoutByPassword] The cashout password is expiry !&quot;);</span>
+<span class="nc" id="L505">            logger.error(&quot;======================================&quot;);</span>
+<span class="nc" id="L506">            return null;</span>
+        }
+
+        // check max tried times
+<span class="fc" id="L510">        SysConfiguration sysConf = this.getSysConfigurationDao().getSysConfiguration();</span>
+<span class="fc" id="L511">        int maxiumtimes = sysConf.getMaxiumTimesOfCashoutPass();</span>
+<span class="pc bpc" id="L512" title="1 of 2 branches missed.">        if ((cashoutpass.getTriedTimes()) &gt; maxiumtimes) {</span>
+            // throw new ApplicationException(SystemException.CODE_CASHOUTPASS_EXCEED_MAXTIMES,
+            // &quot;[CashoutByPassword] The cashout by password is exceed max tried times !&quot;);
+<span class="nc" id="L515">            responseCtx.setResponseCode(SystemException.CODE_CASHOUTPASS_EXCEED_MAXTIMES);</span>
+<span class="nc" id="L516">            logger.error(&quot;======================================&quot;);</span>
+<span class="nc" id="L517">            logger.error(&quot;[CashoutByPassword] The cashout by password is exceed max tried times !&quot;);</span>
+<span class="nc" id="L518">            logger.error(&quot;======================================&quot;);</span>
+<span class="nc" id="L519">            return null;</span>
+        }
+
+        // check password whether or not correct
+<span class="pc bpc" id="L523" title="1 of 2 branches missed.">        if (!cashoutpass.getCashoutPassword().equals(cashoutDto.getPassword())) {</span>
+            // throw new ApplicationException(SystemException.CODE_CASHOUTPASS_INCORRECT,
+            // &quot;[CashoutByPassword](barcode=&quot;
+            // + cashoutDto.getBarcode() + &quot;) password is incorrect].&quot;);
+<span class="fc" id="L527">            responseCtx.setResponseCode(SystemException.CODE_CASHOUTPASS_INCORRECT);</span>
+<span class="fc" id="L528">            logger.error(&quot;======================================&quot;);</span>
+<span class="fc" id="L529">            logger.error(&quot;[CashoutByPassword](barcode=&quot; + cashoutDto.getBarcode() + &quot;) password is incorrect].&quot;);</span>
+<span class="fc" id="L530">            logger.error(&quot;======================================&quot;);</span>
+<span class="fc" id="L531">            return null;</span>
+        }
+
+        // main logic for cash out
+<span class="nc" id="L535">        cashoutLogic(respCtx, cashoutpass, cashoutpass.getOperatorId(), cashoutpass.getCashoutAmount(),</span>
+                TransactionType.CASH_OUT_OPERATOR_PASS.getRequestType());
+
+        // ==========================
+
+        // assemble response bean
+<span class="nc" id="L541">        CashOutByOperatorPassDto respCashoutPassDto = new CashOutByOperatorPassDto();</span>
+<span class="nc" id="L542">        respCashoutPassDto.setAmount(cashoutpass.getCashoutAmount());</span>
+<span class="nc" id="L543">        respCashoutPassDto.setOperatorId(cashoutpass.getOperatorId());</span>
+
+<span class="nc" id="L545">        return respCashoutPassDto;</span>
+    }
+
+    @Override
+    public CashOutByManualDto cashoutOperatorByManual(Context respCtx, CashOutByManualDto cashoutDto)
+            throws ApplicationException {
+
+        // cashout amount must greater than 0
+<span class="nc bnc" id="L553" title="All 2 branches missed.">        if (cashoutDto.getAmount().doubleValue() &lt;= 0) {</span>
+<span class="nc" id="L554">            throw new ApplicationException(SystemException.CODE_CASHOUT_AMOUNT_LESSTHAN_ZERO, &quot;(&quot;</span>
+                    + &quot;cashoutOperatorByManual) can't accept cashout amount less or equal 0&quot;);
+        }
+
+        // check password
+<span class="nc" id="L559">        String strMD5 = &quot;&quot;;</span>
+        try {
+<span class="nc" id="L561">            strMD5 = SecurityMeasurements.MD5PlainTextToHexString(cashoutDto.getPassword());</span>
+<span class="nc" id="L562">        } catch (Exception e) {</span>
+<span class="nc" id="L563">            throw new ApplicationException(SystemException.CODE_INTERNAL_SERVER_ERROR, &quot;[CashoutByManual](&quot;</span>
+                    + &quot;MD5 password Exception.)&quot;);
+<span class="nc" id="L565">        }</span>
+
+        // Find by Operator [login name] cashoutDto.getOperatorId is operator login name
+<span class="nc" id="L568">        Operator operator = this.operatorDao.findByLoginName(cashoutDto.getOperatorId());</span>
+
+<span class="nc bnc" id="L570" title="All 2 branches missed.">        if (operator == null) {</span>
+<span class="nc" id="L571">            throw new ApplicationException(SystemException.CODE_NO_OPERATOR, &quot;[cashout operator manual]operator(id=&quot;</span>
+                    + cashoutDto.getOperatorId() + &quot;) doesn't exist.&quot;);
+        }
+
+<span class="nc bnc" id="L575" title="All 2 branches missed.">        if (operator.getPassword().trim().equalsIgnoreCase(strMD5) == false) {</span>
+<span class="nc" id="L576">            throw new ApplicationException(SystemException.CODE_CASHOUTMANUAL_INCORRECT_PASSWORD, &quot;[CashoutByManual](&quot;</span>
+                    + &quot;MD5 password is incorrent.)&quot;);
+        }
+
+        // main logic for cash out
+<span class="nc" id="L581">        cashoutLogic(respCtx, null, operator.getId(), cashoutDto.getAmount(),</span>
+                TransactionType.CASH_OUT_OPERATOR_MANUAL.getRequestType());
+
+        // ==========================
+
+        // assemble response bean
+<span class="nc" id="L587">        CashOutByManualDto respCashoutManualDto = new CashOutByManualDto();</span>
+<span class="nc" id="L588">        respCashoutManualDto.setAmount(cashoutDto.getAmount());</span>
+<span class="nc" id="L589">        respCashoutManualDto.setOperatorId(cashoutDto.getOperatorId());</span>
+
+<span class="nc" id="L591">        return respCashoutManualDto;</span>
+    }
+
+    // -----------------------------------------------------
+    // HELP METHOD
+    // -----------------------------------------------------
+    private void cashoutLogic(Context respCtx, CashoutPass cashoutpass, String cashoutOperatorid,
+            BigDecimal cashoutAmount, int transType) throws ApplicationException {
+<span class="nc" id="L599">        GsonCashOutOperator gcoo = new GsonCashOutOperator();</span>
+        // check account whether or not sufficient
+<span class="nc" id="L601">        Operator operator = this.operatorDao.findById(Operator.class, cashoutOperatorid);</span>
+<span class="nc bnc" id="L602" title="All 2 branches missed.">        if (operator == null) {</span>
+<span class="nc" id="L603">            throw new ApplicationException(SystemException.CODE_NO_OPERATOR, &quot;[Cashout] operator(id=&quot;</span>
+                    + cashoutOperatorid + &quot;) doesn't exist.&quot;);
+        }
+
+        // check cash out operator id whether equals respCtx operator id , should not be the same
+<span class="nc bnc" id="L608" title="All 2 branches missed.">        if (cashoutOperatorid.equals(respCtx.getOperatorId())) {</span>
+<span class="nc" id="L609">            throw new ApplicationException(SystemException.CODE_CASHOUT_OPERATOR_SHOULD_NOT_SAME,</span>
+                    &quot;[Cashout] operator(id=&quot; + cashoutOperatorid + &quot;) should not the same with Operator.&quot;);
+        }
+
+<span class="nc bnc" id="L613" title="All 2 branches missed.">        if (operator.getCreditType() == Merchant.CREDIT_TYPE_DEFINITIVEVALUE) {</span>
+            // check operator balance
+<span class="nc" id="L615">            BigDecimal totalBalance = new BigDecimal(&quot;0&quot;);</span>
+<span class="nc" id="L616">            totalBalance = totalBalance.add(operator.getCommisionBalance());</span>
+<span class="nc" id="L617">            totalBalance = totalBalance.add(operator.getPayoutCreditLevel());</span>
+<span class="nc" id="L618">            totalBalance = totalBalance.add(operator.getCashoutBalance());</span>
+
+<span class="nc bnc" id="L620" title="All 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L621">                logger.debug(&quot;[Cashout] current operator :operator_id:&quot; + operator.getId() + &quot;,totalbalance=&quot;</span>
+                        + totalBalance.toPlainString());
+            }
+
+            // judge the balance whether or not sufficient
+<span class="nc bnc" id="L626" title="All 2 branches missed.">            if (totalBalance.compareTo(cashoutAmount) &lt; 0) {</span>
+<span class="nc" id="L627">                throw new ApplicationException(SystemException.CODE_INSUFFICIENT_BALANCE, &quot;[Cashout] OPERATOR(id=&quot;</span>
+                        + operator.getId()
+                        + &quot;) insufficient balance[commission balance,cashout balance,payout balance].&quot;);
+            }
+
+            // ==============
+            // deduct the money from balance order by [1)Commission balance
+            // 2)Payout balance 3)Cash-out balance]
+<span class="nc" id="L635">            BigDecimal commissionDeducted = new BigDecimal(&quot;0&quot;);</span>
+<span class="nc" id="L636">            BigDecimal payoutDeducted = new BigDecimal(&quot;0&quot;);</span>
+<span class="nc" id="L637">            BigDecimal cashoutDeducted = new BigDecimal(&quot;0&quot;);</span>
+
+<span class="nc" id="L639">            BigDecimal cashoutAmountTemp = operator.getCommisionBalance().subtract(cashoutAmount);</span>
+<span class="nc bnc" id="L640" title="All 2 branches missed.">            if (cashoutAmountTemp.doubleValue() &gt;= 0) {</span>
+<span class="nc" id="L641">                commissionDeducted = cashoutAmount;</span>
+            } else {
+                // negative value
+<span class="nc bnc" id="L644" title="All 4 branches missed.">                if (operator.getCommisionBalance().doubleValue() &lt; 0</span>
+                        &amp;&amp; operator.getPayoutCreditLevel().doubleValue() &lt; 0) {
+<span class="nc" id="L646">                    cashoutDeducted = cashoutAmount;</span>
+<span class="nc bnc" id="L647" title="All 2 branches missed.">                } else if (operator.getCommisionBalance().doubleValue() &lt; 0) {</span>
+                    // deducted account only (payout balance)
+<span class="nc bnc" id="L649" title="All 2 branches missed.">                    if (operator.getPayoutCreditLevel().subtract(cashoutAmount).doubleValue() &gt; 0) {</span>
+<span class="nc" id="L650">                        payoutDeducted = cashoutAmount;</span>
+                    } else {
+<span class="nc" id="L652">                        payoutDeducted = operator.getPayoutCreditLevel();</span>
+<span class="nc" id="L653">                        cashoutDeducted = (cashoutAmount.subtract(payoutDeducted));</span>
+                    }
+                } else {
+                    // deducted account (commission balance + payout balance)
+<span class="nc bnc" id="L657" title="All 2 branches missed.">                    if ((operator.getCommisionBalance().add(operator.getPayoutCreditLevel())).subtract(cashoutAmount)</span>
+                            .doubleValue() &gt;= 0) {
+<span class="nc" id="L659">                        commissionDeducted = operator.getCommisionBalance();</span>
+<span class="nc" id="L660">                        payoutDeducted = cashoutAmount.subtract(commissionDeducted);</span>
+                    } else {
+<span class="nc bnc" id="L662" title="All 2 branches missed.">                        if ((operator.getCommisionBalance().add(operator.getPayoutCreditLevel()).add(operator</span>
+                                .getCashoutBalance())).subtract(cashoutAmount).doubleValue() &gt;= 0) {
+<span class="nc" id="L664">                            commissionDeducted = operator.getCommisionBalance();</span>
+<span class="nc" id="L665">                            payoutDeducted = operator.getPayoutCreditLevel();</span>
+<span class="nc" id="L666">                            cashoutDeducted = (cashoutAmount.subtract(commissionDeducted)).subtract(payoutDeducted);</span>
+                        }
+                    }
+                }
+            }
+
+<span class="nc bnc" id="L672" title="All 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L673">                logger.debug(&quot;[Cashout] current operator :operator_id:&quot; + cashoutOperatorid</span>
+                        + &quot;,deducted money balance:commissionDeducted=&quot; + commissionDeducted.toPlainString()
+                        + &quot;;payoutdeducted:&quot; + payoutDeducted + &quot;;cashoutdeducted:&quot; + cashoutDeducted);
+            }
+
+            // set 2 decimals place
+<span class="nc" id="L679">            commissionDeducted.setScale(</span>
+                    MLotteryContext.getInstance().getInt(MLotteryContext.COMMISSION_BALANCE_PRECISION),
+                    BigDecimal.ROUND_HALF_UP);
+<span class="nc" id="L682">            payoutDeducted.setScale(2, BigDecimal.ROUND_HALF_UP);</span>
+<span class="nc" id="L683">            cashoutDeducted.setScale(2, BigDecimal.ROUND_HALF_UP);</span>
+<span class="nc" id="L684">            this.operatorDao.deductBalanceByOperator(commissionDeducted, payoutDeducted, cashoutDeducted,</span>
+                    cashoutOperatorid);
+            // ADD BALANCE_TRANSACTION RECORD
+<span class="nc" id="L687">            addBalanceTransactionRecord(respCtx, new BigDecimal(String.valueOf(cashoutAmount.doubleValue())),</span>
+                    transType, cashoutOperatorid, BalanceTransactions.OWNER_TYPE_OPERATOR,
+                    BalanceTransactions.PAYMENT_TYPE_DEDUCTING_MONEY, new BigDecimal(&quot;0&quot;), new BigDecimal(&quot;0&quot;));
+
+            // assemble the Json obj
+<span class="nc" id="L692">            gcoo.setOperatorMerchantType(BalanceTransactions.OWNER_TYPE_OPERATOR);</span>
+<span class="nc" id="L693">            gcoo.setOperatorMerchantid(cashoutOperatorid);</span>
+<span class="nc" id="L694">            gcoo.setOperatorid(cashoutOperatorid);</span>
+<span class="nc" id="L695">            gcoo.setTotalAmount(cashoutAmount);</span>
+<span class="nc" id="L696">            gcoo.setCommission(commissionDeducted);</span>
+<span class="nc" id="L697">            gcoo.setPayout(payoutDeducted);</span>
+<span class="nc" id="L698">            gcoo.setCashout(cashoutDeducted);</span>
+
+<span class="nc bnc" id="L700" title="All 2 branches missed.">        } else if (operator.getCreditType() == Merchant.CREDIT_TYPE_USE_PARENT) {</span>
+            // lookup the merchant
+<span class="nc" id="L702">            Merchant originmerchant = getMerchantByOperator(cashoutOperatorid, false);</span>
+<span class="nc" id="L703">            Merchant finalMerchant = this.merchantDao.findDistributeMerchantByMerchantId(originmerchant.getId());</span>
+<span class="nc bnc" id="L704" title="All 2 branches missed.">            if (finalMerchant == null) {</span>
+<span class="nc" id="L705">                throw new ApplicationException(SystemException.CODE_NO_MERCHANT, &quot;operator(id=&quot; + cashoutOperatorid</span>
+                        + &quot;) doesn't exist parent merchant.&quot;);
+            }
+            // check merchant balance
+<span class="nc" id="L709">            BigDecimal totalBalance = new BigDecimal(&quot;0&quot;);</span>
+<span class="nc" id="L710">            totalBalance = totalBalance.add(finalMerchant.getCommisionBalance());</span>
+<span class="nc" id="L711">            totalBalance = totalBalance.add(finalMerchant.getCashoutBalance());</span>
+<span class="nc" id="L712">            totalBalance = totalBalance.add(finalMerchant.getPayoutCreditLevel());</span>
+
+<span class="nc bnc" id="L714" title="All 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L715">                logger.debug(&quot;current merchant :final_merchant_id:&quot; + finalMerchant.getId() + &quot;,totalbalance=&quot;</span>
+                        + totalBalance.toPlainString());
+            }
+
+            // judge the balance whether or not sufficient
+<span class="nc bnc" id="L720" title="All 2 branches missed.">            if (totalBalance.compareTo(cashoutAmount) &lt; 0) {</span>
+<span class="nc" id="L721">                throw new ApplicationException(SystemException.CODE_INSUFFICIENT_BALANCE, &quot;MERCHANT(id=&quot;</span>
+                        + finalMerchant.getId()
+                        + &quot;) insufficient balance[commission balance,cashout balance,payout balance].&quot;);
+            }
+
+            // ==============
+            // deduct the money from balance order by [1)Commission balance
+            // 2)Payout balance 3)Cash-out balance]
+<span class="nc" id="L729">            BigDecimal commissionDeducted = new BigDecimal(&quot;0&quot;);</span>
+<span class="nc" id="L730">            BigDecimal payoutDeducted = new BigDecimal(&quot;0&quot;);</span>
+<span class="nc" id="L731">            BigDecimal cashoutDeducted = new BigDecimal(&quot;0&quot;);</span>
+
+<span class="nc" id="L733">            BigDecimal cashoutAmountTemp = finalMerchant.getCommisionBalance().subtract(cashoutAmount);</span>
+<span class="nc bnc" id="L734" title="All 2 branches missed.">            if (cashoutAmountTemp.doubleValue() &gt;= 0) {</span>
+<span class="nc" id="L735">                commissionDeducted = cashoutAmount;</span>
+            } else {
+                // negative value
+<span class="nc bnc" id="L738" title="All 4 branches missed.">                if (finalMerchant.getCommisionBalance().doubleValue() &lt; 0</span>
+                        &amp;&amp; finalMerchant.getPayoutCreditLevel().doubleValue() &lt; 0) {
+<span class="nc" id="L740">                    cashoutDeducted = cashoutAmount;</span>
+<span class="nc bnc" id="L741" title="All 2 branches missed.">                } else if (finalMerchant.getCommisionBalance().doubleValue() &lt; 0) {</span>
+                    // deducted account only (payout balance)
+<span class="nc bnc" id="L743" title="All 2 branches missed.">                    if (finalMerchant.getPayoutCreditLevel().subtract(cashoutAmount).doubleValue() &gt; 0) {</span>
+<span class="nc" id="L744">                        payoutDeducted = cashoutAmount;</span>
+                    } else {
+<span class="nc" id="L746">                        payoutDeducted = finalMerchant.getPayoutCreditLevel();</span>
+<span class="nc" id="L747">                        cashoutDeducted = (cashoutAmount.subtract(payoutDeducted));</span>
+                    }
+                } else {
+                    // deducted account (commission balance + payout balance)
+<span class="nc bnc" id="L751" title="All 2 branches missed.">                    if ((finalMerchant.getCommisionBalance().add(finalMerchant.getPayoutCreditLevel())).subtract(</span>
+                            cashoutAmount).doubleValue() &gt;= 0) {
+<span class="nc" id="L753">                        commissionDeducted = finalMerchant.getCommisionBalance();</span>
+<span class="nc" id="L754">                        payoutDeducted = cashoutAmount.subtract(commissionDeducted);</span>
+                    } else {
+<span class="nc bnc" id="L756" title="All 2 branches missed.">                        if ((finalMerchant.getCommisionBalance().add(finalMerchant.getPayoutCreditLevel())</span>
+                                .add(finalMerchant.getCashoutBalance())).subtract(cashoutAmount).doubleValue() &gt;= 0) {
+<span class="nc" id="L758">                            commissionDeducted = finalMerchant.getCommisionBalance();</span>
+<span class="nc" id="L759">                            payoutDeducted = finalMerchant.getPayoutCreditLevel();</span>
+<span class="nc" id="L760">                            cashoutDeducted = (cashoutAmount.subtract(commissionDeducted)).subtract(payoutDeducted);</span>
+                        }
+                    }
+                }
+            }
+
+<span class="nc bnc" id="L766" title="All 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L767">                logger.debug(&quot;[Cashout] current merchant :merchant_id:&quot; + finalMerchant.getId()</span>
+                        + &quot;,deducted money balance:commissionDeducted=&quot; + commissionDeducted.toPlainString()
+                        + &quot;;payoutdeducted:&quot; + payoutDeducted + &quot;;cashoutdeducted:&quot; + cashoutDeducted);
+            }
+
+<span class="nc" id="L772">            commissionDeducted.setScale(</span>
+                    MLotteryContext.getInstance().getInt(MLotteryContext.COMMISSION_BALANCE_PRECISION),
+                    BigDecimal.ROUND_HALF_UP);
+<span class="nc" id="L775">            payoutDeducted.setScale(2, BigDecimal.ROUND_HALF_UP);</span>
+<span class="nc" id="L776">            cashoutDeducted.setScale(2, BigDecimal.ROUND_HALF_UP);</span>
+<span class="nc" id="L777">            this.merchantDao.deductBalanceByMerchant(commissionDeducted, payoutDeducted, cashoutDeducted,</span>
+                    finalMerchant.getId());
+
+            // ADD BALANCE_TRANSACTION RECORD
+<span class="nc" id="L781">            addBalanceTransactionRecord(respCtx, new BigDecimal(String.valueOf(cashoutAmount.doubleValue())),</span>
+                    transType, String.valueOf(finalMerchant.getId()), BalanceTransactions.OWNER_TYPE_MERCHANT,
+                    BalanceTransactions.PAYMENT_TYPE_DEDUCTING_MONEY, new BigDecimal(&quot;0&quot;), new BigDecimal(&quot;0&quot;));
+
+            // assemble the Json obj
+<span class="nc" id="L786">            gcoo.setOperatorMerchantType(BalanceTransactions.OWNER_TYPE_MERCHANT);</span>
+<span class="nc" id="L787">            gcoo.setOperatorMerchantid(String.valueOf(finalMerchant.getId()));</span>
+<span class="nc" id="L788">            gcoo.setOperatorid(cashoutOperatorid);</span>
+<span class="nc" id="L789">            gcoo.setTotalAmount(cashoutAmount);</span>
+<span class="nc" id="L790">            gcoo.setCommission(commissionDeducted);</span>
+<span class="nc" id="L791">            gcoo.setPayout(payoutDeducted);</span>
+<span class="nc" id="L792">            gcoo.setCashout(cashoutDeducted);</span>
+
+        }
+
+        // update 'CASHOUT_PASS' the field 'cashout_te_transaction_id'
+        // increase the tried times add 1
+<span class="nc bnc" id="L798" title="All 2 branches missed.">        if (cashoutpass != null) {</span>
+<span class="nc" id="L799">            cashoutpass.setId(cashoutpass.getId());</span>
+<span class="nc" id="L800">            cashoutpass.setTriedTimes(cashoutpass.getTriedTimes());</span>
+<span class="nc" id="L801">            cashoutpass.setCashoutTeTransactionId(respCtx.getTransaction().getId());</span>
+<span class="nc" id="L802">            cashoutpass.setUpdateBy(respCtx.getOperatorId());</span>
+<span class="nc" id="L803">            cashoutpass.setUpdateTime(net.mpos.fk.util.DateUtils.getCurrentDate());</span>
+<span class="nc" id="L804">            this.cashoutPassDao.update(cashoutpass);</span>
+        }
+        // ==========================
+        // //add cash out balance &amp; commission to self operator
+<span class="nc" id="L808">        String commissionOperatorId = respCtx.getOperatorId();</span>
+<span class="nc" id="L809">        Operator commisionOperator = this.operatorDao.findById(Operator.class, commissionOperatorId);</span>
+<span class="nc bnc" id="L810" title="All 2 branches missed.">        if (commisionOperator == null) {</span>
+<span class="nc" id="L811">            throw new ApplicationException(SystemException.CODE_NO_OPERATOR,</span>
+                    &quot;[CashoutByPassword] commisionOperator(id=&quot; + commissionOperatorId + &quot;) doesn't exist.&quot;);
+        }
+
+        // credit
+<span class="nc bnc" id="L816" title="All 2 branches missed.">        if (commisionOperator.getCreditType() == Merchant.CREDIT_TYPE_DEFINITIVEVALUE) {</span>
+<span class="nc" id="L817">            BigDecimal cashoutrate = commisionOperator.getCashoutRate();</span>
+<span class="nc" id="L818">            BigDecimal cashoutamount = cashoutAmount;</span>
+            // BigDecimal commissionAmount = cashoutamount.multiply(cashoutrate);
+<span class="nc" id="L820">            BigDecimal commissionAmount = SimpleToolkit.mathMultiple(cashoutamount, cashoutrate, MLotteryContext</span>
+                    .getInstance().getInt(MLotteryContext.COMMISSION_BALANCE_PRECISION));
+
+<span class="nc" id="L823">            cashoutamount.setScale(2, BigDecimal.ROUND_HALF_UP);</span>
+<span class="nc" id="L824">            this.operatorDao.addCashoutAndCommissionToOperator(cashoutamount, commissionAmount, commissionOperatorId);</span>
+
+            // insert record into 'BALANCE_TRANSACTIONS'
+            // ADD BALANCE_TRANSACTION RECORD
+<span class="nc" id="L828">            addBalanceTransactionRecord(respCtx, cashoutAmount, transType, commissionOperatorId,</span>
+                    BalanceTransactions.OWNER_TYPE_OPERATOR, BalanceTransactions.PAYMENT_TYPE_PLUSING_MONEY,
+                    commissionAmount, cashoutrate);
+            // assemble the Json obj
+<span class="nc" id="L832">            gcoo.setPlusOperatorMerchantType(BalanceTransactions.OWNER_TYPE_OPERATOR);</span>
+<span class="nc" id="L833">            gcoo.setPlusOperatorid(commissionOperatorId);</span>
+<span class="nc" id="L834">            gcoo.setPlusOperatorCashoutBalance(cashoutamount);</span>
+<span class="nc" id="L835">            gcoo.setPlusOperatorCommissionBalance(commissionAmount);</span>
+<span class="nc" id="L836">            gcoo.setPlusOperatorCommissionRate(cashoutrate);</span>
+<span class="nc bnc" id="L837" title="All 2 branches missed.">        } else if (commisionOperator.getCreditType() == Merchant.CREDIT_TYPE_USE_PARENT) {</span>
+            // lookup the merchant
+<span class="nc" id="L839">            Merchant originmerchant = getMerchantByOperator(commissionOperatorId, false);</span>
+<span class="nc" id="L840">            Merchant finalMerchant = this.merchantDao.findDistributeMerchantByMerchantId(originmerchant.getId());</span>
+<span class="nc bnc" id="L841" title="All 2 branches missed.">            if (finalMerchant == null) {</span>
+<span class="nc" id="L842">                throw new ApplicationException(SystemException.CODE_NO_MERCHANT, &quot;commission operator(id=&quot;</span>
+                        + commissionOperatorId + &quot;) doesn't exist parent merchant.&quot;);
+            }
+
+            // use operator cash out rate
+<span class="nc" id="L847">            BigDecimal cashoutrate = commisionOperator.getCashoutRate();</span>
+<span class="nc" id="L848">            BigDecimal cashoutamount = cashoutAmount;</span>
+            // BigDecimal commissionOperatorAmount = cashoutamount.multiply(cashoutrate);
+<span class="nc" id="L850">            BigDecimal commissionOperatorAmount = SimpleToolkit.mathMultiple(cashoutamount, cashoutrate,</span>
+                    MLotteryContext.getInstance().getInt(MLotteryContext.COMMISSION_BALANCE_PRECISION));
+
+            // merchant cash out rate
+            // BigDecimal finalcashoutrate = finalMerchant.getCashoutRate();
+            // BigDecimal finalcashoutamount = cashoutAmount;
+            // BigDecimal commissionMerchantAmount = finalcashoutamount.multiply(finalcashoutrate);
+
+<span class="nc" id="L858">            cashoutamount.setScale(2, BigDecimal.ROUND_HALF_UP);</span>
+<span class="nc" id="L859">            this.merchantDao.addCashoutAndCommissionToMerchant(cashoutamount, null, finalMerchant.getId());</span>
+            // ADD BALANCE_TRANSACTION RECORD
+<span class="nc" id="L861">            addBalanceTransactionRecord(respCtx, cashoutAmount, transType, commissionOperatorId,</span>
+                    BalanceTransactions.OWNER_TYPE_OPERATOR, BalanceTransactions.PAYMENT_TYPE_PLUSING_MONEY,
+                    commissionOperatorAmount, cashoutrate);
+
+<span class="nc" id="L865">            addBalanceTransactionRecord(respCtx, cashoutAmount, transType, String.valueOf(finalMerchant.getId()),</span>
+                    BalanceTransactions.OWNER_TYPE_MERCHANT, BalanceTransactions.PAYMENT_TYPE_PLUSING_MONEY,
+                    new BigDecimal(&quot;0&quot;), new BigDecimal(&quot;0&quot;));
+
+            // assemble the Json obj
+<span class="nc" id="L870">            gcoo.setPlusOperatorMerchantType(BalanceTransactions.OWNER_TYPE_OPERATOR);</span>
+<span class="nc" id="L871">            gcoo.setPlusOperatorid(commissionOperatorId);</span>
+<span class="nc" id="L872">            gcoo.setPlusOperatorCashoutBalance(cashoutamount);</span>
+<span class="nc" id="L873">            gcoo.setPlusOperatorCommissionBalance(commissionOperatorAmount);</span>
+<span class="nc" id="L874">            gcoo.setPlusOperatorCommissionRate(cashoutrate);</span>
+
+<span class="nc" id="L876">            gcoo.setPlusOperatorMerchantType(BalanceTransactions.OWNER_TYPE_MERCHANT);</span>
+<span class="nc" id="L877">            gcoo.setPlusMerchantid(String.valueOf(finalMerchant.getId()));</span>
+<span class="nc" id="L878">            gcoo.setPlusMerchantCashoutBalance(cashoutamount);</span>
+<span class="nc" id="L879">            gcoo.setPlusMerchantCommissionBalance(new BigDecimal(&quot;0&quot;));</span>
+<span class="nc" id="L880">            gcoo.setPlusMerchantCommissionRate(new BigDecimal(&quot;0&quot;));</span>
+
+        }
+
+        // DESTINATION_OPEATOR
+<span class="nc" id="L885">        respCtx.getTransaction().setDestinationOpeator(cashoutOperatorid);</span>
+<span class="nc" id="L886">        respCtx.getTransaction().setTotalAmount(cashoutAmount);</span>
+
+        // write transaction message for reversal.
+        // add record to te_transaction_msg
+        // assemble request message use JSON
+<span class="nc" id="L891">        String reqmsg = new Gson().toJson(gcoo);</span>
+<span class="nc" id="L892">        TransactionMessage msg = new TransactionMessage();</span>
+<span class="nc" id="L893">        msg.setTransactionId(respCtx.getTransaction().getId());</span>
+<span class="nc" id="L894">        msg.setRequestMsg(reqmsg);</span>
+<span class="nc" id="L895">        respCtx.getTransaction().setTransMessage(msg);</span>
+
+<span class="nc" id="L897">    }</span>
+
+    private void addBalanceTransactionRecord(Context respCtx, BigDecimal cashoutAmount, int transType,
+            String operatorMerchantid, int ownerType, int paymentType, BigDecimal commissionAmount,
+            BigDecimal commissionRate) throws ApplicationException {
+<span class="nc" id="L902">        BalanceTransactions bt = new BalanceTransactions();</span>
+<span class="nc" id="L903">        bt.setTeTransactionId(respCtx.getTransaction().getId());</span>
+<span class="nc" id="L904">        bt.setMerchantId(respCtx.getTransaction().getMerchantId());</span>
+<span class="nc" id="L905">        bt.setDeviceId(respCtx.getTransaction().getDeviceId());</span>
+<span class="nc" id="L906">        bt.setOperatorId(respCtx.getTransaction().getOperatorId());</span>
+<span class="nc" id="L907">        bt.setOwnerId(operatorMerchantid);</span>
+<span class="nc" id="L908">        bt.setOwnerType(ownerType);</span>
+<span class="nc" id="L909">        bt.setPaymentType(paymentType);</span>
+<span class="nc" id="L910">        bt.setTransactionType(transType);</span>
+<span class="nc" id="L911">        bt.setOriginalTransType(transType);</span>
+<span class="nc" id="L912">        bt.setTransactionAmount(cashoutAmount);</span>
+<span class="nc" id="L913">        bt.setCommissionAmount(commissionAmount);</span>
+<span class="nc" id="L914">        bt.setCommissionRate(commissionRate);</span>
+<span class="nc" id="L915">        bt.setCreateTime(net.mpos.fk.util.DateUtils.getNowTimestamp());</span>
+<span class="nc" id="L916">        bt.setStatus(BalanceTransactions.STATUS_VALID);</span>
+<span class="nc" id="L917">        this.balanceTransactionsDao.insert(bt);</span>
+<span class="nc" id="L918">    }</span>
+
+    // ----------------------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // ----------------------------------------------------
+
+    public MerchantDao getMerchantDao() {
+<span class="fc" id="L925">        return merchantDao;</span>
+    }
+
+    public void setMerchantDao(MerchantDao merchantDao) {
+<span class="fc" id="L929">        this.merchantDao = merchantDao;</span>
+<span class="fc" id="L930">    }</span>
+
+    public MerchantCommissionDao getMerchantCommissionDao() {
+<span class="fc" id="L933">        return merchantCommissionDao;</span>
+    }
+
+    public void setMerchantCommissionDao(MerchantCommissionDao merchantCommissionDao) {
+<span class="fc" id="L937">        this.merchantCommissionDao = merchantCommissionDao;</span>
+<span class="fc" id="L938">    }</span>
+
+    public PrizeGroupItemDao getPrizeGroupItemDao() {
+<span class="fc" id="L941">        return prizeGroupItemDao;</span>
+    }
+
+    public void setPrizeGroupItemDao(PrizeGroupItemDao prizeGroupItemDao) {
+<span class="fc" id="L945">        this.prizeGroupItemDao = prizeGroupItemDao;</span>
+<span class="fc" id="L946">    }</span>
+
+    public UUIDService getUuidManager() {
+<span class="nc" id="L949">        return uuidManager;</span>
+    }
+
+    public void setUuidManager(UUIDService uuidManager) {
+<span class="fc" id="L953">        this.uuidManager = uuidManager;</span>
+<span class="fc" id="L954">    }</span>
+
+    public OperatorDao getOperatorDao() {
+<span class="nc" id="L957">        return operatorDao;</span>
+    }
+
+    public void setOperatorDao(OperatorDao operatorDao) {
+<span class="fc" id="L961">        this.operatorDao = operatorDao;</span>
+<span class="fc" id="L962">    }</span>
+
+    public OperatorMerchantDao getOperatorMerchantDao() {
+<span class="fc" id="L965">        return operatorMerchantDao;</span>
+    }
+
+    public void setOperatorMerchantDao(OperatorMerchantDao operatorMerchantDao) {
+<span class="fc" id="L969">        this.operatorMerchantDao = operatorMerchantDao;</span>
+<span class="fc" id="L970">    }</span>
+
+    public CashoutPassDao getCashoutPassDao() {
+<span class="nc" id="L973">        return cashoutPassDao;</span>
+    }
+
+    public void setCashoutPassDao(CashoutPassDao cashoutPassDao) {
+<span class="fc" id="L977">        this.cashoutPassDao = cashoutPassDao;</span>
+<span class="fc" id="L978">    }</span>
+
+    public SysConfigurationDao getSysConfigurationDao() {
+<span class="fc" id="L981">        return sysConfigurationDao;</span>
+    }
+
+    public void setSysConfigurationDao(SysConfigurationDao sysConfigurationDao) {
+<span class="fc" id="L985">        this.sysConfigurationDao = sysConfigurationDao;</span>
+<span class="fc" id="L986">    }</span>
+
+    public BalanceTransactionsDao getBalanceTransactionsDao() {
+<span class="nc" id="L989">        return balanceTransactionsDao;</span>
+    }
+
+    public void setBalanceTransactionsDao(BalanceTransactionsDao balanceTransactionsDao) {
+<span class="fc" id="L993">        this.balanceTransactionsDao = balanceTransactionsDao;</span>
+<span class="fc" id="L994">    }</span>
+
+    public TransactionMessageDao getTransMessageDao() {
+<span class="nc" id="L997">        return transMessageDao;</span>
+    }
+
+    public void setTransMessageDao(TransactionMessageDao transMessageDao) {
+<span class="fc" id="L1001">        this.transMessageDao = transMessageDao;</span>
+<span class="fc" id="L1002">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

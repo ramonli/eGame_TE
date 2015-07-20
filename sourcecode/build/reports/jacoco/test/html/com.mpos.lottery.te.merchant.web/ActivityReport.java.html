@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ActivityReport.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.merchant.web</a> &gt; <span class="el_source">ActivityReport.java</span></div><h1>ActivityReport.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.merchant.web;
+
+import org.springframework.util.Assert;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+<span class="fc" id="L9">public class ActivityReport {</span>
+    private String operatorId;
+    // private String barcode;
+    private Date startTime;
+    private Date endTime;
+<span class="fc" id="L14">    private ActivityReportHeader statReport = new ActivityReportHeader();</span>
+<span class="fc" id="L15">    private List&lt;DailyActivityReport&gt; dailyActivityReports = new ArrayList&lt;DailyActivityReport&gt;();</span>
+
+    public DailyActivityReport getReportByDate(String date, boolean createIfNull) {
+<span class="fc" id="L18">        DailyActivityReport report = null;</span>
+<span class="fc bfc" id="L19" title="All 2 branches covered.">        for (DailyActivityReport item : this.dailyActivityReports) {</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">            if (date.equalsIgnoreCase(item.getDate())) {</span>
+<span class="fc" id="L21">                report = item;</span>
+            }
+<span class="fc" id="L23">        }</span>
+<span class="fc bfc" id="L24" title="All 4 branches covered.">        if (createIfNull &amp;&amp; report == null) {</span>
+<span class="fc" id="L25">            report = new DailyActivityReport();</span>
+<span class="fc" id="L26">            report.setDate(date);</span>
+<span class="fc" id="L27">            this.dailyActivityReports.add(report);</span>
+<span class="fc" id="L28">            return report;</span>
+        }
+<span class="fc" id="L30">        return report;</span>
+    }
+
+    /**
+     * Merge the provided &lt;code&gt;DailyActivityReport&lt;/code&gt; into the activity report.
+     */
+    public void mergeDailyActivityReport(DailyActivityReport dailyReport) {
+<span class="fc" id="L37">        Assert.notNull(dailyReport);</span>
+<span class="fc" id="L38">        DailyActivityReport existDailyReport = this.getReportByDate(dailyReport.getDate(), false);</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (existDailyReport == null) {</span>
+<span class="fc" id="L40">            existDailyReport = dailyReport;</span>
+<span class="fc" id="L41">            this.getDailyActivityReports().add(existDailyReport);</span>
+        } else {
+<span class="fc" id="L43">            this.doMergeDailyActivityReport(dailyReport, existDailyReport);</span>
+        }
+
+        // update activity report header as well.
+<span class="fc" id="L47">        this.doMergeDailyActivityReport(dailyReport, this.getStatReport());</span>
+<span class="fc" id="L48">    }</span>
+
+    public void mergeDailyActivityReports(List&lt;DailyActivityReport&gt; dailyReports) {
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        for (DailyActivityReport dailyReport : dailyReports) {</span>
+<span class="fc" id="L52">            this.mergeDailyActivityReport(dailyReport);</span>
+<span class="fc" id="L53">        }</span>
+<span class="fc" id="L54">    }</span>
+
+    protected void doMergeDailyActivityReport(DailyActivityReport newDailyReport, ActivityReportHeader existDailyReport) {
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        for (ActivityReportItem reportItem : newDailyReport.getReportItems()) {</span>
+<span class="fc" id="L58">            ActivityReportItem existReportItem = existDailyReport.getReportItemByTransType(reportItem.getTransType(),</span>
+                    false);
+<span class="fc bfc" id="L60" title="All 2 branches covered.">            if (existReportItem == null) {</span>
+<span class="fc" id="L61">                existReportItem = new ActivityReportItem(reportItem);</span>
+<span class="fc" id="L62">                existDailyReport.getReportItems().add(existReportItem);</span>
+            } else {
+<span class="fc" id="L64">                existReportItem.setAmount(existReportItem.getAmount().add(reportItem.getAmount()));</span>
+<span class="fc" id="L65">                existReportItem.setTax(existReportItem.getTax().add(reportItem.getTax()));</span>
+<span class="fc" id="L66">                existReportItem.setNumberOfTrans(existReportItem.getNumberOfTrans() + reportItem.getNumberOfTrans());</span>
+<span class="fc" id="L67">                existReportItem.setCommission(existReportItem.getCommission().add(reportItem.getCommission()));</span>
+            }
+<span class="fc" id="L69">        }</span>
+<span class="fc" id="L70">    }</span>
+
+    public Date getStartTime() {
+<span class="fc" id="L73">        return startTime;</span>
+    }
+
+    public void setStartTime(Date startTime) {
+<span class="fc" id="L77">        this.startTime = startTime;</span>
+<span class="fc" id="L78">    }</span>
+
+    public ActivityReportHeader getStatReport() {
+<span class="fc" id="L81">        return statReport;</span>
+    }
+
+    public void setStatReport(ActivityReportHeader statReport) {
+<span class="fc" id="L85">        this.statReport = statReport;</span>
+<span class="fc" id="L86">    }</span>
+
+    public Date getEndTime() {
+<span class="fc" id="L89">        return endTime;</span>
+    }
+
+    public void setEndTime(Date endTime) {
+<span class="fc" id="L93">        this.endTime = endTime;</span>
+<span class="fc" id="L94">    }</span>
+
+    public List&lt;DailyActivityReport&gt; getDailyActivityReports() {
+<span class="fc" id="L97">        return dailyActivityReports;</span>
+    }
+
+    public void setDailyActivityReports(List&lt;DailyActivityReport&gt; dailyActivityReports) {
+<span class="nc" id="L101">        this.dailyActivityReports = dailyActivityReports;</span>
+<span class="nc" id="L102">    }</span>
+
+    public String getOperatorId() {
+<span class="fc" id="L105">        return operatorId;</span>
+    }
+
+    public void setOperatorId(String operatorId) {
+<span class="fc" id="L109">        this.operatorId = operatorId;</span>
+<span class="fc" id="L110">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

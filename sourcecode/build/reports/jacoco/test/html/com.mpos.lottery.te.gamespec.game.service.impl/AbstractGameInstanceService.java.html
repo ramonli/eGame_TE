@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AbstractGameInstanceService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.game.service.impl</a> &gt; <span class="el_source">AbstractGameInstanceService.java</span></div><h1>AbstractGameInstanceService.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.game.service.impl;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gamespec.game.BaseGameInstance;
+import com.mpos.lottery.te.gamespec.game.BaseOperationParameter;
+import com.mpos.lottery.te.gamespec.game.ChannelGameInstanceTime;
+import com.mpos.lottery.te.gamespec.game.Game;
+import com.mpos.lottery.te.gamespec.game.GameTypeAware;
+import com.mpos.lottery.te.gamespec.game.dao.BaseGameInstanceDao;
+import com.mpos.lottery.te.gamespec.game.dao.ChannelGameInstanceTimeDao;
+import com.mpos.lottery.te.gamespec.game.service.GameInstanceService;
+import com.mpos.lottery.te.gamespec.game.support.GameInstanceServiceFactory;
+import com.mpos.lottery.te.gamespec.game.web.GameDto;
+import com.mpos.lottery.te.gamespec.game.web.GameInstanceDto;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.merchant.service.MerchantService;
+import com.mpos.lottery.te.port.Context;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.InitializingBean;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+<span class="fc" id="L29">public abstract class AbstractGameInstanceService implements GameTypeAware, GameInstanceService, InitializingBean {</span>
+<span class="fc" id="L30">    private Log logger = LogFactory.getLog(AbstractGameInstanceService.class);</span>
+    private GameInstanceServiceFactory gameInstanceServiceFactory;
+    private BaseGameInstanceDao gameInstanceDao;
+    private BaseJpaDao baseJpaDao;
+    private ChannelGameInstanceTimeDao channelGameInstanceTimeDao;
+    private MerchantService merchantService;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+<span class="fc" id="L39">        this.getGameInstanceServiceFactory().registerHandler(this.supportedGameType(), this);</span>
+<span class="fc" id="L40">    }</span>
+
+    @Override
+    public void allowPayout(Context respCtx, List&lt;? extends BaseTicket&gt; hostTickets, boolean isEnquiry)
+            throws ApplicationException {
+<span class="fc" id="L45">        BaseGameInstance soldGameInstance = hostTickets.get(0).getGameInstance();</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        if (BaseGameInstance.STATE_PAYOUT_STARTED != soldGameInstance.getState()) {</span>
+<span class="nc" id="L47">            throw new ApplicationException(SystemException.CODE_DRAW_NOTPAYOUTSTARTED, &quot;The game draw(drawNo=&quot;</span>
+                    + soldGameInstance.getNumber() + &quot;) of buying ticket(serialNo=&quot; + hostTickets.get(0).getSerialNo()
+                    + &quot;) is not 'payout started':&quot; + soldGameInstance.getState());
+        }
+
+        /**
+         * If internal payout, only when all game instances are payout-started, this operation will be allowed.
+         */
+<span class="fc" id="L55">        BaseGameInstance lastGameInstance = hostTickets.get(hostTickets.size() - 1).getGameInstance();</span>
+<span class="fc bfc" id="L56" title="All 4 branches covered.">        if (respCtx.isInternalCall() &amp;&amp; BaseGameInstance.STATE_PAYOUT_STARTED != lastGameInstance.getState()) {</span>
+<span class="fc" id="L57">            throw new ApplicationException(SystemException.CODE_DRAW_NOTPAYOUTSTARTED, &quot;The last game instance(drawNo=&quot;</span>
+                    + lastGameInstance.getNumber() + &quot;) of buying ticket(serialNo=&quot; + hostTickets.get(0).getSerialNo()
+                    + &quot;) is not 'payout started':&quot; + lastGameInstance.getState()
+                    + &quot;, internal payout is allowed only when all game instances are payout-started.&quot;);
+        }
+
+        // check status of game
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if (Game.STATUS_ACTIVE != soldGameInstance.getGame().getState()) {</span>
+<span class="nc" id="L65">            throw new ApplicationException(SystemException.CODE_GAME_INACTIVE, &quot;Game(id=&quot;</span>
+                    + soldGameInstance.getGame().getId() + &quot;) isn't active.&quot;);
+        }
+        // check all game instances, whether some game instances are in progress
+        // of winning analysis or payout blocked.
+<span class="fc" id="L70">        BaseGameInstance payoutStartedGameInstance = soldGameInstance;</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        for (int i = 0; i &lt; hostTickets.size(); i++) {</span>
+<span class="fc" id="L72">            BaseGameInstance gameInstance = hostTickets.get(i).getGameInstance();</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            if (BaseGameInstance.STATE_PAYOUT_STARTED == gameInstance.getState()) {</span>
+<span class="fc" id="L74">                payoutStartedGameInstance = gameInstance;</span>
+            }
+<span class="pc bpc" id="L76" title="1 of 4 branches missed.">            if ((new Date().after(gameInstance.getEndTime()) &amp;&amp; BaseGameInstance.STATE_PAYOUT_STARTED != gameInstance</span>
+                    .getState())) {
+<span class="nc" id="L78">                throw new ApplicationException(SystemException.CODE_INPROGRESSOF_WINNINGANALYSIS, &quot;game draw(id=&quot;</span>
+                        + gameInstance.getId() + &quot;,number=&quot; + gameInstance.getNumber()
+                        + &quot;) is in progress of winning analysis, please try later.&quot;);
+            }
+<span class="pc bpc" id="L82" title="1 of 2 branches missed.">            if (gameInstance.isPayoutBlocked()) {</span>
+<span class="nc" id="L83">                throw new ApplicationException(SystemException.CODE_SUSPEND_PAYOUT, &quot;game instance(id=&quot;</span>
+                        + gameInstance.getId() + &quot;,number=&quot; + gameInstance.getNumber()
+                        + &quot;) has been payout suspended, please try later.&quot;);
+            }
+        }
+
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (!isEnquiry) {</span>
+            // check max allowed payout period
+<span class="fc" id="L91">            payoutStartedGameInstance.isPastLastClaimDay();</span>
+        }
+<span class="fc" id="L93">    }</span>
+
+    @Override
+    public List&lt;? extends BaseGameInstance&gt; enquirySaleReady(Context response, String gameId, String number,
+            int multipleDraws) throws ApplicationException {
+<span class="fc" id="L98">        return this.doEnquiryMultiDraw(response, gameId, number, multipleDraws, true);</span>
+    }
+
+    @Override
+    public List&lt;? extends BaseGameInstance&gt; enquiryMultiDraw(Context response, String gameId, String number,
+            int multipleDraws) throws ApplicationException {
+<span class="fc" id="L104">        return this.doEnquiryMultiDraw(response, gameId, number, multipleDraws, false);</span>
+    }
+
+    @Override
+    public List&lt;? extends BaseGameInstance&gt; enquirySaleReady(Context response) throws ApplicationException {
+<span class="fc" id="L109">        List&lt;? extends BaseGameInstance&gt; gameInstances = this.getGameInstanceDao().lookupActiveByGameType(</span>
+                response.getMerchant().getId(), this.supportedGameType().getGameInstanceType());
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">        if (gameInstances.size() == 0) {</span>
+<span class="nc" id="L112">            throw new ApplicationException(SystemException.CODE_NO_GAMEDRAW, &quot;can NOT find active game instances of &quot;</span>
+                    + this.supportedGameType() + &quot;, or no any games of type(&quot; + this.supportedGameType()
+                    + &quot;) have been allocated to merchant(id=&quot; + response.getMerchant().getId() + &quot;) yet&quot;);
+        }
+<span class="fc" id="L116">        this.allowSale(response, gameInstances.get(0));</span>
+<span class="fc" id="L117">        this.customVerifySaleReadyGameInstance(gameInstances.get(0));</span>
+<span class="fc" id="L118">        return gameInstances;</span>
+    }
+
+    @Override
+    public List&lt;? extends BaseGameInstance&gt; enquirySaleReady(Context response, String gameId)
+            throws ApplicationException {
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">        if (gameId == null) {</span>
+<span class="nc" id="L125">            throw new IllegalArgumentException(&quot;argument 'gameId' can NOT be null.&quot;);</span>
+        }
+
+<span class="fc" id="L128">        List&lt;? extends BaseGameInstance&gt; gameInstances = this.getGameInstanceDao().lookupActiveByGame(</span>
+                response.getMerchant().getId(), this.supportedGameType().getGameInstanceType(), gameId);
+<span class="pc bpc" id="L130" title="2 of 4 branches missed.">        if (gameInstances == null || gameInstances.size() == 0) {</span>
+<span class="nc" id="L131">            throw new ApplicationException(SystemException.CODE_NOT_ACTIVE_DRAW,</span>
+                    &quot;No active game instance found for game(id=&quot; + gameId + &quot;) of game type(&quot;
+                            + this.supportedGameType() + &quot;), or the game hasn't been allocated to merchant(id=&quot;
+                            + response.getMerchant().getId() + &quot;)yet.&quot;);
+        }
+
+<span class="fc" id="L137">        this.allowSale(response, gameInstances.get(0));</span>
+<span class="fc" id="L138">        this.customVerifySaleReadyGameInstance(gameInstances.get(0));</span>
+<span class="fc" id="L139">        return gameInstances;</span>
+    }
+
+    @Override
+    public BaseGameInstance enquiry(Context respCtx, String gameId, String number) throws ApplicationException {
+<span class="pc bpc" id="L144" title="1 of 2 branches missed.">        if (gameId == null) {</span>
+<span class="nc" id="L145">            throw new IllegalArgumentException(&quot;argument 'gameId' can NOT be null.&quot;);</span>
+        }
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">        if (number == null) {</span>
+<span class="nc" id="L148">            throw new IllegalArgumentException(&quot;argument 'number' can NOT be null.&quot;);</span>
+        }
+
+<span class="fc" id="L151">        BaseGameInstance gameInstance = this.getGameInstanceDao().lookupByGameAndNumber(respCtx.getMerchant().getId(),</span>
+                this.supportedGameType().getGameInstanceType(), gameId, number);
+<span class="pc bpc" id="L153" title="1 of 2 branches missed.">        if (gameInstance == null) {</span>
+<span class="nc" id="L154">            throw new ApplicationException(SystemException.CODE_NO_GAMEDRAW,</span>
+                    &quot;No raffle game instance found by game(id=&quot; + gameId + &quot;,number=&quot; + number + &quot;).&quot;);
+        }
+<span class="fc" id="L157">        gameInstance.setGameId(gameId);</span>
+
+<span class="fc" id="L159">        return gameInstance;</span>
+    }
+
+    // -------------------------------------------------------------------------
+    // HELPER METHODS
+    // -------------------------------------------------------------------------
+
+    protected List&lt;? extends BaseGameInstance&gt; doEnquiryMultiDraw(Context response, String gameId, String number,
+            int multipleDraws, boolean needFirstDrawSaleReady) throws ApplicationException {
+        // lookup game instances
+<span class="fc" id="L169">        List&lt;? extends BaseGameInstance&gt; gameInstances = this.getGameInstanceDao().lookupFutureByGameAndNumber(</span>
+                response.getMerchant().getId(), this.supportedGameType().getGameInstanceType(), gameId, number,
+                multipleDraws);
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">        if (gameInstances.size() &lt; multipleDraws) {</span>
+<span class="nc" id="L173">            throw new ApplicationException(SystemException.CODE_NOENOUGH_FUTUREGAMEDRAW, &quot;Only &quot; + gameInstances.size()</span>
+                    + &quot; future game instances avaliable, while client requests &quot; + multipleDraws);
+        }
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">        if (gameInstances.size() == 0) {</span>
+<span class="nc" id="L177">            throw new ApplicationException(SystemException.CODE_NO_GAMEDRAW, &quot;can NOT find &quot;</span>
+                    + this.supportedGameType().getGameInstanceType() + &quot; with(number=&quot; + number + &quot;,gameId=&quot; + gameId
+                    + &quot;).&quot;);
+        }
+<span class="fc bfc" id="L181" title="All 2 branches covered.">        if (needFirstDrawSaleReady) {</span>
+<span class="fc" id="L182">            this.allowSale(response, gameInstances.get(0));</span>
+        }
+<span class="fc" id="L184">        this.customVerifySaleReadyGameInstance(gameInstances.get(0));</span>
+<span class="fc" id="L185">        return gameInstances;</span>
+    }
+
+    /**
+     * For subclass to customize the verification process of game instance(ready-for-sale).
+     */
+    protected void customVerifySaleReadyGameInstance(BaseGameInstance currentGameInstance) throws ApplicationException {
+        // template method
+<span class="fc" id="L193">    }</span>
+
+    /**
+     * Whether a game instance is ready for sale.
+     */
+    protected void allowSale(Context response, BaseGameInstance gameInstance) throws ApplicationException {
+<span class="fc" id="L199">        int gameState = gameInstance.getGame().getState();</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">        if (gameState == Game.STATUS_INACTIVE) {</span>
+<span class="fc" id="L201">            throw new ApplicationException(SystemException.CODE_GAME_INACTIVE, &quot;Game(id=&quot;</span>
+                    + gameInstance.getGame().getId() + &quot;) isn't active.&quot;);
+        }
+        
+        // Determine whether a game allows sale on 'new' game instance.
+<span class="fc" id="L206">        boolean allowSaleOnNewGameInstance = false;</span>
+<span class="fc bfc" id="L207" title="All 2 branches covered.">        if (this.supportedGameType().getOperationParametersType() != null) {</span>
+<span class="fc" id="L208">            BaseOperationParameter opPara = this.getBaseJpaDao().findById(</span>
+                    this.supportedGameType().getOperationParametersType(),
+                    gameInstance.getGame().getOperatorParameterId());
+<span class="fc" id="L211">            allowSaleOnNewGameInstance = opPara.isAllowSaleOnNewGameInstance();</span>
+        }
+
+<span class="pc bpc" id="L214" title="1 of 4 branches missed.">        if (allowSaleOnNewGameInstance &amp;&amp; BaseGameInstance.STATE_NEW == gameInstance.getState()) {</span>
+<span class="fc" id="L215">            return;</span>
+        }
+        
+<span class="fc" id="L218">        Date stopSellingTime = this.calculateAdvancedTime(response, gameInstance);</span>
+        // check the status of first game instance
+<span class="fc" id="L220">        Date now = new Date();</span>
+<span class="pc bpc" id="L221" title="1 of 8 branches missed.">        if (gameInstance.getState() == BaseGameInstance.STATE_ACTIVE</span>
+                &amp;&amp; (now.after(gameInstance.getBeginTime()) &amp;&amp; now.before(stopSellingTime))
+                &amp;&amp; !gameInstance.isSaleSuspended()) {
+            // silently ignore
+        } else {
+<span class="fc" id="L226">            StringBuffer buffer = new StringBuffer();</span>
+<span class="fc" id="L227">            buffer.append(&quot;The game instance(number=&quot;).append(gameInstance.getNumber()).append(&quot;,game.type=&quot;);</span>
+<span class="fc" id="L228">            buffer.append(gameInstance.getGame().getType()).append(&quot;,status=&quot; + gameInstance.getState());</span>
+<span class="fc" id="L229">            buffer.append(&quot;,startSellintTime=&quot;).append(gameInstance.getBeginTime()).append(&quot;,stopSellTime=&quot;);</span>
+<span class="fc" id="L230">            buffer.append(stopSellingTime).append(&quot;,suspendSale=&quot; + gameInstance.isSaleSuspended());</span>
+<span class="fc" id="L231">            buffer.append(&quot;) doesn't accept sale.&quot;);</span>
+<span class="fc" id="L232">            logger.error(buffer.toString());</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">            if (gameInstance.getState() != BaseGameInstance.STATE_ACTIVE) {</span>
+<span class="fc" id="L234">                throw new ApplicationException(SystemException.CODE_NOT_ACTIVE_DRAW, &quot;Game instance(id=&quot;</span>
+                        + gameInstance.getId() + &quot;) isn't active.&quot;);
+            } else {
+<span class="pc bpc" id="L237" title="1 of 4 branches missed.">                if (now.after(stopSellingTime) || now.before(gameInstance.getBeginTime())) {</span>
+<span class="fc" id="L238">                    throw new ApplicationException(SystemException.CODE_SALE_STOPPED_CHANNEL,</span>
+                            &quot;No sale accepted by game instance channel.&quot;);
+                }
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">                if (gameInstance.isSaleSuspended()) {</span>
+<span class="fc" id="L242">                    throw new ApplicationException(SystemException.CODE_SUSPENDED_GAME_INSTANCE,</span>
+                            &quot;Game instance has suspended sale.&quot;);
+                }
+                // workflow shouldn't arrive here.
+            }
+        }
+<span class="fc" id="L248">    }</span>
+
+    /**
+     * Calculate the stop-selling-time/freezing-time in advanced.
+     */
+    protected Date calculateAdvancedTime(Context response, BaseGameInstance gameInstance) {
+<span class="fc" id="L254">        ChannelGameInstanceTime channelTime = this.getChannelGameInstanceTimeDao().findByChannelType(</span>
+                gameInstance.getGameChannelSettingId(), response.getGpe().getType());
+<span class="fc bfc" id="L256" title="All 2 branches covered.">        if (channelTime == null) {</span>
+<span class="fc" id="L257">            logger.info(&quot;No channel game instance time definiton found, ignore it.&quot;);</span>
+<span class="fc" id="L258">            return gameInstance.getEndTime();</span>
+        } else {
+<span class="pc bpc" id="L260" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L261">                logger.debug(&quot;Use channel game instance time definition(&quot; + channelTime.getId() + &quot;).&quot;);</span>
+            }
+        }
+<span class="fc" id="L264">        Calendar calendar = Calendar.getInstance();</span>
+<span class="fc" id="L265">        calendar.setTime(gameInstance.getEndTime());</span>
+<span class="fc" id="L266">        calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) - channelTime.getStopSellingTimeInMinutes());</span>
+<span class="fc" id="L267">        return calendar.getTime();</span>
+    }
+
+    protected abstract void customizeGameInstanceDto(GameInstanceDto dto, BaseGameInstance gameInstance)
+            throws ApplicationException;
+
+    protected abstract void customizeGameDto(GameDto gameDto, BaseGameInstance gameInstance)
+            throws ApplicationException;
+
+    protected GameDto buildGameDto(BaseGameInstance gameInstance) {
+<span class="nc" id="L277">        GameDto gameDto = new GameDto();</span>
+<span class="nc" id="L278">        gameDto.setId(gameInstance.getGame().getId());</span>
+<span class="nc" id="L279">        gameDto.setGameType(gameInstance.getGame().getType());</span>
+<span class="nc" id="L280">        gameDto.setBaseAmount(this.lookupOperationParameter(gameInstance.getGame().getOperatorParameterId())</span>
+                .getBaseAmount());
+<span class="nc" id="L282">        return gameDto;</span>
+    }
+
+    protected BaseOperationParameter lookupOperationParameter(String operationParamId) {
+<span class="nc" id="L286">        BaseOperationParameter operationParam = this.getBaseJpaDao().findById(</span>
+                this.supportedGameType().getOperationParametersType(), operationParamId);
+<span class="nc bnc" id="L288" title="All 2 branches missed.">        if (operationParam == null) {</span>
+<span class="nc" id="L289">            throw new SystemException(SystemException.CODE_INTERNAL_SERVER_ERROR, &quot;No entity(&quot;</span>
+                    + this.supportedGameType().getOperationParametersType() + &quot;) found by id=&quot; + operationParamId);
+        }
+<span class="nc" id="L292">        return operationParam;</span>
+    }
+
+    // -------------------------------------------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // -------------------------------------------------------------------------
+
+    public BaseGameInstanceDao getGameInstanceDao() {
+<span class="fc" id="L300">        return gameInstanceDao;</span>
+    }
+
+    public void setGameInstanceDao(BaseGameInstanceDao gameInstanceDao) {
+<span class="fc" id="L304">        this.gameInstanceDao = gameInstanceDao;</span>
+<span class="fc" id="L305">    }</span>
+
+    public GameInstanceServiceFactory getGameInstanceServiceFactory() {
+<span class="fc" id="L308">        return gameInstanceServiceFactory;</span>
+    }
+
+    public void setGameInstanceServiceFactory(GameInstanceServiceFactory gameInstanceServiceFactory) {
+<span class="fc" id="L312">        this.gameInstanceServiceFactory = gameInstanceServiceFactory;</span>
+<span class="fc" id="L313">    }</span>
+
+    public BaseJpaDao getBaseJpaDao() {
+<span class="fc" id="L316">        return baseJpaDao;</span>
+    }
+
+    public void setBaseJpaDao(BaseJpaDao baseJpaDao) {
+<span class="fc" id="L320">        this.baseJpaDao = baseJpaDao;</span>
+<span class="fc" id="L321">    }</span>
+
+    public ChannelGameInstanceTimeDao getChannelGameInstanceTimeDao() {
+<span class="fc" id="L324">        return channelGameInstanceTimeDao;</span>
+    }
+
+    public void setChannelGameInstanceTimeDao(ChannelGameInstanceTimeDao channelGameInstanceTimeDao) {
+<span class="fc" id="L328">        this.channelGameInstanceTimeDao = channelGameInstanceTimeDao;</span>
+<span class="fc" id="L329">    }</span>
+
+    public MerchantService getMerchantService() {
+<span class="nc" id="L332">        return merchantService;</span>
+    }
+
+    public void setMerchantService(MerchantService merchantService) {
+<span class="fc" id="L336">        this.merchantService = merchantService;</span>
+<span class="fc" id="L337">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

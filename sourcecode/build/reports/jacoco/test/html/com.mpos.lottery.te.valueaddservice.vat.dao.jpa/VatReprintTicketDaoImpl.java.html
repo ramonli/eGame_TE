@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>VatReprintTicketDaoImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.valueaddservice.vat.dao.jpa</a> &gt; <span class="el_source">VatReprintTicketDaoImpl.java</span></div><h1>VatReprintTicketDaoImpl.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.valueaddservice.vat.dao.jpa;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.common.util.Barcoder;
+import com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Entry;
+import com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket;
+import com.mpos.lottery.te.gameimpl.raffle.sale.RaffleTicket;
+import com.mpos.lottery.te.gamespec.game.GameType;
+import com.mpos.lottery.te.gamespec.prize.NewPrintTicket;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.valueaddservice.vat.dao.VatReprintTicketDao;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.dao.DataAccessException;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Query;
+
+<span class="fc" id="L23">public class VatReprintTicketDaoImpl extends BaseJpaDao implements VatReprintTicketDao {</span>
+<span class="fc" id="L24">    private Log logger = LogFactory.getLog(VatReprintTicketDaoImpl.class);</span>
+
+    // =====================================
+    // ====Raffle===========================
+
+    @Override
+    public List&lt;RaffleTicket&gt; findRaffleTicketBySerialNo(String encryptserialno) throws DataAccessException {
+<span class="nc" id="L31">        String sql = &quot;select * from RA_TE_TICKET where SERIAL_NO=?&quot;;</span>
+<span class="nc" id="L32">        Query query = this.getEntityManager().createNativeQuery(sql, RaffleTicket.class);</span>
+<span class="nc" id="L33">        query.setParameter(1, encryptserialno);</span>
+<span class="nc" id="L34">        List list = query.getResultList();</span>
+<span class="nc bnc" id="L35" title="All 4 branches missed.">        if (list != null &amp;&amp; list.size() &gt; 0) {</span>
+<span class="nc" id="L36">            return (List&lt;RaffleTicket&gt;) list;</span>
+        }
+<span class="nc" id="L38">        return null;</span>
+    }
+
+    @Override
+    public void insertRaffleTicketByNewSerialNo(List&lt;RaffleTicket&gt; ticketlist, String serialnonew,
+            String encryptSerialnonew, List&lt;String&gt; newid) throws DataAccessException {
+<span class="nc" id="L44">        List&lt;RaffleTicket&gt; inserticketlist = new ArrayList&lt;RaffleTicket&gt;();</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        for (int i = 0; i &lt; ticketlist.size(); i++) {</span>
+<span class="nc" id="L46">            RaffleTicket ticket = ticketlist.get(i);</span>
+<span class="nc" id="L47">            RaffleTicket newTicket = new RaffleTicket();</span>
+<span class="nc" id="L48">            newTicket = (RaffleTicket) ticket.clone();</span>
+<span class="nc" id="L49">            Barcoder barcode = new Barcoder(GameType.RAFFLE.getType(), serialnonew);</span>
+            // use newTicket object change the values
+<span class="nc" id="L51">            newTicket.setId(newid.get(i));</span>
+<span class="nc" id="L52">            newTicket.setSerialNo(encryptSerialnonew);</span>
+<span class="nc" id="L53">            newTicket.setStatus(BaseTicket.STATUS_ACCEPTED);</span>
+<span class="nc" id="L54">            newTicket.setBarcode(false, barcode.getBarcode());</span>
+<span class="nc" id="L55">            newTicket.setUpdateTime(new Date());</span>
+<span class="nc" id="L56">            inserticketlist.add(newTicket);</span>
+        }
+<span class="nc" id="L58">        this.insert(inserticketlist);</span>
+<span class="nc" id="L59">    }</span>
+
+    @Override
+    public void updateRaffleOldStatusBySerialNo(String entryptserialno) throws DataAccessException {
+<span class="nc" id="L63">        List&lt;RaffleTicket&gt; list = findRaffleTicketBySerialNo(entryptserialno);</span>
+        // set value
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        for (RaffleTicket ticket : list) {</span>
+<span class="nc" id="L66">            ticket.setStatus(BaseTicket.STATUS_INVALID); // ticket status set as 0 invalid</span>
+<span class="nc" id="L67">        }</span>
+<span class="nc" id="L68">        this.update(list);</span>
+<span class="nc" id="L69">    }</span>
+
+    // =====================================
+    // ====Magic100=========================
+
+    @Override
+    public List&lt;Magic100Ticket&gt; findMagicTicketBySerialNo(String encryptserialno) throws DataAccessException {
+<span class="nc" id="L76">        String sql = &quot;select * from LK_TE_TICKET where SERIAL_NO=?&quot;;</span>
+<span class="nc" id="L77">        Query query = this.getEntityManager().createNativeQuery(sql, Magic100Ticket.class);</span>
+<span class="nc" id="L78">        query.setParameter(1, encryptserialno);</span>
+<span class="nc" id="L79">        List list = query.getResultList();</span>
+<span class="nc bnc" id="L80" title="All 4 branches missed.">        if (list != null &amp;&amp; list.size() &gt; 0) {</span>
+<span class="nc" id="L81">            return (List&lt;Magic100Ticket&gt;) list;</span>
+        }
+<span class="nc" id="L83">        return null;</span>
+    }
+
+    @Override
+    public void insertMagicTicketByNewSerialNo(List&lt;Magic100Ticket&gt; ticketlist, String serialnonew,
+            String encryptSerialnonew, List&lt;String&gt; newid) throws DataAccessException {
+<span class="nc" id="L89">        List&lt;Magic100Ticket&gt; inserticketlist = new ArrayList&lt;Magic100Ticket&gt;();</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        for (int i = 0; i &lt; ticketlist.size(); i++) {</span>
+<span class="nc" id="L91">            Magic100Ticket ticket = ticketlist.get(i);</span>
+<span class="nc" id="L92">            Magic100Ticket newTicket = new Magic100Ticket();</span>
+<span class="nc" id="L93">            newTicket = (Magic100Ticket) ticket.clone();</span>
+<span class="nc" id="L94">            Barcoder barcode = new Barcoder(GameType.LUCKYNUMBER.getType(), serialnonew);</span>
+            // use newTicket object change the values
+<span class="nc" id="L96">            newTicket.setId(newid.get(i));</span>
+<span class="nc" id="L97">            newTicket.setSerialNo(encryptSerialnonew);</span>
+<span class="nc" id="L98">            newTicket.setStatus(BaseTicket.STATUS_ACCEPTED);</span>
+<span class="nc" id="L99">            newTicket.setBarcode(false, barcode.getBarcode());</span>
+<span class="nc" id="L100">            newTicket.setUpdateTime(new Date());</span>
+<span class="nc" id="L101">            inserticketlist.add(newTicket);</span>
+        }
+<span class="nc" id="L103">        this.insert(inserticketlist);</span>
+<span class="nc" id="L104">    }</span>
+
+    @Override
+    public List&lt;Magic100Entry&gt; findMagicEntryBySerialNo(String encryptserialno) throws DataAccessException {
+<span class="nc" id="L108">        String sql = &quot;select * from LK_TE_ENTRY where TICKET_SERIALNO=?&quot;;</span>
+<span class="nc" id="L109">        Query query = this.getEntityManager().createNativeQuery(sql, Magic100Entry.class);</span>
+<span class="nc" id="L110">        query.setParameter(1, encryptserialno);</span>
+<span class="nc" id="L111">        List list = query.getResultList();</span>
+<span class="nc bnc" id="L112" title="All 4 branches missed.">        if (list != null &amp;&amp; list.size() &gt; 0) {</span>
+<span class="nc" id="L113">            return (List&lt;Magic100Entry&gt;) list;</span>
+        }
+<span class="nc" id="L115">        return null;</span>
+    }
+
+    @Override
+    public void insertMagicEntryByNewSerialNo(List&lt;Magic100Entry&gt; ticketlist, String serialnonew,
+            String encryptSerialnonew, List&lt;String&gt; newid) throws DataAccessException {
+<span class="nc" id="L121">        List&lt;Magic100Entry&gt; inserticketlist = new ArrayList&lt;Magic100Entry&gt;();</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        for (int i = 0; i &lt; ticketlist.size(); i++) {</span>
+<span class="nc" id="L123">            Magic100Entry ticket = ticketlist.get(i);</span>
+<span class="nc" id="L124">            Magic100Entry newTicket = new Magic100Entry();</span>
+<span class="nc" id="L125">            newTicket = (Magic100Entry) ticket.clone();</span>
+            // use newTicket object change the values
+<span class="nc" id="L127">            newTicket.setId(newid.get(i));</span>
+<span class="nc" id="L128">            newTicket.setTicketSerialNo(encryptSerialnonew);</span>
+<span class="nc" id="L129">            newTicket.setUpdateTime(new Date());</span>
+<span class="nc" id="L130">            inserticketlist.add(newTicket);</span>
+        }
+<span class="nc" id="L132">        this.insert(inserticketlist);</span>
+<span class="nc" id="L133">    }</span>
+
+    @Override
+    public void updateMagicOldStatusBySerialNo(String entryptserialno) throws DataAccessException {
+<span class="nc" id="L137">        List&lt;Magic100Ticket&gt; list = findMagicTicketBySerialNo(entryptserialno);</span>
+        // set value
+<span class="nc bnc" id="L139" title="All 2 branches missed.">        for (Magic100Ticket ticket : list) {</span>
+<span class="nc" id="L140">            ticket.setStatus(BaseTicket.STATUS_INVALID); // ticket status set as 0 invalid</span>
+<span class="nc" id="L141">        }</span>
+<span class="nc" id="L142">        this.update(list);</span>
+<span class="nc" id="L143">    }</span>
+
+    // =====================================
+    // ====public=========================
+
+    @Override
+    public NewPrintTicket findNewPrintedTicketByOldSerialNo(String oldencryptSerialno) {
+<span class="nc" id="L150">        String sql = &quot;select * from NEWPRINT_TICKET where OLD_TICKET_SERIALNO=?&quot;;</span>
+<span class="nc" id="L151">        Query query = this.getEntityManager().createNativeQuery(sql, NewPrintTicket.class);</span>
+<span class="nc" id="L152">        query.setParameter(1, oldencryptSerialno);</span>
+<span class="nc" id="L153">        List printticketlist = query.getResultList();</span>
+<span class="nc bnc" id="L154" title="All 4 branches missed.">        if (printticketlist != null &amp;&amp; printticketlist.size() &gt; 0) {</span>
+<span class="nc" id="L155">            return (NewPrintTicket) printticketlist.get(0);</span>
+        }
+<span class="nc" id="L157">        return null;</span>
+    }
+
+    @Override
+    public void insertNewPrintTicket(String encryptOldSerialno, String encryptNewSerialno, String id)
+            throws DataAccessException {
+<span class="nc" id="L163">        NewPrintTicket newprinticket = new NewPrintTicket();</span>
+<span class="nc" id="L164">        newprinticket.setId(id);</span>
+<span class="nc" id="L165">        newprinticket.setOldTicketSerialNo(encryptOldSerialno);</span>
+<span class="nc" id="L166">        newprinticket.setNewTicketSerialNo(encryptNewSerialno);</span>
+<span class="nc" id="L167">        newprinticket.setVersion(0);</span>
+<span class="nc" id="L168">        newprinticket.setStatus(2); // vat reprint ticket</span>
+<span class="nc" id="L169">        newprinticket.setCreateTime(new Date());</span>
+<span class="nc" id="L170">        newprinticket.setUpdateTime(new Date());</span>
+
+<span class="nc" id="L172">        this.insert(newprinticket);</span>
+
+<span class="nc" id="L174">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

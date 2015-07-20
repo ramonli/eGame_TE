@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.workingkey.WorkingKeyIntegrationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:14:44" hostname="Ramon-PC" time="0.017">
+  <properties/>
+  <testcase name="testGetWorkingKey_OK" classname="com.mpos.lottery.te.workingkey.WorkingKeyIntegrationTest" time="0.017"/>
+  <system-out><![CDATA[[2015-05-29 17:14:44,258][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:14:44,258][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:14:44,259][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@55564f9a) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:14:44,259][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:14:44,259][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:44,259][Test worker][INFO ][BaseTransactionalIntegrationTest] | WorkingKeyIntegrationTest.testGetWorkingKey_OK                                                                         |
+[2015-05-29 17:14:44,259][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:44,259][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=501).
+[2015-05-29 17:14:44,259][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:44,259][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171444).
+[2015-05-29 17:14:44,260][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:44,260][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=null).
+[2015-05-29 17:14:44,260][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=null).
+[2015-05-29 17:14:44,260][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=null).
+[2015-05-29 17:14:44,260][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=null).
+[2015-05-29 17:14:44,260][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=null).
+[2015-05-29 17:14:44,260][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=null).
+[2015-05-29 17:14:44,260][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=null).
+[2015-05-29 17:14:44,260][Test worker][DEBUG][TEPortServlet] Ignore the message body for transaction(type=GET_WORKING_KEY).
+[2015-05-29 17:14:44,260][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:|Operator-Id:|Trans-BatchNumber:|TractMsg-Id:|Timestamp:20150529171444|Transaction-Type:501|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:44,260][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_501_1.5.0).
+[2015-05-29 17:14:44,260][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_501_).
+[2015-05-29 17:14:44,260][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_501_), found controller(com.mpos.lottery.te.workingkey.web.WorkingKeyController@5c2e398c) and method(public void com.mpos.lottery.te.workingkey.web.WorkingKeyController.lookupWorkingKey(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:44,264][Test worker][DEBUG][WorkingKeyServiceImpl] Got working key for GPE(id=GPE-111) : <DataKey>W0JAMWQ1MGZkMjc2N2U2M2Y2LWVkYTIt</DataKey><MACKey>P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF</MACKey>
+[2015-05-29 17:14:44,264][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/GetWorkingKey_Res.xml) by key(transtype.4501).
+[2015-05-29 17:14:44,264][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.workingkey.domain.WorkingKey),mappingFile=xml-mapping/GetWorkingKey_Res.xml
+[2015-05-29 17:14:44,264][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/GetWorkingKey_Res.xml) by key(transtype.4501).
+[2015-05-29 17:14:44,264][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.workingkey.domain.WorkingKey, mappingFile=xml-mapping/GetWorkingKey_Res.xml).
+[2015-05-29 17:14:44,264][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=164) succesfully.
+[2015-05-29 17:14:44,265][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=164): <?xml version="1.0" encoding="UTF-8"?>
+<WorkingKey><DataKey>W0JAMWQ1MGZkMjc2N2U2M2Y2LWVkYTIt</DataKey><MACKey>P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF</MACKey></WorkingKey>
+[2015-05-29 17:14:44,265][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/GetWorkingKey_Res.xml) by key(transtype.4501).
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

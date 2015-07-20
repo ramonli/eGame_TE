@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.gameimpl.instantgame.ReportOfConfirmBatchValidationIntegrationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:10" hostname="Ramon-PC" time="0.1">
+  <properties/>
+  <testcase name="testGetReportOfConfirmBatchValidation_OK" classname="com.mpos.lottery.te.gameimpl.instantgame.ReportOfConfirmBatchValidationIntegrationTest" time="0.1"/>
+  <system-out><![CDATA[[2015-05-29 17:13:10,173][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:10,173][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:10,173][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@54340b5b) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:10,173][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:10,174][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:10,174][Test worker][INFO ][BaseTransactionalIntegrationTest] | ReportOfConfirmBatchValidationIntegrationTest.testGetReportOfConfirmBatchValidation_OK                                 |
+[2015-05-29 17:13:10,174][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:10,174][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/ig/ReportOfConfirmBatchValidate_Req.xml) by key(transtype.412).
+[2015-05-29 17:13:10,186][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.instantgame.domain.dto.InstantBatchReportDto, mappingFile=xml-mapping/game/ig/ReportOfConfirmBatchValidate_Req.xml).
+[2015-05-29 17:13:10,186][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890790174|Timestamp:20150529171310|Transaction-Type:412|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<BatchReport batchNumber="200901"/>,hash=-1314513760), get digest:4a75c4239e014c844019213e5053d596
+[2015-05-29 17:13:10,186][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=412).
+[2015-05-29 17:13:10,187][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:10,187][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171310).
+[2015-05-29 17:13:10,187][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:10,187][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890790174).
+[2015-05-29 17:13:10,187][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:10,187][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:10,187][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=4a75c4239e014c844019213e5053d596).
+[2015-05-29 17:13:10,187][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=4).
+[2015-05-29 17:13:10,187][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:10,187][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:10,189][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6gK9J3g3Dt1rYMR4xdaJoNZHoKeQ+jJ215f55I/vnoyv7v7fYQhAiho=.
+[2015-05-29 17:13:10,189][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890790174|Timestamp:20150529171310|Transaction-Type:412|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:10,189][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<BatchReport batchNumber="200901"/>
+[2015-05-29 17:13:10,190][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890790174|Timestamp:20150529171310|Transaction-Type:412|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<BatchReport batchNumber="200901"/>,hash=-1314513760), get digest:4a75c4239e014c844019213e5053d596
+[2015-05-29 17:13:10,190][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/ig/ReportOfConfirmBatchValidate_Req.xml) by key(transtype.412).
+[2015-05-29 17:13:10,190][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/ig/ReportOfConfirmBatchValidate_Req.xml
+[2015-05-29 17:13:10,190][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/ig/ReportOfConfirmBatchValidate_Req.xml) by key(transtype.412).
+[2015-05-29 17:13:10,206][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(4_412_1.5.0).
+[2015-05-29 17:13:10,206][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(4_412_).
+[2015-05-29 17:13:10,207][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_412_).
+[2015-05-29 17:13:10,207][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_412_), found controller(com.mpos.lottery.te.gameimpl.instantgame.InstantGameController@484e7001) and method(public void com.mpos.lottery.te.gameimpl.instantgame.InstantGameController.getReportOfConfirmBatchValidation(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:10,236][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(REPORT_OF_CONFIRM_BATCH_VALIDATION)
+[2015-05-29 17:13:10,237][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/ig/ReportOfConfirmBatchValidate_Res.xml) by key(transtype.4412).
+[2015-05-29 17:13:10,237][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.instantgame.domain.dto.InstantBatchReportDto),mappingFile=xml-mapping/game/ig/ReportOfConfirmBatchValidate_Res.xml
+[2015-05-29 17:13:10,237][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/ig/ReportOfConfirmBatchValidate_Res.xml) by key(transtype.4412).
+[2015-05-29 17:13:10,252][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.instantgame.domain.dto.InstantBatchReportDto, mappingFile=xml-mapping/game/ig/ReportOfConfirmBatchValidate_Res.xml).
+[2015-05-29 17:13:10,253][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890790174|Timestamp:20150529171310|Transaction-Type:4412|Transaction-Id:0115052900000000000457|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<BatchReport batchNumber="200901" failedTickets="3" succeededTickets="3" actualAmount="100" taxAmount="5"><Ticket serialNo="157823119021" errorCode="0"/></BatchReport>):4ceb958a0aee185161ff6aabcf211f0c
+[2015-05-29 17:13:10,254][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=280) succesfully.
+[2015-05-29 17:13:10,254][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=280): <?xml version="1.0" encoding="UTF-8"?>
+<BatchReport batchNumber="200901" failedTickets="3" succeededTickets="3" actualAmount="100" taxAmount="5"><Ticket serialNo="157823119021" errorCode="0"/></BatchReport>
+[2015-05-29 17:13:10,254][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/ig/ReportOfConfirmBatchValidate_Res.xml) by key(transtype.4412).
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

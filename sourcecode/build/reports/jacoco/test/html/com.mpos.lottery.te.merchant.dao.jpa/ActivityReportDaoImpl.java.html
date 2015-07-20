@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ActivityReportDaoImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.merchant.dao.jpa</a> &gt; <span class="el_source">ActivityReportDaoImpl.java</span></div><h1>ActivityReportDaoImpl.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.merchant.dao.jpa;
+
+import com.mpos.lottery.te.common.Constants;
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.merchant.dao.ActivityReportDao;
+import com.mpos.lottery.te.merchant.domain.BalanceTransactions;
+import com.mpos.lottery.te.merchant.web.ActivityReport;
+import com.mpos.lottery.te.merchant.web.ActivityReportItem;
+import com.mpos.lottery.te.merchant.web.DailyActivityReport;
+import com.mpos.lottery.te.trans.domain.TransactionType;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Query;
+
+<span class="fc" id="L24">public class ActivityReportDaoImpl extends BaseJpaDao implements ActivityReportDao {</span>
+<span class="fc" id="L25">    private Log logger = LogFactory.getLog(ActivityReportDaoImpl.class);</span>
+
+    /**
+     * Only statistics cashout,topop,sale,payout.
+     */
+    @Override
+    public List&lt;DailyActivityReport&gt; findActivityReport(String operatorId, Date startTime, Date endTime) {
+<span class="fc" id="L32">        String strStartTime = new SimpleDateFormat(&quot;yyyyMMddHHmmss&quot;).format(startTime);</span>
+<span class="fc" id="L33">        String strEndTime = new SimpleDateFormat(&quot;yyyyMMddHHmmss&quot;).format(endTime);</span>
+<span class="fc" id="L34">        final StringBuffer sql = new StringBuffer();</span>
+<span class="fc" id="L35">        sql.append(&quot; select a.create_time,a.TRANSACTION_TYPE,SUM(NVL(a.COMMISION_AMOUNT,0)) &quot;)</span>
+                .append(&quot;  from (SELECT TO_CHAR(t.create_time, 'YYYYMMDD') AS create_time,t.COMMISION_AMOUNT, &quot;)
+                .append(&quot;               CASE &quot;)
+                .append(&quot;                  WHEN t.OPERATOR_ID = t.OWNER_ID THEN &quot;)
+                .append(&quot;                  t.TRANSACTION_TYPE &quot;)
+                .append(&quot;               ELSE &quot;)
+                .append(&quot;                 to_number('&quot; + Constants.DESTINATION_TRANSTYPE_PREFIX
+                        + &quot;'||to_char(t.TRANSACTION_TYPE)) &quot;)
+                .append(&quot;               END TRANSACTION_TYPE &quot;)
+                .append(&quot;          FROM balance_transactions t &quot;)
+                .append(&quot;         WHERE  t.OWNER_ID = :operatorId &quot;)
+                .append(&quot;           and t.STATUS = :status &quot;)
+                // .append(&quot;           and t.TRANSACTION_TYPE in (352, 353, 445, 365, 447, 360) &quot;)
+                .append(&quot;           AND (t.create_time between &quot;)
+                .append(&quot;               to_date('&quot; + strStartTime + &quot;','YYYYMMDDHH24MISS') and &quot;)
+                .append(&quot;               to_date('&quot; + strEndTime + &quot;','YYYYMMDDHH24MISS'))) a &quot;)
+                .append(&quot;  GROUP BY a.create_time,a.TRANSACTION_TYPE &quot;);
+
+<span class="fc" id="L53">        final Map&lt;String, Object&gt; params = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L54">        params.put(&quot;operatorId&quot;, operatorId);</span>
+<span class="fc" id="L55">        params.put(&quot;status&quot;, BalanceTransactions.STATUS_VALID);</span>
+        // execute query
+<span class="fc" id="L57">        Query query = this.getEntityManager().createNativeQuery(sql.toString());</span>
+        // set parameters
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        for (Map.Entry&lt;String, Object&gt; entry : params.entrySet()) {</span>
+<span class="fc" id="L60">            query.setParameter(entry.getKey(), entry.getValue());</span>
+<span class="fc" id="L61">        }</span>
+
+<span class="fc" id="L63">        List rows = query.getResultList();</span>
+<span class="fc" id="L64">        ActivityReport activityReport = new ActivityReport();</span>
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        for (Object row : rows) {</span>
+<span class="fc" id="L66">            Object[] columns = (Object[]) row;</span>
+            // assemble activity report.
+<span class="fc" id="L68">            String date = (String) columns[0];</span>
+<span class="fc" id="L69">            int transType = ((BigDecimal) columns[1]).intValue();</span>
+<span class="fc" id="L70">            BigDecimal commissionAmount = (BigDecimal) columns[2];</span>
+<span class="pc bpc" id="L71" title="2 of 6 branches missed.">            if (transType == TransactionType.CANCEL_BY_TRANSACTION.getRequestType()</span>
+                    || transType == TransactionType.CANCEL_BY_TICKET.getRequestType()
+                    || transType == TransactionType.CANCEL_BY_CLIENT_MANUALLY.getRequestType()) {
+<span class="nc" id="L74">                continue;</span>
+            }
+
+<span class="fc" id="L77">            DailyActivityReport dailyActivityReport = activityReport.getReportByDate(date, true);</span>
+<span class="fc" id="L78">            ActivityReportItem reportItem = dailyActivityReport.getReportItemByTransType(transType, true);</span>
+<span class="fc" id="L79">            reportItem.setTransType(transType);</span>
+            // 鍥犱负sale,payout宸茬粡鍦╯ale,payout閫昏緫涓凡缁忕粺璁′簡amount,numberOfTrans,鎵�互杩欓噷鍙粺璁ncome_balance_transfer,topup
+            // if (transType == TransactionType.OPERATOR_TOPUP_VOUCHER.getRequestType()
+            // || transType == TransactionType.INCOME_BALANCE_TRANSFER.getRequestType())
+            // {
+            // reportItem.setAmount(amount);
+            // reportItem.setNumberOfTrans(reportItem.getNumberOfTrans()+numberOfTrans);
+            // }
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">            commissionAmount = commissionAmount == null ? new BigDecimal(&quot;0&quot;) : commissionAmount;</span>
+<span class="fc" id="L88">            reportItem.setCommission(commissionAmount);</span>
+<span class="fc" id="L89">        }</span>
+
+<span class="fc" id="L91">        return activityReport.getDailyActivityReports();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

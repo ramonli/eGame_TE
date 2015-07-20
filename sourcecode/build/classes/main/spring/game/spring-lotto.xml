@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+	<bean id="lottoPrizeService"
+		class="com.mpos.lottery.te.gameimpl.lotto.prize.service.impl.LottoPrizeServiceImpl">
+		<property name="reversalStrategyFactory" ref="reversalStrategyFactory" />
+		<property name="baseTicketDao" ref="baseTicketDao" />
+		<property name="baseEntryDao" ref="baseEntryDao" />
+		<property name="creditService" ref="creditService" />
+		<property name="merchantService" ref="merchantService" />
+		<property name="gameInstanceService" ref="lottoGameInstanceService" />
+		<property name="baseJpaDao" ref="baseJpaDao" />
+		<property name="baseWinningItemDao" ref="baseWinningItemDao" />
+		<property name="baseWinningStatisticsDao" ref="baseWinningStatisticsDao" />
+		<property name="taxService" ref="taxService" />
+		<property name="payoutStrategyFactory" ref="lottoPayoutStrategyFactory" />
+		<property name="prizeLevelDao" ref="prizeLevelDao" />
+	</bean>
+
+	<bean id="lottoSaleService"
+		class="com.mpos.lottery.te.gameimpl.lotto.sale.service.impl.LottoTicketServiceImpl">
+		<property name="reversalStrategyFactory" ref="reversalStrategyFactory" />
+		<property name="baseTicketDao" ref="baseTicketDao" />
+		<property name="merchantService" ref="merchantService" />
+		<property name="uuidService" ref="uuidManager" />
+		<property name="gameInstanceService" ref="lottoGameInstanceService" />
+		<property name="transactionService" ref="transService" />
+		<property name="baseJpaDao" ref="baseJpaDao" />
+		<property name="ticketValidator" ref="lottoTicketValidator" />
+		<property name="baseEntryDao" ref="baseEntryDao" />
+	</bean>
+
+	<bean id="lottoGameInstanceService"
+		class="com.mpos.lottery.te.gameimpl.lotto.draw.service.LottoGameInstanceService">
+		<property name="gameInstanceServiceFactory" ref="gameInstanceServiceFactory" />
+		<property name="channelGameInstanceTimeDao" ref="channelGameInstanceTimeDao" />
+		<property name="gameInstanceDao" ref="baseGameInstanceDao" />
+		<property name="baseJpaDao" ref="baseJpaDao" />
+		<property name="merchantService" ref="merchantService" />
+	</bean>
+
+	<bean id="lottoActivityReportHandler"
+		class="com.mpos.lottery.te.merchant.domain.logic.DefaultGameTypeActivityReportHandler">
+		<property name="activityReportDao" ref="lottoActivityReportDao" />
+		<property name="activityReportService" ref="activityReportService" />
+		<property name="supportedGameType" value="LOTTO" />
+	</bean>
+
+	<bean id="lottoTicketValidator"
+		class="com.mpos.lottery.te.gameimpl.lotto.sale.support.LottoTicketValidator">
+		<property name="baseJpaDao" ref="baseJpaDao" />
+	</bean>
+
+    <bean id="lottoPayoutStrategyFactory"
+        class="com.mpos.lottery.te.gamespec.prize.support.payoutstrategy.DefaultPayoutStrategyFactory">
+        <property name="newprintPayoutStrategy" ref="lottoNewprintPayoutStrategy" />
+        <property name="refundPayoutStrategy" ref="defaultRefundPayoutStrategy" />
+    </bean>
+
+    <bean id="lottoNewprintPayoutStrategy"
+        class="com.mpos.lottery.te.gameimpl.lotto.prize.domain.logic.LottoNewPrintPayoutStrategy">
+        <property name="payoutDao" ref="payoutDao" />
+        <property name="payoutDetailDao" ref="payoutDetailDao" />
+        <property name="uuidService" ref="uuidManager" />
+        <property name="baseTicketDao" ref="baseTicketDao" />
+        <property name="baseEntryDao" ref="baseEntryDao" />
+        <property name="newPrintTicketDao" ref="newPrintTicketDao" />
+    </bean>
+	<!-- ==================================================== -->
+	<!-- DAO DEFINITION ..................................... -->
+	<!-- ==================================================== -->
+
+	<bean id="dailyCashWinningItemDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gameimpl.lotto.prize.dao.jpa.DailyCashWinningItemDaoImpl">
+	</bean>
+
+	<bean id="luckyWinningItemDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gameimpl.lotto.prize.dao.jpa.LuckyWinningItemDaoImpl">
+	</bean>
+
+	<bean id="lottoActivityReportDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.merchant.dao.BaseActivityReportJpaDao">
+		<property name="ticketTableName" value="TE_TICKET" />
+	</bean>
+
+</beans>
+

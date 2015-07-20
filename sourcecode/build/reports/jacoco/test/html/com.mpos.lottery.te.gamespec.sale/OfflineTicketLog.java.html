@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>OfflineTicketLog.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.sale</a> &gt; <span class="el_source">OfflineTicketLog.java</span></div><h1>OfflineTicketLog.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.sale;
+
+import com.mpos.lottery.te.common.dao.SettlementEntity;
+import com.mpos.lottery.te.config.exception.SystemException;
+
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;OFFLINE_TICKETS&quot;)
+<span class="fc" id="L14">public class OfflineTicketLog extends SettlementEntity {</span>
+    private static final long serialVersionUID = -564991314218620958L;
+    public static final int STATUS_NO_COUNT = 0;
+    public static final int STATUS_COUNTED = 1;
+
+    @Column(name = &quot;TRANSACTION_ID&quot;)
+    private String transactionId;
+    @Column(name = &quot;TICKET_SERIAL&quot;)
+    private String serialNo;
+    @Column(name = &quot;GAME_INSTANCE_ID&quot;)
+    private String gameInstanceId;
+    @Column(name = &quot;GAME_ID&quot;)
+    private String gameId;
+    @Column(name = &quot;GAME_TYPE&quot;)
+    private int gameType;
+    @Column(name = &quot;COUNTED_GAME_INSTANCE_ID&quot;)
+    private String uploadedGameInstanceId;
+<span class="fc" id="L31">    @Column(name = &quot;RESPONSE_CODE&quot;)</span>
+    private int statusCode = SystemException.CODE_OK;
+<span class="fc" id="L33">    @Column(name = &quot;STATUS&quot;)</span>
+    private int status = STATUS_NO_COUNT;
+<span class="fc" id="L35">    @Column(name = &quot;TOTAL_AMOUNT&quot;)</span>
+    private BigDecimal totalAmount = new BigDecimal(&quot;0&quot;);
+    /* Refer to TICKET_TYPE_XXX */
+<span class="fc" id="L38">    @Column(name = &quot;TICKET_TYPE&quot;)</span>
+    private int ticketType = BaseTicket.TICKET_TYPE_NORMAL;
+    /* Refer to TICKET_FROM_XXX */
+    @Column(name = &quot;TICKET_FROM&quot;)
+    private int ticketFrom;
+
+    public String getTransactionId() {
+<span class="nc" id="L45">        return transactionId;</span>
+    }
+
+    public void setTransactionId(String transactionId) {
+<span class="fc" id="L49">        this.transactionId = transactionId;</span>
+<span class="fc" id="L50">    }</span>
+
+    public String getSerialNo() {
+<span class="fc" id="L53">        return serialNo;</span>
+    }
+
+    public void setSerialNo(String serialNo) {
+<span class="fc" id="L57">        this.serialNo = serialNo;</span>
+<span class="fc" id="L58">    }</span>
+
+    public String getGameInstanceId() {
+<span class="fc" id="L61">        return gameInstanceId;</span>
+    }
+
+    public void setGameInstanceId(String gameInstanceId) {
+<span class="fc" id="L65">        this.gameInstanceId = gameInstanceId;</span>
+<span class="fc" id="L66">    }</span>
+
+    public String getGameId() {
+<span class="nc" id="L69">        return gameId;</span>
+    }
+
+    public void setGameId(String gameId) {
+<span class="fc" id="L73">        this.gameId = gameId;</span>
+<span class="fc" id="L74">    }</span>
+
+    public int getGameType() {
+<span class="nc" id="L77">        return gameType;</span>
+    }
+
+    public void setGameType(int gameType) {
+<span class="fc" id="L81">        this.gameType = gameType;</span>
+<span class="fc" id="L82">    }</span>
+
+    public String getUploadedGameInstanceId() {
+<span class="nc" id="L85">        return uploadedGameInstanceId;</span>
+    }
+
+    public void setUploadedGameInstanceId(String uploadedGameInstanceId) {
+<span class="fc" id="L89">        this.uploadedGameInstanceId = uploadedGameInstanceId;</span>
+<span class="fc" id="L90">    }</span>
+
+    public int getStatusCode() {
+<span class="nc" id="L93">        return statusCode;</span>
+    }
+
+    public void setStatusCode(int statusCode) {
+<span class="nc" id="L97">        this.statusCode = statusCode;</span>
+<span class="nc" id="L98">    }</span>
+
+    public int getStatus() {
+<span class="nc" id="L101">        return status;</span>
+    }
+
+    public void setStatus(int status) {
+<span class="nc" id="L105">        this.status = status;</span>
+<span class="nc" id="L106">    }</span>
+
+    public BigDecimal getTotalAmount() {
+<span class="nc" id="L109">        return totalAmount;</span>
+    }
+
+    public void setTotalAmount(BigDecimal totalAmount) {
+<span class="fc" id="L113">        this.totalAmount = totalAmount;</span>
+<span class="fc" id="L114">    }</span>
+
+    public int getTicketType() {
+<span class="nc" id="L117">        return ticketType;</span>
+    }
+
+    public void setTicketType(int ticketType) {
+<span class="fc" id="L121">        this.ticketType = ticketType;</span>
+<span class="fc" id="L122">    }</span>
+
+    public int getTicketFrom() {
+<span class="nc" id="L125">        return ticketFrom;</span>
+    }
+
+    public void setTicketFrom(int ticketFrom) {
+<span class="fc" id="L129">        this.ticketFrom = ticketFrom;</span>
+<span class="fc" id="L130">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>NewPrintPayoutStrategy.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.extraball.prize.support</a> &gt; <span class="el_source">NewPrintPayoutStrategy.java</span></div><h1>NewPrintPayoutStrategy.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.extraball.prize.support;
+
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.gameimpl.extraball.prize.web.Prize;
+import com.mpos.lottery.te.gamespec.game.BaseOperationParameter;
+import com.mpos.lottery.te.gamespec.game.Game;
+import com.mpos.lottery.te.gamespec.prize.NewPrintTicket;
+import com.mpos.lottery.te.gamespec.prize.dao.NewPrintTicketDao;
+import com.mpos.lottery.te.gamespec.sale.BaseEntry;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.gamespec.sale.dao.BaseEntryDao;
+import com.mpos.lottery.te.port.Context;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+<span class="fc" id="L18">public abstract class NewPrintPayoutStrategy extends AbstractPayoutStrategy {</span>
+    private BaseEntryDao baseEntryDao;
+    private NewPrintTicketDao newPrintTicketDao;
+
+    @Override
+    public String key() {
+<span class="nc" id="L24">        return Game.TYPE_UNDEF + &quot;-&quot; + BaseOperationParameter.PAYOUTMODE_PRINTNEWTICKET;</span>
+    }
+
+    protected final void generateTicket(Context&lt;?&gt; respCtx, Prize prize) throws ApplicationException {
+<span class="nc bnc" id="L28" title="All 2 branches missed.">        if (prize.getFutureTickets().size() &lt;= 0) {</span>
+<span class="nc" id="L29">            return;</span>
+        }
+
+<span class="nc" id="L32">        String newSerialNo = this.getUuidService().getTicketSerialNo(</span>
+                prize.getWinningTicket().getGameInstance().getGame().getType());
+        // generate tickets
+<span class="nc" id="L35">        List&lt;BaseTicket&gt; newTickets = new LinkedList&lt;BaseTicket&gt;();</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        for (BaseTicket ticket : prize.getFutureTickets()) {</span>
+<span class="nc" id="L37">            BaseTicket newTicket = (BaseTicket) ticket.clone();</span>
+<span class="nc" id="L38">            newTicket.setId(this.getUuidService().getGeneralID());</span>
+<span class="nc" id="L39">            newTicket.setTransaction(respCtx.getTransaction());</span>
+<span class="nc" id="L40">            newTicket.setRawSerialNo(newSerialNo);</span>
+<span class="nc" id="L41">            newTicket.setCreateTime(new Date());</span>
+<span class="nc" id="L42">            newTicket.setUpdateTime(newTicket.getCreateTime());</span>
+<span class="nc" id="L43">            newTicket.setStatus(BaseTicket.STATUS_ACCEPTED);</span>
+<span class="nc" id="L44">            this.doAssembleNewTicket(newTicket, ticket);</span>
+
+<span class="nc" id="L46">            newTickets.add(newTicket);</span>
+
+<span class="nc" id="L48">            this.getBaseTicketDao().insert(newTicket);</span>
+<span class="nc" id="L49">        }</span>
+        // generate entries
+<span class="nc" id="L51">        List newEntries = this.generateEntries(respCtx, prize, newTickets.get(0).getSerialNo(), prize</span>
+                .getWinningTicket().getSerialNo());
+        // generate new print log
+<span class="nc" id="L54">        this.generateNewPrintLog(respCtx, newTickets.get(0).getSerialNo(), prize.getWinningTicket().getSerialNo());</span>
+        // assemble new generated tickets.
+<span class="nc" id="L56">        prize.getGeneratedTickets().add(generateNewPrintPhysicalTicket(respCtx, prize, newTickets, newEntries));</span>
+<span class="nc" id="L57">    }</span>
+
+    /**
+     * Construct a BaseTicket of given game type.
+     */
+    protected abstract BaseTicket generateNewPrintPhysicalTicket(Context&lt;?&gt; respCtx, Prize prize,
+            List&lt;BaseTicket&gt; newTickets, List newEntries);
+
+    protected void generateNewPrintLog(Context&lt;?&gt; respCtx, String newSerialNo, String oldSerialNo)
+            throws ApplicationException {
+<span class="nc" id="L67">        NewPrintTicket newPrintLog = new NewPrintTicket(this.getUuidService().getGeneralID(), oldSerialNo, newSerialNo);</span>
+<span class="nc" id="L68">        this.getNewPrintTicketDao().insert(newPrintLog);</span>
+<span class="nc" id="L69">    }</span>
+
+    protected final List&lt;BaseEntry&gt; generateEntries(Context&lt;?&gt; respCtx, Prize prize, String newSerialNo,
+            String oldSerialNo) throws ApplicationException {
+<span class="nc" id="L73">        List entries = this.lookupEntries(oldSerialNo);</span>
+<span class="nc" id="L74">        List newEntries = new LinkedList();</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">        for (Object o : entries) {</span>
+<span class="nc" id="L76">            BaseEntry entry = (BaseEntry) o;</span>
+<span class="nc" id="L77">            BaseEntry newEntry = (BaseEntry) entry.clone();</span>
+<span class="nc" id="L78">            newEntry.setId(this.getUuidService().getGeneralID());</span>
+<span class="nc" id="L79">            newEntry.setTicketSerialNo(newSerialNo);</span>
+<span class="nc" id="L80">            newEntry.setCreateTime(new Date());</span>
+<span class="nc" id="L81">            newEntry.setUpdateTime(newEntry.getCreateTime());</span>
+
+<span class="nc" id="L83">            newEntries.add(newEntry);</span>
+<span class="nc" id="L84">            this.getBaseEntryDao().insert(newEntry);</span>
+<span class="nc" id="L85">        }</span>
+<span class="nc" id="L86">        return newEntries;</span>
+    }
+
+    protected abstract List lookupEntries(String serialNo) throws ApplicationException;
+
+    /**
+     * Subclss may need to assemble ticket instance with more information.
+     * 
+     * @param newTicket
+     *            The new generated ticket which will be persisted to underlying database
+     * @param templateTicket
+     *            provide information for newly generated ticket.
+     */
+    protected void doAssembleNewTicket(BaseTicket newTicket, BaseTicket templateTicket) {
+        // Templete method for subclass
+<span class="nc" id="L101">    }</span>
+
+    public BaseEntryDao getBaseEntryDao() {
+<span class="nc" id="L104">        return baseEntryDao;</span>
+    }
+
+    public void setBaseEntryDao(BaseEntryDao baseEntryDao) {
+<span class="fc" id="L108">        this.baseEntryDao = baseEntryDao;</span>
+<span class="fc" id="L109">    }</span>
+
+    public NewPrintTicketDao getNewPrintTicketDao() {
+<span class="nc" id="L112">        return newPrintTicketDao;</span>
+    }
+
+    public void setNewPrintTicketDao(NewPrintTicketDao newPrintTicketDao) {
+<span class="fc" id="L116">        this.newPrintTicketDao = newPrintTicketDao;</span>
+<span class="fc" id="L117">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

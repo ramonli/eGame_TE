@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Class com.mpos.lottery.te.valueaddservice.vat.DownloadOfflineTicketIntegrationTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class com.mpos.lottery.te.valueaddservice.vat.DownloadOfflineTicketIntegrationTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.mpos.lottery.te.valueaddservice.vat.html">com.mpos.lottery.te.valueaddservice.vat</a> &gt; DownloadOfflineTicketIntegrationTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">3</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.299s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">testReservedNumbers_Combination_luckyNumberAndOfflineCancellation</td>
+<td>0.086s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testReservedNumbers_all_luckyNumber</td>
+<td>0.132s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testReservedNumbers_all_offlineCancellation</td>
+<td>0.081s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>[2015-05-29 17:14:42,002][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:14:42,002][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:14:42,002][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@10a5947c) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:14:42,002][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:14:42,003][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,003][Test worker][INFO ][BaseTransactionalIntegrationTest] | DownloadOfflineTicketIntegrationTest.testReservedNumbers_all_luckyNumber                                               |
+[2015-05-29 17:14:42,003][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,006][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Req.xml) by key(transtype.340).
+[2015-05-29 17:14:42,007][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.web.OfflineTicketPackDto, mappingFile=xml-mapping/vat/DownloadOfflineTicket_Req.xml).
+[2015-05-29 17:14:42,008][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882006|Timestamp:20150529171442|Transaction-Type:340|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;OfflineTicketPack&gt;&lt;VAT code=&quot;foodA&quot;/&gt;&lt;VatRefNoPack requestCount=&quot;5&quot;/&gt;&lt;TicketPack requestCount=&quot;6&quot;/&gt;&lt;SelectedNumberPack requestCount=&quot;10&quot;/&gt;&lt;/OfflineTicketPack&gt;,hash=-559086915), get digest:75ded5adc52677c7c52ac02e05de4ca8
+[2015-05-29 17:14:42,008][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=340).
+[2015-05-29 17:14:42,008][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:42,008][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171442).
+[2015-05-29 17:14:42,008][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:42,008][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890882006).
+[2015-05-29 17:14:42,008][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:14:42,008][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:14:42,008][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=75ded5adc52677c7c52ac02e05de4ca8).
+[2015-05-29 17:14:42,008][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=18).
+[2015-05-29 17:14:42,008][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:14:42,008][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:14:42,010][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6nq25wN56IGrDL7vF6rE8EUB73gBPOKRow5l+XJgKjAGa75V9lTgkcDxlttaV3HYMzorGdw1U8DZr6j3tbd/oiHTy2AfRN7gkok8k53DtVluChhA8iWlOKuQYBnPHhFpyksNhL0mjKJxhSz8qtdGeVzk5en1kRUPUaqVEqQYPb4+jn3K3b5hol7ydh5noPNvGTv3sLiqxo80v5BwC7JiDGw=.
+[2015-05-29 17:14:42,010][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882006|Timestamp:20150529171442|Transaction-Type:340|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:42,010][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;OfflineTicketPack&gt;&lt;VAT code=&quot;foodA&quot;/&gt;&lt;VatRefNoPack requestCount=&quot;5&quot;/&gt;&lt;TicketPack requestCount=&quot;6&quot;/&gt;&lt;SelectedNumberPack requestCount=&quot;10&quot;/&gt;&lt;/OfflineTicketPack&gt;
+[2015-05-29 17:14:42,010][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882006|Timestamp:20150529171442|Transaction-Type:340|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;OfflineTicketPack&gt;&lt;VAT code=&quot;foodA&quot;/&gt;&lt;VatRefNoPack requestCount=&quot;5&quot;/&gt;&lt;TicketPack requestCount=&quot;6&quot;/&gt;&lt;SelectedNumberPack requestCount=&quot;10&quot;/&gt;&lt;/OfflineTicketPack&gt;,hash=-559086915), get digest:75ded5adc52677c7c52ac02e05de4ca8
+[2015-05-29 17:14:42,010][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Req.xml) by key(transtype.340).
+[2015-05-29 17:14:42,010][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/vat/DownloadOfflineTicket_Req.xml
+[2015-05-29 17:14:42,010][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Req.xml) by key(transtype.340).
+[2015-05-29 17:14:42,024][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_340_1.5.0).
+[2015-05-29 17:14:42,024][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_340_).
+[2015-05-29 17:14:42,024][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_340_).
+[2015-05-29 17:14:42,024][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_340_), found controller(com.mpos.lottery.te.valueaddservice.vat.VatController@1aeefda9) and method(public void com.mpos.lottery.te.valueaddservice.vat.VatController.downloadOfflineTicket(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:42,038][Test worker][INFO ][DownloadOfflineTicketServiceImpl] Game Type is [18]
+[2015-05-29 17:14:42,065][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400022133
+[2015-05-29 17:14:42,067][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400022201
+[2015-05-29 17:14:42,069][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400022385
+[2015-05-29 17:14:42,072][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400022418
+[2015-05-29 17:14:42,074][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400022544
+[2015-05-29 17:14:42,076][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400022675
+[2015-05-29 17:14:42,080][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:11114745219400002249
+[2015-05-29 17:14:42,080][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:11114745219400002368
+[2015-05-29 17:14:42,080][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:11114745219400002438
+[2015-05-29 17:14:42,080][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:11114745219400002524
+[2015-05-29 17:14:42,080][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:11114745219400002676
+[2015-05-29 17:14:42,084][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(RESERVED_NUMBERS)
+[2015-05-29 17:14:42,084][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Res.xml) by key(transtype.4340).
+[2015-05-29 17:14:42,084][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.valueaddservice.vat.web.OfflineTicketPackDto),mappingFile=xml-mapping/vat/DownloadOfflineTicket_Res.xml
+[2015-05-29 17:14:42,084][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Res.xml) by key(transtype.4340).
+[2015-05-29 17:14:42,108][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.web.OfflineTicketPackDto, mappingFile=xml-mapping/vat/DownloadOfflineTicket_Res.xml).
+[2015-05-29 17:14:42,108][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882006|Timestamp:20150529171442|Transaction-Type:4340|Transaction-Id:0115052900000000002472|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;OfflineTicketPack&gt;&lt;VAT code=&quot;foodA&quot;/&gt;&lt;VatRefNoPack requestCount=&quot;5&quot;&gt;&lt;VatRefNo refNo=&quot;11114745219400002249&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400002368&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400002438&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400002524&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400002676&quot;/&gt;&lt;/VatRefNoPack&gt;&lt;TicketPack requestCount=&quot;6&quot;&gt;&lt;Ticket serialNo=&quot;11111745819400022133&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SelpTaDG8BXpQ=&quot; validationCode=&quot;621377&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400022201&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeIzf8axKt+bg=&quot; validationCode=&quot;928565&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400022385&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeoDfbWLOIyhU=&quot; validationCode=&quot;136246&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400022418&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5Se2xurpjMQp+8=&quot; validationCode=&quot;219119&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400022544&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeWYnRdp0WvRw=&quot; validationCode=&quot;890237&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400022675&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeeyYeH2CeI0U=&quot; validationCode=&quot;571775&quot;/&gt;&lt;/TicketPack&gt;&lt;SelectedNumberPack requestCount=&quot;10&quot;&gt;&lt;SelectedNumber sequence=&quot;1&quot; luckyNumber=&quot;5&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;2&quot; luckyNumber=&quot;6&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;3&quot; luckyNumber=&quot;7&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;4&quot; luckyNumber=&quot;8&quot; prizeAmount=&quot;1000&quot;/&gt;&lt;SelectedNumber sequence=&quot;5&quot; luckyNumber=&quot;9&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;6&quot; luckyNumber=&quot;10&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;7&quot; luckyNumber=&quot;1&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;8&quot; luckyNumber=&quot;2&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;9&quot; luckyNumber=&quot;3&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;10&quot; luckyNumber=&quot;4&quot; prizeAmount=&quot;0&quot;/&gt;&lt;/SelectedNumberPack&gt;&lt;/OfflineTicketPack&gt;):157c71b9842ab8b95f9e27547358576f
+[2015-05-29 17:14:42,109][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=2668) succesfully.
+[2015-05-29 17:14:42,110][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=2668): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;OfflineTicketPack&gt;&lt;VAT code=&quot;foodA&quot;/&gt;&lt;VatRefNoPack requestCount=&quot;5&quot;&gt;&lt;VatRefNo refNo=&quot;11114745219400002249&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400002368&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400002438&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400002524&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400002676&quot;/&gt;&lt;/VatRefNoPack&gt;&lt;TicketPack requestCount=&quot;6&quot;&gt;&lt;Ticket serialNo=&quot;11111745819400022133&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SelpTaDG8BXpQ=&quot; validationCode=&quot;621377&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400022201&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeIzf8axKt+bg=&quot; validationCode=&quot;928565&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400022385&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeoDfbWLOIyhU=&quot; validationCode=&quot;136246&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400022418&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5Se2xurpjMQp+8=&quot; validationCode=&quot;219119&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400022544&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeWYnRdp0WvRw=&quot; validationCode=&quot;890237&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400022675&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeeyYeH2CeI0U=&quot; validationCode=&quot;571775&quot;/&gt;&lt;/TicketPack&gt;&lt;SelectedNumberPack requestCount=&quot;10&quot;&gt;&lt;SelectedNumber sequence=&quot;1&quot; luckyNumber=&quot;5&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;2&quot; luckyNumber=&quot;6&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;3&quot; luckyNumber=&quot;7&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;4&quot; luckyNumber=&quot;8&quot; prizeAmount=&quot;1000&quot;/&gt;&lt;SelectedNumber sequence=&quot;5&quot; luckyNumber=&quot;9&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;6&quot; luckyNumber=&quot;10&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;7&quot; luckyNumber=&quot;1&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;8&quot; luckyNumber=&quot;2&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;9&quot; luckyNumber=&quot;3&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;10&quot; luckyNumber=&quot;4&quot; prizeAmount=&quot;0&quot;/&gt;&lt;/SelectedNumberPack&gt;&lt;/OfflineTicketPack&gt;
+[2015-05-29 17:14:42,110][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Res.xml) by key(transtype.4340).
+[2015-05-29 17:14:42,126][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:14:42,126][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:14:42,126][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@454dd1d5) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:14:42,127][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:14:42,127][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,127][Test worker][INFO ][BaseTransactionalIntegrationTest] | DownloadOfflineTicketIntegrationTest.testReservedNumbers_Combination_luckyNumberAndOfflineCancellation                 |
+[2015-05-29 17:14:42,127][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,130][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Req.xml) by key(transtype.340).
+[2015-05-29 17:14:42,130][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.web.OfflineTicketPackDto, mappingFile=xml-mapping/vat/DownloadOfflineTicket_Req.xml).
+[2015-05-29 17:14:42,131][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882130|Timestamp:20150529171442|Transaction-Type:340|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;OfflineTicketPack&gt;&lt;VAT code=&quot;foodA&quot;/&gt;&lt;VatRefNoPack requestCount=&quot;5&quot;/&gt;&lt;TicketPack requestCount=&quot;6&quot;/&gt;&lt;SelectedNumberPack requestCount=&quot;10&quot;/&gt;&lt;/OfflineTicketPack&gt;,hash=-1951986987), get digest:1f7fd1cef479418dfd16978c98cc4e30
+[2015-05-29 17:14:42,131][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=340).
+[2015-05-29 17:14:42,131][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:42,131][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171442).
+[2015-05-29 17:14:42,131][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:42,131][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890882130).
+[2015-05-29 17:14:42,131][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:14:42,131][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:14:42,131][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=1f7fd1cef479418dfd16978c98cc4e30).
+[2015-05-29 17:14:42,131][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=18).
+[2015-05-29 17:14:42,131][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:14:42,131][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:14:42,133][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6nq25wN56IGrDL7vF6rE8EUB73gBPOKRow5l+XJgKjAGa75V9lTgkcDxlttaV3HYMzorGdw1U8DZr6j3tbd/oiHTy2AfRN7gkok8k53DtVluChhA8iWlOKuQYBnPHhFpyksNhL0mjKJxhSz8qtdGeVzk5en1kRUPUaqVEqQYPb4+jn3K3b5hol7ydh5noPNvGTv3sLiqxo80v5BwC7JiDGw=.
+[2015-05-29 17:14:42,133][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882130|Timestamp:20150529171442|Transaction-Type:340|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:42,134][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;OfflineTicketPack&gt;&lt;VAT code=&quot;foodA&quot;/&gt;&lt;VatRefNoPack requestCount=&quot;5&quot;/&gt;&lt;TicketPack requestCount=&quot;6&quot;/&gt;&lt;SelectedNumberPack requestCount=&quot;10&quot;/&gt;&lt;/OfflineTicketPack&gt;
+[2015-05-29 17:14:42,134][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882130|Timestamp:20150529171442|Transaction-Type:340|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;OfflineTicketPack&gt;&lt;VAT code=&quot;foodA&quot;/&gt;&lt;VatRefNoPack requestCount=&quot;5&quot;/&gt;&lt;TicketPack requestCount=&quot;6&quot;/&gt;&lt;SelectedNumberPack requestCount=&quot;10&quot;/&gt;&lt;/OfflineTicketPack&gt;,hash=-1951986987), get digest:1f7fd1cef479418dfd16978c98cc4e30
+[2015-05-29 17:14:42,134][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Req.xml) by key(transtype.340).
+[2015-05-29 17:14:42,134][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/vat/DownloadOfflineTicket_Req.xml
+[2015-05-29 17:14:42,134][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Req.xml) by key(transtype.340).
+[2015-05-29 17:14:42,148][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_340_1.5.0).
+[2015-05-29 17:14:42,148][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_340_).
+[2015-05-29 17:14:42,148][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_340_).
+[2015-05-29 17:14:42,148][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_340_), found controller(com.mpos.lottery.te.valueaddservice.vat.VatController@1aeefda9) and method(public void com.mpos.lottery.te.valueaddservice.vat.VatController.downloadOfflineTicket(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:42,163][Test worker][INFO ][DownloadOfflineTicketServiceImpl] Game Type is [18]
+[2015-05-29 17:14:42,178][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400022732
+[2015-05-29 17:14:42,180][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400022841
+[2015-05-29 17:14:42,183][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400022982
+[2015-05-29 17:14:42,184][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400023012
+[2015-05-29 17:14:42,186][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400023141
+[2015-05-29 17:14:42,188][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400023274
+[2015-05-29 17:14:42,190][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:11114745219400002786
+[2015-05-29 17:14:42,190][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:11114745219400002893
+[2015-05-29 17:14:42,190][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:11114745219400002917
+[2015-05-29 17:14:42,191][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:11114745219400003058
+[2015-05-29 17:14:42,191][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:11114745219400003129
+[2015-05-29 17:14:42,197][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(RESERVED_NUMBERS)
+[2015-05-29 17:14:42,197][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Res.xml) by key(transtype.4340).
+[2015-05-29 17:14:42,197][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.valueaddservice.vat.web.OfflineTicketPackDto),mappingFile=xml-mapping/vat/DownloadOfflineTicket_Res.xml
+[2015-05-29 17:14:42,197][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Res.xml) by key(transtype.4340).
+[2015-05-29 17:14:42,199][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.web.OfflineTicketPackDto, mappingFile=xml-mapping/vat/DownloadOfflineTicket_Res.xml).
+[2015-05-29 17:14:42,199][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882130|Timestamp:20150529171442|Transaction-Type:4340|Transaction-Id:0115052900000000002473|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;OfflineTicketPack&gt;&lt;VAT code=&quot;foodA&quot;/&gt;&lt;VatRefNoPack requestCount=&quot;5&quot;&gt;&lt;VatRefNo refNo=&quot;11114745219400002786&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400002893&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400002917&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400003058&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400003129&quot;/&gt;&lt;/VatRefNoPack&gt;&lt;TicketPack requestCount=&quot;6&quot;&gt;&lt;Ticket serialNo=&quot;11111745819400022732&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeEtdUZQqR0Mw=&quot; validationCode=&quot;097611&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400022841&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeDvv8bTB/Vlo=&quot; validationCode=&quot;065241&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400022982&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeGTufUnKaf4g=&quot; validationCode=&quot;381944&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023012&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeJSUZWhGk/XQ=&quot; validationCode=&quot;810833&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023141&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SepRTc9mUmm9U=&quot; validationCode=&quot;570106&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023274&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeOu0j7LJaahs=&quot; validationCode=&quot;678334&quot;/&gt;&lt;/TicketPack&gt;&lt;SelectedNumberPack requestCount=&quot;10&quot;&gt;&lt;SelectedNumber sequence=&quot;1&quot; luckyNumber=&quot;3&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;2&quot; luckyNumber=&quot;4&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;3&quot; luckyNumber=&quot;1&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;4&quot; luckyNumber=&quot;2&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;5&quot; luckyNumber=&quot;3&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;6&quot; luckyNumber=&quot;4&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;7&quot; luckyNumber=&quot;10&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;8&quot; luckyNumber=&quot;5&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;9&quot; luckyNumber=&quot;6&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;10&quot; luckyNumber=&quot;7&quot; prizeAmount=&quot;0&quot;/&gt;&lt;/SelectedNumberPack&gt;&lt;/OfflineTicketPack&gt;):0aa69687f52492db05b2c63b243dfa94
+[2015-05-29 17:14:42,200][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=2656) succesfully.
+[2015-05-29 17:14:42,200][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=2656): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;OfflineTicketPack&gt;&lt;VAT code=&quot;foodA&quot;/&gt;&lt;VatRefNoPack requestCount=&quot;5&quot;&gt;&lt;VatRefNo refNo=&quot;11114745219400002786&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400002893&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400002917&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400003058&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400003129&quot;/&gt;&lt;/VatRefNoPack&gt;&lt;TicketPack requestCount=&quot;6&quot;&gt;&lt;Ticket serialNo=&quot;11111745819400022732&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeEtdUZQqR0Mw=&quot; validationCode=&quot;097611&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400022841&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeDvv8bTB/Vlo=&quot; validationCode=&quot;065241&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400022982&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeGTufUnKaf4g=&quot; validationCode=&quot;381944&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023012&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeJSUZWhGk/XQ=&quot; validationCode=&quot;810833&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023141&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SepRTc9mUmm9U=&quot; validationCode=&quot;570106&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023274&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeOu0j7LJaahs=&quot; validationCode=&quot;678334&quot;/&gt;&lt;/TicketPack&gt;&lt;SelectedNumberPack requestCount=&quot;10&quot;&gt;&lt;SelectedNumber sequence=&quot;1&quot; luckyNumber=&quot;3&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;2&quot; luckyNumber=&quot;4&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;3&quot; luckyNumber=&quot;1&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;4&quot; luckyNumber=&quot;2&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;5&quot; luckyNumber=&quot;3&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;6&quot; luckyNumber=&quot;4&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;7&quot; luckyNumber=&quot;10&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;8&quot; luckyNumber=&quot;5&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;9&quot; luckyNumber=&quot;6&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;10&quot; luckyNumber=&quot;7&quot; prizeAmount=&quot;0&quot;/&gt;&lt;/SelectedNumberPack&gt;&lt;/OfflineTicketPack&gt;
+[2015-05-29 17:14:42,200][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Res.xml) by key(transtype.4340).
+[2015-05-29 17:14:42,211][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:14:42,212][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:14:42,212][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@7ddee8d6) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:14:42,212][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:14:42,212][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,212][Test worker][INFO ][BaseTransactionalIntegrationTest] | DownloadOfflineTicketIntegrationTest.testReservedNumbers_all_offlineCancellation                                       |
+[2015-05-29 17:14:42,212][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,214][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Req.xml) by key(transtype.340).
+[2015-05-29 17:14:42,214][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.web.OfflineTicketPackDto, mappingFile=xml-mapping/vat/DownloadOfflineTicket_Req.xml).
+[2015-05-29 17:14:42,215][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882214|Timestamp:20150529171442|Transaction-Type:340|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;OfflineTicketPack&gt;&lt;VAT code=&quot;foodA&quot;/&gt;&lt;VatRefNoPack requestCount=&quot;5&quot;/&gt;&lt;TicketPack requestCount=&quot;6&quot;/&gt;&lt;SelectedNumberPack requestCount=&quot;10&quot;/&gt;&lt;/OfflineTicketPack&gt;,hash=593634524), get digest:7cbf88469319d072f5b7327fcad47f85
+[2015-05-29 17:14:42,215][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=340).
+[2015-05-29 17:14:42,215][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:42,215][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171442).
+[2015-05-29 17:14:42,215][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:42,215][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890882214).
+[2015-05-29 17:14:42,215][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:14:42,215][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:14:42,215][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=7cbf88469319d072f5b7327fcad47f85).
+[2015-05-29 17:14:42,215][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=18).
+[2015-05-29 17:14:42,215][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:14:42,215][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:14:42,217][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6nq25wN56IGrDL7vF6rE8EUB73gBPOKRow5l+XJgKjAGa75V9lTgkcDxlttaV3HYMzorGdw1U8DZr6j3tbd/oiHTy2AfRN7gkok8k53DtVluChhA8iWlOKuQYBnPHhFpyksNhL0mjKJxhSz8qtdGeVzk5en1kRUPUaqVEqQYPb4+jn3K3b5hol7ydh5noPNvGTv3sLiqxo80v5BwC7JiDGw=.
+[2015-05-29 17:14:42,217][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882214|Timestamp:20150529171442|Transaction-Type:340|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:42,217][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;OfflineTicketPack&gt;&lt;VAT code=&quot;foodA&quot;/&gt;&lt;VatRefNoPack requestCount=&quot;5&quot;/&gt;&lt;TicketPack requestCount=&quot;6&quot;/&gt;&lt;SelectedNumberPack requestCount=&quot;10&quot;/&gt;&lt;/OfflineTicketPack&gt;
+[2015-05-29 17:14:42,217][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882214|Timestamp:20150529171442|Transaction-Type:340|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;OfflineTicketPack&gt;&lt;VAT code=&quot;foodA&quot;/&gt;&lt;VatRefNoPack requestCount=&quot;5&quot;/&gt;&lt;TicketPack requestCount=&quot;6&quot;/&gt;&lt;SelectedNumberPack requestCount=&quot;10&quot;/&gt;&lt;/OfflineTicketPack&gt;,hash=593634524), get digest:7cbf88469319d072f5b7327fcad47f85
+[2015-05-29 17:14:42,217][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Req.xml) by key(transtype.340).
+[2015-05-29 17:14:42,218][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/vat/DownloadOfflineTicket_Req.xml
+[2015-05-29 17:14:42,218][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Req.xml) by key(transtype.340).
+[2015-05-29 17:14:42,232][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_340_1.5.0).
+[2015-05-29 17:14:42,232][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_340_).
+[2015-05-29 17:14:42,232][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_340_).
+[2015-05-29 17:14:42,232][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_340_), found controller(com.mpos.lottery.te.valueaddservice.vat.VatController@1aeefda9) and method(public void com.mpos.lottery.te.valueaddservice.vat.VatController.downloadOfflineTicket(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:42,246][Test worker][INFO ][DownloadOfflineTicketServiceImpl] Game Type is [18]
+[2015-05-29 17:14:42,261][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400023325
+[2015-05-29 17:14:42,263][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400023409
+[2015-05-29 17:14:42,265][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400023522
+[2015-05-29 17:14:42,267][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400023651
+[2015-05-29 17:14:42,269][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400023779
+[2015-05-29 17:14:42,270][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:11111745819400023841
+[2015-05-29 17:14:42,272][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:11114745219400003287
+[2015-05-29 17:14:42,272][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:11114745219400003323
+[2015-05-29 17:14:42,272][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:11114745219400003429
+[2015-05-29 17:14:42,272][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:11114745219400003596
+[2015-05-29 17:14:42,272][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:11114745219400003614
+[2015-05-29 17:14:42,279][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(RESERVED_NUMBERS)
+[2015-05-29 17:14:42,280][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Res.xml) by key(transtype.4340).
+[2015-05-29 17:14:42,280][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.valueaddservice.vat.web.OfflineTicketPackDto),mappingFile=xml-mapping/vat/DownloadOfflineTicket_Res.xml
+[2015-05-29 17:14:42,280][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Res.xml) by key(transtype.4340).
+[2015-05-29 17:14:42,281][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.web.OfflineTicketPackDto, mappingFile=xml-mapping/vat/DownloadOfflineTicket_Res.xml).
+[2015-05-29 17:14:42,281][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882214|Timestamp:20150529171442|Transaction-Type:4340|Transaction-Id:0115052900000000002474|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;OfflineTicketPack&gt;&lt;VAT code=&quot;foodA&quot;/&gt;&lt;VatRefNoPack requestCount=&quot;5&quot;&gt;&lt;VatRefNo refNo=&quot;11114745219400003287&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400003323&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400003429&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400003596&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400003614&quot;/&gt;&lt;/VatRefNoPack&gt;&lt;TicketPack requestCount=&quot;6&quot;&gt;&lt;Ticket serialNo=&quot;11111745819400023325&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeqNGFoyjw11g=&quot; validationCode=&quot;736210&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023409&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeqfJdmbfAoOo=&quot; validationCode=&quot;228376&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023522&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5Se/v/qmsWT868=&quot; validationCode=&quot;014264&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023651&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeAGAHqUWyDGQ=&quot; validationCode=&quot;321133&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023779&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeiWg6ipApL6w=&quot; validationCode=&quot;052276&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023841&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeH3n+54VzoW4=&quot; validationCode=&quot;080810&quot;/&gt;&lt;/TicketPack&gt;&lt;SelectedNumberPack requestCount=&quot;10&quot;&gt;&lt;SelectedNumber sequence=&quot;1&quot; luckyNumber=&quot;3&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;2&quot; luckyNumber=&quot;4&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;3&quot; luckyNumber=&quot;6&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;4&quot; luckyNumber=&quot;7&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;5&quot; luckyNumber=&quot;1&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;6&quot; luckyNumber=&quot;2&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;7&quot; luckyNumber=&quot;3&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;8&quot; luckyNumber=&quot;4&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;9&quot; luckyNumber=&quot;10&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;10&quot; luckyNumber=&quot;5&quot; prizeAmount=&quot;0&quot;/&gt;&lt;/SelectedNumberPack&gt;&lt;/OfflineTicketPack&gt;):33fec0dd116e4833abd6006933eee090
+[2015-05-29 17:14:42,282][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=2656) succesfully.
+[2015-05-29 17:14:42,282][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=2656): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;OfflineTicketPack&gt;&lt;VAT code=&quot;foodA&quot;/&gt;&lt;VatRefNoPack requestCount=&quot;5&quot;&gt;&lt;VatRefNo refNo=&quot;11114745219400003287&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400003323&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400003429&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400003596&quot;/&gt;&lt;VatRefNo refNo=&quot;11114745219400003614&quot;/&gt;&lt;/VatRefNoPack&gt;&lt;TicketPack requestCount=&quot;6&quot;&gt;&lt;Ticket serialNo=&quot;11111745819400023325&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeqNGFoyjw11g=&quot; validationCode=&quot;736210&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023409&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeqfJdmbfAoOo=&quot; validationCode=&quot;228376&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023522&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5Se/v/qmsWT868=&quot; validationCode=&quot;014264&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023651&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeAGAHqUWyDGQ=&quot; validationCode=&quot;321133&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023779&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeiWg6ipApL6w=&quot; validationCode=&quot;052276&quot;/&gt;&lt;Ticket serialNo=&quot;11111745819400023841&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt+7z++IIDu8BgJITEYgI5SeH3n+54VzoW4=&quot; validationCode=&quot;080810&quot;/&gt;&lt;/TicketPack&gt;&lt;SelectedNumberPack requestCount=&quot;10&quot;&gt;&lt;SelectedNumber sequence=&quot;1&quot; luckyNumber=&quot;3&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;2&quot; luckyNumber=&quot;4&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;3&quot; luckyNumber=&quot;6&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;4&quot; luckyNumber=&quot;7&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;5&quot; luckyNumber=&quot;1&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;6&quot; luckyNumber=&quot;2&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;7&quot; luckyNumber=&quot;3&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;8&quot; luckyNumber=&quot;4&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;9&quot; luckyNumber=&quot;10&quot; prizeAmount=&quot;0&quot;/&gt;&lt;SelectedNumber sequence=&quot;10&quot; luckyNumber=&quot;5&quot; prizeAmount=&quot;0&quot;/&gt;&lt;/SelectedNumberPack&gt;&lt;/OfflineTicketPack&gt;
+[2015-05-29 17:14:42,282][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/DownloadOfflineTicket_Res.xml) by key(transtype.4340).
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>Generated by 
+<a href="http://www.gradle.org">Gradle 2.2.1</a> at 2015-5-29 17:14:48</p>
+</div>
+</div>
+</body>

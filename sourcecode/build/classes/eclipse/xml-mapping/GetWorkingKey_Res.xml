@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+    <class name="com.mpos.lottery.te.workingkey.domain.WorkingKey">
+        <map-to xml="WorkingKey" />
+
+        <field name="dataKey" type="java.lang.String">
+            <bind-xml name="DataKey" node="element" />
+        </field>
+
+        <field name="macKey" type="java.lang.String">
+            <bind-xml name="MACKey" node="element" />
+        </field>
+    </class>
+</mapping>

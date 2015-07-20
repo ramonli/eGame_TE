@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Class com.mpos.lottery.te.merchant.service.CreditServiceIntegrationTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class com.mpos.lottery.te.merchant.service.CreditServiceIntegrationTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.mpos.lottery.te.merchant.service.html">com.mpos.lottery.te.merchant.service</a> &gt; CreditServiceIntegrationTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">10</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.223s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">testReduceCredit_Cashout</td>
+<td>0.012s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testReduceCredit_Cashout_Reversal</td>
+<td>0.019s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testReduceCredit_Payout</td>
+<td>0.016s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testReduceCredit_Payout_UseParent</td>
+<td>0.020s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testReduceCredit_Sale</td>
+<td>0.012s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testReduceCredit_Sale_Operator</td>
+<td>0.037s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testRestoreCredit_Payout</td>
+<td>0.020s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testRestoreCredit_Payout_UseParent</td>
+<td>0.037s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testRestoreCredit_Sale</td>
+<td>0.024s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testRestoreCredit_Sale_Operator</td>
+<td>0.026s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>[2015-05-29 17:13:51,638][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,638][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,638][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditServiceIntegrationTest.testRestoreCredit_Sale                                                                    |
+[2015-05-29 17:13:51,638][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,645][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,645][Test worker][DEBUG][DefaultCreditService] The new sale credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000200, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is 200000200
+[2015-05-29 17:13:51,657][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,657][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,657][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditServiceIntegrationTest.testReduceCredit_Sale_Operator                                                            |
+[2015-05-29 17:13:51,657][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,676][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant
+[2015-05-29 17:13:51,676][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type ofMerchant [id=111, name=M-111, saleCreditLevel=100000000, payoutCreditLevel=1000, creditType=4, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant.
+[2015-05-29 17:13:51,681][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Merchant [id=222, name=null, saleCreditLevel=200000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,681][Test worker][DEBUG][DefaultCreditService] The new sale credit level of merchantMerchant [id=222, name=null, saleCreditLevel=199999800, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is 199999800
+[2015-05-29 17:13:51,693][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,693][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,693][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditServiceIntegrationTest.testRestoreCredit_Payout_UseParent                                                        |
+[2015-05-29 17:13:51,693][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,711][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant
+[2015-05-29 17:13:51,711][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type ofMerchant [id=111, name=M-111, saleCreditLevel=100000000, payoutCreditLevel=1000, creditType=4, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant.
+[2015-05-29 17:13:51,720][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Merchant [id=222, name=null, saleCreditLevel=200000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,720][Test worker][DEBUG][DefaultCreditService] The new payout credit level of merchantMerchant [id=222, name=null, saleCreditLevel=200000000, payoutCreditLevel=1200, creditType=1, cashoutBalance=0, commisionBalance=0] is 1200
+[2015-05-29 17:13:51,727][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,728][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,728][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditServiceIntegrationTest.testRestoreCredit_Sale_Operator                                                           |
+[2015-05-29 17:13:51,728][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,741][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant
+[2015-05-29 17:13:51,741][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type ofMerchant [id=111, name=M-111, saleCreditLevel=100000000, payoutCreditLevel=1000, creditType=4, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant.
+[2015-05-29 17:13:51,746][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Merchant [id=222, name=null, saleCreditLevel=200000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,746][Test worker][DEBUG][DefaultCreditService] The new sale credit level of merchantMerchant [id=222, name=null, saleCreditLevel=200000200, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is 200000200
+[2015-05-29 17:13:51,754][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,754][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,754][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditServiceIntegrationTest.testRestoreCredit_Payout                                                                  |
+[2015-05-29 17:13:51,754][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,765][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,765][Test worker][DEBUG][DefaultCreditService] The new payout credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1200, cashoutBalance=0, commisionBalance=0] is 1200
+[2015-05-29 17:13:51,778][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,778][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,778][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditServiceIntegrationTest.testReduceCredit_Cashout_Reversal                                                         |
+[2015-05-29 17:13:51,778][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,786][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,786][Test worker][DEBUG][DefaultCreditService] The new payout credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=800, cashoutBalance=0, commisionBalance=0] is 800
+[2015-05-29 17:13:51,793][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,793][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,793][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditServiceIntegrationTest.testReduceCredit_Cashout                                                                  |
+[2015-05-29 17:13:51,793][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,798][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,798][Test worker][DEBUG][DefaultCreditService] The new payout credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1200, cashoutBalance=0, commisionBalance=0] is 1200
+[2015-05-29 17:13:51,805][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,805][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,805][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditServiceIntegrationTest.testReduceCredit_Payout_UseParent                                                         |
+[2015-05-29 17:13:51,805][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,812][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant
+[2015-05-29 17:13:51,813][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type ofMerchant [id=111, name=M-111, saleCreditLevel=100000000, payoutCreditLevel=1000, creditType=4, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant.
+[2015-05-29 17:13:51,818][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Merchant [id=222, name=null, saleCreditLevel=200000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,818][Test worker][DEBUG][DefaultCreditService] The new payout credit level of merchantMerchant [id=222, name=null, saleCreditLevel=200000000, payoutCreditLevel=800, creditType=1, cashoutBalance=0, commisionBalance=0] is 800
+[2015-05-29 17:13:51,829][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,829][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,829][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditServiceIntegrationTest.testReduceCredit_Payout                                                                   |
+[2015-05-29 17:13:51,829][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,835][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,835][Test worker][DEBUG][DefaultCreditService] The new payout credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=800, cashoutBalance=0, commisionBalance=0] is 800
+[2015-05-29 17:13:51,842][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,842][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,842][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditServiceIntegrationTest.testReduceCredit_Sale                                                                     |
+[2015-05-29 17:13:51,842][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,847][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,847][Test worker][DEBUG][DefaultCreditService] The new sale credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999800, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is 199999800
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>Generated by 
+<a href="http://www.gradle.org">Gradle 2.2.1</a> at 2015-5-29 17:14:48</p>
+</div>
+</div>
+</body>

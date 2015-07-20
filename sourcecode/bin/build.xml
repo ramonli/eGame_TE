@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ============================================================= -->
+<!-- AUTHOR: Ramon.Li                                              -->
+<!-- THE BULID PROCESS COMPOSES BELOW STEPS:                       -->
+<!--    prepare: configure the environment automatically.          -->
+<!--    compile-main: compile the main source code.                -->
+<!--    compile-test: compile the test source code.                -->
+<!--    dist: build distribution units.                            -->
+<!--    deploy: deploy binary units to test environment.           -->
+<!--    bootstrap: bootstrap a database schema.                    -->
+<!--    load: load master and test data into database.             -->
+<!--    unittest: execute unit test and generate test report.      -->
+<!--    systest: execute integration test and generate report.     -->
+<!-- ============================================================= -->
+<project name="mlottery-te" default="auto-dist" basedir="..">
+	<property file="bin/build.properties" />
+	<property file="src/main/resource/jdbc.properties" />
+	<property file="src/main/resource/mlottery_te.properties" />
+	<property environment="env" />
+
+	<!-- define the output directory -->
+	<property name="build.dir" value="build" />
+	<property name="classes.dir" value="${build.dir}/classes" />
+	<property name="tmp.dir" value="${build.dir}/tmp" />
+	<property name="dist.dir" value="${build.dir}/dist" />
+	<property name="report.dir" value="${build.dir}/report" />
+	<property name="doc.dir" value="${build.dir}/apidoc"/>
+
+	<property name="src.dir" value="src" />
+	<property name="src.main.dir" value="${src.dir}/main/java" />
+	<property name="src.test.dir" value="${src.dir}/test/java" />
+	<property name="lib.dir" value="lib" />
+	<property name="etc.dir" value="etc" />
+	<property name="www.dir" value="${src.dir}/main/www" />
+
+	<property name="build.log" value="build.log" />
+
+	<path id="lib.classpath">
+		<!-- fileset dir="${tomcat.home}/common/lib">
+			<include name="*.jar" />
+		</fileset -->
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+	<path id="main.classpath">
+		<pathelement path="${classes.dir}" />
+	</path>
+	<path id="project.classpath">
+		<path refid="lib.classpath"/>
+		<path refid="main.classpath"/>
+	</path>
+
+	<import file="tomcat.xml" />
+	<import file="test.xml" />
+	<!-- task definition -->
+	<typedef resource="org/tigris/subversion/svnant/svnantlib.xml" classpathref="project.classpath" />
+
+	<target name="init" depends="check-env" description="Init projects.">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| I N I T                                               |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<mkdir dir="${tmp.dir}" />
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${dist.dir}" />
+		<mkdir dir="${report.dir}" />
+		<mkdir dir="${doc.dir}" />
+	</target>
+
+	<target name="check-env">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| C H E C K   E N V I R O N M E N T                     |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<condition property="java.version.not.compatible">
+			<not>
+				<or>
+					<!-- contains string="${java.version}" substring="1.5." / -->
+					<contains string="${java.version}" substring="1.6." />
+					<!-- contains string="${java.version}" substring="1.7." / -->
+				</or>
+			</not>
+		</condition>
+		<fail if="java.version.not.compatible" 
+			message="The version of Jdk should be 1.6.X or above, current is ${java.version}." />
+	</target>
+
+	<target name="prepare" description="Prepare the development environment.">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| P R E P A R E   P R O J E C T                         |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<!-- prepare project, prepare web/app server -->
+	</target>
+
+	<target name="checkstyle" description="Check the code style.">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| C H E C K S T Y L E                                   |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+	</target>
+
+	<target name="pmd" description="Runs a set of static code analysis rules on Java source code files">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| P M D                                                 |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="project.classpath" />
+		<pmd shortFilenames="true">
+			<ruleset>rulesets/favorites.xml</ruleset>
+			<ruleset>basic</ruleset>
+			<formatter type="html" toFile="${report.dir}/pmd_report.html"/>
+			<fileset dir="${src.main.dir}">
+				<include name="com/mpos/**/*.java" />
+			</fileset>
+		</pmd>
+
+	</target>
+
+	<target name="compile-main" description="Compile main source code">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| C O M P I L E    M A I N                              |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<javac encoding="${javac.encoding}" destdir="${classes.dir}" failonerror="${javac.failonerror}" 
+			debug="${javac.debug}" classpathref="project.classpath" nowarn="${javac.nowarn}">
+			<!-- compilerarg value="-Xlint:unchecked"/ -->
+			<!-- classpath refid="project.classpath" / -->
+			<src path="${src.main.dir}/" />
+		</javac>
+		<copy todir="${classes.dir}" includeemptydirs="false">
+			<fileset dir="${src.dir}/main/resource" />
+		</copy>
+	</target>
+	
+	<target name="javadoc" description="Generate javadoc">
+	    <echo>+-------------------------------------------------------+</echo>
+	    <echo>| J A V A D O C                                         |</echo>
+	    <echo>+-------------------------------------------------------+</echo>
+        <javadoc 
+            defaultexcludes="yes" 
+            destdir="${doc.dir}"
+            author="true"
+            version="true"
+            use="true"
+        	locale="en_US"
+            verbose="false"
+        	encoding="${javac.encoding}"
+            classpathref="project.classpath"
+            windowtitle="M.Lottery-TE API">
+        	
+            <packageset dir="${src.main.dir}" defaultexcludes="yes">
+                <include name="com/mpos/lottery/te/**"/>
+                <!-- include name="com/mpos/game/**"/ -->
+            </packageset>
+            
+            <doctitle><![CDATA[<h1>MLottery TE API ${app.version}</h1>]]></doctitle>
+            <bottom><![CDATA[<i>Copyright &#169; 2000 MPos Corp. All Rights Reserved.</i>]]></bottom>
+            <tag name="todo" scope="all" description="To do:"/>
+        	<!-- ':com.mpos.game.eig' must be stated, otherwise 'com.mpos.game.eig' will be listed as a separated group. -->
+            <group title="Union" packages="com.mpos.game.union.*:com.mpos.game.union"/>
+            <group title="Bingo" packages="com.mpos.lottery.te.gameimpl.bingo.*:com.mpos.lottery.te.gameimpl.bingo"/>
+            <group title="EIG" packages="com.mpos.game.eig.*:com.mpos.game.eig"/>
+            <group title="4Digit" packages="com.mpos.game.fd.*:com.mpos.game.fd"/>
+            <group title="Toto" packages="com.mpos.lottery.te.gameimpl.toto.*:com.mpos.lottery.te.gameimpl.toto"/>
+            <group title="Core" packages="com.mpos.lottery.*:com.mpos.lottery"/>
+            <link offline="true" href="http://download.oracle.com/javase/6/docs/api/" packagelistLoc="C:\tmp"/>
+            <link href="http://developer.java.sun.com/developer/products/xml/docs/api/"/>
+        </javadoc>
+		
+		<!-- copy all image resources to target document folder, as javadoc doesn't support image -->
+		<!-- NOT TRUE, javadoc will copy all files in dedicated folder 'doc-files' to destination -->
+		<!-- copy todir="${doc.dir}" includeemptydirs="false">
+			<fileset dir="${src.main.dir}" >
+				<include name="**/*.jpg"/>
+				<include name="**/*.gif"/>
+				<include name="**/*.bmp"/>
+				<include name="**/*.svg"/>
+			</fileset>
+		</copy -->
+	</target>
+
+	<target name="manifest-local" if="localRevision" description="Build a manifest file">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| M A N I F E S T - L O C A L                           |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<antcall target="manifest" >
+			<param name="svn.info.lastRev" value=""/>
+		</antcall>
+	</target>
+
+	<target name="manifest-svn" unless="localRevision" 
+		description="Build a manifest file, specify '-Dsubversion=true' to retrieve last 
+		revision number from subversion repository.">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| M A N I F E S T - S V N                               |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+		<!-- Get last revision of project. -->
+		<svn username="${svn.username}" password="${svn.password}" javahl="false" >
+			<info target="${svn.sourcecode.url}" propPrefix="svn.info" />
+		</svn>
+		<echo>The last revision of ${svn.sourcecode.url}: ${svn.info.lastRev}</echo>
+        <antcall target="manifest" >
+            <param name="svn.info.lastRev" value="_r${svn.info.lastRev}"/>
+        </antcall>	    
+	</target>
+
+	<target name="manifest">
+	    <echo>*********************************************************</echo>
+	    <echo>* Please use 'ant [target] -DlocalRevision=true' to     *</echo>
+	    <echo>*   disable retrieving revision number from subversion. *</echo>
+	    <echo>*********************************************************</echo>
+        <tstamp>
+            <format property="build.time" pattern="yyyy/MM/dd HH:mm:dd" />
+            <format property="build.number" pattern="yyyyMMdd" />
+        </tstamp>		
+        <mkdir dir="${tmp.dir}/${project.name}/META-INF" />
+        <manifest file="${tmp.dir}/${project.name}/META-INF/MANIFEST.MF">
+            <attribute name="Built-By" value="${builder.name}" />
+            <attribute name="Built-Time" value="${build.time}" />
+            <section name="${project.name}">
+                <attribute name="Implementation-Title" value="${project.name}" />
+                <attribute name="Implementation-Version" value="${app.version}${svn.info.lastRev}" />
+                <attribute name="Implementation-NightlyBuild-Version" value="${app.version}${svn.info.lastRev}_${build.number}" />
+                <attribute name="Implementation-Vendor" value="${app.vendor}" />
+            </section>
+        </manifest>
+
+        <echo>Project-Name: ${project.name}</echo>
+        <echo>Implementation-Vendor: ${app.vendor}</echo>
+        <echo>Implementation-Version: ${app.version}${svn.info.lastRev}</echo>
+        <echo>Implementation-NightlyBuild-Version: ${app.version}${svn.info.lastRev}_${build.number}</echo>		
+	</target>
+	
+	<target name="bootstrap" if="bootstrap" 
+    	description="Bootstrap database struture only when you specify '-Dbootstrap=true'.">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| B O O T S T R A P   D A T A B A S E                   |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.user}" 
+        	password="${jdbc.password}" src="${etc.dir}/db/oracle_schema.sql" 
+        	classpathref="project.classpath" onerror="continue" />
+	</target>
+
+	<target name="load-master" if="bootstrap" 
+    	description="Load data into database only when you specify '-Dbootstrap=true'.">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| L O A D    I N I T I A L    D A T A                   |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.user}" 
+        	password="${jdbc.password}" src="${etc.dir}/db/oracle_masterdata.sql" 
+        	classpathref="project.classpath" onerror="continue" />
+	</target>
+
+	<target name="dist" description="Build deployable units.">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| B U I L D    D I S T    P A C K A G E                 |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<mkdir dir="${tmp.dir}/${project.name}/WEB-INF/lib" />
+		<mkdir dir="${tmp.dir}/${project.name}/WEB-INF/classes" />
+	    
+		<!-- generate MANIFEST.MF -->
+		<mkdir dir="${tmp.dir}/${project.name}/META-INF" />
+		<!-- copy todir="${tmp.dir}/${project.name}/META-INF" file="${etc.dir}/tomcat/context.xml" / -->
+        <antcall target="manifest-svn" />
+        <antcall target="manifest-local" />
+        	
+		<copy todir="${tmp.dir}/${project.name}">
+			<fileset dir="${www.dir}" />
+		</copy>
+		<copy todir="${tmp.dir}/${project.name}/WEB-INF/lib" flatten="true">
+			<fileset dir="${lib.dir}">
+				<exclude name="DEV/**/*.jar" />
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${tmp.dir}/${project.name}/WEB-INF/classes" >
+			<fileset dir="${classes.dir}" />
+		</copy>
+	    
+		<war destfile="${dist.dir}/${project.name}.war" webxml="${www.dir}/WEB-INF/web.xml"
+			manifest="${tmp.dir}/${project.name}/META-INF/MANIFEST.MF">
+			<fileset dir="${tmp.dir}/${project.name}" />
+		</war>
+	</target>
+	
+    <target name="jar">
+        <echo>+-------------------------------------------------------+</echo>
+        <echo>| B U I L D    J A R    P A C K A G E                   |</echo>
+        <echo>+-------------------------------------------------------+</echo>
+
+        <jar destfile="${dist.dir}/${project.name}.jar" manifest="${tmp.dir}/${project.name}/META-INF/MANIFEST.MF">
+            <fileset dir="${classes.dir}" />
+        </jar>
+    </target>	
+
+    <target name="bin" description="Build enterprise archive automatically.">
+        <echo>+-------------------------------------------------------+</echo>
+        <echo>| B U I L D   B I N A R Y   D I S T R I B U T I O N     |</echo>
+        <echo>+-------------------------------------------------------+</echo>
+
+        <!-- copy todir="${tmp.dir}" file="${dist.dir}/${project.name}.war" / -->
+    	<mkdir dir="${tmp.dir}/bin/log_digger" />
+        <copy todir="${tmp.dir}/bin/log_digger">
+            <fileset dir="bin/log_digger" />        	  
+    	</copy>
+        <copy todir="${tmp.dir}/bin">
+            <fileset dir="bin/encrypt" excludes="**/jasypt-imp/**" />
+        </copy>    	
+    	<copy todir="${tmp.dir}/bin" file="bin/app_backup.sh" />
+    	<copy todir="${tmp.dir}/bin">
+    		<fileset dir="bin" includes="gen*.*"/>
+    	</copy>
+        <copy todir="${tmp.dir}" file="README.txt" />
+        <copy todir="${tmp.dir}" file="CHANGELOG.txt" />
+    	<copy todir="${tmp.dir}" file="${etc.dir}/manual/TE Setup Guide.doc"/>
+    	<copy todir="${tmp.dir}" file="${dist.dir}/${project.name}.war" />
+    	<delete dir="${tmp.dir}/${project.name}" includeemptydirs="true" />
+        <zip destfile="${dist.dir}/${project.name}_${app.version}.zip" 
+            basedir="${tmp.dir}" />
+    </target>	
+	
+	<target name="deploy" description="Deploy application to server">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| D E P L O Y                                           |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<!-- antcall target="tomcat.deploy">
+            <param name="war.file" value="${dist.dir}/${project.name}.war"/>
+        </antcall -->
+		<delete file="${tomcat.home}/webapps/${project.name}.war">
+		</delete>
+		<delete dir="${tomcat.home}/webapps/${project.name}" includeemptydirs="true" />
+
+		<copy todir="${tomcat.home}/webapps" file="${dist.dir}/${project.name}.war" />
+	</target>
+
+	<target name="clean">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| C L E A N                                             |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<delete dir="${build.dir}" includeemptydirs="true" />
+	</target>
+
+	<!-- ============================================================ -->
+	<!--  AUTOMATICAL TARGETS                                         -->
+	<!-- ============================================================ -->
+
+	<target name="auto-dist" description="Build enterprise archive automatically.">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| A U T O - D I S T R I B U T E                         |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<antcall target="clean" />
+		<antcall target="init" />
+		<antcall target="prepare" />
+		<antcall target="checkstyle" />
+		<!-- antcall target="pmd" / -->
+		<antcall target="compile-main" />
+		<!-- antcall target="javadoc" / -->
+		<antcall target="dist" />
+		<antcall target="jar" />
+		<antcall target="bin" />
+	</target>
+
+	<target name="auto-deploy" description="Automatically deploy application to app server.">
+		<record action="start" name="${build.log}" />
+		<tstamp>
+			<format property="build.time" pattern="yyyy/MM/dd HH:mm:dd" />
+		</tstamp>
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| BUILD TIME is ${build.time}                     |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<antcall target="auto-dist" />
+		<antcall target="deploy" />
+		<record action="stop" name="${build.log}" />
+	</target>
+
+</project>
+
+

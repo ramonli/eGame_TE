@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Class com.mpos.lottery.te.valueaddservice.vat.sale.VatB2CSaleRefundIntegrationTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class com.mpos.lottery.te.valueaddservice.vat.sale.VatB2CSaleRefundIntegrationTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.mpos.lottery.te.valueaddservice.vat.sale.html">com.mpos.lottery.te.valueaddservice.vat.sale</a> &gt; VatB2CSaleRefundIntegrationTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">5</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">0.865s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">testCancel_Magic100Sale_MultiBets_RoundDown_OK</td>
+<td>0.214s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testCancel_Magic100Sale_NoTicket_OK</td>
+<td>0.090s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">test_Cancel_Magic100Sale_MultiBets_RoundUp_OK</td>
+<td>0.199s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">test_Cancel_Magic100Sale_SingleBet_RoundUp_OK</td>
+<td>0.212s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">test_Cancel_RaffleSale_SingleBet_OK</td>
+<td>0.150s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>[2015-05-29 17:14:42,300][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:14:42,300][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:14:42,300][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@6db2c269) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:14:42,301][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:14:42,301][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,301][Test worker][INFO ][BaseTransactionalIntegrationTest] | VatB2CSaleRefundIntegrationTest.test_Cancel_Magic100Sale_MultiBets_RoundUp_OK                                          |
+[2015-05-29 17:14:42,301][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,304][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Req.xml) by key(-2.transtype.200).
+[2015-05-29 17:14:42,305][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction, mappingFile=xml-mapping/vat/SellTicket_Req.xml).
+[2015-05-29 17:14:42,305][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882304|Timestamp:20150529171442|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;4700&quot; code=&quot;foodA&quot; rate=&quot;0&quot;/&gt;,hash=887558201), get digest:b6948ed0440875c4a599a61d33728beb
+[2015-05-29 17:14:42,305][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:14:42,305][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:42,305][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171442).
+[2015-05-29 17:14:42,305][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:42,305][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890882304).
+[2015-05-29 17:14:42,305][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:14:42,305][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:14:42,305][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=b6948ed0440875c4a599a61d33728beb).
+[2015-05-29 17:14:42,306][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-2).
+[2015-05-29 17:14:42,306][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:14:42,306][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:14:42,307][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6m1r0kCL0Gd72PIRSa/j7rTA4st7CTbg46rDAGBzRDpO6vBpWuXT93TiR1lz6npuNg==.
+[2015-05-29 17:14:42,307][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882304|Timestamp:20150529171442|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:42,308][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;4700&quot; code=&quot;foodA&quot; rate=&quot;0&quot;/&gt;
+[2015-05-29 17:14:42,308][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882304|Timestamp:20150529171442|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;4700&quot; code=&quot;foodA&quot; rate=&quot;0&quot;/&gt;,hash=887558201), get digest:b6948ed0440875c4a599a61d33728beb
+[2015-05-29 17:14:42,308][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Req.xml) by key(-2.transtype.200).
+[2015-05-29 17:14:42,308][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/vat/SellTicket_Req.xml
+[2015-05-29 17:14:42,308][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Req.xml) by key(-2.transtype.200).
+[2015-05-29 17:14:42,319][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-2_200_1.5.0).
+[2015-05-29 17:14:42,319][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-2_200_).
+[2015-05-29 17:14:42,319][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-2_200_), found controller(com.mpos.lottery.te.valueaddservice.vat.VatController@1aeefda9) and method(public void com.mpos.lottery.te.valueaddservice.vat.VatController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:42,327][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:01114745219400003741
+[2015-05-29 17:14:42,335][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:14:42,339][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:14:42,339][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745819400023913
+[2015-05-29 17:14:42,351][Test worker][DEBUG][DefaultLuckyNumberService] Use lucky number from REQUEUED RANGE(id=2) instead of main cycle.
+[2015-05-29 17:14:42,352][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:14:42,367][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:14:42,367][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.PayoutBalanceStrategy@57df81d2
+[2015-05-29 17:14:42,367][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:14:42,378][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=200]
+[2015-05-29 17:14:42,378][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:14:42,378][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999500.00, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=200]
+[2015-05-29 17:14:42,382][Test worker][DEBUG][DefaultVatSaleService] Operator(id=OPERATOR-111) is in B2C, has bought ticket(serialNO=01111745819400023913) of game Type: LUCKYNUMBER
+[2015-05-29 17:14:42,392][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.18]: transaction {
+  id: &quot;0115052900000000002475&quot;
+  dev_id: &quot;111&quot;
+  operator_id: &quot;OPERATOR-111&quot;
+  merchant_id: &quot;111&quot;
+  create_time: 1432890882000
+  trans_type: 200
+  game_id: &quot;LK-1&quot;
+  game_type: 18
+  total_amount: &quot;500.00&quot;
+}
+multi_draw: 1
+total_amount: &quot;500.00&quot;
+serial_no: &quot;y013eOifYgLRQ7g6vn/TJdv873klQ2qz&quot;
+game_instance {
+  id: &quot;GII-111&quot;
+}
+entries {
+  selected_number: &quot;6&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;7&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;8&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;9&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;10&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+
+[2015-05-29 17:14:42,393][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:14:42,393][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Magic100_Res.xml) by key(18.transtype.4200.-18).
+[2015-05-29 17:14:42,393][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction),mappingFile=xml-mapping/vat/SellTicket_Magic100_Res.xml
+[2015-05-29 17:14:42,393][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Magic100_Res.xml) by key(18.transtype.4200.-18).
+[2015-05-29 17:14:42,394][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction, mappingFile=xml-mapping/vat/SellTicket_Magic100_Res.xml).
+[2015-05-29 17:14:42,394][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:-18|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882304|Timestamp:20150529171442|Transaction-Type:4200|Transaction-Id:0115052900000000002475|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;4700&quot; code=&quot;foodA&quot; rate=&quot;0.1&quot; refNo=&quot;01114745219400003741&quot;&gt;&lt;Ticket serialNo=&quot;01111745819400023913&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xagOfh3a994UtE7XmvLRVDZo=&quot; type=&quot;1&quot; validationCode=&quot;321050&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;5&quot; totalAmount=&quot;500.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot; gameTypeId=&quot;18&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;9&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;10&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;&lt;/VAT&gt;):a05b70c93d284700957395edc3ded581
+[2015-05-29 17:14:42,395][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=1388) succesfully.
+[2015-05-29 17:14:42,395][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=1388): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;4700&quot; code=&quot;foodA&quot; rate=&quot;0.1&quot; refNo=&quot;01114745219400003741&quot;&gt;&lt;Ticket serialNo=&quot;01111745819400023913&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xagOfh3a994UtE7XmvLRVDZo=&quot; type=&quot;1&quot; validationCode=&quot;321050&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;5&quot; totalAmount=&quot;500.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot; gameTypeId=&quot;18&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;9&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;10&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;&lt;/VAT&gt;
+[2015-05-29 17:14:42,395][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Magic100_Res.xml) by key(18.transtype.4200.-18).
+[2015-05-29 17:14:42,400][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/RefundSale_Req.xml) by key(transtype.450).
+[2015-05-29 17:14:42,400][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction, mappingFile=xml-mapping/vat/RefundSale_Req.xml).
+[2015-05-29 17:14:42,400][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882399|Timestamp:20150529171442|Transaction-Type:450|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT refNo=&quot;01114745219400003741&quot;/&gt;,hash=-1237900649), get digest:1eeafee8fe7355366a0ebea0c6b73fc1
+[2015-05-29 17:14:42,400][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=450).
+[2015-05-29 17:14:42,400][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:42,400][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171442).
+[2015-05-29 17:14:42,401][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:42,401][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890882399).
+[2015-05-29 17:14:42,401][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:14:42,401][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:14:42,401][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=1eeafee8fe7355366a0ebea0c6b73fc1).
+[2015-05-29 17:14:42,401][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:14:42,401][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:14:42,401][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:14:42,402][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6gkSRfskr7XEYdsQVjbZoXURGMzBmX/2qPwZm/fJ1HZQNhJwKTF7xpk=.
+[2015-05-29 17:14:42,402][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882399|Timestamp:20150529171442|Transaction-Type:450|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:42,402][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT refNo=&quot;01114745219400003741&quot;/&gt;
+[2015-05-29 17:14:42,403][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882399|Timestamp:20150529171442|Transaction-Type:450|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT refNo=&quot;01114745219400003741&quot;/&gt;,hash=-1237900649), get digest:1eeafee8fe7355366a0ebea0c6b73fc1
+[2015-05-29 17:14:42,403][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/RefundSale_Req.xml) by key(transtype.450).
+[2015-05-29 17:14:42,403][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/vat/RefundSale_Req.xml
+[2015-05-29 17:14:42,403][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/RefundSale_Req.xml) by key(transtype.450).
+[2015-05-29 17:14:42,414][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_450_1.5.0).
+[2015-05-29 17:14:42,414][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_450_).
+[2015-05-29 17:14:42,414][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_450_), found controller(com.mpos.lottery.te.valueaddservice.vat.VatController@1aeefda9) and method(public void com.mpos.lottery.te.valueaddservice.vat.VatController.refund(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:42,420][Test worker][DEBUG][ReversalOrCancelStrategyFactory] Found ReversalStrategy(class com.mpos.lottery.te.valueaddservice.vat.support.VatReversalOrCancelStrategy) to cancel transaction(gameType=18,terminalId=111,transType=200,protocolVersion=1.5.0).
+[2015-05-29 17:14:42,429][Test worker][DEBUG][VatReversalOrCancelStrategy] The business type of trans(id=0115052900000000002475) is B2C, go to cancel magic100 sale.
+[2015-05-29 17:14:42,441][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999500, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=250]
+[2015-05-29 17:14:42,441][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:14:42,441][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=250]
+[2015-05-29 17:14:42,467][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:14:42,467][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.PayoutBalanceStrategy@57df81d2
+[2015-05-29 17:14:42,467][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:14:42,471][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(VAT_REFUND)
+[2015-05-29 17:14:42,471][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882399|Timestamp:20150529171442|Transaction-Type:4450|Transaction-Id:0115052900000000002483|Response-Code:200|):072564132b66623d14bfebb3388354bb
+[2015-05-29 17:14:42,471][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=0): 
+[2015-05-29 17:14:42,493][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:14:42,493][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:14:42,493][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@5a176b) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:14:42,494][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:14:42,494][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,494][Test worker][INFO ][BaseTransactionalIntegrationTest] | VatB2CSaleRefundIntegrationTest.test_Cancel_Magic100Sale_SingleBet_RoundUp_OK                                          |
+[2015-05-29 17:14:42,494][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,497][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Req.xml) by key(-2.transtype.200).
+[2015-05-29 17:14:42,498][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction, mappingFile=xml-mapping/vat/SellTicket_Req.xml).
+[2015-05-29 17:14:42,498][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882497|Timestamp:20150529171442|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;940&quot; code=&quot;foodA&quot; rate=&quot;0&quot;/&gt;,hash=-2094274142), get digest:610599a64fce3f5ea12cafbea55a0435
+[2015-05-29 17:14:42,498][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:14:42,498][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:42,498][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171442).
+[2015-05-29 17:14:42,499][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:42,499][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890882497).
+[2015-05-29 17:14:42,499][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:14:42,499][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:14:42,499][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=610599a64fce3f5ea12cafbea55a0435).
+[2015-05-29 17:14:42,499][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-2).
+[2015-05-29 17:14:42,499][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:14:42,499][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:14:42,500][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6m1r0kCL0Gd72PIRSa/j7rRTzPiVvg+pgDIcI6KSvtziv7gdRziqMQ/qHoSgf9HMxA==.
+[2015-05-29 17:14:42,500][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882497|Timestamp:20150529171442|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:42,501][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;940&quot; code=&quot;foodA&quot; rate=&quot;0&quot;/&gt;
+[2015-05-29 17:14:42,501][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882497|Timestamp:20150529171442|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;940&quot; code=&quot;foodA&quot; rate=&quot;0&quot;/&gt;,hash=-2094274142), get digest:610599a64fce3f5ea12cafbea55a0435
+[2015-05-29 17:14:42,501][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Req.xml) by key(-2.transtype.200).
+[2015-05-29 17:14:42,501][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/vat/SellTicket_Req.xml
+[2015-05-29 17:14:42,501][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Req.xml) by key(-2.transtype.200).
+[2015-05-29 17:14:42,512][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-2_200_1.5.0).
+[2015-05-29 17:14:42,512][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-2_200_).
+[2015-05-29 17:14:42,512][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-2_200_), found controller(com.mpos.lottery.te.valueaddservice.vat.VatController@1aeefda9) and method(public void com.mpos.lottery.te.valueaddservice.vat.VatController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:42,519][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:01114745219400003882
+[2015-05-29 17:14:42,526][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:14:42,530][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:14:42,531][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745819400024017
+[2015-05-29 17:14:42,545][Test worker][DEBUG][DefaultLuckyNumberService] Use lucky number from REQUEUED RANGE(id=1) instead of main cycle.
+[2015-05-29 17:14:42,545][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:14:42,558][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:14:42,558][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:14:42,558][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999900.00, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:14:42,562][Test worker][DEBUG][DefaultVatSaleService] Operator(id=OPERATOR-111) is in B2C, has bought ticket(serialNO=01111745819400024017) of game Type: LUCKYNUMBER
+[2015-05-29 17:14:42,572][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.18]: transaction {
+  id: &quot;0115052900000000002490&quot;
+  dev_id: &quot;111&quot;
+  operator_id: &quot;OPERATOR-111&quot;
+  merchant_id: &quot;111&quot;
+  create_time: 1432890882000
+  trans_type: 200
+  game_id: &quot;LK-1&quot;
+  game_type: 18
+  total_amount: &quot;100.00&quot;
+}
+multi_draw: 1
+total_amount: &quot;100.00&quot;
+serial_no: &quot;y013eOifYgLRQ7g6vn/TJUW12QCiadcm&quot;
+game_instance {
+  id: &quot;GII-111&quot;
+}
+entries {
+  selected_number: &quot;7&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+
+[2015-05-29 17:14:42,572][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:14:42,572][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Magic100_Res.xml) by key(18.transtype.4200.-18).
+[2015-05-29 17:14:42,573][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction),mappingFile=xml-mapping/vat/SellTicket_Magic100_Res.xml
+[2015-05-29 17:14:42,573][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Magic100_Res.xml) by key(18.transtype.4200.-18).
+[2015-05-29 17:14:42,573][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction, mappingFile=xml-mapping/vat/SellTicket_Magic100_Res.xml).
+[2015-05-29 17:14:42,573][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:-18|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882497|Timestamp:20150529171442|Transaction-Type:4200|Transaction-Id:0115052900000000002490|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;940&quot; code=&quot;foodA&quot; rate=&quot;0.1&quot; refNo=&quot;01114745219400003882&quot;&gt;&lt;Ticket serialNo=&quot;01111745819400024017&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xagOfh3a994UtSiPAFnSmvhs=&quot; type=&quot;1&quot; validationCode=&quot;846088&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;1&quot; totalAmount=&quot;100.00&quot; isWinning=&quot;0&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot; gameTypeId=&quot;18&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;&lt;/VAT&gt;):bc3bed91e75e6b8ca9296d1e805ea7af
+[2015-05-29 17:14:42,574][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=736) succesfully.
+[2015-05-29 17:14:42,574][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=736): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;940&quot; code=&quot;foodA&quot; rate=&quot;0.1&quot; refNo=&quot;01114745219400003882&quot;&gt;&lt;Ticket serialNo=&quot;01111745819400024017&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xagOfh3a994UtSiPAFnSmvhs=&quot; type=&quot;1&quot; validationCode=&quot;846088&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;1&quot; totalAmount=&quot;100.00&quot; isWinning=&quot;0&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot; gameTypeId=&quot;18&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;&lt;/VAT&gt;
+[2015-05-29 17:14:42,574][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Magic100_Res.xml) by key(18.transtype.4200.-18).
+[2015-05-29 17:14:42,578][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/RefundSale_Req.xml) by key(transtype.450).
+[2015-05-29 17:14:42,579][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction, mappingFile=xml-mapping/vat/RefundSale_Req.xml).
+[2015-05-29 17:14:42,579][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882578|Timestamp:20150529171442|Transaction-Type:450|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT refNo=&quot;01114745219400003882&quot;/&gt;,hash=-1661154340), get digest:6611608c5645e9a5ac06d94537d0cbc2
+[2015-05-29 17:14:42,579][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=450).
+[2015-05-29 17:14:42,579][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:42,579][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171442).
+[2015-05-29 17:14:42,579][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:42,579][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890882578).
+[2015-05-29 17:14:42,579][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:14:42,579][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:14:42,579][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=6611608c5645e9a5ac06d94537d0cbc2).
+[2015-05-29 17:14:42,579][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:14:42,579][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:14:42,579][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:14:42,581][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6gkSRfskr7XEYdsQVjbZoXURGMzBmX/2qLxx/xCVRztwGZo7fngJkcU=.
+[2015-05-29 17:14:42,581][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882578|Timestamp:20150529171442|Transaction-Type:450|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:42,616][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT refNo=&quot;01114745219400003882&quot;/&gt;
+[2015-05-29 17:14:42,616][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882578|Timestamp:20150529171442|Transaction-Type:450|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT refNo=&quot;01114745219400003882&quot;/&gt;,hash=-1661154340), get digest:6611608c5645e9a5ac06d94537d0cbc2
+[2015-05-29 17:14:42,616][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/RefundSale_Req.xml) by key(transtype.450).
+[2015-05-29 17:14:42,616][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/vat/RefundSale_Req.xml
+[2015-05-29 17:14:42,616][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/RefundSale_Req.xml) by key(transtype.450).
+[2015-05-29 17:14:42,628][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_450_1.5.0).
+[2015-05-29 17:14:42,628][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_450_).
+[2015-05-29 17:14:42,628][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_450_), found controller(com.mpos.lottery.te.valueaddservice.vat.VatController@1aeefda9) and method(public void com.mpos.lottery.te.valueaddservice.vat.VatController.refund(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:42,634][Test worker][DEBUG][ReversalOrCancelStrategyFactory] Found ReversalStrategy(class com.mpos.lottery.te.valueaddservice.vat.support.VatReversalOrCancelStrategy) to cancel transaction(gameType=18,terminalId=111,transType=200,protocolVersion=1.5.0).
+[2015-05-29 17:14:42,643][Test worker][DEBUG][VatReversalOrCancelStrategy] The business type of trans(id=0115052900000000002490) is B2C, go to cancel magic100 sale.
+[2015-05-29 17:14:42,664][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999900, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=10]
+[2015-05-29 17:14:42,664][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:14:42,664][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=10]
+[2015-05-29 17:14:42,688][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(VAT_REFUND)
+[2015-05-29 17:14:42,688][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882578|Timestamp:20150529171442|Transaction-Type:4450|Transaction-Id:0115052900000000002493|Response-Code:200|):06371da54e061cf20e05766a813d9134
+[2015-05-29 17:14:42,688][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=0): 
+[2015-05-29 17:14:42,706][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:14:42,706][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:14:42,706][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@1a946001) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:14:42,707][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:14:42,707][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,707][Test worker][INFO ][BaseTransactionalIntegrationTest] | VatB2CSaleRefundIntegrationTest.test_Cancel_RaffleSale_SingleBet_OK                                                    |
+[2015-05-29 17:14:42,707][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,709][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Req.xml) by key(-2.transtype.200).
+[2015-05-29 17:14:42,709][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction, mappingFile=xml-mapping/vat/SellTicket_Req.xml).
+[2015-05-29 17:14:42,710][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882709|Timestamp:20150529171442|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;940&quot; code=&quot;foodA&quot; buyerTaxNo=&quot;TAX-112&quot; rate=&quot;0&quot;/&gt;,hash=448670536), get digest:ad92392f91d81dff5c069bdedaf6b651
+[2015-05-29 17:14:42,710][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:14:42,710][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:42,710][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171442).
+[2015-05-29 17:14:42,710][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:42,710][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890882709).
+[2015-05-29 17:14:42,710][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:14:42,710][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:14:42,710][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=ad92392f91d81dff5c069bdedaf6b651).
+[2015-05-29 17:14:42,710][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-2).
+[2015-05-29 17:14:42,710][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:14:42,710][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:14:42,711][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6m1r0kCL0Gd72PIRSa/j7rRTzPiVvg+pgDIcI6KSvtziHVgBF4fZ+ahYP0oo2aOKiFKXMm2CMMW3XaOOUUKqeuarORo6J6A/HA==.
+[2015-05-29 17:14:42,712][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882709|Timestamp:20150529171442|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:42,712][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;940&quot; code=&quot;foodA&quot; buyerTaxNo=&quot;TAX-112&quot; rate=&quot;0&quot;/&gt;
+[2015-05-29 17:14:42,712][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882709|Timestamp:20150529171442|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;940&quot; code=&quot;foodA&quot; buyerTaxNo=&quot;TAX-112&quot; rate=&quot;0&quot;/&gt;,hash=448670536), get digest:ad92392f91d81dff5c069bdedaf6b651
+[2015-05-29 17:14:42,712][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Req.xml) by key(-2.transtype.200).
+[2015-05-29 17:14:42,712][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/vat/SellTicket_Req.xml
+[2015-05-29 17:14:42,712][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Req.xml) by key(-2.transtype.200).
+[2015-05-29 17:14:42,729][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-2_200_1.5.0).
+[2015-05-29 17:14:42,729][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-2_200_).
+[2015-05-29 17:14:42,729][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-2_200_), found controller(com.mpos.lottery.te.valueaddservice.vat.VatController@1aeefda9) and method(public void com.mpos.lottery.te.valueaddservice.vat.VatController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:42,736][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:01114745219400003967
+[2015-05-29 17:14:42,743][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:14:42,744][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745419400024191
+[2015-05-29 17:14:42,748][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:14:42,758][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:14:42,758][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:14:42,758][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999900, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:14:42,760][Test worker][WARN ][BaseJpaDao] Should be at most only 1 entity(com.mpos.lottery.te.merchant.domain.OperatorCommission) found, however total 2 entities found... the 1st entity(com.mpos.lottery.te.merchant.domain.OperatorCommission@6bfbc62a) will be returned.
+[2015-05-29 17:14:42,765][Test worker][DEBUG][DefaultVatSaleService] Operator(id=OPERATOR-111) is in B2B, has bought ticket(serialNO=01111745419400024191) of game Type: RAFFLE
+[2015-05-29 17:14:42,774][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.14]: transaction {
+  id: &quot;0115052900000000002496&quot;
+  dev_id: &quot;111&quot;
+  operator_id: &quot;OPERATOR-111&quot;
+  merchant_id: &quot;111&quot;
+  create_time: 1432890882000
+  trans_type: 200
+  game_id: &quot;RA-1&quot;
+  game_type: 14
+  total_amount: &quot;100&quot;
+}
+multi_draw: 1
+total_amount: &quot;100&quot;
+serial_no: &quot;y013eOifYgLGbGoBsy6Aiqo6cLuOp2XW&quot;
+game_instance {
+  id: &quot;GII-112&quot;
+}
+
+[2015-05-29 17:14:42,774][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:14:42,775][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Raffle_Res.xml) by key(14.transtype.4200.-14).
+[2015-05-29 17:14:42,775][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction),mappingFile=xml-mapping/vat/SellTicket_Raffle_Res.xml
+[2015-05-29 17:14:42,775][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Raffle_Res.xml) by key(14.transtype.4200.-14).
+[2015-05-29 17:14:42,775][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction, mappingFile=xml-mapping/vat/SellTicket_Raffle_Res.xml).
+[2015-05-29 17:14:42,775][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:-14|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882709|Timestamp:20150529171442|Transaction-Type:4200|Transaction-Id:0115052900000000002496|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;940&quot; code=&quot;foodA&quot; buyerTaxNo=&quot;TAX-112&quot; rate=&quot;0.1&quot; refNo=&quot;01114745219400003967&quot;&gt;&lt;Ticket serialNo=&quot;01111745419400024191&quot; totalAmount=&quot;100&quot; type=&quot;1&quot; lastDrawNo=&quot;11002&quot; barcode=&quot;14cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xatr3+ynZTK23CpZdsdvyuy0=&quot; validationCode=&quot;261090&quot; multipleDraws=&quot;1&quot; totalBets=&quot;1&quot;&gt;&lt;GameDraw number=&quot;11002&quot; gameId=&quot;RA-1&quot; gameTypeId=&quot;14&quot;/&gt;&lt;/Ticket&gt;&lt;/VAT&gt;):96c2c3761e7e77cd122f72eb9246800b
+[2015-05-29 17:14:42,776][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=588) succesfully.
+[2015-05-29 17:14:42,776][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=588): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;940&quot; code=&quot;foodA&quot; buyerTaxNo=&quot;TAX-112&quot; rate=&quot;0.1&quot; refNo=&quot;01114745219400003967&quot;&gt;&lt;Ticket serialNo=&quot;01111745419400024191&quot; totalAmount=&quot;100&quot; type=&quot;1&quot; lastDrawNo=&quot;11002&quot; barcode=&quot;14cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xatr3+ynZTK23CpZdsdvyuy0=&quot; validationCode=&quot;261090&quot; multipleDraws=&quot;1&quot; totalBets=&quot;1&quot;&gt;&lt;GameDraw number=&quot;11002&quot; gameId=&quot;RA-1&quot; gameTypeId=&quot;14&quot;/&gt;&lt;/Ticket&gt;&lt;/VAT&gt;
+[2015-05-29 17:14:42,776][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Raffle_Res.xml) by key(14.transtype.4200.-14).
+[2015-05-29 17:14:42,780][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/RefundSale_Req.xml) by key(transtype.450).
+[2015-05-29 17:14:42,780][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction, mappingFile=xml-mapping/vat/RefundSale_Req.xml).
+[2015-05-29 17:14:42,781][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882780|Timestamp:20150529171442|Transaction-Type:450|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT refNo=&quot;01114745219400003967&quot;/&gt;,hash=1911437293), get digest:8013f35fc591981a93dab92114ebd1fa
+[2015-05-29 17:14:42,781][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=450).
+[2015-05-29 17:14:42,781][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:42,781][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171442).
+[2015-05-29 17:14:42,781][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:42,781][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890882780).
+[2015-05-29 17:14:42,781][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:14:42,781][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:14:42,781][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=8013f35fc591981a93dab92114ebd1fa).
+[2015-05-29 17:14:42,781][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:14:42,782][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:14:42,782][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:14:42,784][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6gkSRfskr7XEYdsQVjbZoXURGMzBmX/2qLETZX1X6a1d61y8lu2Bzf8=.
+[2015-05-29 17:14:42,784][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882780|Timestamp:20150529171442|Transaction-Type:450|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:42,785][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT refNo=&quot;01114745219400003967&quot;/&gt;
+[2015-05-29 17:14:42,785][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882780|Timestamp:20150529171442|Transaction-Type:450|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT refNo=&quot;01114745219400003967&quot;/&gt;,hash=1911437293), get digest:8013f35fc591981a93dab92114ebd1fa
+[2015-05-29 17:14:42,785][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/RefundSale_Req.xml) by key(transtype.450).
+[2015-05-29 17:14:42,785][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/vat/RefundSale_Req.xml
+[2015-05-29 17:14:42,785][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/RefundSale_Req.xml) by key(transtype.450).
+[2015-05-29 17:14:42,796][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_450_1.5.0).
+[2015-05-29 17:14:42,796][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_450_).
+[2015-05-29 17:14:42,796][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_450_), found controller(com.mpos.lottery.te.valueaddservice.vat.VatController@1aeefda9) and method(public void com.mpos.lottery.te.valueaddservice.vat.VatController.refund(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:42,802][Test worker][DEBUG][ReversalOrCancelStrategyFactory] Found ReversalStrategy(class com.mpos.lottery.te.valueaddservice.vat.support.VatReversalOrCancelStrategy) to cancel transaction(gameType=14,terminalId=111,transType=200,protocolVersion=1.5.0).
+[2015-05-29 17:14:42,810][Test worker][DEBUG][VatReversalOrCancelStrategy] The business type of trans(id=0115052900000000002496) is B2B, go to cancel raffle sale.
+[2015-05-29 17:14:42,822][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999900, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:14:42,822][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:14:42,822][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:14:42,833][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(VAT_REFUND)
+[2015-05-29 17:14:42,833][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882780|Timestamp:20150529171442|Transaction-Type:4450|Transaction-Id:0115052900000000002499|Response-Code:200|):b3734b88ec2bd41e2e0ccaf83a46c27d
+[2015-05-29 17:14:42,833][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=0): 
+[2015-05-29 17:14:42,856][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:14:42,857][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:14:42,857][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@18bceb3d) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:14:42,857][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:14:42,857][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,857][Test worker][INFO ][BaseTransactionalIntegrationTest] | VatB2CSaleRefundIntegrationTest.testCancel_Magic100Sale_NoTicket_OK                                                    |
+[2015-05-29 17:14:42,857][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,862][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Req.xml) by key(-2.transtype.200).
+[2015-05-29 17:14:42,862][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction, mappingFile=xml-mapping/vat/SellTicket_Req.xml).
+[2015-05-29 17:14:42,862][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882861|Timestamp:20150529171442|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;4700&quot; code=&quot;foodA&quot; rate=&quot;0&quot;/&gt;,hash=1779455413), get digest:17ed7d149bc3f5e2ad9307146bf5a292
+[2015-05-29 17:14:42,863][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:14:42,863][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:42,863][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171442).
+[2015-05-29 17:14:42,863][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:42,863][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890882861).
+[2015-05-29 17:14:42,863][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:14:42,863][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:14:42,863][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=17ed7d149bc3f5e2ad9307146bf5a292).
+[2015-05-29 17:14:42,863][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-2).
+[2015-05-29 17:14:42,863][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:14:42,863][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:14:42,864][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6m1r0kCL0Gd72PIRSa/j7rTA4st7CTbg46rDAGBzRDpO6vBpWuXT93TiR1lz6npuNg==.
+[2015-05-29 17:14:42,865][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882861|Timestamp:20150529171442|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:42,865][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;4700&quot; code=&quot;foodA&quot; rate=&quot;0&quot;/&gt;
+[2015-05-29 17:14:42,865][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882861|Timestamp:20150529171442|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;4700&quot; code=&quot;foodA&quot; rate=&quot;0&quot;/&gt;,hash=1779455413), get digest:17ed7d149bc3f5e2ad9307146bf5a292
+[2015-05-29 17:14:42,865][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Req.xml) by key(-2.transtype.200).
+[2015-05-29 17:14:42,865][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/vat/SellTicket_Req.xml
+[2015-05-29 17:14:42,865][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Req.xml) by key(-2.transtype.200).
+[2015-05-29 17:14:42,876][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-2_200_1.5.0).
+[2015-05-29 17:14:42,876][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-2_200_).
+[2015-05-29 17:14:42,876][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-2_200_), found controller(com.mpos.lottery.te.valueaddservice.vat.VatController@1aeefda9) and method(public void com.mpos.lottery.te.valueaddservice.vat.VatController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:42,883][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:01114745219400004032
+[2015-05-29 17:14:42,884][Test worker][INFO ][DefaultVatSaleService] THe vat amount(4700) is under minial threshold amount of sale: 9999999999
+[2015-05-29 17:14:42,893][Test worker][DEBUG][CommonFacadeService] No sale message found, won't publish.
+[2015-05-29 17:14:42,894][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Magic100_Res.xml) by key(18.transtype.4200.-18).
+[2015-05-29 17:14:42,894][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction),mappingFile=xml-mapping/vat/SellTicket_Magic100_Res.xml
+[2015-05-29 17:14:42,894][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Magic100_Res.xml) by key(18.transtype.4200.-18).
+[2015-05-29 17:14:42,894][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction, mappingFile=xml-mapping/vat/SellTicket_Magic100_Res.xml).
+[2015-05-29 17:14:42,894][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:-18|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882861|Timestamp:20150529171442|Transaction-Type:4200|Transaction-Id:0115052900000000002500|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;4700&quot; code=&quot;foodA&quot; rate=&quot;0.1&quot; refNo=&quot;01114745219400004032&quot;/&gt;):89555c3ee14d0f2ee6f96a2231cab2d6
+[2015-05-29 17:14:42,894][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=160) succesfully.
+[2015-05-29 17:14:42,895][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=160): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;4700&quot; code=&quot;foodA&quot; rate=&quot;0.1&quot; refNo=&quot;01114745219400004032&quot;/&gt;
+[2015-05-29 17:14:42,895][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Magic100_Res.xml) by key(18.transtype.4200.-18).
+[2015-05-29 17:14:42,896][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/RefundSale_Req.xml) by key(transtype.450).
+[2015-05-29 17:14:42,897][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction, mappingFile=xml-mapping/vat/RefundSale_Req.xml).
+[2015-05-29 17:14:42,897][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882896|Timestamp:20150529171442|Transaction-Type:450|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT refNo=&quot;01114745219400004032&quot;/&gt;,hash=1427381023), get digest:724aaa63706cc14d35dfdc4642b2d0cd
+[2015-05-29 17:14:42,897][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=450).
+[2015-05-29 17:14:42,897][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:42,897][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171442).
+[2015-05-29 17:14:42,897][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:42,897][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890882896).
+[2015-05-29 17:14:42,897][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:14:42,897][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:14:42,897][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=724aaa63706cc14d35dfdc4642b2d0cd).
+[2015-05-29 17:14:42,897][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:14:42,897][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:14:42,897][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:14:42,899][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6gkSRfskr7XEYdsQVjbZoXURGMzBmX/2qEEgZie6pQTx+lUbN3aMh2c=.
+[2015-05-29 17:14:42,899][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882896|Timestamp:20150529171442|Transaction-Type:450|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:42,899][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT refNo=&quot;01114745219400004032&quot;/&gt;
+[2015-05-29 17:14:42,899][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882896|Timestamp:20150529171442|Transaction-Type:450|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT refNo=&quot;01114745219400004032&quot;/&gt;,hash=1427381023), get digest:724aaa63706cc14d35dfdc4642b2d0cd
+[2015-05-29 17:14:42,899][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/RefundSale_Req.xml) by key(transtype.450).
+[2015-05-29 17:14:42,899][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/vat/RefundSale_Req.xml
+[2015-05-29 17:14:42,899][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/RefundSale_Req.xml) by key(transtype.450).
+[2015-05-29 17:14:42,911][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_450_1.5.0).
+[2015-05-29 17:14:42,911][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_450_).
+[2015-05-29 17:14:42,911][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_450_), found controller(com.mpos.lottery.te.valueaddservice.vat.VatController@1aeefda9) and method(public void com.mpos.lottery.te.valueaddservice.vat.VatController.refund(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:42,917][Test worker][DEBUG][ReversalOrCancelStrategyFactory] Found ReversalStrategy(class com.mpos.lottery.te.valueaddservice.vat.support.VatReversalOrCancelStrategy) to cancel transaction(gameType=18,terminalId=111,transType=200,protocolVersion=1.5.0).
+[2015-05-29 17:14:42,931][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(VAT_REFUND)
+[2015-05-29 17:14:42,932][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882896|Timestamp:20150529171442|Transaction-Type:4450|Transaction-Id:0115052900000000002501|Response-Code:200|):227861f5da2eedd5de0fc85b5af0d6f4
+[2015-05-29 17:14:42,932][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=0): 
+[2015-05-29 17:14:42,954][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:14:42,955][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:14:42,955][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@7797ae36) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:14:42,955][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:14:42,955][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,955][Test worker][INFO ][BaseTransactionalIntegrationTest] | VatB2CSaleRefundIntegrationTest.testCancel_Magic100Sale_MultiBets_RoundDown_OK                                         |
+[2015-05-29 17:14:42,956][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:42,966][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Req.xml) by key(-2.transtype.200).
+[2015-05-29 17:14:42,966][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction, mappingFile=xml-mapping/vat/SellTicket_Req.xml).
+[2015-05-29 17:14:42,967][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882966|Timestamp:20150529171442|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;4700&quot; code=&quot;foodA&quot; rate=&quot;0&quot;/&gt;,hash=562433659), get digest:5f4d44dd064d46aa0523d62ff9f4200f
+[2015-05-29 17:14:42,967][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:14:42,967][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:42,967][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171442).
+[2015-05-29 17:14:42,967][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:42,967][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890882966).
+[2015-05-29 17:14:42,967][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:14:42,967][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:14:42,967][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=5f4d44dd064d46aa0523d62ff9f4200f).
+[2015-05-29 17:14:42,967][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-2).
+[2015-05-29 17:14:42,967][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:14:42,967][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:14:42,970][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6m1r0kCL0Gd72PIRSa/j7rTA4st7CTbg46rDAGBzRDpO6vBpWuXT93TiR1lz6npuNg==.
+[2015-05-29 17:14:42,970][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882966|Timestamp:20150529171442|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:42,970][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;4700&quot; code=&quot;foodA&quot; rate=&quot;0&quot;/&gt;
+[2015-05-29 17:14:42,970][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882966|Timestamp:20150529171442|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;4700&quot; code=&quot;foodA&quot; rate=&quot;0&quot;/&gt;,hash=562433659), get digest:5f4d44dd064d46aa0523d62ff9f4200f
+[2015-05-29 17:14:42,970][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Req.xml) by key(-2.transtype.200).
+[2015-05-29 17:14:42,970][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/vat/SellTicket_Req.xml
+[2015-05-29 17:14:42,970][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Req.xml) by key(-2.transtype.200).
+[2015-05-29 17:14:42,985][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-2_200_1.5.0).
+[2015-05-29 17:14:42,985][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-2_200_).
+[2015-05-29 17:14:42,985][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-2_200_), found controller(com.mpos.lottery.te.valueaddservice.vat.VatController@1aeefda9) and method(public void com.mpos.lottery.te.valueaddservice.vat.VatController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:42,993][Test worker][DEBUG][UUIDServiceImpl] Assemble a new reference No.:01114745219400004159
+[2015-05-29 17:14:43,002][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:14:43,006][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:14:43,006][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745819400024263
+[2015-05-29 17:14:43,018][Test worker][DEBUG][DefaultLuckyNumberService] Use lucky number from REQUEUED RANGE(id=2) instead of main cycle.
+[2015-05-29 17:14:43,018][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:14:43,032][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:14:43,032][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.PayoutBalanceStrategy@57df81d2
+[2015-05-29 17:14:43,032][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:14:43,042][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=200]
+[2015-05-29 17:14:43,043][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:14:43,043][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999600.00, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=200]
+[2015-05-29 17:14:43,047][Test worker][DEBUG][DefaultVatSaleService] Operator(id=OPERATOR-111) is in B2C, has bought ticket(serialNO=01111745819400024263) of game Type: LUCKYNUMBER
+[2015-05-29 17:14:43,057][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.18]: transaction {
+  id: &quot;0115052900000000002502&quot;
+  dev_id: &quot;111&quot;
+  operator_id: &quot;OPERATOR-111&quot;
+  merchant_id: &quot;111&quot;
+  create_time: 1432890882000
+  trans_type: 200
+  game_id: &quot;LK-1&quot;
+  game_type: 18
+  total_amount: &quot;400.00&quot;
+}
+multi_draw: 1
+total_amount: &quot;400.00&quot;
+serial_no: &quot;y013eOifYgLRQ7g6vn/TJbpskfeAoN//&quot;
+game_instance {
+  id: &quot;GII-111&quot;
+}
+entries {
+  selected_number: &quot;6&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;7&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;8&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;9&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+
+[2015-05-29 17:14:43,057][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:14:43,057][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Magic100_Res.xml) by key(18.transtype.4200.-18).
+[2015-05-29 17:14:43,057][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction),mappingFile=xml-mapping/vat/SellTicket_Magic100_Res.xml
+[2015-05-29 17:14:43,057][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Magic100_Res.xml) by key(18.transtype.4200.-18).
+[2015-05-29 17:14:43,058][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction, mappingFile=xml-mapping/vat/SellTicket_Magic100_Res.xml).
+[2015-05-29 17:14:43,058][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:-18|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890882966|Timestamp:20150529171442|Transaction-Type:4200|Transaction-Id:0115052900000000002502|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;4700&quot; code=&quot;foodA&quot; rate=&quot;0.1&quot; refNo=&quot;01114745219400004159&quot;&gt;&lt;Ticket serialNo=&quot;01111745819400024263&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xagOfh3a994Utp8uu9jvLpP8=&quot; type=&quot;1&quot; validationCode=&quot;273839&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;4&quot; totalAmount=&quot;400.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot; gameTypeId=&quot;18&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;9&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;&lt;/VAT&gt;):d30bcee273746eb88dfc9f0298c12910
+[2015-05-29 17:14:43,059][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=1228) succesfully.
+[2015-05-29 17:14:43,059][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=1228): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT totalAmount=&quot;4700&quot; code=&quot;foodA&quot; rate=&quot;0.1&quot; refNo=&quot;01114745219400004159&quot;&gt;&lt;Ticket serialNo=&quot;01111745819400024263&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xagOfh3a994Utp8uu9jvLpP8=&quot; type=&quot;1&quot; validationCode=&quot;273839&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;4&quot; totalAmount=&quot;400.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot; gameTypeId=&quot;18&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;9&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;&lt;/VAT&gt;
+[2015-05-29 17:14:43,059][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/SellTicket_Magic100_Res.xml) by key(18.transtype.4200.-18).
+[2015-05-29 17:14:43,065][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/RefundSale_Req.xml) by key(transtype.450).
+[2015-05-29 17:14:43,065][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction, mappingFile=xml-mapping/vat/RefundSale_Req.xml).
+[2015-05-29 17:14:43,065][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890883064|Timestamp:20150529171443|Transaction-Type:450|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT refNo=&quot;01114745219400004159&quot;/&gt;,hash=318720816), get digest:c223d1b41164379310ec6c2d72f1ab8d
+[2015-05-29 17:14:43,065][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=450).
+[2015-05-29 17:14:43,065][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:43,066][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171443).
+[2015-05-29 17:14:43,066][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:43,066][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890883064).
+[2015-05-29 17:14:43,066][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:14:43,066][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:14:43,066][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=c223d1b41164379310ec6c2d72f1ab8d).
+[2015-05-29 17:14:43,066][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:14:43,066][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:14:43,066][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:14:43,067][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6gkSRfskr7XEYdsQVjbZoXURGMzBmX/2qD4RzvgPIo0A+x2jxP//mks=.
+[2015-05-29 17:14:43,068][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890883064|Timestamp:20150529171443|Transaction-Type:450|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:43,068][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT refNo=&quot;01114745219400004159&quot;/&gt;
+[2015-05-29 17:14:43,068][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890883064|Timestamp:20150529171443|Transaction-Type:450|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;VAT refNo=&quot;01114745219400004159&quot;/&gt;,hash=318720816), get digest:c223d1b41164379310ec6c2d72f1ab8d
+[2015-05-29 17:14:43,068][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/RefundSale_Req.xml) by key(transtype.450).
+[2015-05-29 17:14:43,068][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/vat/RefundSale_Req.xml
+[2015-05-29 17:14:43,068][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vat/RefundSale_Req.xml) by key(transtype.450).
+[2015-05-29 17:14:43,080][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_450_1.5.0).
+[2015-05-29 17:14:43,080][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_450_).
+[2015-05-29 17:14:43,080][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_450_), found controller(com.mpos.lottery.te.valueaddservice.vat.VatController@1aeefda9) and method(public void com.mpos.lottery.te.valueaddservice.vat.VatController.refund(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:43,087][Test worker][DEBUG][ReversalOrCancelStrategyFactory] Found ReversalStrategy(class com.mpos.lottery.te.valueaddservice.vat.support.VatReversalOrCancelStrategy) to cancel transaction(gameType=18,terminalId=111,transType=200,protocolVersion=1.5.0).
+[2015-05-29 17:14:43,097][Test worker][DEBUG][VatReversalOrCancelStrategy] The business type of trans(id=0115052900000000002502) is B2C, go to cancel magic100 sale.
+[2015-05-29 17:14:43,109][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999600, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=240]
+[2015-05-29 17:14:43,109][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:14:43,109][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=240]
+[2015-05-29 17:14:43,134][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:14:43,134][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.PayoutBalanceStrategy@57df81d2
+[2015-05-29 17:14:43,134][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:14:43,137][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(VAT_REFUND)
+[2015-05-29 17:14:43,138][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890883064|Timestamp:20150529171443|Transaction-Type:4450|Transaction-Id:0115052900000000002509|Response-Code:200|):0adb2f48012f750493f0b5135cad62b9
+[2015-05-29 17:14:43,138][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=0): 
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>Generated by 
+<a href="http://www.gradle.org">Gradle 2.2.1</a> at 2015-5-29 17:14:48</p>
+</div>
+</div>
+</body>

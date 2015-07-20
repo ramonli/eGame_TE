@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LottoEntry.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.lotto.sale.domain</a> &gt; <span class="el_source">LottoEntry.java</span></div><h1>LottoEntry.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.lotto.sale.domain;
+
+import com.mpos.lottery.te.gamespec.sale.BaseEntry;
+
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;TE_LOTTO_ENTRY&quot;)
+<span class="fc" id="L13">public class LottoEntry extends BaseEntry implements Cloneable {</span>
+    private static final long serialVersionUID = 5822866924138705689L;
+
+    /**
+     * THe count of multiple of this entry.
+     */
+<span class="fc" id="L19">    @Column(name = &quot;MULTIPLE_COUNT&quot;)</span>
+    private int multipleCount = 1;
+
+    /**
+     * The total boost amount of current entry.
+     */
+<span class="fc" id="L25">    @Column(name = &quot;BOOST_AMOUNT&quot;)</span>
+    private BigDecimal boostAmount = new BigDecimal(&quot;0&quot;);
+
+    public BigDecimal getBoostAmount() {
+<span class="fc" id="L29">        return boostAmount;</span>
+    }
+
+    public void setBoostAmount(BigDecimal boostAmount) {
+<span class="fc" id="L33">        this.boostAmount = boostAmount;</span>
+<span class="fc" id="L34">    }</span>
+
+    public int getMultipleCount() {
+<span class="fc" id="L37">        return multipleCount;</span>
+    }
+
+    public void setMultipleCount(int multipleCount) {
+<span class="fc" id="L41">        this.multipleCount = multipleCount;</span>
+<span class="fc" id="L42">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

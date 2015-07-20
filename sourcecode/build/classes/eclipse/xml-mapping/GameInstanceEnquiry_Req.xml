@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+	<class name="com.mpos.lottery.te.gamespec.game.web.GameInstanceDto">
+		<map-to xml="GameInstance" />
+
+		<field name="number" type="java.lang.String" required="false">
+			<bind-xml name="number" node="attribute" />
+		</field>
+		<field name="gameId" type="java.lang.String" required="false">
+			<bind-xml name="gameId" node="attribute" />
+		</field>
+		<field name="gameType" type="integer" required="true">
+			<bind-xml name="gameType" node="attribute" />
+		</field>
+	</class>
+</mapping>

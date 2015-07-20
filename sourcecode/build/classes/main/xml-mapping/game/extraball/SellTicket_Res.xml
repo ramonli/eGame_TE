@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+	<class name="com.mpos.lottery.te.gameimpl.extraball.sale.ExtraBallTicket">
+		<map-to xml="Ticket" />
+
+		<field name="rawSerialNo" type="java.lang.String" required="true">
+			<bind-xml name="serialNo" node="attribute" />
+		</field>
+        <field name="ticketType" type="integer" required="true">
+            <bind-xml name="type" node="attribute" />
+        </field>
+        <field name="lastDrawNo" type="java.lang.String" required="true">
+            <bind-xml name="lastDrawNo" node="attribute" />
+        </field>        		
+	</class>
+
+</mapping>

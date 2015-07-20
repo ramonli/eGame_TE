@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="hoursebet-test" basedir="..">
+	<property name="report.dir" value="${build.dir}/report" />
+	<property name="classes.test.dir" value="${build.dir}/test-classes" />
+	<property name="test.report.dir" value="${report.dir}/test-report" />
+	<property name="coverage.report.dir" value="${report.dir}/coverage" />
+	<property name="instrument.classes.dir" value="${build.dir}/instrument-classes" />
+
+	<target name="init-test" description="Initialize test environment.">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| I N I T   T E S T                                     |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<mkdir dir="${test.report.dir}" />
+		<mkdir dir="${coverage.report.dir}" />
+		<mkdir dir="${instrument.classes.dir}" />
+	</target>
+
+	<taskdef classpathref="lib.classpath" resource="tasks.properties" />
+	<target name="instrument" description="Instrument classes which will be tested.">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| I N S T R U M E N T                                   |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<!-- gurantee that main source code have been compiled. -->
+		<cobertura-instrument todir="${instrument.classes.dir}" datafile="${tmp.dir}/cobertura.ser">
+			<fileset dir="${classes.dir}">
+				<include name="**/*.class" />
+			</fileset>
+		</cobertura-instrument>
+	</target>
+
+	<target name="compile-test" description="compile test source code.">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| C O M P I L E    T E S T                              |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<mkdir dir="${classes.test.dir}" />
+		<javac encoding="${javac.encoding}" destdir="${classes.test.dir}" 
+			failonerror="${javac.failonerror}" debug="${javac.debug}">
+			<classpath refid="project.classpath" />
+			<src path="${src.test.dir}" />
+		</javac>
+		<copy todir="${classes.test.dir}" >
+			<fileset dir="${src.dir}/test/resource" />
+		</copy>
+	</target>
+
+	<target name="load-test" if="bootstrap" 
+		description="Load test data into database only when you specify '-Dbootstrap=true'.">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| L O A D    T E S T    D A T A                         |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>${jdbc.driver}</echo>
+
+		<sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.user}" 
+			password="${jdbc.password}" src="${etc.dir}/db/oracle_testdata.sql" 
+			classpathref="project.classpath" onerror="continue" />
+		<antcall target="update-test" />
+	</target>
+	
+	<target name="update-test" if="encryptticket" 
+	   description="Encrypt the serial number of LOTTO ticket.">
+        <echo>+-------------------------------------------------------+</echo>
+        <echo>| E N C R Y P T I O N   T I C K E T                     |</echo>
+        <echo>+-------------------------------------------------------+</echo>
+
+        <sql driver="${jdbc.driver}" url="${jdbc.url}" userid="${jdbc.user}" 
+            password="${jdbc.password}" src="${etc.dir}/db/oracle_testdata_encryption.sql" 
+            classpathref="project.classpath" onerror="continue" />  		
+	</target>
+
+	<target name="unittest" description="Do unit test.">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| U N I T T E S T                                       |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<junit fork="true" printsummary="withOutAndErr" errorproperty="test.error" showoutput="on">
+			<!-- 
+			    change the path of cobertura, guarantee that the path is identical with 
+			    cobertura-instrument,cobertura-report. 
+			-->
+			<sysproperty key="net.sourceforge.cobertura.datafile" file="${tmp.dir}/cobertura.ser" />
+			<!--
+	            Note the classpath order: instrumented classes are before the
+	            original (uninstrumented) classes.  This is important.
+	        -->
+			<classpath location="${instrument.classes.dir}" />
+			<classpath>
+				<!-- the instrumented classes must be previous to original classes on classpaths. -->
+				<pathelement location="${classes.test.dir}" />
+				<pathelement location="${classes.dir}" />
+				<path refid="lib.classpath" />
+			</classpath>
+
+			<formatter type="xml" />
+			<batchtest todir="${test.report.dir}" haltonfailure="no">
+				<fileset dir="${classes.test.dir}">
+					<!-- include name="com/mpos/lottery/te/common/encrypt/*Test.class" / -->
+					<include name="com/mpos/lottery/te/gameimpl/smsraffle/**/*Test.class" />
+				</fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="unittest-report" description="Generate unittest report.">
+		<echo>+-------------------------------------------------------+</echo>
+		<echo>| U N I T T E S T   R E P O R T                         |</echo>
+		<echo>+-------------------------------------------------------+</echo>
+
+		<junitreport todir="${test.report.dir}">
+			<fileset dir="${test.report.dir}">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${test.report.dir}" />
+		</junitreport>
+		<echo>****You can find unittest report at ${test.report.dir}.</echo>
+
+		<!-- send mail to developer. -->
+		<tstamp>
+			<format property="report.time" pattern="yyyy/MM/dd HH:mm:dd" />
+		</tstamp>
+		<zip destfile="${tmp.dir}/unittest-report.zip">
+			<fileset dir="${test.report.dir}">
+				<include name="*.html" />
+			</fileset>
+		</zip>
+
+		<cobertura-report srcdir="${src.main.dir}" destdir="${coverage.report.dir}" 
+			datafile="${tmp.dir}/cobertura.ser" />
+        <cobertura-report srcdir="${src.main.dir}" destdir="${coverage.report.dir}" 
+        	format="xml" datafile="${tmp.dir}/cobertura.ser" />
+
+		<!--
+        <mail tolist="${mail.to}" mailhost="${smtp.host}" user="${smtp.user}" password="${smtp.passwd}"
+            mailport="${smtp.port}" subject="UnitTest Report - ${report.time}">
+            <from address="${mail.from}" />
+            <message src="${test.report.dir}/overview-summary.html" 
+                mimetype="text/html"/>
+        	<attachments>
+                <fileset dir="${tmp.dir}">
+                    <include name="unittest-report.zip" />
+                </fileset>
+        	</attachments>
+        </mail>
+        -->
+	</target>
+	
+	<target name="auto-test" description="Run all tests automatically.">
+		<echo>${basedir} </echo>
+		<record action="start" name="unittest.log" />
+		<tstamp>
+			<format property="test.begin.time" pattern="yyyy/MM/dd HH:mm:dd" />
+		</tstamp>
+
+		<antcall target="clean" />
+		<antcall target="init" />
+		<antcall target="init-test" />
+		<antcall target="prepare" />
+		<antcall target="compile-main" />
+		<antcall target="instrument" />
+		<antcall target="compile-test" />
+		<!--
+		<antcall target="bootstrap" />
+		<antcall target="load-master">
+			<param name="bootstrap" value="true" />
+		</antcall>
+		<antcall target="load-test">
+			<param name="bootstrap" value="true" />
+		</antcall>
+		-->
+		<antcall target="unittest" />
+		<antcall target="unittest-report" />
+		
+        <tstamp>
+            <format property="test.end.time" pattern="yyyy/MM/dd HH:mm:dd" />
+        </tstamp>	
+		<echo>Test Duration: ${test.begin.time} - ${test.end.time}</echo>
+		<record action="stop" name="unittest.log" />
+	</target>
+</project>

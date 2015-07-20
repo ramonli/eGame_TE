@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ToToGameInstanceDaoImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.toto.dao.jpa</a> &gt; <span class="el_source">ToToGameInstanceDaoImpl.java</span></div><h1>ToToGameInstanceDaoImpl.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.toto.dao.jpa;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.config.exception.EntityNotFoundException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gameimpl.lotto.draw.domain.LottoGameInstance;
+import com.mpos.lottery.te.gameimpl.toto.dao.ToToGameInstanceDao;
+import com.mpos.lottery.te.gameimpl.toto.domain.ToToGameInstance;
+
+import org.springframework.dao.DataAccessException;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.Query;
+
+/**
+ * toto game draw handle
+ * 
+ * @author Lee
+ * @version [Version NO, Apr 30, 2010]
+ * @since [product/Modul version]
+ */
+<span class="fc" id="L25">public class ToToGameInstanceDaoImpl extends BaseJpaDao implements ToToGameInstanceDao {</span>
+
+    /**
+     * find game instance asscording to gameId and drawNo.
+     */
+    @Override
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public ToToGameInstance findGameDrawByGameIdAndDrawNo(final String gameId, final String drawNo)
+            throws DataAccessException {
+        // effective game draw should be current game draw's status = 1 and now
+        // date between start
+        // selling time and end selling time
+<span class="nc" id="L37">        Date nowTime = new Date();</span>
+<span class="nc" id="L38">        Query query = this.getEntityManager().createQuery(</span>
+                &quot;from ToToGameInstance t where t.state=? and t.beginTime&lt;? &quot;
+                        + &quot;and t.endTime&gt;? and t.game.id=? and t.number =?&quot;);
+<span class="nc" id="L41">        query.setParameter(1, LottoGameInstance.STATE_ACTIVE);</span>
+<span class="nc" id="L42">        query.setParameter(2, nowTime);</span>
+<span class="nc" id="L43">        query.setParameter(3, nowTime);</span>
+<span class="nc" id="L44">        query.setParameter(4, gameId);</span>
+<span class="nc" id="L45">        query.setParameter(5, drawNo);</span>
+<span class="nc" id="L46">        List&lt;ToToGameInstance&gt; draws = query.getResultList();</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (draws.size() &lt;= 0) {</span>
+<span class="nc" id="L48">            throw new EntityNotFoundException(SystemException.CODE_NO_GAMEDRAW,</span>
+                    &quot;Can not found effective GameDraw by gameId=&quot; + gameId + &quot;,drawNo=&quot; + drawNo);
+        } else {
+<span class="nc bnc" id="L51" title="All 2 branches missed.">            if (draws.size() &gt; 1) {</span>
+<span class="nc" id="L52">                throw new SystemException(SystemException.CODE_INTERNAL_SERVER_ERROR,</span>
+                        &quot;There should be only 1 GameDraw(drawNo=&quot; + drawNo + &quot;,gameId=&quot; + gameId + &quot;), actual:&quot;
+                                + draws.size());
+            }
+<span class="nc" id="L56">            ToToGameInstance draw = (ToToGameInstance) draws.get(0);</span>
+<span class="nc" id="L57">            draw.setGameId(gameId);</span>
+<span class="nc" id="L58">            return draw;</span>
+        }
+    }
+
+    /**
+     * find game instance asscording to gameId and drawNo and OMRGameSet.
+     */
+    @Override
+    @SuppressWarnings({ &quot;unchecked&quot;, &quot;deprecation&quot; })
+    public ToToGameInstance findGameDrawByGameIdAndDrawNoAndGameSet(final String gameId, final String drawNo,
+            final String omrGameSet) throws DataAccessException {
+        // effective game draw should be current game draw's status = 1 and now
+        // date between start
+        // selling time and end selling time
+<span class="nc" id="L72">        Date nowTime = new Date();</span>
+<span class="nc" id="L73">        String sql = &quot;&quot;;</span>
+<span class="nc bnc" id="L74" title="All 4 branches missed.">        if (omrGameSet == null || &quot;&quot;.equals(omrGameSet)) {</span>
+<span class="nc" id="L75">            sql = &quot;from ToToGameInstance t where t.state=? and t.beginTime&lt;? and &quot;</span>
+                    + &quot;t.endTime&gt;? and t.game.id=? and t.number =? and t.omrGameSet is null&quot;;
+        } else {
+<span class="nc" id="L78">            sql = &quot;from ToToGameInstance t where t.state=? and t.beginTime&lt;? and &quot;</span>
+                    + &quot;t.endTime&gt;? and t.game.id=? and t.number =? and t.omrGameSet = ?&quot;;
+        }
+<span class="nc" id="L81">        Query query = this.getEntityManager().createQuery(sql);</span>
+<span class="nc" id="L82">        query.setParameter(1, LottoGameInstance.STATE_ACTIVE);</span>
+<span class="nc" id="L83">        query.setParameter(2, nowTime);</span>
+<span class="nc" id="L84">        query.setParameter(3, nowTime);</span>
+<span class="nc" id="L85">        query.setParameter(4, gameId);</span>
+<span class="nc" id="L86">        query.setParameter(5, drawNo);</span>
+<span class="nc bnc" id="L87" title="All 4 branches missed.">        if (omrGameSet != null &amp;&amp; !&quot;&quot;.equals(omrGameSet)) {</span>
+<span class="nc" id="L88">            query.setParameter(6, omrGameSet);</span>
+        }
+<span class="nc" id="L90">        List&lt;ToToGameInstance&gt; draws = query.getResultList();</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        if (draws.size() &lt;= 0) {</span>
+<span class="nc" id="L92">            throw new EntityNotFoundException(SystemException.CODE_NO_GAMEDRAW,</span>
+                    &quot;Can not found effective GameDraw by gameId=&quot; + gameId + &quot;,drawNo=&quot; + drawNo + &quot;,gameSet=&quot;
+                            + omrGameSet);
+        } else {
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            if (draws.size() &gt; 1) {</span>
+<span class="nc" id="L97">                throw new SystemException(SystemException.CODE_INTERNAL_SERVER_ERROR,</span>
+                        &quot;There should be only 1 GameDraw(drawNo=&quot; + drawNo + &quot;,gameId=&quot; + gameId + &quot;,gameSet=&quot;
+                                + omrGameSet + &quot;), actual:&quot; + draws.size());
+            }
+<span class="nc" id="L101">            ToToGameInstance draw = (ToToGameInstance) draws.get(0);</span>
+<span class="nc" id="L102">            draw.setGameId(gameId);</span>
+<span class="nc" id="L103">            return draw;</span>
+        }
+    }
+
+    /**
+     * query matchs count by game id and drawno
+     */
+    @Override
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public int getMatchsCountByGameIdAndDrawNo(final String gameId, final String drawNo) throws DataAccessException {
+<span class="fc" id="L113">        StringBuffer sql = new StringBuffer();</span>
+<span class="fc" id="L114">        sql.append(&quot;select count(1) from sport_match_detail d &quot;);</span>
+<span class="fc" id="L115">        sql.append(&quot;where d.game_instance_id = (select tgi.game_instance_id &quot;);</span>
+<span class="fc" id="L116">        sql.append(&quot;from toto_game_instance tgi where tgi.game_id =? and tgi.draw_no =?)&quot;);</span>
+<span class="fc" id="L117">        Query query = this.getEntityManager().createNativeQuery(sql.toString());</span>
+<span class="fc" id="L118">        query.setParameter(1, gameId);</span>
+<span class="fc" id="L119">        query.setParameter(2, drawNo);</span>
+<span class="fc" id="L120">        return ((BigDecimal) query.getSingleResult()).intValue();</span>
+    }
+
+    /**
+     * get base amount by current game draw
+     */
+    @Override
+    public BigDecimal getBaseAmoutByGameIdAndDrawNo(final String gameId, final String drawNo)
+            throws DataAccessException {
+<span class="fc" id="L129">        String sql = &quot;select tgi.base_amount from toto_game_instance tgi where tgi.game_id =? and tgi.draw_no =?&quot;;</span>
+<span class="fc" id="L130">        Query query = this.getEntityManager().createNativeQuery(sql);</span>
+<span class="fc" id="L131">        query.setParameter(1, gameId);</span>
+<span class="fc" id="L132">        query.setParameter(2, drawNo);</span>
+<span class="fc" id="L133">        return (BigDecimal) query.getSingleResult();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

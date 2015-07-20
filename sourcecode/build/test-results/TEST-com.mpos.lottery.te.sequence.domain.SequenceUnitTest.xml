@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.sequence.domain.SequenceUnitTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:54" hostname="Ramon-PC" time="0.0">
+  <properties/>
+  <testcase name="testGetCurrentValue" classname="com.mpos.lottery.te.sequence.domain.SequenceUnitTest" time="0.0"/>
+  <system-out><![CDATA[999999999999
+3
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

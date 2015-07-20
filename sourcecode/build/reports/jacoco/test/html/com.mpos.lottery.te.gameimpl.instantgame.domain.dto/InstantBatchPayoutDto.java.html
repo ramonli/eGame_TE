@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>InstantBatchPayoutDto.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.instantgame.domain.dto</a> &gt; <span class="el_source">InstantBatchPayoutDto.java</span></div><h1>InstantBatchPayoutDto.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.instantgame.domain.dto;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.LinkedList;
+import java.util.List;
+
+<span class="nc" id="L10">public class InstantBatchPayoutDto implements Serializable {</span>
+    private static final long serialVersionUID = -5773948148987471128L;
+<span class="nc" id="L12">    private BigDecimal actualAmount = new BigDecimal(&quot;0&quot;);</span>
+<span class="nc" id="L13">    private BigDecimal taxAmount = new BigDecimal(&quot;0&quot;);</span>
+    private int totalSuccess;
+    private int totalFail;
+<span class="nc" id="L16">    private List&lt;PrizeLevelDto&gt; payouts = new LinkedList&lt;PrizeLevelDto&gt;();</span>
+
+    public BigDecimal getActualAmount() {
+<span class="nc" id="L19">        return actualAmount;</span>
+    }
+
+    public void setActualAmount(BigDecimal actualAmount) {
+<span class="nc" id="L23">        this.actualAmount = actualAmount;</span>
+<span class="nc" id="L24">    }</span>
+
+    public BigDecimal getTaxAmount() {
+<span class="nc" id="L27">        return taxAmount;</span>
+    }
+
+    public void setTaxAmount(BigDecimal taxAmount) {
+<span class="nc" id="L31">        this.taxAmount = taxAmount;</span>
+<span class="nc" id="L32">    }</span>
+
+    public int getTotalSuccess() {
+<span class="nc" id="L35">        return totalSuccess;</span>
+    }
+
+    public void setTotalSuccess(int totalSuccess) {
+<span class="nc" id="L39">        this.totalSuccess = totalSuccess;</span>
+<span class="nc" id="L40">    }</span>
+
+    public int getTotalFail() {
+<span class="nc" id="L43">        return totalFail;</span>
+    }
+
+    public void setTotalFail(int totalFail) {
+<span class="nc" id="L47">        this.totalFail = totalFail;</span>
+<span class="nc" id="L48">    }</span>
+
+    public List&lt;PrizeLevelDto&gt; getPayouts() {
+<span class="nc" id="L51">        return payouts;</span>
+    }
+
+    public void setPayouts(List&lt;PrizeLevelDto&gt; payouts) {
+<span class="nc" id="L55">        this.payouts = payouts;</span>
+<span class="nc" id="L56">    }</span>
+
+    public String toString() {
+<span class="nc" id="L59">        return ToStringBuilder.reflectionToString(this);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

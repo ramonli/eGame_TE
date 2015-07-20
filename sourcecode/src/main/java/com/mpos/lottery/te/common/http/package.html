@@ -1,0 +1,27 @@
+<html>
+<body>
+Two concepts must be clarified.
+<ol>
+	<li>Auto Reversal</li>
+	<li>Auto Retry Request</li>
+</ol>
+<p>
+<h1>Auto Reversal</h1>
+Not all requests can be reversed automatically, below condition must be
+satisfied:
+<ol>
+	<li>Client got read timeout.</li>
+	<li>The transaction must be reversal-able. That says a <code>ReversalHandler</code>
+		is provided when call <code>HttpClientProtoBuffChannel.send(...)</code>.
+	</li>
+</ol>
+For example, cashout, activation of voucher will be reversed
+automatically.
+<p>
+<h1>Auto Retry Request</h1>
+If read timeout, current request will be resend automatically till reach
+the max allowed retry count. Not all requests can be auto retried, it is
+determined by
+<code>PaymentTransactionType.isNeedRetryIfTimeout()</code>
+. At current implementation, only reversal request will be retried.
+</body></html>

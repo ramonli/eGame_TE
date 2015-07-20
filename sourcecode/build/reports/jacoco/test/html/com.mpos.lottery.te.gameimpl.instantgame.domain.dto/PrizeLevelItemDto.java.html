@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PrizeLevelItemDto.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.instantgame.domain.dto</a> &gt; <span class="el_source">PrizeLevelItemDto.java</span></div><h1>PrizeLevelItemDto.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.instantgame.domain.dto;
+
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+
+public class PrizeLevelItemDto {
+    @Id
+    @Column(name = &quot;ID&quot;)
+    private String id;
+    // if prize type is OBJECT, this filed should be set.
+    @Column(name = &quot;BD_PRIZE_OBJECT_ID&quot;)
+    private String objectId;
+    @Column(name = &quot;OBJECT_NAME&quot;)
+    private String objectName;
+    /**
+     * Refer to {@code PrizeLevel#PRIZE_TYPE_OBJECT} and {@code PrizeLevel#PRIZE_TYPE_CASH}.
+     */
+    @Column(name = &quot;ITEM_TYPE&quot;)
+    private int prizeType;
+<span class="fc" id="L22">    @Column(name = &quot;PRIZE_AMOUNT&quot;)</span>
+    private BigDecimal prizeAmount = new BigDecimal(&quot;0&quot;);
+<span class="fc" id="L24">    @Column(name = &quot;TAX_AMOUNT&quot;)</span>
+    private BigDecimal taxAmount = new BigDecimal(&quot;0&quot;);
+<span class="fc" id="L26">    @Column(name = &quot;ACTUAL_PAYOUT&quot;)</span>
+    private BigDecimal actualAmount = new BigDecimal(&quot;0&quot;);
+    // How many objects should be returned? if cash, this value should be 1.
+<span class="fc" id="L29">    @Column(name = &quot;PRIZE_LEVEL_NUM&quot;)</span>
+    private Integer numberOfObject = 1;
+
+<span class="fc" id="L32">    public PrizeLevelItemDto() {</span>
+<span class="fc" id="L33">    }</span>
+
+<span class="fc" id="L35">    public PrizeLevelItemDto(com.mpos.lottery.te.gamespec.prize.PrizeLevelItem levelItem) {</span>
+<span class="fc" id="L36">        this.id = levelItem.getId();</span>
+<span class="fc" id="L37">        this.objectId = levelItem.getObjectId();</span>
+<span class="fc" id="L38">        this.objectName = levelItem.getObjectName();</span>
+<span class="fc" id="L39">        this.prizeType = levelItem.getPrizeType();</span>
+<span class="fc" id="L40">        this.prizeAmount = levelItem.getPrizeAmount();</span>
+<span class="fc" id="L41">        this.taxAmount = levelItem.getTaxAmount();</span>
+<span class="fc" id="L42">        this.actualAmount = levelItem.getActualAmount();</span>
+<span class="fc" id="L43">        this.numberOfObject = levelItem.getNumberOfObject();</span>
+<span class="fc" id="L44">    }</span>
+
+    public String getId() {
+<span class="nc" id="L47">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="nc" id="L51">        this.id = id;</span>
+<span class="nc" id="L52">    }</span>
+
+    public int getPrizeType() {
+<span class="fc" id="L55">        return prizeType;</span>
+    }
+
+    public void setPrizeType(int prizeType) {
+<span class="fc" id="L59">        this.prizeType = prizeType;</span>
+<span class="fc" id="L60">    }</span>
+
+    public BigDecimal getPrizeAmount() {
+<span class="fc" id="L63">        return prizeAmount;</span>
+    }
+
+    public void setPrizeAmount(BigDecimal prizeAmount) {
+<span class="fc" id="L67">        this.prizeAmount = prizeAmount;</span>
+<span class="fc" id="L68">    }</span>
+
+    public BigDecimal getTaxAmount() {
+<span class="fc" id="L71">        return taxAmount;</span>
+    }
+
+    public void setTaxAmount(BigDecimal taxAmount) {
+<span class="fc" id="L75">        this.taxAmount = taxAmount;</span>
+<span class="fc" id="L76">    }</span>
+
+    public Integer getNumberOfObject() {
+<span class="fc" id="L79">        return numberOfObject;</span>
+    }
+
+    public void setNumberOfObject(Integer numberOfObject) {
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        if (numberOfObject == 0) {</span>
+            // default 1 prize item.
+<span class="nc" id="L85">            numberOfObject = 1;</span>
+        }
+<span class="fc" id="L87">        this.numberOfObject = numberOfObject;</span>
+<span class="fc" id="L88">    }</span>
+
+    public String getObjectId() {
+<span class="fc" id="L91">        return objectId;</span>
+    }
+
+    public void setObjectId(String objectId) {
+<span class="nc" id="L95">        this.objectId = objectId;</span>
+<span class="nc" id="L96">    }</span>
+
+    public String getObjectName() {
+<span class="fc" id="L99">        return objectName;</span>
+    }
+
+    public void setObjectName(String objectName) {
+<span class="fc" id="L103">        this.objectName = objectName;</span>
+<span class="fc" id="L104">    }</span>
+
+    public BigDecimal getActualAmount() {
+<span class="fc" id="L107">        return actualAmount;</span>
+    }
+
+    public void setActualAmount(BigDecimal actualAmount) {
+<span class="fc" id="L111">        this.actualAmount = actualAmount;</span>
+<span class="fc" id="L112">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

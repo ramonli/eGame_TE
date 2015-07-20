@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>RoutineKey.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.port.domain.router</a> &gt; <span class="el_source">RoutineKey.java</span></div><h1>RoutineKey.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.port.domain.router;
+
+import com.google.gson.Gson;
+
+import com.mpos.lottery.common.router.RequestMap;
+import com.mpos.lottery.common.router.RoutineStrategy;
+import com.mpos.lottery.common.router.Version;
+import com.mpos.lottery.te.gamespec.game.Game;
+
+/**
+ * A routine key uniquely identify a request handling path. The router will route incoming request to appreciate
+ * handler.
+ * &lt;p/&gt;
+ * There are some factors to determine a routine key:
+ * &lt;ol&gt;
+ * &lt;li&gt;Game type - Different game type may require dedicated handler for same transaction type.&lt;/li&gt;
+ * &lt;li&gt;Transaction type - Each transaction type may require a dedicated handler.&lt;/li&gt;
+ * &lt;li&gt;Protocol version - A interface may exists multiple different versions.&lt;/li&gt;
+ * &lt;/ol&gt;
+ * 
+ * @author Ramon Li
+ */
+public class RoutineKey implements RoutineStrategy {
+<span class="fc" id="L24">    public static final int TYPE_UNDEF = Game.TYPE_UNDEF; // UNdeinfed game</span>
+                                                          // type.
+
+<span class="fc" id="L27">    private int gameType = TYPE_UNDEF;</span>
+    private int transType;
+    private Version version;
+
+<span class="fc" id="L31">    public RoutineKey() {</span>
+<span class="fc" id="L32">    }</span>
+
+    /**
+     * Build a &lt;code&gt;RoutineKey&lt;/code&gt; instance by given parameters.
+     */
+<span class="fc" id="L37">    public RoutineKey(int gameType, int transType, Version version) {</span>
+<span class="fc" id="L38">        this.gameType = gameType;</span>
+<span class="fc" id="L39">        this.transType = transType;</span>
+<span class="fc" id="L40">        this.version = version;</span>
+<span class="fc" id="L41">    }</span>
+
+    public RoutineKey(int gameType, int transType) {
+<span class="fc" id="L44">        this(gameType, transType, null);</span>
+<span class="fc" id="L45">    }</span>
+
+    public RoutineKey(int transType) {
+<span class="fc" id="L48">        this(TYPE_UNDEF, transType, null);</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Routine key has 3 levels(from most accurate to less):
+     * &lt;ol&gt;
+     * &lt;li&gt;gameType+transType+version&lt;/li&gt;
+     * &lt;li&gt;gameTYpe+transtype&lt;/li&gt;
+     * &lt;li&gt;transType&lt;/li&gt;
+     * &lt;/ol&gt;
+     * For example, '4_200_2.0.0' is direct child of '4_200_', and '4_200_' is direct child of '-1_200_'. The direct
+     * child of '-1_200_' will be null.
+     */
+    public RoutineKey child() {
+<span class="fc" id="L62">        RoutineKey child = null;</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (version != null) {</span>
+<span class="fc" id="L64">            child = new RoutineKey(this.gameType, this.transType, null);</span>
+        } else {
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">            if (this.gameType != TYPE_UNDEF) {</span>
+<span class="fc" id="L67">                child = new RoutineKey(this.transType);</span>
+            }
+        }
+<span class="fc" id="L70">        return child;</span>
+    }
+
+    /**
+     * Assemble a &lt;code&gt;RoutineKey&lt;/code&gt; from a &lt;code&gt;Requestmap&lt;/code&gt;. The format of value of &lt;code&gt;RequestMap&lt;/code&gt;
+     * must follow a json format:
+     * &lt;p/&gt;
+     * {gameType:${gameType},transType:${transType},version:${version}}
+     * &lt;p/&gt;
+     * &lt;ol&gt;
+     * &lt;li&gt;gameType(int): the type identifier of a game type, it is optional.&lt;/li&gt;
+     * &lt;li&gt;transType(int): the request type of transaction, it is mandatory&lt;/li&gt;
+     * &lt;li&gt;version(string): the version of required interface, it is optional.&lt;/li&gt;
+     * &lt;/ol&gt;
+     * For example:
+     * &lt;ul&gt;
+     * &lt;li&gt;{gameType:1,transType:200,version:1.0}, it will be converted to RoutineKey(1_200_1.0.0)&lt;/li&gt;
+     * &lt;li&gt;{version:1.0,transType:200}, it will be converted to RoutineKey(-1_200_1.0.0)&lt;/li&gt;
+     * &lt;li&gt;{version:&quot;1.0.1&quot;,transType:200}, it will be converted to RoutineKey(-1_200_1.0.1).&lt;/li&gt;
+     * &lt;li&gt;{transType:200}, it will be converted to RoutineKey(-1_200_)&lt;/li&gt;
+     * &lt;/ul&gt;
+     * the default game type is -1(undefined), and default protocol version is null.
+     */
+    @Override
+    public void from(RequestMap requestMap) {
+<span class="fc" id="L95">        this.from(requestMap.value());</span>
+<span class="fc" id="L96">    }</span>
+
+    /**
+     * Build a &lt;code&gt;RoutineKey&lt;/code&gt; from a JSON string.
+     */
+    public void from(String jsonStr) {
+<span class="fc" id="L102">        RoutineKeyJson json = new Gson().fromJson(jsonStr, RoutineKeyJson.class);</span>
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        this.setGameType(json.getGameType() == null ? TYPE_UNDEF : json.getGameType());</span>
+<span class="fc" id="L104">        this.setTransType(json.getTransType());</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (json.getVersion() != null) {</span>
+<span class="fc" id="L106">            this.setVersion(Version.from(json.getVersion()));</span>
+        }
+<span class="fc" id="L108">    }</span>
+
+<span class="nc" id="L110">    private class RoutineKeyJson {</span>
+<span class="nc" id="L111">        private Integer gameType = TYPE_UNDEF;</span>
+        private int transType;
+        private String version;
+
+        public Integer getGameType() {
+<span class="fc" id="L116">            return gameType;</span>
+        }
+
+        public void setGameType(Integer gameType) {
+<span class="nc" id="L120">            this.gameType = gameType;</span>
+<span class="nc" id="L121">        }</span>
+
+        public int getTransType() {
+<span class="fc" id="L124">            return transType;</span>
+        }
+
+        public void setTransType(int transType) {
+<span class="nc" id="L128">            this.transType = transType;</span>
+<span class="nc" id="L129">        }</span>
+
+        public String getVersion() {
+<span class="fc" id="L132">            return version;</span>
+        }
+
+        public void setVersion(String version) {
+<span class="nc" id="L136">            this.version = version;</span>
+<span class="nc" id="L137">        }</span>
+    }
+
+    public int getGameType() {
+<span class="fc" id="L141">        return gameType;</span>
+    }
+
+    public int getTransType() {
+<span class="fc" id="L145">        return transType;</span>
+    }
+
+    public Version getVersion() {
+<span class="fc" id="L149">        return version;</span>
+    }
+
+    private void setGameType(int gameType) {
+<span class="fc" id="L153">        this.gameType = gameType;</span>
+<span class="fc" id="L154">    }</span>
+
+    private void setTransType(int transType) {
+<span class="fc" id="L157">        this.transType = transType;</span>
+<span class="fc" id="L158">    }</span>
+
+    private void setVersion(Version version) {
+<span class="fc" id="L161">        this.version = version;</span>
+<span class="fc" id="L162">    }</span>
+
+    @Override
+    public String toString() {
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        return new StringBuffer(&quot;&quot;).append(this.getGameType()).append(&quot;_&quot;).append(this.getTransType()).append(&quot;_&quot;)</span>
+                .append(this.getVersion() == null ? &quot;&quot; : this.getVersion().toString()).toString();
+    }
+
+    @Override
+    public int hashCode() {
+<span class="fc" id="L172">        final int prime = 31;</span>
+<span class="fc" id="L173">        int result = 1;</span>
+<span class="fc" id="L174">        result = prime * result + gameType;</span>
+<span class="fc" id="L175">        result = prime * result + transType;</span>
+<span class="fc bfc" id="L176" title="All 2 branches covered.">        result = prime * result + ((version == null) ? 0 : version.hashCode());</span>
+<span class="fc" id="L177">        return result;</span>
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+<span class="pc bpc" id="L182" title="1 of 2 branches missed.">        if (this == obj) {</span>
+<span class="nc" id="L183">            return true;</span>
+        }
+<span class="pc bpc" id="L185" title="1 of 2 branches missed.">        if (obj == null) {</span>
+<span class="nc" id="L186">            return false;</span>
+        }
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        if (getClass() != obj.getClass()) {</span>
+<span class="nc" id="L189">            return false;</span>
+        }
+<span class="fc" id="L191">        RoutineKey other = (RoutineKey) obj;</span>
+<span class="fc bfc" id="L192" title="All 2 branches covered.">        if (gameType != other.gameType) {</span>
+<span class="fc" id="L193">            return false;</span>
+        }
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">        if (transType != other.transType) {</span>
+<span class="nc" id="L196">            return false;</span>
+        }
+<span class="fc bfc" id="L198" title="All 2 branches covered.">        if (version == null) {</span>
+<span class="pc bpc" id="L199" title="1 of 2 branches missed.">            if (other.version != null) {</span>
+<span class="nc" id="L200">                return false;</span>
+            }
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">        } else if (!version.equals(other.version)) {</span>
+<span class="nc" id="L203">            return false;</span>
+        }
+<span class="fc" id="L205">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

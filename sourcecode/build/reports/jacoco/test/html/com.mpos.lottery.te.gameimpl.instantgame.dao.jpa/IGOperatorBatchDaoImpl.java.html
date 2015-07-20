@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>IGOperatorBatchDaoImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.instantgame.dao.jpa</a> &gt; <span class="el_source">IGOperatorBatchDaoImpl.java</span></div><h1>IGOperatorBatchDaoImpl.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.instantgame.dao.jpa;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.gameimpl.instantgame.dao.IGOperatorBatchDao;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.IGOperatorBatch;
+
+import java.util.HashMap;
+import java.util.Map;
+
+<span class="fc" id="L11">public class IGOperatorBatchDaoImpl extends BaseJpaDao implements IGOperatorBatchDao {</span>
+    // private UUIDService uuidService;
+
+    @Override
+    public IGOperatorBatch getIGOperatorBatch(String operatorId) throws ApplicationException {
+<span class="fc" id="L16">        IGOperatorBatch igOperatorBatch = null;</span>
+<span class="fc" id="L17">        String sql = &quot;from IGOperatorBatch i where  i.operatorId=:operatorId&quot;;</span>
+<span class="fc" id="L18">        Map param = new HashMap();</span>
+<span class="fc" id="L19">        param.put(&quot;operatorId&quot;, operatorId);</span>
+<span class="fc" id="L20">        return (IGOperatorBatch) this.findSingleByNamedParams(sql, param);</span>
+
+        /*
+         * if (list.size() == 0) {
+         * 
+         * 
+         * } else { igOperatorBatch = list.get(0); igOperatorBatch.setBatchNumber(igOperatorBatch.getBatchNumber()+1);
+         * this.update(igOperatorBatch); //delete temporary payout records //1,delete payout records //2,delete payout
+         * detail records //3,update status of all IG tickets from 'processing'to 'active' } return igOperatorBatch;
+         */
+    }
+    /*
+     * public UUIDService getUuidService() { return uuidService; }
+     * 
+     * public void setUuidService(UUIDService uuidService) { this.uuidService = uuidService; }
+     */
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+    <class name="com.mpos.lottery.te.gameimpl.instantgame.domain.dto.ActiveResult">
+        <map-to xml="Active" />
+
+        <field name="count" type="int" required="true">
+            <bind-xml name="count" node="attribute" />
+        </field>
+        <field name="failure" type="string" required="false">
+            <bind-xml name="failure" node="attribute" />
+        </field>            
+    </class>
+</mapping>

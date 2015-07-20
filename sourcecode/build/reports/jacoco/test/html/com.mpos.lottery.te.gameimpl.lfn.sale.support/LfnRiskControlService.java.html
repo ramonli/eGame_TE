@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LfnRiskControlService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.lfn.sale.support</a> &gt; <span class="el_source">LfnRiskControlService.java</span></div><h1>LfnRiskControlService.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.lfn.sale.support;
+
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.gameimpl.lfn.game.LfnGameInstance;
+import com.mpos.lottery.te.gameimpl.lfn.sale.LfnEntry;
+import com.mpos.lottery.te.gamespec.game.BaseGameInstance;
+import com.mpos.lottery.te.gamespec.sale.BaseEntry;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.gamespec.sale.service.AbstractRiskControlService;
+import com.mpos.lottery.te.gamespec.sale.support.ChanceOdds;
+import com.mpos.lottery.te.gamespec.sale.support.ChanceOfEntry;
+import com.mpos.lottery.te.port.Context;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+<span class="fc" id="L26">public class LfnRiskControlService extends AbstractRiskControlService {</span>
+<span class="fc" id="L27">    private Log logger = LogFactory.getLog(LfnRiskControlService.class);</span>
+    @PersistenceContext(unitName = &quot;lottery_te&quot;)
+    private EntityManager entityManager;
+
+    @Override
+    protected List&lt;ChanceOfEntry&gt; determineSelectedNumbers(Context respCtx, BaseTicket ticket,
+            BaseGameInstance gameInstance, BaseEntry entry) {
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (entry.getBetOption() &lt; LfnEntry.BETOPTION_INTERVAL) {</span>
+<span class="fc" id="L35">            return Arrays.asList(new ChanceOfEntry(entry.getSelectNumber(), entry.getEntryAmount(), entry</span>
+                    .getBetOption()));
+        } else {
+<span class="fc" id="L38">            int betOption = entry.getBetOption() - LfnEntry.BETOPTION_INTERVAL;</span>
+<span class="fc" id="L39">            return assembleSingleSelectedNumbers(entry, betOption, betOption);</span>
+        }
+    }
+
+    @Override
+    protected String determineBettingNumberOfPrizeLevel(Context respCtx, BaseEntry entry, ChanceOdds chanceOdd,
+            ChanceOfEntry chance) throws ApplicationException {
+<span class="fc" id="L46">        chanceOdd.setBettingNumber(chance.getSelectedNumber());</span>
+<span class="fc" id="L47">        return chanceOdd.getBettingNumber();</span>
+    }
+
+    /**
+     * For LFN game, a give bet option can win only a single prize level.
+     */
+    @Override
+    protected BigDecimal determineFinalLossAmountOfPrizeLevel(BigDecimal finalLimit, List&lt;ChanceOdds&gt; chanceOdds,
+            BaseGameInstance gameInstance) throws ApplicationException {
+        // String sql = &quot;SELECT COUNT(*) FROM BD_PRIZE_LEVEL P, BD_PRIZE_LEVEL_ITEM PP WHERE &quot;
+        // + &quot;P.BD_PRIZE_LOGIC_ID =:prizeLogicId AND P.ID = PP.BD_PRIZE_LEVEL_ID&quot;;
+        // Query query = this.getEntityManager().createNativeQuery(sql);
+        // query.setParameter(&quot;prizeLogicId&quot;, ((LfnGameInstance) gameInstance).getPrizeLogicId());
+        // Object row = query.getSingleResult();
+        // BigDecimal result = SimpleToolkit.mathDivide(finalLimit, (BigDecimal) row);
+        //
+        // if (logger.isDebugEnabled())
+        // logger.debug(&quot;There total &quot; + ((BigDecimal) row)
+        // + &quot; possible prize levels found, determine the final loss amount of prize level as &quot;
+        // + result + &quot;=&quot; + finalLimit + &quot;/&quot; + ((BigDecimal) row));
+        // return result;
+<span class="fc" id="L68">        return finalLimit;</span>
+    }
+
+    @Override
+    protected List&lt;ChanceOdds&gt; determineOddsOfEntry(Context respCtx, BaseTicket ticket, BaseGameInstance gameInstance,
+            BaseEntry entry) throws ApplicationException {
+<span class="fc" id="L74">        String sql = &quot;SELECT P.PRIZE_LEVEL, P.PRIZE_NAME, PP.PRIZE_AMOUNT FROM BD_PRIZE_LEVEL P, &quot;</span>
+                + &quot;BD_PRIZE_LEVEL_ITEM PP WHERE P.BD_PRIZE_LOGIC_ID =:prizeLogicId AND P.ID = PP.BD_PRIZE_LEVEL_ID &quot;
+                + &quot;AND P.PRIZE_LEVEL=:betOption&quot;;
+<span class="fc" id="L77">        Query query = this.getEntityManager().createNativeQuery(sql);</span>
+<span class="fc" id="L78">        query.setParameter(&quot;prizeLogicId&quot;, ((LfnGameInstance) gameInstance).getPrizeLogicId());</span>
+<span class="fc" id="L79">        int betOption = entry.getBetOption();</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (betOption &gt; LfnEntry.BETOPTION_INTERVAL) {</span>
+<span class="fc" id="L81">            betOption = betOption - LfnEntry.BETOPTION_INTERVAL;</span>
+        }
+<span class="fc" id="L83">        query.setParameter(&quot;betOption&quot;, betOption);</span>
+
+<span class="fc" id="L85">        List&lt;ChanceOdds&gt; chanceOdds = new LinkedList&lt;ChanceOdds&gt;();</span>
+<span class="fc" id="L86">        Object row = query.getSingleResult();</span>
+<span class="pc bpc" id="L87" title="1 of 2 branches missed.">        if (row == null) {</span>
+<span class="nc" id="L88">            logger.warn(&quot;No prize level definition found for given entry(&quot; + entry + &quot;), ignore it.&quot;);</span>
+        } else {
+<span class="fc" id="L90">            ChanceOdds odds = new ChanceOdds();</span>
+<span class="fc" id="L91">            Object[] columns = (Object[]) row;</span>
+<span class="fc" id="L92">            odds.setOdds((BigDecimal) columns[2]);</span>
+            // must set to N bet option
+<span class="fc bfc" id="L94" title="All 2 branches covered.">            int nBetOption = entry.getBetOption() &lt; LfnEntry.BETOPTION_INTERVAL ? entry.getBetOption() : entry</span>
+                    .getBetOption() - LfnEntry.BETOPTION_INTERVAL;
+<span class="fc" id="L96">            odds.setPrizelLevelType(nBetOption + &quot;&quot;);</span>
+<span class="fc" id="L97">            chanceOdds.add(odds);</span>
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L99">                logger.debug(&quot;THe odds for given entry(&quot; + entry + &quot;) is &quot; + odds);</span>
+            }
+        }
+<span class="fc" id="L102">        return chanceOdds;</span>
+    }
+
+    public EntityManager getEntityManager() {
+<span class="fc" id="L106">        return entityManager;</span>
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+<span class="nc" id="L110">        this.entityManager = entityManager;</span>
+<span class="nc" id="L111">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

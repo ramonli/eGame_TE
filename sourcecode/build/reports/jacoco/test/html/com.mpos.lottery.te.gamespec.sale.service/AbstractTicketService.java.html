@@ -1,0 +1,601 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AbstractTicketService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.sale.service</a> &gt; <span class="el_source">AbstractTicketService.java</span></div><h1>AbstractTicketService.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.sale.service;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.common.util.Barcoder;
+import com.mpos.lottery.te.common.util.SimpleToolkit;
+import com.mpos.lottery.te.config.MLotteryContext;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gamespec.game.BaseGameInstance;
+import com.mpos.lottery.te.gamespec.game.BaseOperationParameter;
+import com.mpos.lottery.te.gamespec.game.service.GameInstanceService;
+import com.mpos.lottery.te.gamespec.sale.BaseEntry;
+import com.mpos.lottery.te.gamespec.sale.BaseTamperProofTicket;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.gamespec.sale.DummyTicket;
+import com.mpos.lottery.te.gamespec.sale.dao.BaseEntryDao;
+import com.mpos.lottery.te.gamespec.sale.dao.BaseTicketDao;
+import com.mpos.lottery.te.gamespec.sale.support.TicketHelper;
+import com.mpos.lottery.te.gamespec.sale.support.validator.TicketValidator;
+import com.mpos.lottery.te.gamespec.sale.web.QPEnquiryDto;
+import com.mpos.lottery.te.merchant.domain.Merchant;
+import com.mpos.lottery.te.merchant.service.MerchantService;
+import com.mpos.lottery.te.merchant.service.balance.BalanceService;
+import com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy;
+import com.mpos.lottery.te.merchant.service.commission.CommissionBalanceService;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.port.domain.router.RoutineKey;
+import com.mpos.lottery.te.sequence.service.UUIDService;
+import com.mpos.lottery.te.thirdpartyservice.amqp.MessagePack;
+import com.mpos.lottery.te.thirdpartyservice.amqp.TeTransactionMessageSerializer;
+import com.mpos.lottery.te.thirdpartyservice.playeraccount.User;
+import com.mpos.lottery.te.trans.domain.Transaction;
+import com.mpos.lottery.te.trans.domain.TransactionType;
+import com.mpos.lottery.te.trans.domain.logic.AbstractReversalOrCancelStrategy;
+import com.mpos.lottery.te.trans.service.TransactionService;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.annotation.Resource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+<span class="fc" id="L48">public abstract class AbstractTicketService extends AbstractReversalOrCancelStrategy implements CompositeTicketService {</span>
+<span class="fc" id="L49">    private Log logger = LogFactory.getLog(AbstractTicketService.class);</span>
+    // can overwrite this value by spring injection
+<span class="fc" id="L51">    private String exchangeName = MessagePack.PREFIX + &quot;.200&quot;;</span>
+    // SPRING DEPENDENCIES
+    private UUIDService uuidService;
+    private TransactionService transactionService;
+    private MerchantService merchantService;
+    private BaseJpaDao baseJpaDao;
+    private TicketValidator ticketValidator;
+    private GameInstanceService gameInstanceService;
+    private BaseTicketDao baseTicketDao;
+    private BaseEntryDao baseEntryDao;
+    @PersistenceContext
+    private EntityManager entityManager;
+    // @PersistenceContext(unitName = &quot;lottery_te&quot;)
+    // protected EntityManager entityManager;
+<span class="fc" id="L65">    private RiskControlService riskControlService = new NoRiskControlService();</span>
+    @Resource(name = &quot;saleCommissionBalanceService&quot;)
+    private CommissionBalanceService saleCommissionBalanceService;
+    @Resource(name = &quot;defaultBalanceService&quot;)
+    private BalanceService balanceService;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+<span class="fc" id="L73">        super.afterPropertiesSet();</span>
+        // register a TicketService handler to enquiry ticket...If it is a sale
+        // transaction, ticket will be returned
+<span class="fc" id="L76">        this.getTransactionService().registerTicketEnquiry(this.supportedGameType(), this);</span>
+<span class="fc" id="L77">    }</span>
+
+    @Override
+    public RoutineKey supportedReversalRoutineKey() {
+<span class="fc" id="L81">        return new RoutineKey(this.supportedGameType().getType(), TransactionType.SELL_TICKET.getRequestType(), null);</span>
+    }
+
+    @Override
+    public BaseTicket enquiry(Context&lt;?&gt; respCtx, BaseTicket clientTicket, boolean fetchEntries)
+            throws ApplicationException {
+        // Lookup ticket information
+<span class="fc" id="L88">        List&lt;? extends BaseTicket&gt; tickets = this.lookupTickets(respCtx, clientTicket);</span>
+
+        // lookup entry information
+<span class="fc" id="L91">        List&lt;? extends BaseEntry&gt; entries = null;</span>
+<span class="fc bfc" id="L92" title="All 2 branches covered.">        if (fetchEntries) {</span>
+            // lookup Entries
+<span class="fc" id="L94">            entries = this.lookupEntries(respCtx, clientTicket);</span>
+        }
+<span class="fc" id="L96">        BaseTicket ticket = TicketHelper.assemblePhysicalTicket(tickets, entries);</span>
+
+<span class="pc bpc" id="L98" title="1 of 6 branches missed.">        if (ticket.getUserId() != null || ticket.getMobile() != null || ticket.getCreditCardSN() != null) {</span>
+<span class="fc" id="L99">            ticket.setUser(new User(ticket.getUserId(), ticket.getMobile(), ticket.getCreditCardSN()));</span>
+        }
+
+<span class="fc" id="L102">        this.doEnquiryTicket(respCtx, tickets, ticket);</span>
+
+<span class="fc" id="L104">        respCtx.getTransaction().setGameId(ticket.getGameInstance().getGame().getId());</span>
+<span class="fc" id="L105">        respCtx.getTransaction().setTotalAmount(ticket.getTotalAmount());</span>
+<span class="fc" id="L106">        respCtx.getTransaction().setTicketSerialNo(ticket.getSerialNo());</span>
+
+<span class="fc" id="L108">        return ticket;</span>
+    }
+
+    @Override
+    public final List&lt;? extends BaseTicket&gt; sell(Context&lt;?&gt; respCtx, BaseTicket baseClientTicket)
+            throws ApplicationException {
+<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if (baseClientTicket == null) {</span>
+<span class="nc" id="L115">            throw new IllegalArgumentException(&quot;Argument 'baseClientTicket' can NOT be null.&quot;);</span>
+        }
+<span class="fc" id="L117">        BaseTicket clientTicket = baseClientTicket;</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (clientTicket.getMultipleDraws() &lt;= 0) {</span>
+<span class="fc" id="L119">            throw new ApplicationException(SystemException.CODE_WRONG_MESSAGEBODY, &quot;THe multi-draw must be at least 1&quot;);</span>
+        }
+
+        // Lookup ready-for-sale game instance and validate game instance
+<span class="fc" id="L123">        List&lt;? extends BaseGameInstance&gt; gameInstances = this.lookupSaleReadyGameInstance(respCtx, clientTicket);</span>
+
+        // Assemble client ticket request
+<span class="fc" id="L126">        clientTicket.setGameInstance(gameInstances.get(0));</span>
+<span class="fc" id="L127">        clientTicket.setRawSerialNo(this.getUuidService().getTicketSerialNo(</span>
+                clientTicket.getGameInstance().getGame().getType()));
+        // set barcode
+<span class="fc" id="L130">        clientTicket.setBarcode(new Barcoder(clientTicket.getGameInstance().getGame().getType(), clientTicket</span>
+                .getRawSerialNo()).getBarcode());
+<span class="fc" id="L132">        clientTicket.setLastDrawNo(gameInstances.get(gameInstances.size() - 1).getNumber());</span>
+<span class="fc" id="L133">        clientTicket.setPIN(SimpleToolkit.md5(clientTicket.getPIN()));</span>
+<span class="fc" id="L134">        clientTicket.setValidationCode(BaseTicket.generateValidationCode());</span>
+        // custom DTO
+<span class="fc" id="L136">        this.customAssembleClientTicket(respCtx, clientTicket);</span>
+<span class="fc" id="L137">        this.generateQPWhenSale(respCtx, clientTicket);</span>
+
+        // Validate ticket request
+<span class="fc" id="L140">        this.validateTicketRequest(respCtx, clientTicket);</span>
+        // Verify whether merchant can make sale
+<span class="fc" id="L142">        this.getMerchantService().allowSale(respCtx.getTransaction(), clientTicket);</span>
+        // Verify risk control
+<span class="fc" id="L144">        this.getRiskControlService().riskControl(respCtx, clientTicket, gameInstances);</span>
+
+        // generate tickets
+<span class="fc" id="L147">        List&lt;BaseTicket&gt; tickets = this.generateMultiplDrawsTickets(respCtx, clientTicket, gameInstances);</span>
+        // save tickets and entries
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">        if (tickets.size() &gt; 0) {</span>
+<span class="fc" id="L150">            this.getBaseJpaDao().insert(tickets);</span>
+<span class="fc bfc" id="L151" title="All 2 branches covered.">            if (tickets.get(0).getEntries().size() &gt; 0) {</span>
+<span class="fc" id="L152">                this.getBaseJpaDao().insert(tickets.get(0).getEntries());</span>
+            }
+        }
+
+<span class="fc" id="L156">        this.doSuccessfulSale(respCtx, clientTicket);</span>
+
+        // update transaction
+<span class="fc" id="L159">        respCtx.getTransaction().setGameId(clientTicket.getGameInstance().getGame().getId());</span>
+<span class="fc" id="L160">        respCtx.getTransaction().setTotalAmount(clientTicket.getTotalAmount());</span>
+<span class="fc" id="L161">        respCtx.getTransaction().setTicketSerialNo(clientTicket.getSerialNo());</span>
+
+        // this.getEntityManager().flush();
+
+        // check and update the credit level
+<span class="pc bpc" id="L166" title="1 of 2 branches missed.">        if (BaseTicket.TICKET_TYPE_NORMAL == clientTicket.getTicketType()) {</span>
+<span class="fc" id="L167">            this.updateCredit(respCtx, clientTicket, true);</span>
+        }
+        // update instantaneous sale
+        // this.snapshotSale(respCtx, tickets, true);
+
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">        if (MLotteryContext.getInstance().getBoolean(&quot;amqp.messagepublish.enable&quot;, false)) {</span>
+            // assemble TE transaction message for data publication
+<span class="fc" id="L174">            respCtx.setTransMessage(new MessagePack(this.getExchangeName(), respCtx.generateAmqpRoutingKey(),</span>
+                    ((TeTransactionMessageSerializer) baseClientTicket).toProtoMessage(respCtx)));
+        }
+<span class="fc" id="L177">        return tickets;</span>
+    }
+
+    @Override
+    public QPEnquiryDto enquiryQP(Context&lt;?&gt; respCtx, QPEnquiryDto dto) throws ApplicationException {
+<span class="pc bpc" id="L182" title="2 of 4 branches missed.">        if (dto.getCountOfEntries() &lt;= 0 || dto.getCountOfNumbers() &lt;= 0) {</span>
+<span class="nc" id="L183">            throw new ApplicationException(SystemException.CODE_WRONG_MESSAGEBODY,</span>
+                    &quot;Both the count of QP numbers and count of entries must be greater than 0&quot;);
+        }
+<span class="fc bfc" id="L186" title="All 2 branches covered.">        for (int i = 0; i &lt; dto.getCountOfEntries(); i++) {</span>
+<span class="fc" id="L187">            String qp = this.doGeneratingQP(</span>
+                    respCtx,
+                    this.getGameInstanceService().enquiry(respCtx, dto.getGameInstance().getGameId(),
+                            dto.getGameInstance().getNumber()), dto.getCountOfNumbers());
+<span class="fc" id="L191">            BaseEntry entry = new BaseEntry();</span>
+<span class="fc" id="L192">            entry.setSelectNumber(qp);</span>
+<span class="fc" id="L193">            dto.getEntries().add(entry);</span>
+        }
+<span class="fc" id="L195">        return dto;</span>
+    }
+
+    @Override
+    public final boolean cancelByTicket(Context&lt;?&gt; respCtx, BaseTicket baseClientTicket) throws ApplicationException {
+<span class="fc" id="L200">        List&lt;? extends BaseTicket&gt; hostTickets = this.getBaseTicketDao().findBySerialNo(</span>
+                this.supportedGameType().getTicketType(), baseClientTicket.getSerialNo(), false);
+        // check whether ticket exists and whether it has been cancelled
+<span class="fc" id="L203">        BaseTicket boughtTicket = hostTickets.get(0);</span>
+<span class="pc bpc" id="L204" title="2 of 4 branches missed.">        if (BaseTicket.STATUS_CANCELED == boughtTicket.getStatus()</span>
+                || BaseTicket.STATUS_CANCEL_DECLINED == boughtTicket.getStatus()) {
+<span class="nc" id="L206">            throw new ApplicationException(SystemException.CODE_CANCELLED_TRANS,</span>
+                    &quot;Can NOT cancel a cancel/cancel declined ticket(status=&quot; + boughtTicket.getStatus()
+                            + &quot;) repeatedly.&quot;);
+        }
+
+        // validate game instance
+<span class="fc" id="L212">        BaseTicket soldTicket = hostTickets.get(0);</span>
+<span class="fc" id="L213">        BaseGameInstance soldGameInstance = soldTicket.getGameInstance();</span>
+<span class="fc bfc" id="L214" title="All 2 branches covered.">        boolean isCancelDecline = !(soldGameInstance.canCancelNormally());</span>
+
+<span class="fc bfc" id="L216" title="All 2 branches covered.">        if (respCtx.getTransaction().isManualCancel()) {</span>
+<span class="fc" id="L217">            this.allowManualCancellation(soldGameInstance);</span>
+        }
+
+        // update ticket
+<span class="fc bfc" id="L221" title="All 2 branches covered.">        for (BaseTicket ticket : hostTickets) {</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">            ticket.setStatus(isCancelDecline ? BaseTicket.STATUS_CANCEL_DECLINED : BaseTicket.STATUS_CANCELED);</span>
+            // transType shouldn't be influenced by cancel status.
+<span class="fc bfc" id="L224" title="All 2 branches covered.">            ticket.setTransType(respCtx.getTransaction().isManualCancel() ? TransactionType.CANCEL_BY_CLIENT_MANUALLY</span>
+                    .getRequestType() : respCtx.getTransaction().getType());
+<span class="fc bfc" id="L226" title="All 2 branches covered.">            ticket.setCountInPool(isCancelDecline ? true : false);</span>
+<span class="fc" id="L227">            ticket.setUpdateTime(respCtx.getTransaction().getCreateTime());</span>
+<span class="fc" id="L228">            this.customCancelTicket(respCtx, ticket);</span>
+<span class="fc" id="L229">            this.getBaseTicketDao().update(ticket);</span>
+<span class="fc" id="L230">        }</span>
+
+        // FIX#5032
+        // If is automatical transactions, such as 'cancel by transaction', and
+        // the operator hasn't been allocated to any merchant, in this case, the
+        // merchant can be null... set the original merchant to this field. Why?
+        // make dataXchange works
+<span class="pc bpc" id="L237" title="1 of 4 branches missed.">        if (!respCtx.getTransaction().isManualCancel() &amp;&amp; respCtx.getMerchant() == null) {</span>
+<span class="nc" id="L238">            Merchant retailer = this.getBaseJpaDao().findById(Merchant.class, soldTicket.getMerchantId());</span>
+<span class="nc bnc" id="L239" title="All 2 branches missed.">            if (retailer == null) {</span>
+<span class="nc" id="L240">                throw new ApplicationException(SystemException.CODE_NO_MERCHANT, &quot;merchant(id=&quot;</span>
+                        + soldTicket.getMerchantId() + &quot;) doesn't exist.&quot;);
+            }
+<span class="nc" id="L243">            respCtx.setMerchant(retailer);</span>
+        }
+
+        // update credit
+<span class="pc bpc" id="L247" title="1 of 2 branches missed.">        if (BaseTicket.TICKET_TYPE_NORMAL == soldTicket.getTicketType()) {</span>
+<span class="fc" id="L248">            respCtx.setProperty(SaleBalanceStrategy.PROP_SOLD_BY_CREDIT_CARD, soldTicket.isSoldByCreditCard());</span>
+            // restore the credit of merchants
+<span class="fc" id="L250">            Transaction saleTrans = soldTicket.getTransaction();</span>
+            // Object operatorOrMerchant =
+            // this.getCreditService().credit(saleTrans.getOperatorId(),
+            // saleTrans.getMerchantId(),
+            // soldTicket.getTotalAmount().multiply(new
+            // BigDecimal(hostTickets.size())),
+            // saleTrans.getGameId(), true, true,
+            // soldTicket.isSoldByCreditCard());
+<span class="fc" id="L258">            Object operatorOrMerchant = this.getBalanceService().balance(respCtx, saleTrans,</span>
+                    BalanceService.BALANCE_TYPE_SALE, saleTrans.getOperatorId(), true);
+            // generate balance logs
+<span class="fc" id="L261">            this.getSaleCommissionBalanceService().cancelCommission(respCtx, soldTicket.getTransaction(),</span>
+                    operatorOrMerchant);
+        }
+
+        // Verify risk control
+<span class="fc" id="L266">        this.getRiskControlService().cancelRiskControl(respCtx, hostTickets);</span>
+
+<span class="fc" id="L268">        this.doSuccessfulCancel(respCtx, soldTicket);</span>
+
+<span class="fc" id="L270">        return isCancelDecline;</span>
+    }
+
+    @Override
+    public final boolean cancelOrReverse(Context&lt;?&gt; respCtx, Transaction targetTrans) throws ApplicationException {
+<span class="pc bpc" id="L275" title="1 of 2 branches missed.">        if (targetTrans.getTicketSerialNo() == null) {</span>
+<span class="nc" id="L276">            throw new ApplicationException(SystemException.CODE_NO_TICKET,</span>
+                    &quot;No ticket associates with transaction transaction(terminalId=&quot; + targetTrans.getDeviceId()
+                            + &quot;,traceMessageId=&quot; + targetTrans.getTraceMessageId() + &quot;).&quot;);
+        }
+
+<span class="fc" id="L281">        DummyTicket ticket = new DummyTicket();</span>
+<span class="fc" id="L282">        ticket.setSerialNo(targetTrans.getTicketSerialNo());</span>
+<span class="fc" id="L283">        boolean isCancelDecline = this.cancelByTicket(respCtx, ticket);</span>
+<span class="fc bfc" id="L284" title="All 2 branches covered.">        if (isCancelDecline) {</span>
+<span class="fc" id="L285">            respCtx.setResponseCode(SystemException.CODE_FAILTO_CANCEL);</span>
+        }
+
+        /**
+         * Refer to {@code cancelByTicket}, avoid publish 2 duplicated cancellation message.
+         */
+<span class="fc" id="L291">        respCtx.setTransMessage(null);</span>
+<span class="fc" id="L292">        return isCancelDecline;</span>
+    }
+
+    // ---------------------------------------------------------------------
+    // HELP METHODS
+    // ---------------------------------------------------------------------
+
+    /**
+     * Generate the QP selected number. The specific sub-implementation should override this method.
+     */
+    protected void generateQPWhenSale(Context&lt;?&gt; respCtx, BaseTicket clientTicket) throws ApplicationException {
+        // template method
+<span class="fc" id="L304">    }</span>
+
+    /**
+     * Generate QP number according to the request.
+     */
+    protected String doGeneratingQP(Context&lt;?&gt; respCtx, BaseGameInstance gameInstance, int countOfQPNumber)
+            throws ApplicationException {
+<span class="nc" id="L311">        throw new UnsupportedOperationException(&quot;Unsupported method&quot;);</span>
+    }
+
+    protected void doEnquiryTicket(Context&lt;?&gt; respCtx, List&lt;? extends BaseTicket&gt; hostTickets, BaseTicket physicalTicket)
+            throws ApplicationException {
+        // template method of enquiry ticket
+<span class="fc" id="L317">    }</span>
+
+    protected void doSuccessfulSale(Context&lt;?&gt; respCtx, BaseTicket clientTicket) throws ApplicationException {
+        // template method for subclass to implement game-type specific logic
+        // when a successful sale.
+<span class="fc" id="L322">    }</span>
+
+    protected void customAssembleClientTicket(Context&lt;?&gt; respCtx, BaseTicket clientTicket) throws ApplicationException {
+        // template method
+<span class="fc" id="L326">    }</span>
+
+    protected void doSuccessfulCancel(Context&lt;?&gt; respCtx, BaseTicket soldTicket) throws ApplicationException {
+        // template method for subclass to implement game-type specific
+        // cancellation logic.
+<span class="fc" id="L331">    }</span>
+
+    /**
+     * Lookup Sale-ready game instances for sale.
+     */
+    protected List&lt;? extends BaseGameInstance&gt; lookupSaleReadyGameInstance(Context&lt;?&gt; respCtx, BaseTicket clientTicket)
+            throws ApplicationException {
+<span class="pc bpc" id="L338" title="1 of 2 branches missed.">        if (clientTicket.getGameInstance() == null) {</span>
+<span class="nc" id="L339">            throw new SystemException(&quot;NO game instance provided.&quot;);</span>
+        }
+<span class="fc bfc" id="L341" title="All 4 branches covered.">        if (clientTicket.getMultipleDraws() == 1 &amp;&amp; this.entityManager.contains(clientTicket.getGameInstance())) {</span>
+            // if game instance entity is managed by entity manger, no need to
+            // load it again.
+<span class="fc" id="L344">            List gameInstances = new LinkedList&lt;BaseGameInstance&gt;();</span>
+<span class="fc" id="L345">            gameInstances.add(clientTicket.getGameInstance());</span>
+<span class="fc" id="L346">            return gameInstances;</span>
+        } else {
+<span class="fc" id="L348">            List&lt;? extends BaseGameInstance&gt; gameInstances = this.getGameInstanceService().enquirySaleReady(respCtx,</span>
+                    clientTicket.getGameInstance().getGameId(), clientTicket.getGameInstance().getNumber(),
+                    clientTicket.getMultipleDraws());
+<span class="fc" id="L351">            return gameInstances;</span>
+        }
+    }
+
+    /**
+     * Template method for subclass to customize the process of update a cancelled ticket
+     */
+    protected void customCancelTicket(Context&lt;?&gt; respCtx, BaseTicket ticket) {
+
+<span class="fc" id="L360">    }</span>
+
+    protected void allowManualCancellation(BaseGameInstance soldGameInstance) throws ApplicationException {
+        // check whether manual cancellation is allowed...only sold game
+        // instance will be checked
+<span class="fc bfc" id="L365" title="All 2 branches covered.">        if (soldGameInstance.isSuspendManualCancel()) {</span>
+<span class="fc" id="L366">            throw new ApplicationException(SystemException.CODE_MANUAL_CANCEL_DISABLED,</span>
+                    &quot;No manual cancellation allowed of game instance(gameId=&quot; + soldGameInstance.getGame().getId()
+                            + &quot;,number=&quot; + soldGameInstance.getNumber() + &quot;).&quot;);
+        }
+<span class="fc bfc" id="L370" title="All 2 branches covered.">        if (this.supportedGameType().getOperationParametersType() != null) {</span>
+            // verify whether manual cancellation is allowed of game
+<span class="fc" id="L372">            BaseOperationParameter opParam = this.getBaseJpaDao().findById(</span>
+                    this.supportedGameType().getOperationParametersType(),
+                    soldGameInstance.getGame().getOperatorParameterId());
+<span class="fc bfc" id="L375" title="All 2 branches covered.">            if (!opParam.isAllowManualCancellation()) {</span>
+<span class="fc" id="L376">                throw new ApplicationException(SystemException.CODE_MANUAL_CANCEL_DISABLED,</span>
+                        &quot;No manual cancellation allowed of game (gameId=&quot; + soldGameInstance.getGame().getId() + &quot;).&quot;);
+            }
+        }
+<span class="fc" id="L380">    }</span>
+
+    /**
+     * Validate the ticket request, guarantee that all data are legal.
+     */
+    protected void validateTicketRequest(Context&lt;?&gt; respCtx, BaseTicket clientTicket) throws ApplicationException {
+<span class="fc" id="L386">        this.getTicketValidator().validate(respCtx, clientTicket, clientTicket.getGameInstance().getGame());</span>
+        // calculate the total bets of ticket
+<span class="fc" id="L388">        int totalBets = 0;</span>
+<span class="fc bfc" id="L389" title="All 2 branches covered.">        for (BaseEntry entry : clientTicket.getEntries()) {</span>
+<span class="fc" id="L390">            totalBets += entry.getTotalBets();</span>
+<span class="fc" id="L391">        }</span>
+<span class="fc" id="L392">        clientTicket.setTotalBets(totalBets * clientTicket.getMultipleDraws());</span>
+<span class="fc" id="L393">    }</span>
+
+    protected List&lt;? extends BaseTicket&gt; lookupTickets(Context respCtx, BaseTicket clientTicket)
+            throws ApplicationException {
+<span class="fc" id="L397">        return this.getBaseTicketDao().findBySerialNo(this.supportedGameType().getTicketType(),</span>
+                clientTicket.getSerialNo(), false);
+    }
+
+    protected List&lt;? extends BaseEntry&gt; lookupEntries(Context respCtx, BaseTicket clientTicket)
+            throws ApplicationException {
+<span class="fc" id="L403">        return this.getBaseEntryDao().findByTicketSerialNo(this.supportedGameType().getTicketEntryType(),</span>
+                clientTicket.getSerialNo(), false);
+    }
+
+    /**
+     * Check and update credit level.
+     */
+    protected void updateCredit(Context respCtx, BaseTicket clientTicket, boolean isOnline) throws ApplicationException {
+<span class="fc" id="L411">        respCtx.setProperty(SaleBalanceStrategy.PROP_SOLD_BY_CREDIT_CARD, clientTicket.isSoldByCreditCard());</span>
+        // long merchantId = respCtx.getTransaction().getMerchantId();
+        // String gameId = clientTicket.getGameInstance().getGame().getId();
+        // Object operatorOrMerchant =
+        // this.getCreditService().credit(respCtx.getTransaction().getOperatorId(),
+        // merchantId, clientTicket.getTotalAmount(), gameId, false, true,
+        // clientTicket.isSoldByCreditCard());
+<span class="fc" id="L418">        Object operatorOrMerchant = this.getBalanceService().balance(respCtx, respCtx.getTransaction(),</span>
+                BalanceService.BALANCE_TYPE_SALE, respCtx.getTransaction().getOperatorId(), false);
+        // generate balance logs
+<span class="fc" id="L421">        this.getSaleCommissionBalanceService().calCommission(respCtx, operatorOrMerchant);</span>
+<span class="fc" id="L422">    }</span>
+
+    /**
+     * Generate multiple-draw tickets based on client sale request.
+     */
+    protected List&lt;BaseTicket&gt; generateMultiplDrawsTickets(Context respCtx, BaseTicket clientTicket,
+            List&lt;? extends BaseGameInstance&gt; gameInstances) throws ApplicationException {
+<span class="fc" id="L429">        List&lt;BaseTicket&gt; tickets = new ArrayList&lt;BaseTicket&gt;(0);</span>
+<span class="pc bpc" id="L430" title="1 of 2 branches missed.">        if (clientTicket.getMultipleDraws() &gt; gameInstances.size()) {</span>
+<span class="nc" id="L431">            throw new ApplicationException(SystemException.CODE_NOENOUGH_FUTUREGAMEDRAW, &quot;There only &quot;</span>
+                    + gameInstances.size() + &quot; future draws, expected:&quot; + clientTicket.getMultipleDraws());
+        }
+
+<span class="fc" id="L435">        List&lt;BaseEntry&gt; entries = assembleEntryEntities(respCtx, clientTicket);</span>
+
+<span class="fc bfc" id="L437" title="All 2 branches covered.">        for (int i = 0; i &lt; gameInstances.size(); i++) {</span>
+            // must new a instance
+<span class="fc" id="L439">            BaseTicket t = (BaseTicket) clientTicket.clone();</span>
+<span class="fc" id="L440">            t.setId(this.getUuidService().getGeneralID());</span>
+<span class="fc" id="L441">            t.setStatus(BaseTicket.STATUS_ACCEPTED);</span>
+<span class="fc" id="L442">            t.setTotalAmount(clientTicket.calculateMultipleDrawAmount());</span>
+<span class="fc bfc" id="L443" title="All 2 branches covered.">            t.setMultipleDraws(i == 0 ? clientTicket.getMultipleDraws() : 0);</span>
+
+<span class="fc" id="L445">            Transaction trans = respCtx.getTransaction();</span>
+<span class="fc" id="L446">            t.setTransaction(trans);</span>
+<span class="fc" id="L447">            t.setGameInstance(gameInstances.get(i));</span>
+
+<span class="fc" id="L449">            t.setOperatorId(trans.getOperatorId());</span>
+<span class="fc" id="L450">            t.setMerchantId((int) trans.getMerchantId());</span>
+<span class="fc" id="L451">            t.setDevId((int) trans.getDeviceId());</span>
+<span class="fc bfc" id="L452" title="All 2 branches covered.">            if (clientTicket.getUser() != null) {</span>
+<span class="fc" id="L453">                t.setMobile(clientTicket.getUser().getMobile());</span>
+<span class="fc" id="L454">                t.setCreditCardSN(clientTicket.getUser().getCreditCardSN());</span>
+<span class="fc" id="L455">                t.setUserId(clientTicket.getUser().getId());</span>
+            }
+<span class="fc" id="L457">            t.setTicketFrom(respCtx.getGpe().getTicketFrom());</span>
+<span class="fc" id="L458">            t.setTotalBets(clientTicket.getTotalBets() / clientTicket.getMultipleDraws());</span>
+<span class="fc" id="L459">            t.setEntries(entries);</span>
+
+<span class="fc" id="L461">            this.customizeAssembleTicket(t, clientTicket);</span>
+
+<span class="fc" id="L463">            tickets.add(t);</span>
+        }
+
+<span class="fc" id="L466">        return tickets;</span>
+    }
+
+    protected List&lt;BaseEntry&gt; assembleEntryEntities(Context respCtx, BaseTicket clientTicket)
+            throws ApplicationException {
+        // prepare entries first
+<span class="fc bfc" id="L472" title="All 2 branches covered.">        for (int i = 0; i &lt; clientTicket.getEntries().size(); i++) {</span>
+<span class="fc" id="L473">            BaseEntry entry = clientTicket.getEntries().get(i);</span>
+<span class="fc" id="L474">            entry.setId(this.getUuidService().getGeneralID());</span>
+<span class="fc" id="L475">            entry.setTicketSerialNo(clientTicket.getSerialNo());</span>
+<span class="fc" id="L476">            entry.setEntryNo((i + 1) + &quot;&quot;);</span>
+<span class="fc" id="L477">            this.customizeAssembleEntry(clientTicket, entry);</span>
+        }
+<span class="fc" id="L479">        return clientTicket.getEntries();</span>
+    }
+
+    protected void customizeAssembleEntry(BaseTicket clientTicket, BaseEntry entry) {
+        // template method for subclass the customize the assembling process.
+<span class="fc" id="L484">    }</span>
+
+    protected void customizeAssembleTicket(BaseTicket generatedTicket, BaseTicket clientTicket) {
+        // generate extendTxt
+<span class="fc bfc" id="L488" title="All 2 branches covered.">        if (generatedTicket instanceof BaseTamperProofTicket) {</span>
+<span class="fc" id="L489">            ((BaseTamperProofTicket) generatedTicket).setExtendText(BaseTicket.generateExtendText(generatedTicket</span>
+                    .getEntries()));
+        }
+        // template method for subclass the customize the assembling process.
+        // for example to generate HMAC for ticket entries.
+<span class="fc" id="L494">    }</span>
+
+    // -----------------------------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // -----------------------------------------------------------
+
+    public UUIDService getUuidService() {
+<span class="fc" id="L501">        return uuidService;</span>
+    }
+
+    public void setUuidService(UUIDService uuidService) {
+<span class="fc" id="L505">        this.uuidService = uuidService;</span>
+<span class="fc" id="L506">    }</span>
+
+    public TransactionService getTransactionService() {
+<span class="fc" id="L509">        return transactionService;</span>
+    }
+
+    public void setTransactionService(TransactionService transactionService) {
+<span class="fc" id="L513">        this.transactionService = transactionService;</span>
+<span class="fc" id="L514">    }</span>
+
+    public MerchantService getMerchantService() {
+<span class="fc" id="L517">        return merchantService;</span>
+    }
+
+    public void setMerchantService(MerchantService merchantService) {
+<span class="fc" id="L521">        this.merchantService = merchantService;</span>
+<span class="fc" id="L522">    }</span>
+
+    public BaseJpaDao getBaseJpaDao() {
+<span class="fc" id="L525">        return baseJpaDao;</span>
+    }
+
+    public void setBaseJpaDao(BaseJpaDao baseJpaDao) {
+<span class="fc" id="L529">        this.baseJpaDao = baseJpaDao;</span>
+<span class="fc" id="L530">    }</span>
+
+    public TicketValidator getTicketValidator() {
+<span class="fc" id="L533">        return ticketValidator;</span>
+    }
+
+    public void setTicketValidator(TicketValidator ticketValidator) {
+<span class="fc" id="L537">        this.ticketValidator = ticketValidator;</span>
+<span class="fc" id="L538">    }</span>
+
+    public GameInstanceService getGameInstanceService() {
+<span class="fc" id="L541">        return gameInstanceService;</span>
+    }
+
+    public void setGameInstanceService(GameInstanceService gameInstanceService) {
+<span class="fc" id="L545">        this.gameInstanceService = gameInstanceService;</span>
+<span class="fc" id="L546">    }</span>
+
+    public BaseTicketDao getBaseTicketDao() {
+<span class="fc" id="L549">        return baseTicketDao;</span>
+    }
+
+    public void setBaseTicketDao(BaseTicketDao baseTicketDao) {
+<span class="fc" id="L553">        this.baseTicketDao = baseTicketDao;</span>
+<span class="fc" id="L554">    }</span>
+
+    public BaseEntryDao getBaseEntryDao() {
+<span class="fc" id="L557">        return baseEntryDao;</span>
+    }
+
+    public void setBaseEntryDao(BaseEntryDao baseEntryDao) {
+<span class="fc" id="L561">        this.baseEntryDao = baseEntryDao;</span>
+<span class="fc" id="L562">    }</span>
+
+    public static void main(String args[]) {
+<span class="nc" id="L565">        System.out.println(SimpleToolkit.md5(&quot;!!!!&quot;));</span>
+<span class="nc" id="L566">    }</span>
+
+    public String getExchangeName() {
+<span class="fc" id="L569">        return exchangeName;</span>
+    }
+
+    public void setExchangeName(String exchangeName) {
+<span class="nc" id="L573">        this.exchangeName = exchangeName;</span>
+<span class="nc" id="L574">    }</span>
+
+    public BalanceService getBalanceService() {
+<span class="fc" id="L577">        return balanceService;</span>
+    }
+
+    public void setBalanceService(BalanceService balanceService) {
+<span class="nc" id="L581">        this.balanceService = balanceService;</span>
+<span class="nc" id="L582">    }</span>
+
+    public RiskControlService getRiskControlService() {
+<span class="fc" id="L585">        return riskControlService;</span>
+    }
+
+    public void setRiskControlService(RiskControlService riskControlService) {
+<span class="fc" id="L589">        this.riskControlService = riskControlService;</span>
+<span class="fc" id="L590">    }</span>
+
+    public CommissionBalanceService getSaleCommissionBalanceService() {
+<span class="fc" id="L593">        return saleCommissionBalanceService;</span>
+    }
+
+    public void setSaleCommissionBalanceService(CommissionBalanceService commissionBalanceService) {
+<span class="nc" id="L597">        this.saleCommissionBalanceService = commissionBalanceService;</span>
+<span class="nc" id="L598">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

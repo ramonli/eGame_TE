@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DefaultReversalHandler.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.common.http</a> &gt; <span class="el_source">DefaultReversalHandler.java</span></div><h1>DefaultReversalHandler.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.common.http;
+
+import com.google.protobuf.Message;
+
+import com.mpos.lottery.te.thirdpartyservice.PaymentTransactionType;
+import com.mpos.lottery.te.thirdpartyservice.playeraccount.web.PlayerAccountHttpHeader;
+
+import net.mpos.apc.entry.Reversal.ResReversal;
+
+import java.io.IOException;
+import java.net.URI;
+
+public class DefaultReversalHandler implements ReversalHandler&lt;MessageResponse&gt; {
+    private HttpClientProtoBuffChannel httpClientChannel;
+    private PlayerAccountHttpHeader httpHeaders;
+    private ReversalMessageBuilder reversalMessageBuilder;
+
+    /**
+     * Default constructor.
+     */
+    public DefaultReversalHandler(PlayerAccountHttpHeader httpHeaders, HttpClientProtoBuffChannel httpClientChannel,
+<span class="fc" id="L22">            ReversalMessageBuilder reversalMessageBuilder) {</span>
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        if (httpClientChannel == null) {</span>
+<span class="nc" id="L24">            throw new IllegalArgumentException(&quot;argument 'httpClientChannel' can NOT be null&quot;);</span>
+        }
+<span class="fc" id="L26">        this.httpClientChannel = httpClientChannel;</span>
+<span class="fc" id="L27">        this.httpHeaders = httpHeaders;</span>
+<span class="fc" id="L28">        this.reversalMessageBuilder = reversalMessageBuilder;</span>
+<span class="fc" id="L29">    }</span>
+
+    @Override
+    public MessageResponse reverse(URI uri, Message orignalMsg) throws IOException {
+<span class="nc" id="L33">        return this.httpClientChannel.send(PaymentTransactionType.REVERSAL, uri, HttpMethod.POST, this.httpHeaders,</span>
+                this.reversalMessageBuilder.build(orignalMsg), new HttpClientProtoBuffChannel.MessageResponseHandler(
+                        ResReversal.getDefaultInstance()), null);
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

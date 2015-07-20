@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PrizeLevelObjectItemDto.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.prize.web</a> &gt; <span class="el_source">PrizeLevelObjectItemDto.java</span></div><h1>PrizeLevelObjectItemDto.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.prize.web;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+
+public class PrizeLevelObjectItemDto implements Serializable {
+    private static final long serialVersionUID = -6120188246919963970L;
+    private String objectId;
+    private String objectName;
+<span class="pc" id="L10">    private BigDecimal price = new BigDecimal(&quot;0&quot;);</span>
+<span class="pc" id="L11">    private BigDecimal taxAmount = new BigDecimal(&quot;0&quot;);</span>
+    private int numberOfObject;
+
+<span class="fc" id="L14">    public PrizeLevelObjectItemDto() {</span>
+<span class="fc" id="L15">    }</span>
+
+    public PrizeLevelObjectItemDto(String objectId, String objectName, BigDecimal price, BigDecimal taxAmount,
+            int numberOfObject) {
+<span class="nc" id="L19">        super();</span>
+<span class="nc" id="L20">        this.objectId = objectId;</span>
+<span class="nc" id="L21">        this.objectName = objectName;</span>
+<span class="nc" id="L22">        this.price = price;</span>
+<span class="nc" id="L23">        this.taxAmount = taxAmount;</span>
+<span class="nc" id="L24">        this.numberOfObject = numberOfObject;</span>
+<span class="nc" id="L25">    }</span>
+
+    public String getObjectId() {
+<span class="fc" id="L28">        return objectId;</span>
+    }
+
+    public void setObjectId(String objectId) {
+<span class="fc" id="L32">        this.objectId = objectId;</span>
+<span class="fc" id="L33">    }</span>
+
+    public String getObjectName() {
+<span class="fc" id="L36">        return objectName;</span>
+    }
+
+    public void setObjectName(String objectName) {
+<span class="fc" id="L40">        this.objectName = objectName;</span>
+<span class="fc" id="L41">    }</span>
+
+    public BigDecimal getPrice() {
+<span class="fc" id="L44">        return price;</span>
+    }
+
+    public void setPrice(BigDecimal price) {
+<span class="fc" id="L48">        this.price = price;</span>
+<span class="fc" id="L49">    }</span>
+
+    public BigDecimal getTaxAmount() {
+<span class="fc" id="L52">        return taxAmount;</span>
+    }
+
+    public void setTaxAmount(BigDecimal taxAmount) {
+<span class="fc" id="L56">        this.taxAmount = taxAmount;</span>
+<span class="fc" id="L57">    }</span>
+
+    public int getNumberOfObject() {
+<span class="fc" id="L60">        return numberOfObject;</span>
+    }
+
+    public void setNumberOfObject(int numberOfObject) {
+<span class="fc" id="L64">        this.numberOfObject = numberOfObject;</span>
+<span class="fc" id="L65">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

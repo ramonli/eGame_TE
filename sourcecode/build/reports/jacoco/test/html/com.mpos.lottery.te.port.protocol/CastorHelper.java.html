@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CastorHelper.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.port.protocol</a> &gt; <span class="el_source">CastorHelper.java</span></div><h1>CastorHelper.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.port.protocol;
+
+import com.mpos.lottery.te.config.MLotteryContext;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.exolab.castor.mapping.Mapping;
+import org.exolab.castor.xml.Marshaller;
+import org.exolab.castor.xml.Unmarshaller;
+import org.exolab.castor.xml.XMLContext;
+import org.xml.sax.InputSource;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+
+<span class="nc" id="L21">public class CastorHelper {</span>
+<span class="fc" id="L22">    private static Log logger = LogFactory.getLog(CastorHelper.class);</span>
+<span class="fc" id="L23">    private static MLotteryContext prop = MLotteryContext.getInstance();</span>
+    // All loading mapping should be cached to improve performance
+<span class="fc" id="L25">    private static Map&lt;String, XMLContext&gt; mappings = new HashMap&lt;String, XMLContext&gt;(0);</span>
+
+    /**
+     * Unmarshal a xml string into javabean.
+     * 
+     * @param input
+     *            The orignial xml string.
+     * @param mappingFile
+     *            The mapping file path, a class path.
+     * @return a javabean associated to xml input.
+     */
+    public static Object unmarshal(String input, String mappingFile) throws Exception {
+<span class="fc" id="L37">        Unmarshaller u = getXmlContext(mappingFile).createUnmarshaller();</span>
+<span class="fc" id="L38">        ByteArrayInputStream bais = new ByteArrayInputStream(input.getBytes());</span>
+<span class="fc" id="L39">        return u.unmarshal(new InputSource(bais));</span>
+    }
+
+    /**
+     * marshal a javabean into xml string.
+     * 
+     * @param input
+     *            The input java bean
+     * @param mappingFile
+     *            The mapping file in class path
+     * @return a xml representation of java bean.
+     */
+    public static String marshal(Object input, String mappingFile) throws Exception {
+        /**
+         * Make sure you are not using one of the static methods on the Marshaller/Unmarshaller. Any configuration
+         * changes that you make to the Marshaller or Unmarshaller are not available from the static methods.
+         */
+<span class="fc" id="L56">        Marshaller m = getXmlContext(mappingFile).createMarshaller();</span>
+<span class="fc" id="L57">        ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="fc" id="L58">        PrintWriter writer = new PrintWriter(new OutputStreamWriter(baos));</span>
+<span class="fc" id="L59">        m.setWriter(writer);</span>
+        // Marshaller m = new Marshaller(new OutputStreamWriter(baos));
+        // Anyone who wants to marshal Hibernate POJOs. This document shows how
+        // prevent
+        // undesirable XML output caused by Hibernate's lazy-loading technique.
+        // As proxy objects usually implement proxy interfaces, Castor XML can
+        // be instructed
+        // to check for such interfaces at marshal time, and marshal classes
+        // that implement
+        // these interfaces in a different way.
+<span class="fc" id="L69">        m.setProperty(&quot;org.exolab.castor.xml.proxyInterfaces&quot;, &quot;org.hibernate.proxy.HibernateProxy&quot;);</span>
+<span class="fc" id="L70">        m.setEncoding(prop.getDefaultEncoding());</span>
+        // m.setResolver(getXmlContext(mappingFile));
+<span class="fc" id="L72">        m.marshal(input);</span>
+<span class="fc" id="L73">        String output = baos.toString();</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L75">            logger.debug(&quot;Finish marshaling input(type&quot; + input.getClass() + &quot;, mappingFile=&quot; + mappingFile + &quot;).&quot;);</span>
+        }
+<span class="fc" id="L77">        return output;</span>
+    }
+
+    /**
+     * Simply transfer a object into a xml string.
+     */
+    public static String marshal(Object object) {
+        try {
+<span class="nc" id="L85">            ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="nc" id="L86">            PrintWriter writer = new PrintWriter(new OutputStreamWriter(baos));</span>
+<span class="nc" id="L87">            Marshaller.marshal(object, writer);</span>
+<span class="nc" id="L88">            return baos.toString();</span>
+<span class="nc" id="L89">        } catch (Exception e) {</span>
+<span class="nc" id="L90">            throw new RuntimeException(e);</span>
+        }
+    }
+
+    /**
+     * load mapping file from classpath.
+     */
+    private static synchronized XMLContext getXmlContext(String mappingFile) throws Exception {
+        /**
+         * Seems like that caching the Mapping instance will result in marshal problem in multi-thread environment. The
+         * first thread will parse successfully, then the other thread will lose the mapping information, and use
+         * default internal class descriptor. Maybe the internal state of Mappping instance will change, it isn't a
+         * read-only instance. BUT the ClassDescriptorResolver instance can be reused.
+         */
+        // XMLClassDescriptorResolver resolver = mappings.get(mappingFile);
+<span class="fc" id="L105">        XMLContext context = mappings.get(mappingFile);</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (context == null) {</span>
+<span class="fc" id="L107">            ClassLoader cl = Thread.currentThread().getContextClassLoader();</span>
+<span class="fc" id="L108">            InputStream is = cl.getResourceAsStream(mappingFile);</span>
+<span class="fc" id="L109">            Mapping mapping = new Mapping();</span>
+<span class="fc" id="L110">            mapping.loadMapping(new InputSource(is));</span>
+
+            /**
+             * I'm trying to use a ClassDescriptorResolver as describe in Castor's Best practices, but I've run into
+             * problems. I'm now getting this exception: IllegalStateException: No Introspector defined in properties!
+             * thrown by the ByIntrospection class.
+             * 
+             * http://www.nabble.com/-XML--Problem-using-ClassDescriptorResolver :-Introspector%3D-null-td20702840.html
+             * the best practice you've used is outdated for 1.3 you should use something like XMLContext ctx = new
+             * XMLContext(); ctx.addMapping(mapping);
+             */
+            // resolver = (XMLClassDescriptorResolver)
+            // ClassDescriptorResolverFactory
+            // .createClassDescriptorResolver(BindingType.XML);
+            // MappingUnmarshaller mappingUnmarshaller = new
+            // MappingUnmarshaller();
+            // MappingLoader mappingLoader =
+            // mappingUnmarshaller.getMappingLoader(
+            // mapping, BindingType.XML);
+            // resolver.setMappingLoader(mappingLoader);
+            // if (logger.isDebugEnabled()){
+            // logger.debug(&quot;Create a new ClassDescriptorResolver intance:&quot; +
+            // mappingFile);
+            // }
+<span class="fc" id="L134">            context = new XMLContext();</span>
+<span class="fc" id="L135">            context.addMapping(mapping);</span>
+
+<span class="fc" id="L137">            mappings.put(mappingFile, context);</span>
+        }
+<span class="fc" id="L139">        return context;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

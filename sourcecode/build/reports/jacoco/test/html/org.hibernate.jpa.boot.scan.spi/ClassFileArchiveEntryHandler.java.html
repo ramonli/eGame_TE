@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ClassFileArchiveEntryHandler.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">org.hibernate.jpa.boot.scan.spi</a> &gt; <span class="el_source">ClassFileArchiveEntryHandler.java</span></div><h1>ClassFileArchiveEntryHandler.java</h1><pre class="source lang-java linenums">/*
+ * Hibernate, Relational Persistence for Idiomatic Java
+ *
+ * Copyright (c) 2013, Red Hat Inc. or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU
+ * Lesser General Public License, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this distribution; if not, write to:
+ * Free Software Foundation, Inc.
+ * 51 Franklin Street, Fifth Floor
+ * Boston, MA  02110-1301  USA
+ */
+package org.hibernate.jpa.boot.scan.spi;
+
+import net.mpos.common.hasp.MPOS_Security_JNIExport;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.jpa.boot.archive.spi.ArchiveContext;
+import org.hibernate.jpa.boot.archive.spi.ArchiveEntry;
+import org.hibernate.jpa.boot.archive.spi.ArchiveException;
+import org.hibernate.jpa.boot.internal.ClassDescriptorImpl;
+import org.hibernate.jpa.boot.spi.ClassDescriptor;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javassist.bytecode.AnnotationsAttribute;
+import javassist.bytecode.ClassFile;
+
+import javax.persistence.Converter;
+import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
+
+/**
+ * Defines handling and filtering for class file entries within an archive.
+ * 
+ * @author Steve Ebersole
+ */
+public class ClassFileArchiveEntryHandler extends AbstractJavaArtifactArchiveEntryHandler {
+<span class="nc" id="L56">    private Log logger = LogFactory.getLog(MPOS_Security_JNIExport.class);</span>
+    private final Callback callback;
+
+    /**
+     * Contract for the thing interested in being notified about accepted class descriptors.
+     */
+    public static interface Callback {
+        public void locatedClass(ClassDescriptor classDescriptor);
+    }
+
+    public ClassFileArchiveEntryHandler(ScanOptions scanOptions, Callback callback) {
+<span class="nc" id="L67">        super(scanOptions);</span>
+<span class="nc" id="L68">        this.callback = callback;</span>
+<span class="nc" id="L69">    }</span>
+
+    @Override
+    public void handleEntry(ArchiveEntry entry, ArchiveContext context) {
+<span class="nc" id="L73">        final ClassFile classFile = toClassFile(entry);</span>
+<span class="nc" id="L74">        final ClassDescriptor classDescriptor = toClassDescriptor(classFile, entry);</span>
+
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        if (!isListedOrDetectable(context, classDescriptor.getName())) {</span>
+<span class="nc" id="L77">            return;</span>
+        }
+
+        // we are only interested in classes with certain annotations, so see if
+        // the ClassDescriptor
+        // represents a class which contains any of those annotations
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if (!containsClassAnnotationsOfInterest(classFile)) {</span>
+<span class="nc" id="L84">            return;</span>
+        }
+
+<span class="nc" id="L87">        notifyMatchedClass(classDescriptor);</span>
+<span class="nc" id="L88">    }</span>
+
+    private ClassFile toClassFile(ArchiveEntry entry) {
+<span class="nc" id="L91">        final InputStream inputStream = entry.getStreamAccess().accessInputStream();</span>
+<span class="nc" id="L92">        final DataInputStream dataInputStream = new DataInputStream(inputStream);</span>
+        try {
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            if (!MPOS_Security_JNIExport.isHaspEnabled())</span>
+<span class="nc" id="L95">                return new ClassFile(dataInputStream);</span>
+            else {
+<span class="nc" id="L97">                logger.debug(&quot;[HASP] decrypt resource &quot; + entry.getName());</span>
+                // [Ramon] read input stream and decrypt it
+<span class="nc" id="L99">                ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="nc" id="L100">                byte[] buffer = new byte[128];</span>
+<span class="nc" id="L101">                int iLength = 0;</span>
+
+<span class="nc bnc" id="L103" title="All 2 branches missed.">                while ((iLength = dataInputStream.read(buffer)) != -1) {</span>
+<span class="nc" id="L104">                    baos.write(buffer, 0, iLength);</span>
+                }
+
+<span class="nc" id="L107">                return new ClassFile(new DataInputStream(new ByteArrayInputStream(</span>
+                        MPOS_Security_JNIExport.decryptBinary(baos.toByteArray()))));
+            }
+<span class="nc" id="L110">        } catch (IOException e) {</span>
+<span class="nc" id="L111">            throw new ArchiveException(&quot;Could not build ClassFile&quot;);</span>
+        } finally {
+<span class="nc" id="L113">            try {</span>
+<span class="nc" id="L114">                dataInputStream.close();</span>
+<span class="nc" id="L115">            } catch (Exception ignore) {</span>
+<span class="nc" id="L116">            }</span>
+
+            try {
+<span class="nc" id="L119">                inputStream.close();</span>
+<span class="nc" id="L120">            } catch (IOException ignore) {</span>
+<span class="nc" id="L121">            }</span>
+        }
+    }
+
+    @SuppressWarnings(&quot;SimplifiableIfStatement&quot;)
+    private boolean containsClassAnnotationsOfInterest(ClassFile cf) {
+<span class="nc" id="L127">        final AnnotationsAttribute visibleAnnotations = (AnnotationsAttribute) cf</span>
+                .getAttribute(AnnotationsAttribute.visibleTag);
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        if (visibleAnnotations == null) {</span>
+<span class="nc" id="L130">            return false;</span>
+        }
+
+<span class="nc bnc" id="L133" title="All 8 branches missed.">        return visibleAnnotations.getAnnotation(Entity.class.getName()) != null</span>
+                || visibleAnnotations.getAnnotation(MappedSuperclass.class.getName()) != null
+                || visibleAnnotations.getAnnotation(Embeddable.class.getName()) != null
+                || visibleAnnotations.getAnnotation(Converter.class.getName()) != null;
+    }
+
+    protected ClassDescriptor toClassDescriptor(ClassFile classFile, ArchiveEntry entry) {
+<span class="nc" id="L140">        return new ClassDescriptorImpl(classFile.getName(), entry.getStreamAccess());</span>
+    }
+
+    protected final void notifyMatchedClass(ClassDescriptor classDescriptor) {
+<span class="nc" id="L144">        callback.locatedClass(classDescriptor);</span>
+<span class="nc" id="L145">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

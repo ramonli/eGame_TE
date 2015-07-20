@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>IncomeBalanceServiceImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.merchant.service.impl</a> &gt; <span class="el_source">IncomeBalanceServiceImpl.java</span></div><h1>IncomeBalanceServiceImpl.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.merchant.service.impl;
+
+import com.google.gson.Gson;
+
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.merchant.dao.BalanceTransactionsDao;
+import com.mpos.lottery.te.merchant.dao.CreditTransferLogDao;
+import com.mpos.lottery.te.merchant.dao.MerchantCommissionDao;
+import com.mpos.lottery.te.merchant.dao.MerchantDao;
+import com.mpos.lottery.te.merchant.dao.OperatorDao;
+import com.mpos.lottery.te.merchant.dao.OperatorMerchantDao;
+import com.mpos.lottery.te.merchant.domain.BalanceTransactions;
+import com.mpos.lottery.te.merchant.domain.Merchant;
+import com.mpos.lottery.te.merchant.domain.Operator;
+import com.mpos.lottery.te.merchant.service.IncomeBalanceService;
+import com.mpos.lottery.te.merchant.service.MerchantService;
+import com.mpos.lottery.te.merchant.web.IncomeBalanceDto;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.sequence.service.UUIDService;
+import com.mpos.lottery.te.trans.domain.Transaction;
+import com.mpos.lottery.te.trans.domain.logic.AbstractReversalOrCancelStrategy;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.math.BigDecimal;
+
+import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
+import javax.persistence.PersistenceContext;
+
+<span class="fc" id="L33">public class IncomeBalanceServiceImpl extends AbstractReversalOrCancelStrategy implements IncomeBalanceService {</span>
+<span class="fc" id="L34">    private Log logger = LogFactory.getLog(IncomeBalanceServiceImpl.class);</span>
+    private MerchantDao merchantDao;
+    private MerchantCommissionDao merchantCommissionDao;
+    // private PrizeGroupItemDao prizeGroupItemDao;
+    private UUIDService uuidManager;
+    private OperatorDao operatorDao;
+    private OperatorMerchantDao operatorMerchantDao;
+    private CreditTransferLogDao creditTransferLogDao;
+    @PersistenceContext(unitName = &quot;lottery_te&quot;)
+    private EntityManager entityManager;
+    private MerchantService merchantService;
+    private UUIDService uuidService;
+    private BalanceTransactionsDao balanceTransactionsDao;
+
+    @Override
+    public boolean cancelOrReverse(Context&lt;?&gt; respCtx, Transaction targetTrans) throws ApplicationException {
+<span class="pc bpc" id="L50" title="2 of 4 branches missed.">        if (targetTrans.getTransMessage() == null || targetTrans.getTransMessage().getRequestMsg() == null) {</span>
+<span class="nc" id="L51">            logger.warn(&quot;NO associated transaction message found.&quot;);</span>
+<span class="nc" id="L52">            return false;</span>
+        }
+<span class="fc" id="L54">        IncomeBalanceDto dto = new Gson().fromJson(targetTrans.getTransMessage().getRequestMsg(),</span>
+                IncomeBalanceDto.class);
+<span class="fc" id="L56">        Operator operator = this.getOperatorDao().findById(Operator.class, respCtx.getOperatorId());</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">        if (operator == null) {</span>
+<span class="nc" id="L58">            throw new ApplicationException(SystemException.CODE_NO_OPERATOR, &quot;can NOT find operator by id='&quot;</span>
+                    + respCtx.getOperatorId() + &quot;'.&quot;);
+        }
+
+<span class="fc" id="L62">        Merchant merchant = this.getMerchantDao().findById(Merchant.class, respCtx.getMerchant().getId());</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        if (merchant == null) {</span>
+<span class="nc" id="L64">            throw new ApplicationException(SystemException.CODE_NO_MERCHANT, &quot;can NOT find merchant by id='&quot;</span>
+                    + respCtx.getMerchant().getId() + &quot;'.&quot;);
+        }
+<span class="fc" id="L67">        BalanceTransactions balanceTransactions = balanceTransactionsDao.assembleBalanceTransactions(respCtx,</span>
+                dto.getAmount());
+<span class="fc" id="L69">        balanceTransactions.setPaymentType(BalanceTransactions.PAYMENT_TYPE_DEDUCTING_MONEY);</span>
+<span class="fc" id="L70">        balanceTransactions.setOriginalTransType(targetTrans.getType());</span>
+<span class="fc" id="L71">        operator.setUpdateTime(balanceTransactions.getUpdateTime());</span>
+<span class="fc" id="L72">        merchant.setUpdateTime(balanceTransactions.getUpdateTime());</span>
+<span class="fc" id="L73">        balanceTransactions.setTransactionAmount(dto.getAmount());</span>
+<span class="fc" id="L74">        balanceTransactions.setCommissionAmount(BalanceTransactions.ZERO.subtract(dto.getCommissionBalance()));</span>
+<span class="fc" id="L75">        Object updatedOperator = this.doBalance(dto, operator, merchant, false, true);</span>
+<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if (updatedOperator == null) {</span>
+<span class="nc" id="L77">            throw new SystemException(SystemException.CODE_OPERATOR_TOPUP_IGNORED, &quot;THe topup to operator(id=&quot;</span>
+                    + respCtx.getOperatorId() + &quot; will be ignored.&quot;);
+        }
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (updatedOperator instanceof Operator) {</span>
+<span class="fc" id="L81">            operator = (Operator) updatedOperator;</span>
+<span class="fc" id="L82">            balanceTransactions.setOwnerId(operator.getId());</span>
+<span class="fc" id="L83">            balanceTransactions.setOwnerType(BalanceTransactions.OWNER_TYPE_OPERATOR);</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        } else if (updatedOperator instanceof Merchant) {</span>
+<span class="fc" id="L85">            merchant = (Merchant) updatedOperator;</span>
+<span class="fc" id="L86">            balanceTransactions.setOwnerId(String.valueOf(merchant.getId()));</span>
+<span class="fc" id="L87">            balanceTransactions.setOwnerType(BalanceTransactions.OWNER_TYPE_MERCHANT);</span>
+
+        } else {
+<span class="nc" id="L90">            throw new IllegalStateException(&quot;unsupported topup target type: &quot; + updatedOperator);</span>
+        }
+<span class="fc" id="L92">        balanceTransactionsDao.updateBalanceTransactionsStatusByteTransactionId(targetTrans.getTransMessage()</span>
+                .getTransactionId());
+<span class="fc" id="L94">        balanceTransactionsDao.insert(balanceTransactions);</span>
+<span class="fc" id="L95">        return false;</span>
+    }
+
+    @Override
+    public IncomeBalanceDto incomeBalanceTransfer(Context respCtx, IncomeBalanceDto incomeBalanceDto)
+            throws ApplicationException {
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L102">            logger.debug(&quot; Income Balance (&quot; + incomeBalanceDto + &quot;) to operator &quot; + respCtx.getOperatorId());</span>
+        }
+<span class="fc" id="L104">        Operator operator = this.getOperatorDao().findById(Operator.class, respCtx.getOperatorId());</span>
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        if (operator == null) {</span>
+<span class="nc" id="L106">            throw new ApplicationException(SystemException.CODE_NO_OPERATOR, &quot;can NOT find operator by id='&quot;</span>
+                    + respCtx.getOperatorId() + &quot;'.&quot;);
+        }
+
+<span class="fc" id="L110">        Merchant merchant = this.getMerchantDao().findById(Merchant.class, respCtx.getMerchant().getId());</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">        if (merchant == null) {</span>
+<span class="nc" id="L112">            throw new ApplicationException(SystemException.CODE_NO_MERCHANT, &quot;can NOT find merchant by id='&quot;</span>
+                    + respCtx.getMerchant().getId() + &quot;'.&quot;);
+        }
+<span class="fc" id="L115">        BalanceTransactions balanceTransactions = balanceTransactionsDao.assembleBalanceTransactions(respCtx,</span>
+                incomeBalanceDto.getAmount());
+<span class="fc" id="L117">        balanceTransactions.setPaymentType(BalanceTransactions.PAYMENT_TYPE_PLUSING_MONEY);</span>
+<span class="fc" id="L118">        operator.setUpdateTime(balanceTransactions.getUpdateTime());</span>
+<span class="fc" id="L119">        merchant.setUpdateTime(balanceTransactions.getUpdateTime());</span>
+<span class="fc" id="L120">        Object updatedOperator = this.doBalance(incomeBalanceDto, operator, merchant, true, false);</span>
+
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (updatedOperator == null) {</span>
+<span class="nc" id="L123">            throw new SystemException(SystemException.CODE_OPERATOR_TOPUP_IGNORED,</span>
+                    &quot;The Transfer balance to operator(id=&quot; + respCtx.getOperatorId() + &quot; will be ignored.&quot;);
+        }
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        if (updatedOperator instanceof Operator) {</span>
+<span class="fc" id="L127">            operator = (Operator) updatedOperator;</span>
+<span class="fc" id="L128">            balanceTransactions.setOwnerId(operator.getId());</span>
+<span class="fc" id="L129">            balanceTransactions.setOwnerType(BalanceTransactions.OWNER_TYPE_OPERATOR);</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">        } else if (updatedOperator instanceof Merchant) {</span>
+<span class="fc" id="L131">            merchant = (Merchant) updatedOperator;</span>
+<span class="fc" id="L132">            balanceTransactions.setOwnerId(String.valueOf(merchant.getId()));</span>
+<span class="fc" id="L133">            balanceTransactions.setOwnerType(BalanceTransactions.OWNER_TYPE_MERCHANT);</span>
+
+        } else {
+<span class="nc" id="L136">            throw new IllegalStateException(&quot;unsupported topup target type: &quot; + updatedOperator);</span>
+        }
+<span class="fc" id="L138">        balanceTransactionsDao.insert(balanceTransactions);</span>
+
+<span class="fc" id="L140">        return incomeBalanceDto;</span>
+    }
+
+    private Object doBalance(IncomeBalanceDto incomeBalanceDto, Operator operator, Merchant merchant,
+            boolean isBalanceTransfer, boolean isReverse) throws ApplicationException {
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        if (Merchant.CREDIT_TYPE_DEFINITIVEVALUE == operator.getCreditType()) {</span>
+            /**
+             * If try to refresh a entity before flush state changes into underlying database, the changes of entity
+             * will be lost.
+             */
+<span class="fc" id="L150">            this.getEntityManager().flush();</span>
+            /**
+             * Refresh entity to latest state of underlying database and lock it.
+             */
+<span class="fc" id="L154">            this.getEntityManager().refresh(operator, LockModeType.PESSIMISTIC_READ);</span>
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L156">                logger.debug(&quot;The balance transfer(before transaction) of &quot; + operator + &quot; is &quot; + &quot;saleBalace:&quot;</span>
+                        + operator.getSaleCreditLevel() + &quot;,payoutBalace:&quot; + operator.getPayoutCreditLevel()
+                        + &quot;,cashoutBalace:&quot; + operator.getCashoutBalance() + &quot;,commissionBalance:&quot;
+                        + operator.getCommisionBalance());
+            }
+<span class="fc bfc" id="L161" title="All 2 branches covered.">            if (isBalanceTransfer) {</span>
+<span class="fc" id="L162">                this.calculationBalance(incomeBalanceDto, operator, merchant, BalanceTransactions.OWNER_TYPE_OPERATOR);</span>
+            }
+<span class="fc bfc" id="L164" title="All 2 branches covered.">            if (isReverse) {</span>
+<span class="fc" id="L165">                this.calculationCancelledBalance(incomeBalanceDto, operator, merchant,</span>
+                        BalanceTransactions.OWNER_TYPE_OPERATOR);
+            }
+<span class="fc" id="L168">            this.operatorDao.update(operator);</span>
+<span class="fc" id="L169">            return operator;</span>
+
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">        } else if (Merchant.CREDIT_TYPE_USE_PARENT == operator.getCreditType()) {</span>
+<span class="pc bpc" id="L172" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L173">                logger.debug(&quot;Ignore credit level calculation, as the credit type of &quot; + operator</span>
+                        + &quot; is USE PARENT... check its parent merchant&quot;);
+            }
+<span class="fc" id="L176">            return this.doBalanceMerchant(incomeBalanceDto, operator, merchant, isBalanceTransfer, isReverse);</span>
+        } else {
+<span class="nc" id="L178">            logger.info(&quot;Ignore calculation of credit level, as the credit type of &quot; + operator + &quot; is &quot;</span>
+                    + operator.getCreditType());
+<span class="nc" id="L180">            return null;</span>
+        }
+    }
+
+    private Object doBalanceMerchant(IncomeBalanceDto incomeBalanceDto, Operator operator, Merchant merchant,
+            boolean isBalanceTransfer, boolean isReverse) throws ApplicationException {
+<span class="fc bfc" id="L186" title="All 2 branches covered.">        if (Merchant.CREDIT_TYPE_DEFINITIVEVALUE == merchant.getCreditType()) {</span>
+            /**
+             * If try to refresh a entity before flush state changes into underlying database, the changes of entity
+             * will be lost.
+             */
+<span class="fc" id="L191">            this.getEntityManager().flush();</span>
+            /**
+             * Refresh entity to latest state of underlying database and lock it.
+             */
+<span class="fc" id="L195">            this.getEntityManager().refresh(merchant, LockModeType.PESSIMISTIC_READ);</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L197">                logger.debug(&quot;The balance transfer(before transaction) of &quot; + merchant + &quot; is &quot; + &quot;saleBalace:&quot;</span>
+                        + merchant.getSaleCreditLevel() + &quot;,payoutBalace:&quot; + merchant.getPayoutCreditLevel()
+                        + &quot;,cashoutBalace:&quot; + merchant.getCashoutBalance() + &quot;,commissionBalance:&quot;
+                        + merchant.getCommisionBalance());
+            }
+<span class="fc bfc" id="L202" title="All 2 branches covered.">            if (isBalanceTransfer) {</span>
+<span class="fc" id="L203">                this.calculationBalance(incomeBalanceDto, operator, merchant, BalanceTransactions.OWNER_TYPE_MERCHANT);</span>
+            }
+<span class="fc bfc" id="L205" title="All 2 branches covered.">            if (isReverse) {</span>
+<span class="fc" id="L206">                this.calculationCancelledBalance(incomeBalanceDto, operator, merchant,</span>
+                        BalanceTransactions.OWNER_TYPE_MERCHANT);
+            }
+<span class="fc" id="L209">            this.getMerchantDao().update(merchant);</span>
+<span class="fc" id="L210">            return merchant;</span>
+<span class="pc bpc" id="L211" title="1 of 2 branches missed.">        } else if (Merchant.CREDIT_TYPE_USE_PARENT == merchant.getCreditType()) {</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L213">                logger.debug(&quot;Ignore balance calculation, as the credit type of&quot; + merchant</span>
+                        + &quot; is USE PARENT... check its parent merchant.&quot;);
+            }
+            // invoke method recursively
+<span class="pc bpc" id="L217" title="1 of 2 branches missed.">            if (merchant.getParentMerchant() == null) {</span>
+<span class="nc" id="L218">                throw new ApplicationException(SystemException.CODE_NO_MERCHANT, &quot;can NOT find parent of merchant(id='&quot;</span>
+                        + merchant.getId() + &quot;').&quot;);
+            }
+<span class="fc" id="L221">            Merchant parent = this.getMerchantDao().findByIdForUpdate(merchant.getParentMerchant().getId());</span>
+<span class="fc" id="L222">            return this.doBalanceMerchant(incomeBalanceDto, operator, parent, isBalanceTransfer, isReverse);</span>
+        } else {
+<span class="nc" id="L224">            logger.info(&quot;Ignore calculation of balance, as the credit type of &quot; + merchant + &quot; is &quot;</span>
+                    + merchant.getCreditType());
+<span class="nc" id="L226">            return null;</span>
+        }
+    }
+
+    /**
+     * calculation Balance balance debit order:1.commission balance-&gt;2.payout balance-&gt;3.cash out balance.
+     * 
+     * @param incomeBalanceDto
+     * @param operator
+     * @param merchant
+     * @param type
+     *            1:operator,2:merchnat
+     * @throws ApplicationException
+     */
+    private void calculationBalance(IncomeBalanceDto incomeBalanceDto, Operator operator, Merchant merchant, int type)
+            throws ApplicationException {
+<span class="fc bfc" id="L242" title="All 2 branches covered.">        if (type == BalanceTransactions.OWNER_TYPE_OPERATOR) {</span>
+<span class="fc" id="L243">            incomeBalanceDto.setSaleBalance(incomeBalanceDto.getAmount().add(operator.getSaleCreditLevel()));</span>
+<span class="fc" id="L244">            incomeBalanceDto.setPayoutBalance(operator.getPayoutCreditLevel());</span>
+<span class="fc" id="L245">            incomeBalanceDto.setCashoutBalance(operator.getCashoutBalance());</span>
+<span class="fc" id="L246">            incomeBalanceDto.setCommissionBalance(operator.getCommisionBalance());</span>
+<span class="pc bpc" id="L247" title="1 of 2 branches missed.">        } else if (type == BalanceTransactions.OWNER_TYPE_MERCHANT) {</span>
+<span class="fc" id="L248">            incomeBalanceDto.setSaleBalance(incomeBalanceDto.getAmount().add(merchant.getSaleCreditLevel()));</span>
+<span class="fc" id="L249">            incomeBalanceDto.setPayoutBalance(merchant.getPayoutCreditLevel());</span>
+<span class="fc" id="L250">            incomeBalanceDto.setCashoutBalance(merchant.getCashoutBalance());</span>
+<span class="fc" id="L251">            incomeBalanceDto.setCommissionBalance(merchant.getCommisionBalance());</span>
+        }
+<span class="fc" id="L253">        BigDecimal amount = incomeBalanceDto.getAmount();</span>
+<span class="fc" id="L254">        BigDecimal payoutBalance = incomeBalanceDto.getPayoutBalance();</span>
+<span class="fc" id="L255">        BigDecimal cashoutBalance = incomeBalanceDto.getCashoutBalance();</span>
+<span class="fc bfc" id="L256" title="All 2 branches covered.">        BigDecimal commissionBalance = incomeBalanceDto.getCommissionBalance().compareTo(new BigDecimal(&quot;0&quot;)) &lt; 0</span>
+                ? new BigDecimal(&quot;0&quot;)
+                : incomeBalanceDto.getCommissionBalance();
+<span class="fc" id="L259">        incomeBalanceDto.setAddSaleAmount(amount);</span>
+<span class="pc bpc" id="L260" title="1 of 2 branches missed.">        if (commissionBalance.compareTo(amount) &gt;= 0) {</span>
+<span class="nc" id="L261">            incomeBalanceDto.setDeductCommissionAmount(amount);</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">            if (commissionBalance.compareTo(new BigDecimal(&quot;0&quot;)) &gt; 0) {</span>
+<span class="nc" id="L263">                incomeBalanceDto.setCommissionBalance(commissionBalance.subtract(amount));</span>
+            }
+
+<span class="pc bpc" id="L266" title="1 of 2 branches missed.">        } else if (commissionBalance.add(payoutBalance).compareTo(amount) &gt;= 0) {</span>
+<span class="nc" id="L267">            incomeBalanceDto.setDeductPayoutAmount(amount.subtract(commissionBalance));</span>
+<span class="nc" id="L268">            incomeBalanceDto.setPayoutBalance(commissionBalance.add(payoutBalance).subtract(amount));</span>
+<span class="nc bnc" id="L269" title="All 2 branches missed.">            if (commissionBalance.compareTo(new BigDecimal(&quot;0&quot;)) &gt; 0) {</span>
+<span class="nc" id="L270">                incomeBalanceDto.setDeductCommissionAmount(commissionBalance);</span>
+<span class="nc" id="L271">                incomeBalanceDto.setCommissionBalance(new BigDecimal(&quot;0&quot;));</span>
+            }
+<span class="pc bpc" id="L273" title="1 of 2 branches missed.">        } else if (commissionBalance.add(payoutBalance).add(cashoutBalance).compareTo(amount) &gt;= 0) {</span>
+<span class="fc" id="L274">            incomeBalanceDto.setDeductPayoutAmount(payoutBalance);</span>
+<span class="fc" id="L275">            incomeBalanceDto.setDeductCashoutAmount(amount.subtract(commissionBalance).subtract(payoutBalance));</span>
+
+<span class="fc" id="L277">            incomeBalanceDto.setPayoutBalance(new BigDecimal(&quot;0&quot;));</span>
+<span class="fc" id="L278">            incomeBalanceDto.setCashoutBalance(commissionBalance.add(payoutBalance).add(cashoutBalance)</span>
+                    .subtract(amount));
+<span class="fc bfc" id="L280" title="All 2 branches covered.">            if (commissionBalance.compareTo(new BigDecimal(&quot;0&quot;)) &gt; 0) {</span>
+<span class="fc" id="L281">                incomeBalanceDto.setDeductCommissionAmount(commissionBalance);</span>
+<span class="fc" id="L282">                incomeBalanceDto.setCommissionBalance(new BigDecimal(&quot;0&quot;));</span>
+            }
+        } else {
+<span class="nc" id="L285">            throw new ApplicationException(SystemException.CODE_INSUFFICIENT_BALANCE, &quot;Transfer amount[&quot; + amount</span>
+                    + &quot;] insufficient . commissionBalance[&quot; + incomeBalanceDto.getCommissionBalance().doubleValue()
+                    + &quot;],payoutBalance[&quot; + payoutBalance.doubleValue() + &quot;],cashoutBalance[&quot;
+                    + cashoutBalance.doubleValue() + &quot;]&quot;);
+        }
+
+        // set operator or mechant balance
+<span class="fc bfc" id="L292" title="All 2 branches covered.">        if (type == BalanceTransactions.OWNER_TYPE_OPERATOR) {</span>
+<span class="fc" id="L293">            operator.setSaleCreditLevel(incomeBalanceDto.getSaleBalance());</span>
+<span class="fc" id="L294">            operator.setPayoutCreditLevel(incomeBalanceDto.getPayoutBalance());</span>
+<span class="fc" id="L295">            operator.setCashoutBalance(incomeBalanceDto.getCashoutBalance());</span>
+<span class="fc" id="L296">            operator.setCommisionBalance(incomeBalanceDto.getCommissionBalance());</span>
+<span class="pc bpc" id="L297" title="1 of 2 branches missed.">        } else if (type == BalanceTransactions.OWNER_TYPE_MERCHANT) {</span>
+<span class="fc" id="L298">            merchant.setSaleCreditLevel(incomeBalanceDto.getSaleBalance());</span>
+<span class="fc" id="L299">            merchant.setPayoutCreditLevel(incomeBalanceDto.getPayoutBalance());</span>
+<span class="fc" id="L300">            merchant.setCashoutBalance(incomeBalanceDto.getCashoutBalance());</span>
+<span class="fc" id="L301">            merchant.setCommisionBalance(incomeBalanceDto.getCommissionBalance());</span>
+        }
+
+<span class="fc" id="L304">    }</span>
+
+    private void calculationCancelledBalance(IncomeBalanceDto incomeBalanceDto, Operator operator, Merchant merchant,
+            int type) throws ApplicationException {
+        // set operator or mechant balance
+<span class="fc bfc" id="L309" title="All 2 branches covered.">        if (type == BalanceTransactions.OWNER_TYPE_OPERATOR) {</span>
+<span class="fc" id="L310">            operator.setSaleCreditLevel(operator.getSaleCreditLevel().subtract(incomeBalanceDto.getAddSaleAmount()));</span>
+<span class="fc" id="L311">            operator.setPayoutCreditLevel(operator.getPayoutCreditLevel().add(incomeBalanceDto.getDeductPayoutAmount()));</span>
+<span class="fc" id="L312">            operator.setCashoutBalance(operator.getCashoutBalance().add(incomeBalanceDto.getDeductCashoutAmount()));</span>
+<span class="pc bpc" id="L313" title="1 of 2 branches missed.">            if (incomeBalanceDto.getCommissionBalance().compareTo(new BigDecimal(&quot;0&quot;)) &gt;= 0) {</span>
+<span class="fc" id="L314">                operator.setCommisionBalance(operator.getCommisionBalance().add(</span>
+                        incomeBalanceDto.getDeductCommissionAmount()));
+            }
+<span class="pc bpc" id="L317" title="1 of 2 branches missed.">        } else if (type == BalanceTransactions.OWNER_TYPE_MERCHANT) {</span>
+<span class="fc" id="L318">            merchant.setSaleCreditLevel(merchant.getSaleCreditLevel().subtract(incomeBalanceDto.getAddSaleAmount()));</span>
+<span class="fc" id="L319">            merchant.setPayoutCreditLevel(merchant.getPayoutCreditLevel().add(incomeBalanceDto.getDeductPayoutAmount()));</span>
+<span class="fc" id="L320">            merchant.setCashoutBalance(merchant.getCashoutBalance().add(incomeBalanceDto.getDeductCashoutAmount()));</span>
+<span class="pc bpc" id="L321" title="1 of 2 branches missed.">            if (incomeBalanceDto.getCommissionBalance().compareTo(new BigDecimal(&quot;0&quot;)) &gt;= 0) {</span>
+<span class="fc" id="L322">                merchant.setCommisionBalance(merchant.getCommisionBalance().add(</span>
+                        incomeBalanceDto.getDeductCommissionAmount()));
+            }
+        }
+<span class="fc" id="L326">    }</span>
+
+    // ----------------------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // ----------------------------------------------------
+
+    public MerchantDao getMerchantDao() {
+<span class="fc" id="L333">        return merchantDao;</span>
+    }
+
+    public void setMerchantDao(MerchantDao merchantDao) {
+<span class="fc" id="L337">        this.merchantDao = merchantDao;</span>
+<span class="fc" id="L338">    }</span>
+
+    public MerchantCommissionDao getMerchantCommissionDao() {
+<span class="nc" id="L341">        return merchantCommissionDao;</span>
+    }
+
+    public void setMerchantCommissionDao(MerchantCommissionDao merchantCommissionDao) {
+<span class="fc" id="L345">        this.merchantCommissionDao = merchantCommissionDao;</span>
+<span class="fc" id="L346">    }</span>
+
+    public UUIDService getUuidManager() {
+<span class="nc" id="L349">        return uuidManager;</span>
+    }
+
+    public void setUuidManager(UUIDService uuidManager) {
+<span class="fc" id="L353">        this.uuidManager = uuidManager;</span>
+<span class="fc" id="L354">    }</span>
+
+    public OperatorDao getOperatorDao() {
+<span class="fc" id="L357">        return operatorDao;</span>
+    }
+
+    public void setOperatorDao(OperatorDao operatorDao) {
+<span class="fc" id="L361">        this.operatorDao = operatorDao;</span>
+<span class="fc" id="L362">    }</span>
+
+    public OperatorMerchantDao getOperatorMerchantDao() {
+<span class="nc" id="L365">        return operatorMerchantDao;</span>
+    }
+
+    public void setOperatorMerchantDao(OperatorMerchantDao operatorMerchantDao) {
+<span class="fc" id="L369">        this.operatorMerchantDao = operatorMerchantDao;</span>
+<span class="fc" id="L370">    }</span>
+
+    public CreditTransferLogDao getCreditTransferLogDao() {
+<span class="nc" id="L373">        return creditTransferLogDao;</span>
+    }
+
+    public void setCreditTransferLogDao(CreditTransferLogDao creditTransferLogDao) {
+<span class="fc" id="L377">        this.creditTransferLogDao = creditTransferLogDao;</span>
+<span class="fc" id="L378">    }</span>
+
+    public EntityManager getEntityManager() {
+<span class="fc" id="L381">        return entityManager;</span>
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+<span class="nc" id="L385">        this.entityManager = entityManager;</span>
+<span class="nc" id="L386">    }</span>
+
+    public MerchantService getMerchantService() {
+<span class="nc" id="L389">        return merchantService;</span>
+    }
+
+    public void setMerchantService(MerchantService merchantService) {
+<span class="fc" id="L393">        this.merchantService = merchantService;</span>
+<span class="fc" id="L394">    }</span>
+
+    /**
+     * @return uuidService
+     */
+    public UUIDService getUuidService() {
+<span class="nc" id="L400">        return uuidService;</span>
+    }
+
+    /**
+     * @param uuidService
+     */
+    public void setUuidService(UUIDService uuidService) {
+<span class="fc" id="L407">        this.uuidService = uuidService;</span>
+<span class="fc" id="L408">    }</span>
+
+    /**
+     * @return balanceTransactionsDao
+     */
+    public BalanceTransactionsDao getBalanceTransactionsDao() {
+<span class="nc" id="L414">        return balanceTransactionsDao;</span>
+    }
+
+    /**
+     * @param balanceTransactionsDao
+     */
+    public void setBalanceTransactionsDao(BalanceTransactionsDao balanceTransactionsDao) {
+<span class="fc" id="L421">        this.balanceTransactionsDao = balanceTransactionsDao;</span>
+<span class="fc" id="L422">    }</span>
+
+    public static void main(String args[]) {
+<span class="nc" id="L425">        System.out.println(new BigDecimal(&quot;200.21&quot;).subtract(new BigDecimal(&quot;0.2&quot;)));</span>
+<span class="nc" id="L426">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

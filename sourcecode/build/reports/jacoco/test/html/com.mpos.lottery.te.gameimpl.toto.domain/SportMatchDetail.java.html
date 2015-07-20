@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SportMatchDetail.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.toto.domain</a> &gt; <span class="el_source">SportMatchDetail.java</span></div><h1>SportMatchDetail.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.toto.domain;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+/**
+ * SPORT_MATCH_DETAIL table's po
+ * 
+ * @author lee
+ * @version [Version NO, Apr 30, 2010]
+ * @since [product/Modul version]
+ */
+@Entity(name = &quot;SPORT_MATCH_DETAIL&quot;)
+<span class="nc" id="L21">public class SportMatchDetail implements Serializable {</span>
+    /**
+     * Annotation contents
+     */
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @Column(name = &quot;MATCH_DETAIL_ID&quot;)
+    private String matchDetailId;
+
+    @Column(name = &quot;GAME_INSTANCE_ID&quot;)
+    private String gameInstanceId;
+
+    @Column(name = &quot;MATCH_TYPE_ID&quot;)
+    private String matchTypeId;
+
+    @Column(name = &quot;HOME_ID&quot;)
+    private String homeId;
+
+    @Column(name = &quot;AWAY_ID&quot;)
+    private String awayId;
+
+    @Column(name = &quot;BET_OPTION_ID&quot;)
+    private String betoptionId;
+
+    /**
+     * The type definition of SPORT_BET_OPTION:
+     * &lt;ol&gt;
+     * &lt;li&gt;0 - 3 option[0/1/2]&lt;/li&gt;
+     * &lt;li&gt;1 - 3 option handicap[0/1/2]&lt;/li&gt;
+     * &lt;li&gt;2 - 2 option[0/1]&lt;/li&gt;
+     * &lt;li&gt;3 - 2 option handicap[0/1]&lt;/li&gt;
+     * &lt;li&gt;4 - Any value, eg:1|2,0,1,1|0&lt;/li&gt;
+     * &lt;/ol&gt;
+     */
+    @Column(name = &quot;BET_TYPE_ID&quot;)
+    private String betTypeId;
+
+    @Column(name = &quot;BET_OPTION_VALUE&quot;)
+    private BigDecimal betOptionValue;
+
+    @Column(name = &quot;GAME_DATETIME&quot;)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date gameDateTime;
+
+    @Column(name = &quot;COUNT_IN_POOL&quot;)
+    private BigDecimal countInPool;
+
+    @Column(name = &quot;RESULT&quot;)
+    private String result;
+
+    @Column(name = &quot;WIN_OPTION&quot;)
+    private BigDecimal winOption;
+
+    @Column(name = &quot;QUARTER_TYPE&quot;)
+    private int quarterType;
+
+    @Column(name = &quot;QUARTER_VALUE&quot;)
+    private int quarterValue;
+
+    @Column(name = &quot;MATCH_SEQ&quot;)
+    private int matchSeq;
+
+    public String getMatchDetailId() {
+<span class="nc" id="L85">        return matchDetailId;</span>
+    }
+
+    public void setMatchDetailId(String matchDetailId) {
+<span class="nc" id="L89">        this.matchDetailId = matchDetailId;</span>
+<span class="nc" id="L90">    }</span>
+
+    public String getGameInstanceId() {
+<span class="nc" id="L93">        return gameInstanceId;</span>
+    }
+
+    public void setGameInstanceId(String gameInstanceId) {
+<span class="nc" id="L97">        this.gameInstanceId = gameInstanceId;</span>
+<span class="nc" id="L98">    }</span>
+
+    public String getMatchTypeId() {
+<span class="nc" id="L101">        return matchTypeId;</span>
+    }
+
+    public void setMatchTypeId(String matchTypeId) {
+<span class="nc" id="L105">        this.matchTypeId = matchTypeId;</span>
+<span class="nc" id="L106">    }</span>
+
+    public String getHomeId() {
+<span class="nc" id="L109">        return homeId;</span>
+    }
+
+    public void setHomeId(String homeId) {
+<span class="nc" id="L113">        this.homeId = homeId;</span>
+<span class="nc" id="L114">    }</span>
+
+    public String getAwayId() {
+<span class="nc" id="L117">        return awayId;</span>
+    }
+
+    public void setAwayId(String awayId) {
+<span class="nc" id="L121">        this.awayId = awayId;</span>
+<span class="nc" id="L122">    }</span>
+
+    public String getBetoptionId() {
+<span class="nc" id="L125">        return betoptionId;</span>
+    }
+
+    public void setBetoptionId(String betoptionId) {
+<span class="nc" id="L129">        this.betoptionId = betoptionId;</span>
+<span class="nc" id="L130">    }</span>
+
+    public String getBetTypeId() {
+<span class="nc" id="L133">        return betTypeId;</span>
+    }
+
+    public void setBetTypeId(String betTypeId) {
+<span class="nc" id="L137">        this.betTypeId = betTypeId;</span>
+<span class="nc" id="L138">    }</span>
+
+    public BigDecimal getBetOptionValue() {
+<span class="nc" id="L141">        return betOptionValue;</span>
+    }
+
+    public void setBetOptionValue(BigDecimal betOptionValue) {
+<span class="nc" id="L145">        this.betOptionValue = betOptionValue;</span>
+<span class="nc" id="L146">    }</span>
+
+    public Date getGameDateTime() {
+<span class="nc" id="L149">        return gameDateTime;</span>
+    }
+
+    public void setGameDateTime(Date gameDateTime) {
+<span class="nc" id="L153">        this.gameDateTime = gameDateTime;</span>
+<span class="nc" id="L154">    }</span>
+
+    public BigDecimal getCountInPool() {
+<span class="nc" id="L157">        return countInPool;</span>
+    }
+
+    public void setCountInPool(BigDecimal countInPool) {
+<span class="nc" id="L161">        this.countInPool = countInPool;</span>
+<span class="nc" id="L162">    }</span>
+
+    public String getResult() {
+<span class="nc" id="L165">        return result;</span>
+    }
+
+    public void setResult(String result) {
+<span class="nc" id="L169">        this.result = result;</span>
+<span class="nc" id="L170">    }</span>
+
+    public BigDecimal getWinOption() {
+<span class="nc" id="L173">        return winOption;</span>
+    }
+
+    public void setWinOption(BigDecimal winOption) {
+<span class="nc" id="L177">        this.winOption = winOption;</span>
+<span class="nc" id="L178">    }</span>
+
+    public int getQuarterType() {
+<span class="nc" id="L181">        return quarterType;</span>
+    }
+
+    public void setQuarterType(int quarterType) {
+<span class="nc" id="L185">        this.quarterType = quarterType;</span>
+<span class="nc" id="L186">    }</span>
+
+    public int getQuarterValue() {
+<span class="nc" id="L189">        return quarterValue;</span>
+    }
+
+    public void setQuarterValue(int quarterValue) {
+<span class="nc" id="L193">        this.quarterValue = quarterValue;</span>
+<span class="nc" id="L194">    }</span>
+
+    public int getMatchSeq() {
+<span class="nc" id="L197">        return matchSeq;</span>
+    }
+
+    public void setMatchSeq(int matchSeq) {
+<span class="nc" id="L201">        this.matchSeq = matchSeq;</span>
+<span class="nc" id="L202">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

@@ -1,0 +1,98 @@
+package com.mpos.lottery.te.thirdpartyservice.amqp;
+
+option java_outer_classname = "TeMessage";
+
+// ------------------------------------------------------------------------------------
+// Commonly used message, will be referred by other transaction message
+// ------------------------------------------------------------------------------------
+
+message Context {
+	required int32 trans_type = 1;
+	// using Unix time encoded into a int64
+	required int64 create_time = 2;
+	required int64 update_time = 3;
+	required string operator_id = 4;
+	required int64 merchant_id = 5;
+	required int64 device_id = 6;
+	required int32 response_code = 7;
+	required string trace_msg_id = 8;
+
+	// Tag numbers 1-15 require one less byte to encode than higher numbers, so as an optimization you can 
+	// decide to use those tags for the commonly used or repeated elements, leaving tags 16 and higher for 
+	// less-commonly used optional elements. Each element in a repeated field requires re-encoding the tag 
+	// number, so repeated fields are particularly good candidates for this optimization.
+	optional int32 game_type = 16;
+	optional string game_id = 17;
+	// use string to encode BigDecimal
+	optional string total_amount = 18;
+}
+
+message GameInstance {
+	required string game_id = 1;
+	required string draw_no = 2;
+}
+
+// ------------------------------------------------------------------------------------
+// Transaction Message
+// ------------------------------------------------------------------------------------
+
+message Sale {
+	required string ticket_serial_no=1;
+	required string total_amount = 2;
+	required Context contxt = 3;
+	required GameInstance game_instance = 4;
+
+	message TicketEntry {
+		required string selected_number = 1;
+		required int32 bet_option = 2;
+		required int32 input_channel = 3;
+		optional string entry_amount = 16;
+		optional int32 total_bets = 17;
+	}	
+	repeated TicketEntry ticket_entry = 5;
+}
+
+message CancelByTicket {
+	required string ticket_serial_no=1;
+	// retrieve amount from target context
+	// required string total_amount = 2;
+	required Context contxt = 3;
+	// the context of previous sale transaction
+	required Context target_context = 4;
+}
+
+message CancelByTransaction {
+	required Context target_context = 1;
+	required Context contxt = 2;
+}
+
+message Payout {
+	required string ticket_serial_no = 1;
+	required Context contxt = 2;
+	// before tax
+	required string prize_amount = 3;
+	required string tax_amount = 4;
+
+	optional string return_amount = 5;
+
+	message PayoutItem {
+		// prize type has 2 options: 1(cash), 2(object)
+		required int32 prize_type = 1;
+		required string prize_amount = 2 [default = "0"];
+		required string tax_amount = 3 [default = "0"];
+
+		optional string number_of_object = 16;
+		optional string name_of_object = 17;
+	}
+	repeated PayoutItem payout_item = 6;
+}
+
+message CreditTransfer {
+	// the id of operator
+	required string from_operator = 1;
+	required string to_operator = 2;
+	// 1 is sale transfer, 2 is payout transfer.
+	required int32 transfer_type = 3;
+	required string amount = 4;
+	required Context contxt = 5;
+}

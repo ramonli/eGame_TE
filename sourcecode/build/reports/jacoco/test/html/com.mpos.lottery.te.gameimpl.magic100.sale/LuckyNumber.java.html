@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>LuckyNumber.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.magic100.sale</a> &gt; <span class="el_source">LuckyNumber.java</span></div><h1>LuckyNumber.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.magic100.sale;
+
+import com.mpos.lottery.te.gameimpl.magic100.game.Magic100GameInstance;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name = &quot;LK_PRIZE_PARAMETERS&quot;)
+public class LuckyNumber implements Serializable {
+    private static final long serialVersionUID = -5255082186005575960L;
+    @Id
+    @Column(name = &quot;ID&quot;)
+    private String id;
+    /**
+     * &lt;code&gt;sequenceOfNumber&lt;/code&gt; must be sequential, and step by 1. The lucky number will be sold from the smallest
+     * to the largest.
+     */
+    @Column(name = &quot;NUMBER_SEQ&quot;)
+    private long sequenceOfNumber;
+    @Column(name = &quot;LUCKY_NUM&quot;)
+    private String luckyNumber;
+<span class="pc" id="L35">    @Column(name = &quot;PRICE_AMOUNT&quot;)</span>
+    private BigDecimal prizeAmount = new BigDecimal(&quot;0&quot;);
+<span class="pc" id="L37">    @Transient</span>
+    private BigDecimal taxAmount = new BigDecimal(&quot;0&quot;);
+    /**
+     * If client requests to cancel a winning lucky number, the cancel counter of this number will be increased by 1 to
+     * indicate that this lucky number must be sold one more time at next cycle.
+     */
+    @Column(name = &quot;CANCEL_COUNTER&quot;)
+    private int cancelCounter;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;LK_GAME_INSTACE_ID&quot;, nullable = false)
+    private Magic100GameInstance gameInstance;
+    @Column(name = &quot;UPDATE_TIME&quot;)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateTime;
+
+<span class="fc" id="L52">    public LuckyNumber() {</span>
+<span class="fc" id="L53">    }</span>
+
+    public LuckyNumber(String id, long sequenceOfNumber, String luckyNumber, BigDecimal prizeAmount, int cancelCounter,
+            Magic100GameInstance gameInstance) {
+<span class="nc" id="L57">        super();</span>
+<span class="nc" id="L58">        this.id = id;</span>
+<span class="nc" id="L59">        this.sequenceOfNumber = sequenceOfNumber;</span>
+<span class="nc" id="L60">        this.luckyNumber = luckyNumber;</span>
+<span class="nc" id="L61">        this.prizeAmount = prizeAmount;</span>
+<span class="nc" id="L62">        this.cancelCounter = cancelCounter;</span>
+<span class="nc" id="L63">        this.gameInstance = gameInstance;</span>
+<span class="nc" id="L64">    }</span>
+
+    public LuckyNumber(RequeuedNumbersItem requeueItem) {
+<span class="fc" id="L67">        super();</span>
+<span class="fc" id="L68">        this.sequenceOfNumber = requeueItem.getSequenceOfNumber();</span>
+<span class="fc" id="L69">        this.luckyNumber = requeueItem.getLuckyNumber();</span>
+<span class="fc" id="L70">        this.prizeAmount = requeueItem.getPrizeAmount();</span>
+<span class="fc" id="L71">        this.taxAmount = requeueItem.getTaxAmount();</span>
+<span class="fc" id="L72">    }</span>
+
+    /**
+     * Whether this lucky nujber is winning?
+     * 
+     * @return true if winning, otherwise false.
+     */
+    public boolean isWinning() {
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (this.getPrizeAmount().compareTo(BigDecimal.ZERO) &gt; 0) {</span>
+<span class="nc" id="L81">            return true;</span>
+        }
+<span class="nc" id="L83">        return false;</span>
+    }
+
+    /**
+     * THe id of a &lt;code&gt;LuckyNumber&lt;/code&gt; must be sequential, and step by 1. System will sell the lucky number from
+     * smallest to largest by its ID.
+     */
+    public String getId() {
+<span class="fc" id="L91">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="nc" id="L95">        this.id = id;</span>
+<span class="nc" id="L96">    }</span>
+
+    public String getLuckyNumber() {
+<span class="fc" id="L99">        return luckyNumber;</span>
+    }
+
+    public void setLuckyNumber(String luckyNumber) {
+<span class="nc" id="L103">        this.luckyNumber = luckyNumber;</span>
+<span class="nc" id="L104">    }</span>
+
+    public BigDecimal getPrizeAmount() {
+<span class="fc" id="L107">        return prizeAmount;</span>
+    }
+
+    public void setPrizeAmount(BigDecimal prizeAmount) {
+<span class="nc" id="L111">        this.prizeAmount = prizeAmount;</span>
+<span class="nc" id="L112">    }</span>
+
+    public BigDecimal getTaxAmount() {
+<span class="fc" id="L115">        return taxAmount;</span>
+    }
+
+    public void setTaxAmount(BigDecimal taxAmount) {
+<span class="nc" id="L119">        this.taxAmount = taxAmount;</span>
+<span class="nc" id="L120">    }</span>
+
+    public int getCancelCounter() {
+<span class="nc" id="L123">        return cancelCounter;</span>
+    }
+
+    public void setCancelCounter(int cancelCounter) {
+<span class="nc" id="L127">        this.cancelCounter = cancelCounter;</span>
+<span class="nc" id="L128">    }</span>
+
+    public Magic100GameInstance getGameInstance() {
+<span class="nc" id="L131">        return gameInstance;</span>
+    }
+
+    public void setGameInstance(Magic100GameInstance gameInstance) {
+<span class="nc" id="L135">        this.gameInstance = gameInstance;</span>
+<span class="nc" id="L136">    }</span>
+
+    public Date getUpdateTime() {
+<span class="nc" id="L139">        return updateTime;</span>
+    }
+
+    public void setUpdateTime(Date updateTime) {
+<span class="nc" id="L143">        this.updateTime = updateTime;</span>
+<span class="nc" id="L144">    }</span>
+
+    public long getSequenceOfNumber() {
+<span class="fc" id="L147">        return sequenceOfNumber;</span>
+    }
+
+    public void setSequenceOfNumber(long sequenceOfNumber) {
+<span class="nc" id="L151">        this.sequenceOfNumber = sequenceOfNumber;</span>
+<span class="nc" id="L152">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

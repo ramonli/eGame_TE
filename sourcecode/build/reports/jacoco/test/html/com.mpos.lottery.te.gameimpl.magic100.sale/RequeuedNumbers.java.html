@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>RequeuedNumbers.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.magic100.sale</a> &gt; <span class="el_source">RequeuedNumbers.java</span></div><h1>RequeuedNumbers.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.magic100.sale;
+
+import com.mpos.lottery.te.common.dao.BaseEntity;
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;LK_REQUEUE_NUMBERS&quot;)
+<span class="fc" id="L18">public class RequeuedNumbers extends BaseEntity {</span>
+    private static final long serialVersionUID = 6351996763582252933L;
+    /**
+     * THe associated cancellation transaction. In general, only cancellation transaction will generate requeued
+     * numbers.
+     */
+    @Column(name = &quot;TRANS_ID&quot;)
+    private String transactionId;
+    @Column(name = &quot;LK_GAME_INSTACE_ID&quot;)
+    private String gameInstanceId;
+    /**
+     * The beginning lucky number of the cancelled range. For example, if client cancel a range numbers of 2~7, this
+     * field will be set to 2.
+     * &lt;p/&gt;
+     * This value will be changed if client buy part of the requeued numbers, for example a player buy 2~5 of the
+     * requeued 2~7, then the begin of requeued number will be 6.
+     * &lt;p/&gt;
+     * !!This field isn't used now, use &lt;code&gt;RequeuedNumbersItem&lt;/code&gt; now.!!
+     */
+    @Deprecated
+    @Column(name = &quot;NUMBER_SEQ &quot;)
+    private long beginOfValidNumbers;
+    /**
+     * How many requeued numbers are available for sale? For example, client cancelled a range numbers of 2~7, then both
+     * the 'countOfValidNumbers' and 'countOfNumbers' are 6. If later 2~5 are sold, the 'countOfValidNumbers' will be 3,
+     * and the 'countOfNumbers' is still 7.
+     */
+    @Column(name = &quot;COUNT_OF_VALID_NUMBER&quot;)
+    private int countOfValidNumbers;
+    /**
+     * How many numbers are cancelled?
+     */
+    @Column(name = &quot;COUNT_OF_NUMBER&quot;)
+    private int countOfNumbers;
+<span class="fc" id="L52">    @OneToMany(mappedBy = &quot;requeuedNumbers&quot;, fetch = FetchType.EAGER)</span>
+    // explicitly require underlying hibernate to generate SQL with
+    // 'join'...seem doesn't work for @OneToMany
+    // @Fetch(FetchMode.JOIN)
+    private List&lt;RequeuedNumbersItem&gt; requeuedNumbersItemList = new LinkedList&lt;RequeuedNumbersItem&gt;();
+
+    public List&lt;RequeuedNumbersItem&gt; lookupValidItems(int countOfNumbers) {
+        // sort the items by sequence_No
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">        if (requeuedNumbersItemList.size() &gt; 1) {</span>
+<span class="fc" id="L61">            Collections.sort(requeuedNumbersItemList, new Comparator&lt;RequeuedNumbersItem&gt;() {</span>
+
+                @Override
+                public int compare(RequeuedNumbersItem o1, RequeuedNumbersItem o2) {
+<span class="fc" id="L65">                    return (int) (o1.getSequenceOfNumber() - o2.getSequenceOfNumber());</span>
+                }
+
+            });
+        }
+
+<span class="fc" id="L71">        List&lt;RequeuedNumbersItem&gt; validItems = new LinkedList&lt;RequeuedNumbersItem&gt;();</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        for (RequeuedNumbersItem item : requeuedNumbersItemList) {</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">            if (RequeuedNumbersItem.STATE_VALID == item.getState()) {</span>
+<span class="fc" id="L74">                validItems.add(item);</span>
+            }
+<span class="fc" id="L76">        }</span>
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        if (countOfNumbers &gt; validItems.size()) {</span>
+            // should lookup numbers from main cycle
+<span class="fc" id="L79">            return new LinkedList&lt;RequeuedNumbersItem&gt;();</span>
+        } else {
+<span class="fc" id="L81">            return validItems.subList(0, countOfNumbers);</span>
+        }
+    }
+
+    public String getTransactionId() {
+<span class="nc" id="L86">        return transactionId;</span>
+    }
+
+    public void setTransactionId(String transactionId) {
+<span class="fc" id="L90">        this.transactionId = transactionId;</span>
+<span class="fc" id="L91">    }</span>
+
+    public String getGameInstanceId() {
+<span class="nc" id="L94">        return gameInstanceId;</span>
+    }
+
+    public void setGameInstanceId(String gameInstanceId) {
+<span class="fc" id="L98">        this.gameInstanceId = gameInstanceId;</span>
+<span class="fc" id="L99">    }</span>
+
+    public long getBeginOfValidNumbers() {
+<span class="fc" id="L102">        return beginOfValidNumbers;</span>
+    }
+
+    public void setBeginOfValidNumbers(long beginOfValidNumbers) {
+<span class="nc" id="L106">        this.beginOfValidNumbers = beginOfValidNumbers;</span>
+<span class="nc" id="L107">    }</span>
+
+    public int getCountOfValidNumbers() {
+<span class="fc" id="L110">        return countOfValidNumbers;</span>
+    }
+
+    public void setCountOfValidNumbers(int countOfValidNumbers) {
+<span class="fc" id="L114">        this.countOfValidNumbers = countOfValidNumbers;</span>
+<span class="fc" id="L115">    }</span>
+
+    public int getCountOfNumbers() {
+<span class="fc" id="L118">        return countOfNumbers;</span>
+    }
+
+    public void setCountOfNumbers(int countOfNumbers) {
+<span class="fc" id="L122">        this.countOfNumbers = countOfNumbers;</span>
+<span class="fc" id="L123">    }</span>
+
+    public List&lt;RequeuedNumbersItem&gt; getRequeuedNumbersItemList() {
+<span class="fc" id="L126">        return requeuedNumbersItemList;</span>
+    }
+
+    public void setRequeuedNumbersItemList(List&lt;RequeuedNumbersItem&gt; requeuedNumbersItemList) {
+<span class="nc" id="L130">        this.requeuedNumbersItemList = requeuedNumbersItemList;</span>
+<span class="nc" id="L131">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

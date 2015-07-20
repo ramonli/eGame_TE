@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TopupMsisdnReq.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.valueaddservice.airtime.support.spi.coobill</a> &gt; <span class="el_source">TopupMsisdnReq.java</span></div><h1>TopupMsisdnReq.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.valueaddservice.airtime.support.spi.coobill;
+
+/**
+ * Coobill client bean.
+ * 
+ * @author terry
+ */
+<span class="fc" id="L8">public class TopupMsisdnReq {</span>
+
+    private String agent;
+    private String password;
+    private String msisdn;
+    private int amout;
+    private String refTrx;
+
+    public String getMsisdn() {
+<span class="fc" id="L17">        return msisdn;</span>
+    }
+
+    public void setMsisdn(String msisdn) {
+<span class="fc" id="L21">        this.msisdn = msisdn;</span>
+<span class="fc" id="L22">    }</span>
+
+    public int getAmout() {
+<span class="fc" id="L25">        return amout;</span>
+    }
+
+    public void setAmout(int amout) {
+<span class="fc" id="L29">        this.amout = amout;</span>
+<span class="fc" id="L30">    }</span>
+
+    public String getRefTrx() {
+<span class="fc" id="L33">        return refTrx;</span>
+    }
+
+    public void setRefTrx(String refTrx) {
+<span class="fc" id="L37">        this.refTrx = refTrx;</span>
+<span class="fc" id="L38">    }</span>
+
+    public String getAgent() {
+<span class="fc" id="L41">        return agent;</span>
+    }
+
+    public void setAgent(String agent) {
+<span class="fc" id="L45">        this.agent = agent;</span>
+<span class="fc" id="L46">    }</span>
+
+    public String getPassword() {
+<span class="fc" id="L49">        return password;</span>
+    }
+
+    public void setPassword(String password) {
+<span class="fc" id="L53">        this.password = password;</span>
+<span class="fc" id="L54">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

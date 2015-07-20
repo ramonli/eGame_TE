@@ -1,0 +1,10 @@
+<SettlementResult>
+	<Transaction id="781237890548123" type="200" totalAmount="4510.0"
+		errorStatus="1">
+		<Ticket serialNo="918378127319236" status="1" />
+	</Transaction>
+	<Transaction id="781237890548230" type="201" totalAmount="4510.0"
+		errorStatus="2">
+		<Ticket serialNo="918378127319236" status="1" />
+	</Transaction>
+</SettlementResult>

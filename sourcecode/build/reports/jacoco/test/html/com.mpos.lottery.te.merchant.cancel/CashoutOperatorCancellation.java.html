@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CashoutOperatorCancellation.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.merchant.cancel</a> &gt; <span class="el_source">CashoutOperatorCancellation.java</span></div><h1>CashoutOperatorCancellation.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.merchant.cancel;
+
+import com.google.gson.Gson;
+
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.merchant.dao.BalanceTransactionsDao;
+import com.mpos.lottery.te.merchant.dao.MerchantDao;
+import com.mpos.lottery.te.merchant.dao.OperatorDao;
+import com.mpos.lottery.te.merchant.domain.BalanceTransactions;
+import com.mpos.lottery.te.merchant.domain.GsonCashOutOperator;
+import com.mpos.lottery.te.merchant.domain.Merchant;
+import com.mpos.lottery.te.merchant.domain.Operator;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.sequence.service.UUIDService;
+import com.mpos.lottery.te.trans.domain.Transaction;
+import com.mpos.lottery.te.trans.domain.TransactionType;
+import com.mpos.lottery.te.trans.domain.logic.AbstractReversalOrCancelStrategy;
+
+import net.mpos.fk.util.DateUtils;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.math.BigDecimal;
+
+<span class="fc" id="L27">public class CashoutOperatorCancellation extends AbstractReversalOrCancelStrategy {</span>
+<span class="fc" id="L28">    private Log logger = LogFactory.getLog(CashoutOperatorCancellation.class);</span>
+
+    private UUIDService uuidManager;
+    private MerchantDao merchantDao;
+    private OperatorDao operatorDao;
+    private BalanceTransactionsDao balanceTransactionsDao;
+
+    @Override
+    public boolean cancelOrReverse(Context&lt;?&gt; respCtx, Transaction targetTrans) throws ApplicationException {
+<span class="nc bnc" id="L37" title="All 4 branches missed.">        if (targetTrans.getTransMessage() == null || targetTrans.getTransMessage().getRequestMsg() == null) {</span>
+<span class="nc" id="L38">            logger.warn(&quot;No ransaction message found.&quot;);</span>
+<span class="nc" id="L39">            return false;</span>
+        }
+<span class="nc" id="L41">        GsonCashOutOperator dto = new Gson().fromJson(targetTrans.getTransMessage().getRequestMsg(),</span>
+                GsonCashOutOperator.class);
+<span class="nc" id="L43">        Operator operator = this.getOperatorDao().findById(Operator.class, respCtx.getOperatorId());</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (operator == null) {</span>
+<span class="nc" id="L45">            throw new ApplicationException(SystemException.CODE_NO_OPERATOR, &quot;can NOT find operator by id='&quot;</span>
+                    + respCtx.getOperatorId() + &quot;'.&quot;);
+        }
+
+<span class="nc" id="L49">        Merchant merchant = this.getMerchantDao().findById(Merchant.class, respCtx.getMerchant().getId());</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (merchant == null) {</span>
+<span class="nc" id="L51">            throw new ApplicationException(SystemException.CODE_NO_MERCHANT, &quot;can NOT find merchant by id='&quot;</span>
+                    + respCtx.getMerchant().getId() + &quot;'.&quot;);
+        }
+
+        // {&quot;operatorMerchantType&quot;:1,&quot;operatorMerchantid&quot;:&quot;OPERATOR-112&quot;,&quot;totalAmount&quot;:100,&quot;commission&quot;:20,&quot;payout&quot;:30,&quot;cashout&quot;:50,
+        // &quot;plusOperatorMerchantType&quot;:1,&quot;plusOperatorid&quot;:&quot;OPERATOR-111&quot;,&quot;plusOperatorCashoutBalance&quot;:100,&quot;plusOperatorCommissionBalance&quot;:0,&quot;plusOperatorCommissionRate&quot;:0,
+        // &quot;plusMerchantCashoutBalance&quot;:0,&quot;plusMerchantCommissionBalance&quot;:0,&quot;plusMerchantCommissionRate&quot;:0}
+
+        // cancellation , reversal the logic balance
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if (dto.getOperatorMerchantType() == BalanceTransactions.OWNER_TYPE_OPERATOR) {</span>
+<span class="nc" id="L61">            this.operatorDao.deductBalanceByOperatorCancel(dto.getCommission(), dto.getPayout(), dto.getCashout(),</span>
+                    dto.getOperatorMerchantid());
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        } else if (dto.getOperatorMerchantType() == BalanceTransactions.OWNER_TYPE_MERCHANT) {</span>
+<span class="nc" id="L64">            this.merchantDao.deductBalanceByMerchantCancel(dto.getCommission(), dto.getPayout(), dto.getCashout(),</span>
+                    Long.parseLong(dto.getOperatorMerchantid()));
+        }
+
+        // service center staff
+<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (dto.getPlusOperatorMerchantType() == BalanceTransactions.OWNER_TYPE_OPERATOR) {</span>
+<span class="nc" id="L70">            this.operatorDao.addCashoutAndCommissionToOperatorCancel(dto.getPlusOperatorCashoutBalance(), null,</span>
+                    dto.getPlusOperatorid());
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        } else if (dto.getPlusOperatorMerchantType() == BalanceTransactions.OWNER_TYPE_MERCHANT) {</span>
+<span class="nc" id="L73">            this.merchantDao.addCashoutAndCommissionToMerchantCancel(dto.getPlusMerchantCashoutBalance(), null,</span>
+                    Long.parseLong(dto.getPlusMerchantid()));
+        }
+
+        // update balance_transaction status to invalid
+<span class="nc" id="L78">        balanceTransactionsDao.updateBalanceTransactionsStatusByteTransactionId(targetTrans.getTransMessage()</span>
+                .getTransactionId());
+
+<span class="nc" id="L81">        BalanceTransactions balanceTransactions1 = this.assembleBalanceTransactions(respCtx, dto,</span>
+                dto.getOperatorMerchantid(), dto.getOperatorMerchantType(), dto.getTotalAmount(), new BigDecimal(&quot;0&quot;),
+                new BigDecimal(&quot;0&quot;), targetTrans, BalanceTransactions.PAYMENT_TYPE_PLUSING_MONEY);
+<span class="nc" id="L84">        balanceTransactionsDao.insert(balanceTransactions1);</span>
+
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if (dto.getPlusOperatorMerchantType() == BalanceTransactions.OWNER_TYPE_OPERATOR) {</span>
+<span class="nc" id="L87">            BalanceTransactions balanceTransactions21 = this.assembleBalanceTransactions(respCtx, dto, dto</span>
+                    .getPlusOperatorid(), dto.getPlusOperatorMerchantType(), new BigDecimal(dto
+                    .getPlusOperatorCashoutBalance().doubleValue()), BalanceTransactions.ZERO.subtract(dto
+                    .getPlusOperatorCommissionBalance()), dto.getPlusOperatorCommissionRate(), targetTrans,
+                    BalanceTransactions.PAYMENT_TYPE_DEDUCTING_MONEY);
+<span class="nc" id="L92">            balanceTransactionsDao.insert(balanceTransactions21);</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">        } else if (dto.getPlusOperatorMerchantType() == BalanceTransactions.OWNER_TYPE_MERCHANT) {</span>
+<span class="nc" id="L94">            BalanceTransactions balanceTransactions21 = this.assembleBalanceTransactions(respCtx, dto, dto</span>
+                    .getPlusOperatorid(), dto.getPlusOperatorMerchantType(), new BigDecimal(dto
+                    .getPlusOperatorCashoutBalance().doubleValue()), BalanceTransactions.ZERO.subtract(dto
+                    .getPlusOperatorCommissionBalance()), dto.getPlusOperatorCommissionRate(), targetTrans,
+                    BalanceTransactions.PAYMENT_TYPE_DEDUCTING_MONEY);
+<span class="nc" id="L99">            balanceTransactionsDao.insert(balanceTransactions21);</span>
+
+<span class="nc" id="L101">            BalanceTransactions balanceTransactions22 = this.assembleBalanceTransactions(respCtx, dto, dto</span>
+                    .getPlusMerchantid(), dto.getPlusOperatorMerchantType(), new BigDecimal(dto
+                    .getPlusMerchantCashoutBalance().doubleValue()), new BigDecimal(&quot;0&quot;), new BigDecimal(&quot;0&quot;),
+                    targetTrans, BalanceTransactions.PAYMENT_TYPE_DEDUCTING_MONEY);
+<span class="nc" id="L105">            balanceTransactionsDao.insert(balanceTransactions22);</span>
+        }
+
+        // SET TRANSACTION
+<span class="nc" id="L109">        respCtx.getTransaction().setTotalAmount(targetTrans.getTotalAmount());</span>
+<span class="nc" id="L110">        respCtx.getTransaction().setDestinationOpeator(dto.getOperatorid());</span>
+<span class="nc" id="L111">        return false;</span>
+    }
+
+    private BalanceTransactions assembleBalanceTransactions(Context respCtx, GsonCashOutOperator dto, String ownerid,
+            int ownerType, BigDecimal balanceAmount, BigDecimal commissionAmount, BigDecimal commissionRate,
+            Transaction targetTrans, int paymentType) throws ApplicationException {
+<span class="nc" id="L117">        BalanceTransactions balanceTransactions = new BalanceTransactions();</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (respCtx != null) {</span>
+<span class="nc" id="L119">            balanceTransactions.setTeTransactionId(respCtx.getTransactionID());</span>
+<span class="nc" id="L120">            balanceTransactions.setMerchantId(respCtx.getMerchant().getId());</span>
+<span class="nc" id="L121">            balanceTransactions.setOperatorId(respCtx.getOperatorId());</span>
+<span class="nc" id="L122">            balanceTransactions.setDeviceId(respCtx.getTerminalId());</span>
+<span class="nc" id="L123">            balanceTransactions.setTransactionType(TransactionType.CANCEL_BY_TRANSACTION.getRequestType());</span>
+<span class="nc" id="L124">            balanceTransactions.setOriginalTransType(targetTrans.getType());</span>
+<span class="nc" id="L125">            balanceTransactions.setStatus(BalanceTransactions.STATUS_VALID);</span>
+        }
+
+<span class="nc" id="L128">        balanceTransactions.setOwnerId(ownerid);</span>
+<span class="nc" id="L129">        balanceTransactions.setOwnerType(ownerType);</span>
+<span class="nc" id="L130">        balanceTransactions.setPaymentType(paymentType);</span>
+
+<span class="nc" id="L132">        balanceTransactions.setTransactionAmount(balanceAmount);</span>
+<span class="nc" id="L133">        balanceTransactions.setCommissionAmount(commissionAmount);</span>
+<span class="nc" id="L134">        balanceTransactions.setCommissionRate(commissionRate);</span>
+
+<span class="nc" id="L136">        balanceTransactions.setCreateTime(DateUtils.getNowTimestamp());</span>
+
+<span class="nc" id="L138">        return balanceTransactions;</span>
+
+    }
+
+    public MerchantDao getMerchantDao() {
+<span class="nc" id="L143">        return merchantDao;</span>
+    }
+
+    public void setMerchantDao(MerchantDao merchantDao) {
+<span class="fc" id="L147">        this.merchantDao = merchantDao;</span>
+<span class="fc" id="L148">    }</span>
+
+    public OperatorDao getOperatorDao() {
+<span class="nc" id="L151">        return operatorDao;</span>
+    }
+
+    public void setOperatorDao(OperatorDao operatorDao) {
+<span class="fc" id="L155">        this.operatorDao = operatorDao;</span>
+<span class="fc" id="L156">    }</span>
+
+    public BalanceTransactionsDao getBalanceTransactionsDao() {
+<span class="nc" id="L159">        return balanceTransactionsDao;</span>
+    }
+
+    public void setBalanceTransactionsDao(BalanceTransactionsDao balanceTransactionsDao) {
+<span class="fc" id="L163">        this.balanceTransactionsDao = balanceTransactionsDao;</span>
+<span class="fc" id="L164">    }</span>
+
+    public UUIDService getUuidManager() {
+<span class="nc" id="L167">        return uuidManager;</span>
+    }
+
+    public void setUuidManager(UUIDService uuidManager) {
+<span class="fc" id="L171">        this.uuidManager = uuidManager;</span>
+<span class="fc" id="L172">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

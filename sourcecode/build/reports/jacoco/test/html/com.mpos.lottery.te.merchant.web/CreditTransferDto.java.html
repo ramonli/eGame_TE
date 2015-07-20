@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>CreditTransferDto.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.merchant.web</a> &gt; <span class="el_source">CreditTransferDto.java</span></div><h1>CreditTransferDto.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.merchant.web;
+
+import com.mpos.lottery.te.merchant.service.balance.BalanceService;
+
+import java.math.BigDecimal;
+
+<span class="fc" id="L7">public class CreditTransferDto {</span>
+    public static final int CREDITTYPE_SALE = BalanceService.BALANCE_TYPE_SALE;
+    public static final int CREDITTYPE_PAYOUT = BalanceService.BALANCE_TYPE_PAYOUT;
+    public static final int CREDITTYPE_COMMISSION = BalanceService.BALANCE_TYPE_COMMISSION;
+    public static final int CREDITTYPE_CASHOUT = BalanceService.BALANCE_TYPE_CASHOUT;
+    private String fromOperatorLoginName;
+    private String toOperatorLoginName;
+<span class="fc" id="L14">    private int creditType = CREDITTYPE_SALE;</span>
+<span class="fc" id="L15">    private BigDecimal amount = new BigDecimal(&quot;0&quot;);</span>
+<span class="fc" id="L16">    private BigDecimal creditBalanceOfFromOperator = new BigDecimal(&quot;0&quot;);</span>
+<span class="fc" id="L17">    private BigDecimal creditBalanceOfToOperator = new BigDecimal(&quot;0&quot;);</span>
+
+    public String getFromOperatorLoginName() {
+<span class="fc" id="L20">        return fromOperatorLoginName;</span>
+    }
+
+    public void setFromOperatorLoginName(String fromOperatorLoginName) {
+<span class="fc" id="L24">        this.fromOperatorLoginName = fromOperatorLoginName;</span>
+<span class="fc" id="L25">    }</span>
+
+    public String getToOperatorLoginName() {
+<span class="fc" id="L28">        return toOperatorLoginName;</span>
+    }
+
+    public void setToOperatorLoginName(String toOperatorLoginName) {
+<span class="fc" id="L32">        this.toOperatorLoginName = toOperatorLoginName;</span>
+<span class="fc" id="L33">    }</span>
+
+    public int getCreditType() {
+<span class="fc" id="L36">        return creditType;</span>
+    }
+
+    public void setCreditType(int creditType) {
+<span class="fc" id="L40">        this.creditType = creditType;</span>
+<span class="fc" id="L41">    }</span>
+
+    public BigDecimal getAmount() {
+<span class="fc" id="L44">        return amount;</span>
+    }
+
+    public void setAmount(BigDecimal amount) {
+<span class="fc" id="L48">        this.amount = amount;</span>
+<span class="fc" id="L49">    }</span>
+
+    public BigDecimal getCreditBalanceOfFromOperator() {
+<span class="fc" id="L52">        return creditBalanceOfFromOperator;</span>
+    }
+
+    public void setCreditBalanceOfFromOperator(BigDecimal creditBalanceOfFromOperator) {
+<span class="fc" id="L56">        this.creditBalanceOfFromOperator = creditBalanceOfFromOperator;</span>
+<span class="fc" id="L57">    }</span>
+
+    public BigDecimal getCreditBalanceOfToOperator() {
+<span class="fc" id="L60">        return creditBalanceOfToOperator;</span>
+    }
+
+    public void setCreditBalanceOfToOperator(BigDecimal creditBalanceOfToOperator) {
+<span class="fc" id="L64">        this.creditBalanceOfToOperator = creditBalanceOfToOperator;</span>
+<span class="fc" id="L65">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

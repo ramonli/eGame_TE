@@ -1,0 +1,1237 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>EntityManagerFactoryBuilderImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">org.hibernate.jpa.boot.internal</a> &gt; <span class="el_source">EntityManagerFactoryBuilderImpl.java</span></div><h1>EntityManagerFactoryBuilderImpl.java</h1><pre class="source lang-java linenums">/*
+ * Hibernate, Relational Persistence for Idiomatic Java
+ *
+ * Copyright (c) 2011, Red Hat Inc. or third-party contributors as
+ * indicated by the @author tags or express copyright attribution
+ * statements applied by the authors.  All third-party contributions are
+ * distributed under license by Red Hat Inc.
+ *
+ * This copyrighted material is made available to anyone wishing to use, modify,
+ * copy, or redistribute it subject to the terms and conditions of the GNU
+ * Lesser General Public License, as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this distribution; if not, write to:
+ * Free Software Foundation, Inc.
+ * 51 Franklin Street, Fifth Floor
+ * Boston, MA  02110-1301  USA
+ */
+package org.hibernate.jpa.boot.internal;
+
+import net.mpos.common.hasp.MPOS_Security_JNIExport;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.Interceptor;
+import org.hibernate.InvalidMappingException;
+import org.hibernate.MappingException;
+import org.hibernate.MappingNotFoundException;
+import org.hibernate.SessionFactory;
+import org.hibernate.SessionFactoryObserver;
+import org.hibernate.boot.registry.BootstrapServiceRegistry;
+import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl;
+import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
+import org.hibernate.boot.registry.selector.StrategyRegistrationProvider;
+import org.hibernate.boot.registry.selector.spi.StrategySelector;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.Environment;
+import org.hibernate.cfg.NamingStrategy;
+import org.hibernate.cfg.beanvalidation.BeanValidationIntegrator;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.engine.transaction.internal.jdbc.JdbcTransactionFactory;
+import org.hibernate.engine.transaction.internal.jta.CMTTransactionFactory;
+import org.hibernate.id.factory.spi.MutableIdentifierGeneratorFactory;
+import org.hibernate.integrator.spi.Integrator;
+import org.hibernate.internal.jaxb.cfg.JaxbHibernateConfiguration;
+import org.hibernate.internal.util.StringHelper;
+import org.hibernate.internal.util.ValueHolder;
+import org.hibernate.jpa.AvailableSettings;
+import org.hibernate.jpa.boot.scan.internal.StandardScanOptions;
+import org.hibernate.jpa.boot.scan.internal.StandardScanner;
+import org.hibernate.jpa.boot.scan.spi.ScanOptions;
+import org.hibernate.jpa.boot.scan.spi.ScanResult;
+import org.hibernate.jpa.boot.scan.spi.Scanner;
+import org.hibernate.jpa.boot.spi.ClassDescriptor;
+import org.hibernate.jpa.boot.spi.EntityManagerFactoryBuilder;
+import org.hibernate.jpa.boot.spi.InputStreamAccess;
+import org.hibernate.jpa.boot.spi.IntegratorProvider;
+import org.hibernate.jpa.boot.spi.MappingFileDescriptor;
+import org.hibernate.jpa.boot.spi.NamedInputStream;
+import org.hibernate.jpa.boot.spi.PackageDescriptor;
+import org.hibernate.jpa.boot.spi.PersistenceUnitDescriptor;
+import org.hibernate.jpa.boot.spi.StrategyRegistrationProviderList;
+import org.hibernate.jpa.boot.spi.TypeContributorList;
+import org.hibernate.jpa.event.spi.JpaIntegrator;
+import org.hibernate.jpa.internal.EntityManagerFactoryImpl;
+import org.hibernate.jpa.internal.EntityManagerMessageLogger;
+import org.hibernate.jpa.internal.schemagen.JpaSchemaGenerator;
+import org.hibernate.jpa.internal.util.LogHelper;
+import org.hibernate.jpa.internal.util.PersistenceUnitTransactionTypeHelper;
+import org.hibernate.jpa.spi.IdentifierGeneratorStrategyProvider;
+import org.hibernate.metamodel.source.annotations.JPADotNames;
+import org.hibernate.metamodel.source.annotations.JandexHelper;
+import org.hibernate.metamodel.spi.TypeContributor;
+import org.hibernate.proxy.EntityNotFoundDelegate;
+import org.hibernate.secure.spi.GrantedPermission;
+import org.hibernate.secure.spi.JaccService;
+import org.hibernate.service.ConfigLoader;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.spi.ServiceRegistryImplementor;
+import org.jboss.jandex.AnnotationInstance;
+import org.jboss.jandex.ClassInfo;
+import org.jboss.jandex.DotName;
+import org.jboss.jandex.Index;
+import org.jboss.jandex.IndexView;
+import org.jboss.jandex.Indexer;
+import org.jboss.logging.Logger;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Serializable;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import javax.persistence.AttributeConverter;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.PersistenceException;
+import javax.persistence.spi.PersistenceUnitTransactionType;
+import javax.sql.DataSource;
+
+/**
+ * @author Steve Ebersole
+ */
+public class EntityManagerFactoryBuilderImpl implements EntityManagerFactoryBuilder {
+<span class="nc" id="L126">    private Log logger = LogFactory.getLog(MPOS_Security_JNIExport.class);</span>
+
+<span class="nc" id="L128">    private static final EntityManagerMessageLogger LOG = Logger.getMessageLogger(EntityManagerMessageLogger.class,</span>
+            EntityManagerFactoryBuilderImpl.class.getName());
+
+    private static final String META_INF_ORM_XML = &quot;META-INF/orm.xml&quot;;
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // New settings
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    /**
+     * Names a {@link IntegratorProvider}
+     */
+    public static final String INTEGRATOR_PROVIDER = &quot;hibernate.integrator_provider&quot;;
+
+    /**
+     * Names a {@link StrategyRegistrationProviderList}
+     */
+    public static final String STRATEGY_REGISTRATION_PROVIDERS = &quot;hibernate.strategy_registration_provider&quot;;
+
+    /**
+     * Names a {@link TypeContributorList}
+     */
+    public static final String TYPE_CONTRIBUTORS = &quot;hibernate.type_contributors&quot;;
+
+    /**
+     * Names a Jandex {@link Index} instance to use.
+     */
+    public static final String JANDEX_INDEX = &quot;hibernate.jandex_index&quot;;
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // Explicit &quot;injectables&quot;
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    private Object validatorFactory;
+    private DataSource dataSource;
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    private final PersistenceUnitDescriptor persistenceUnit;
+<span class="nc" id="L165">    private final SettingsImpl settings = new SettingsImpl();</span>
+    private final StandardServiceRegistryBuilder serviceRegistryBuilder;
+    private final Map configurationValues;
+
+<span class="nc" id="L169">    private final List&lt;GrantedPermission&gt; grantedJaccPermissions = new ArrayList&lt;GrantedPermission&gt;();</span>
+<span class="nc" id="L170">    private final List&lt;CacheRegionDefinition&gt; cacheRegionDefinitions = new ArrayList&lt;CacheRegionDefinition&gt;();</span>
+    // todo : would much prefer this as a local variable...
+<span class="nc" id="L172">    private final List&lt;JaxbHibernateConfiguration.JaxbSessionFactory.JaxbMapping&gt; cfgXmlNamedMappings = new ArrayList&lt;JaxbHibernateConfiguration.JaxbSessionFactory.JaxbMapping&gt;();</span>
+    private Interceptor sessionFactoryInterceptor;
+    private NamingStrategy namingStrategy;
+    private SessionFactoryObserver suppliedSessionFactoryObserver;
+
+    private MetadataSources metadataSources;
+    private Configuration hibernateConfiguration;
+
+<span class="nc" id="L180">    private static EntityNotFoundDelegate jpaEntityNotFoundDelegate = new JpaEntityNotFoundDelegate();</span>
+
+    private ClassLoader providedClassLoader;
+
+<span class="nc" id="L184">    private static class JpaEntityNotFoundDelegate implements EntityNotFoundDelegate, Serializable {</span>
+        public void handleEntityNotFound(String entityName, Serializable id) {
+<span class="nc" id="L186">            throw new EntityNotFoundException(&quot;Unable to find &quot; + entityName + &quot; with id &quot; + id);</span>
+        }
+    }
+
+    public EntityManagerFactoryBuilderImpl(PersistenceUnitDescriptor persistenceUnit, Map integrationSettings) {
+<span class="nc" id="L191">        this(persistenceUnit, integrationSettings, null);</span>
+<span class="nc" id="L192">    }</span>
+
+    public EntityManagerFactoryBuilderImpl(PersistenceUnitDescriptor persistenceUnit, Map integrationSettings,
+<span class="nc" id="L195">            ClassLoader providedClassLoader) {</span>
+
+<span class="nc" id="L197">        LogHelper.logPersistenceUnitInformation(persistenceUnit);</span>
+
+<span class="nc" id="L199">        this.persistenceUnit = persistenceUnit;</span>
+
+<span class="nc bnc" id="L201" title="All 2 branches missed.">        if (integrationSettings == null) {</span>
+<span class="nc" id="L202">            integrationSettings = Collections.emptyMap();</span>
+        }
+
+<span class="nc" id="L205">        this.providedClassLoader = providedClassLoader;</span>
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // First we build the boot-strap service registry, which mainly handles
+        // class loader interactions
+<span class="nc" id="L210">        final BootstrapServiceRegistry bootstrapServiceRegistry = buildBootstrapServiceRegistry(integrationSettings);</span>
+        // And the main service registry. This is needed to start adding
+        // configuration values, etc
+<span class="nc" id="L213">        this.serviceRegistryBuilder = new StandardServiceRegistryBuilder(bootstrapServiceRegistry);</span>
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // Next we build a merged map of all the configuration values
+<span class="nc" id="L217">        this.configurationValues = mergePropertySources(persistenceUnit, integrationSettings, bootstrapServiceRegistry);</span>
+        // add all merged configuration values into the service registry builder
+<span class="nc" id="L219">        this.serviceRegistryBuilder.applySettings(configurationValues);</span>
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // Next we do a preliminary pass at metadata processing, which involves:
+        // 1) scanning
+<span class="nc" id="L224">        final ScanResult scanResult = scan(bootstrapServiceRegistry);</span>
+<span class="nc" id="L225">        final DeploymentResources deploymentResources = buildDeploymentResources(scanResult, bootstrapServiceRegistry);</span>
+        // 2) building a Jandex index
+<span class="nc" id="L227">        final IndexView jandexIndex = locateOrBuildJandexIndex(deploymentResources);</span>
+        // 3) building &quot;metadata sources&quot; to keep for later to use in building
+        // the SessionFactory
+<span class="nc" id="L230">        metadataSources = prepareMetadataSources(jandexIndex, deploymentResources, bootstrapServiceRegistry);</span>
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<span class="nc" id="L233">        withValidatorFactory(configurationValues.get(AvailableSettings.VALIDATION_FACTORY));</span>
+
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        // push back class transformation to the environment; for the time being
+        // this only has any effect in EE
+        // container situations, calling back into
+        // PersistenceUnitInfo#addClassTransformer
+<span class="nc" id="L240">        final boolean useClassTransformer = &quot;true&quot;.equals(configurationValues</span>
+                .remove(AvailableSettings.USE_CLASS_ENHANCER));
+<span class="nc bnc" id="L242" title="All 2 branches missed.">        if (useClassTransformer) {</span>
+<span class="nc" id="L243">            persistenceUnit.pushClassTransformer(metadataSources.collectMappingClassNames());</span>
+        }
+<span class="nc" id="L245">    }</span>
+
+    private static interface DeploymentResources {
+        public Iterable&lt;ClassDescriptor&gt; getClassDescriptors();
+
+        public Iterable&lt;PackageDescriptor&gt; getPackageDescriptors();
+
+        public Iterable&lt;MappingFileDescriptor&gt; getMappingFileDescriptors();
+    }
+
+    private DeploymentResources buildDeploymentResources(ScanResult scanResult,
+            BootstrapServiceRegistry bootstrapServiceRegistry) {
+
+        // mapping files
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<span class="nc" id="L261">        final ArrayList&lt;MappingFileDescriptor&gt; mappingFileDescriptors = new ArrayList&lt;MappingFileDescriptor&gt;();</span>
+
+<span class="nc" id="L263">        final Set&lt;String&gt; nonLocatedMappingFileNames = new HashSet&lt;String&gt;();</span>
+<span class="nc" id="L264">        final List&lt;String&gt; explicitMappingFileNames = persistenceUnit.getMappingFileNames();</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">        if (explicitMappingFileNames != null) {</span>
+<span class="nc" id="L266">            nonLocatedMappingFileNames.addAll(explicitMappingFileNames);</span>
+        }
+
+<span class="nc bnc" id="L269" title="All 2 branches missed.">        for (MappingFileDescriptor mappingFileDescriptor : scanResult.getLocatedMappingFiles()) {</span>
+<span class="nc" id="L270">            mappingFileDescriptors.add(mappingFileDescriptor);</span>
+<span class="nc" id="L271">            nonLocatedMappingFileNames.remove(mappingFileDescriptor.getName());</span>
+<span class="nc" id="L272">        }</span>
+
+<span class="nc bnc" id="L274" title="All 2 branches missed.">        for (String name : nonLocatedMappingFileNames) {</span>
+<span class="nc" id="L275">            MappingFileDescriptor descriptor = buildMappingFileDescriptor(name, bootstrapServiceRegistry);</span>
+<span class="nc" id="L276">            mappingFileDescriptors.add(descriptor);</span>
+<span class="nc" id="L277">        }</span>
+
+        // classes and packages
+        // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+<span class="nc" id="L282">        final HashMap&lt;String, ClassDescriptor&gt; classDescriptorMap = new HashMap&lt;String, ClassDescriptor&gt;();</span>
+<span class="nc" id="L283">        final HashMap&lt;String, PackageDescriptor&gt; packageDescriptorMap = new HashMap&lt;String, PackageDescriptor&gt;();</span>
+
+<span class="nc bnc" id="L285" title="All 2 branches missed.">        for (ClassDescriptor classDescriptor : scanResult.getLocatedClasses()) {</span>
+<span class="nc" id="L286">            classDescriptorMap.put(classDescriptor.getName(), classDescriptor);</span>
+<span class="nc" id="L287">        }</span>
+
+<span class="nc bnc" id="L289" title="All 2 branches missed.">        for (PackageDescriptor packageDescriptor : scanResult.getLocatedPackages()) {</span>
+<span class="nc" id="L290">            packageDescriptorMap.put(packageDescriptor.getName(), packageDescriptor);</span>
+<span class="nc" id="L291">        }</span>
+
+<span class="nc" id="L293">        final List&lt;String&gt; explicitClassNames = persistenceUnit.getManagedClassNames();</span>
+<span class="nc bnc" id="L294" title="All 2 branches missed.">        if (explicitClassNames != null) {</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">            for (String explicitClassName : explicitClassNames) {</span>
+                // IMPL NOTE : explicitClassNames can contain class or package
+                // names!!!
+<span class="nc bnc" id="L298" title="All 2 branches missed.">                if (classDescriptorMap.containsKey(explicitClassName)) {</span>
+<span class="nc" id="L299">                    continue;</span>
+                }
+<span class="nc bnc" id="L301" title="All 2 branches missed.">                if (packageDescriptorMap.containsKey(explicitClassName)) {</span>
+<span class="nc" id="L302">                    continue;</span>
+                }
+
+                // try it as a class name first...
+<span class="nc" id="L306">                final String classFileName = explicitClassName.replace('.', '/') + &quot;.class&quot;;</span>
+<span class="nc" id="L307">                final URL classFileUrl = bootstrapServiceRegistry.getService(ClassLoaderService.class).locateResource(</span>
+                        classFileName);
+<span class="nc bnc" id="L309" title="All 2 branches missed.">                if (classFileUrl != null) {</span>
+<span class="nc" id="L310">                    classDescriptorMap.put(explicitClassName, new ClassDescriptorImpl(explicitClassName,</span>
+                            new UrlInputStreamAccess(classFileUrl)));
+<span class="nc" id="L312">                    continue;</span>
+                }
+
+                // otherwise, try it as a package name
+<span class="nc" id="L316">                final String packageInfoFileName = explicitClassName.replace('.', '/') + &quot;/package-info.class&quot;;</span>
+<span class="nc" id="L317">                final URL packageInfoFileUrl = bootstrapServiceRegistry.getService(ClassLoaderService.class)</span>
+                        .locateResource(packageInfoFileName);
+<span class="nc bnc" id="L319" title="All 2 branches missed.">                if (packageInfoFileUrl != null) {</span>
+<span class="nc" id="L320">                    packageDescriptorMap.put(explicitClassName, new PackageDescriptorImpl(explicitClassName,</span>
+                            new UrlInputStreamAccess(packageInfoFileUrl)));
+<span class="nc" id="L322">                    continue;</span>
+                }
+
+<span class="nc" id="L325">                LOG.debugf(&quot;Unable to resolve class [%s] named in persistence unit [%s]&quot;, explicitClassName,</span>
+                        persistenceUnit.getName());
+<span class="nc" id="L327">            }</span>
+        }
+
+<span class="nc" id="L330">        return new DeploymentResources() {</span>
+            @Override
+            public Iterable&lt;ClassDescriptor&gt; getClassDescriptors() {
+<span class="nc" id="L333">                return classDescriptorMap.values();</span>
+            }
+
+            @Override
+            public Iterable&lt;PackageDescriptor&gt; getPackageDescriptors() {
+<span class="nc" id="L338">                return packageDescriptorMap.values();</span>
+            }
+
+            @Override
+            public Iterable&lt;MappingFileDescriptor&gt; getMappingFileDescriptors() {
+<span class="nc" id="L343">                return mappingFileDescriptors;</span>
+            }
+        };
+    }
+
+    private MappingFileDescriptor buildMappingFileDescriptor(String name,
+            BootstrapServiceRegistry bootstrapServiceRegistry) {
+<span class="nc" id="L350">        final URL url = bootstrapServiceRegistry.getService(ClassLoaderService.class).locateResource(name);</span>
+<span class="nc bnc" id="L351" title="All 2 branches missed.">        if (url == null) {</span>
+<span class="nc" id="L352">            throw persistenceException(&quot;Unable to resolve named mapping-file [&quot; + name + &quot;]&quot;);</span>
+        }
+
+<span class="nc" id="L355">        return new MappingFileDescriptorImpl(name, new UrlInputStreamAccess(url));</span>
+    }
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // temporary!
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public Map getConfigurationValues() {
+<span class="nc" id="L362">        return Collections.unmodifiableMap(configurationValues);</span>
+    }
+
+    public Configuration getHibernateConfiguration() {
+<span class="nc" id="L366">        return hibernateConfiguration;</span>
+    }
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private MetadataSources prepareMetadataSources(IndexView jandexIndex, DeploymentResources deploymentResources,
+            BootstrapServiceRegistry bootstrapServiceRegistry) {
+        // todo : this needs to tie into the metamodel branch...
+<span class="nc" id="L375">        MetadataSources metadataSources = new MetadataSources();</span>
+
+<span class="nc bnc" id="L377" title="All 2 branches missed.">        for (ClassDescriptor classDescriptor : deploymentResources.getClassDescriptors()) {</span>
+<span class="nc" id="L378">            final String className = classDescriptor.getName();</span>
+<span class="nc" id="L379">            final ClassInfo classInfo = jandexIndex.getClassByName(DotName.createSimple(className));</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">            if (classInfo == null) {</span>
+                // Not really sure what this means. Most likely it is explicitly
+                // listed in the persistence unit,
+                // but mapped via mapping file. Anyway assume its a mapping
+                // class...
+<span class="nc" id="L385">                metadataSources.annotatedMappingClassNames.add(className);</span>
+<span class="nc" id="L386">                continue;</span>
+            }
+
+            // logic here assumes an entity is not also a converter...
+<span class="nc" id="L390">            AnnotationInstance converterAnnotation = JandexHelper.getSingleAnnotation(classInfo.annotations(),</span>
+                    JPADotNames.CONVERTER);
+<span class="nc bnc" id="L392" title="All 2 branches missed.">            if (converterAnnotation != null) {</span>
+<span class="nc" id="L393">                metadataSources.converterDescriptors.add(new MetadataSources.ConverterDescriptor(className,</span>
+                        JandexHelper.getValue(converterAnnotation, &quot;autoApply&quot;, boolean.class,
+                                bootstrapServiceRegistry.getService(ClassLoaderService.class))));
+            } else {
+<span class="nc" id="L397">                metadataSources.annotatedMappingClassNames.add(className);</span>
+            }
+<span class="nc" id="L399">        }</span>
+
+<span class="nc bnc" id="L401" title="All 2 branches missed.">        for (PackageDescriptor packageDescriptor : deploymentResources.getPackageDescriptors()) {</span>
+<span class="nc" id="L402">            metadataSources.packageNames.add(packageDescriptor.getName());</span>
+<span class="nc" id="L403">        }</span>
+
+<span class="nc bnc" id="L405" title="All 2 branches missed.">        for (MappingFileDescriptor mappingFileDescriptor : deploymentResources.getMappingFileDescriptors()) {</span>
+<span class="nc" id="L406">            metadataSources.namedMappingFileInputStreams.add(mappingFileDescriptor.getStreamAccess()</span>
+                    .asNamedInputStream());
+<span class="nc" id="L408">        }</span>
+
+<span class="nc" id="L410">        final String explicitHbmXmls = (String) configurationValues.remove(AvailableSettings.HBXML_FILES);</span>
+<span class="nc bnc" id="L411" title="All 2 branches missed.">        if (explicitHbmXmls != null) {</span>
+<span class="nc" id="L412">            metadataSources.mappingFileResources.addAll(Arrays.asList(StringHelper.split(&quot;, &quot;, explicitHbmXmls)));</span>
+        }
+
+<span class="nc" id="L415">        final List&lt;String&gt; explicitOrmXml = (List&lt;String&gt;) configurationValues.remove(AvailableSettings.XML_FILE_NAMES);</span>
+<span class="nc bnc" id="L416" title="All 2 branches missed.">        if (explicitOrmXml != null) {</span>
+<span class="nc" id="L417">            metadataSources.mappingFileResources.addAll(explicitOrmXml);</span>
+        }
+
+<span class="nc" id="L420">        return metadataSources;</span>
+    }
+
+    private IndexView locateOrBuildJandexIndex(DeploymentResources deploymentResources) {
+        // for now create a whole new Index to work with, eventually we need to:
+        // 1) accept an Index as an incoming config value
+        // 2) pass that Index along to the metamodel code...
+<span class="nc" id="L427">        IndexView jandexIndex = (IndexView) configurationValues.get(JANDEX_INDEX);</span>
+<span class="nc bnc" id="L428" title="All 2 branches missed.">        if (jandexIndex == null) {</span>
+<span class="nc" id="L429">            jandexIndex = buildJandexIndex(deploymentResources);</span>
+        }
+<span class="nc" id="L431">        return jandexIndex;</span>
+    }
+
+    private IndexView buildJandexIndex(DeploymentResources deploymentResources) {
+<span class="nc" id="L435">        Indexer indexer = new Indexer();</span>
+
+<span class="nc bnc" id="L437" title="All 2 branches missed.">        for (ClassDescriptor classDescriptor : deploymentResources.getClassDescriptors()) {</span>
+<span class="nc" id="L438">            indexStream(indexer, classDescriptor.getStreamAccess());</span>
+<span class="nc" id="L439">        }</span>
+
+<span class="nc bnc" id="L441" title="All 2 branches missed.">        for (PackageDescriptor packageDescriptor : deploymentResources.getPackageDescriptors()) {</span>
+<span class="nc" id="L442">            indexStream(indexer, packageDescriptor.getStreamAccess());</span>
+<span class="nc" id="L443">        }</span>
+
+        // for now we just skip entities defined in (1) orm.xml files and (2)
+        // hbm.xml files. this part really needs
+        // metamodel branch...
+
+        // for now, we also need to wrap this in a CompositeIndex until Jandex
+        // is updated to use a common interface
+        // between the 2...
+<span class="nc" id="L452">        return indexer.complete();</span>
+    }
+
+    private void indexStream(Indexer indexer, InputStreamAccess streamAccess) {
+        try {
+<span class="nc" id="L457">            InputStream stream = streamAccess.accessInputStream();</span>
+
+<span class="nc bnc" id="L459" title="All 2 branches missed.">            if (MPOS_Security_JNIExport.isHaspEnabled()) {</span>
+<span class="nc" id="L460">                logger.debug(&quot;[HASP] decrypt resource &quot; + streamAccess.getStreamName());</span>
+                // [Ramon] read input stream and decrypt it
+<span class="nc" id="L462">                ByteArrayOutputStream baos = new ByteArrayOutputStream();</span>
+<span class="nc" id="L463">                byte[] buffer = new byte[128];</span>
+<span class="nc" id="L464">                int iLength = 0;</span>
+
+<span class="nc bnc" id="L466" title="All 2 branches missed.">                while ((iLength = stream.read(buffer)) != -1) {</span>
+<span class="nc" id="L467">                    baos.write(buffer, 0, iLength);</span>
+                }
+
+<span class="nc" id="L470">                stream = new ByteArrayInputStream(MPOS_Security_JNIExport.decryptBinary(baos.toByteArray()));</span>
+            }
+
+            try {
+<span class="nc" id="L474">                indexer.index(stream);</span>
+            } finally {
+<span class="nc" id="L476">                try {</span>
+<span class="nc" id="L477">                    stream.close();</span>
+<span class="nc" id="L478">                } catch (Exception ignore) {</span>
+<span class="nc" id="L479">                }</span>
+<span class="nc" id="L480">            }</span>
+<span class="nc" id="L481">        } catch (IOException e) {</span>
+<span class="nc" id="L482">            throw persistenceException(&quot;Unable to index from stream &quot; + streamAccess.getStreamName(), e);</span>
+<span class="nc" id="L483">        }</span>
+<span class="nc" id="L484">    }</span>
+
+    /**
+     * Builds the {@link BootstrapServiceRegistry} used to eventually build the
+     * {@link org.hibernate.boot.registry.StandardServiceRegistryBuilder}; mainly used here during instantiation to
+     * define class-loading behavior.
+     * 
+     * @param integrationSettings
+     *            Any integration settings passed by the EE container or SE application
+     * 
+     * @return The built BootstrapServiceRegistry
+     */
+    private BootstrapServiceRegistry buildBootstrapServiceRegistry(Map integrationSettings) {
+<span class="nc" id="L497">        final BootstrapServiceRegistryBuilder bootstrapServiceRegistryBuilder = new BootstrapServiceRegistryBuilder();</span>
+<span class="nc" id="L498">        bootstrapServiceRegistryBuilder.with(new JpaIntegrator());</span>
+
+<span class="nc" id="L500">        final IntegratorProvider integratorProvider = (IntegratorProvider) integrationSettings.get(INTEGRATOR_PROVIDER);</span>
+<span class="nc bnc" id="L501" title="All 2 branches missed.">        if (integratorProvider != null) {</span>
+<span class="nc bnc" id="L502" title="All 2 branches missed.">            for (Integrator integrator : integratorProvider.getIntegrators()) {</span>
+<span class="nc" id="L503">                bootstrapServiceRegistryBuilder.with(integrator);</span>
+<span class="nc" id="L504">            }</span>
+        }
+
+<span class="nc" id="L507">        final StrategyRegistrationProviderList strategyRegistrationProviderList = (StrategyRegistrationProviderList) integrationSettings</span>
+                .get(STRATEGY_REGISTRATION_PROVIDERS);
+<span class="nc bnc" id="L509" title="All 2 branches missed.">        if (strategyRegistrationProviderList != null) {</span>
+<span class="nc bnc" id="L510" title="All 2 branches missed.">            for (StrategyRegistrationProvider strategyRegistrationProvider : strategyRegistrationProviderList</span>
+                    .getStrategyRegistrationProviders()) {
+<span class="nc" id="L512">                bootstrapServiceRegistryBuilder.withStrategySelectors(strategyRegistrationProvider);</span>
+<span class="nc" id="L513">            }</span>
+        }
+
+        // TODO: If providedClassLoader is present (OSGi, etc.) *and*
+        // an APP_CLASSLOADER is provided, should throw an exception or
+        // warn?
+        ClassLoader classLoader;
+<span class="nc" id="L520">        ClassLoader appClassLoader = (ClassLoader) integrationSettings</span>
+                .get(org.hibernate.cfg.AvailableSettings.APP_CLASSLOADER);
+<span class="nc bnc" id="L522" title="All 2 branches missed.">        if (providedClassLoader != null) {</span>
+<span class="nc" id="L523">            classLoader = providedClassLoader;</span>
+<span class="nc bnc" id="L524" title="All 2 branches missed.">        } else if (appClassLoader != null) {</span>
+<span class="nc" id="L525">            classLoader = appClassLoader;</span>
+        } else {
+<span class="nc" id="L527">            classLoader = persistenceUnit.getClassLoader();</span>
+        }
+<span class="nc" id="L529">        bootstrapServiceRegistryBuilder.with(classLoader);</span>
+
+<span class="nc" id="L531">        return bootstrapServiceRegistryBuilder.build();</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private Map mergePropertySources(PersistenceUnitDescriptor persistenceUnit, Map integrationSettings,
+            final BootstrapServiceRegistry bootstrapServiceRegistry) {
+<span class="nc" id="L537">        final Map merged = new HashMap();</span>
+        // first, apply persistence.xml-defined settings
+<span class="nc bnc" id="L539" title="All 2 branches missed.">        if (persistenceUnit.getProperties() != null) {</span>
+<span class="nc" id="L540">            merged.putAll(persistenceUnit.getProperties());</span>
+        }
+
+<span class="nc" id="L543">        merged.put(AvailableSettings.PERSISTENCE_UNIT_NAME, persistenceUnit.getName());</span>
+
+        // see if the persistence.xml settings named a Hibernate config file....
+<span class="nc" id="L546">        final ValueHolder&lt;ConfigLoader&gt; configLoaderHolder = new ValueHolder&lt;ConfigLoader&gt;(</span>
+<span class="nc" id="L547">                new ValueHolder.DeferredInitializer&lt;ConfigLoader&gt;() {</span>
+                    @Override
+                    public ConfigLoader initialize() {
+<span class="nc" id="L550">                        return new ConfigLoader(bootstrapServiceRegistry);</span>
+                    }
+                });
+
+<span class="nc" id="L554">        final String cfgXmlResourceName1 = (String) merged.remove(AvailableSettings.CFG_FILE);</span>
+<span class="nc bnc" id="L555" title="All 2 branches missed.">        if (StringHelper.isNotEmpty(cfgXmlResourceName1)) {</span>
+            // it does, so load those properties
+<span class="nc" id="L557">            JaxbHibernateConfiguration configurationElement = configLoaderHolder.getValue().loadConfigXmlResource(</span>
+                    cfgXmlResourceName1);
+<span class="nc" id="L559">            processHibernateConfigurationElement(configurationElement, merged);</span>
+        }
+
+        // see if integration settings named a Hibernate config file....
+<span class="nc" id="L563">        final String cfgXmlResourceName2 = (String) integrationSettings.get(AvailableSettings.CFG_FILE);</span>
+<span class="nc bnc" id="L564" title="All 2 branches missed.">        if (StringHelper.isNotEmpty(cfgXmlResourceName2)) {</span>
+<span class="nc" id="L565">            integrationSettings.remove(AvailableSettings.CFG_FILE);</span>
+            // it does, so load those properties
+<span class="nc" id="L567">            JaxbHibernateConfiguration configurationElement = configLoaderHolder.getValue().loadConfigXmlResource(</span>
+                    cfgXmlResourceName2);
+<span class="nc" id="L569">            processHibernateConfigurationElement(configurationElement, merged);</span>
+        }
+
+        // finally, apply integration-supplied settings (per JPA spec,
+        // integration settings should override other sources)
+<span class="nc" id="L574">        merged.putAll(integrationSettings);</span>
+
+<span class="nc bnc" id="L576" title="All 2 branches missed.">        if (!merged.containsKey(AvailableSettings.VALIDATION_MODE)) {</span>
+<span class="nc bnc" id="L577" title="All 2 branches missed.">            if (persistenceUnit.getValidationMode() != null) {</span>
+<span class="nc" id="L578">                merged.put(AvailableSettings.VALIDATION_MODE, persistenceUnit.getValidationMode());</span>
+            }
+        }
+
+<span class="nc bnc" id="L582" title="All 2 branches missed.">        if (!merged.containsKey(AvailableSettings.SHARED_CACHE_MODE)) {</span>
+<span class="nc bnc" id="L583" title="All 2 branches missed.">            if (persistenceUnit.getSharedCacheMode() != null) {</span>
+<span class="nc" id="L584">                merged.put(AvailableSettings.SHARED_CACHE_MODE, persistenceUnit.getSharedCacheMode());</span>
+            }
+        }
+
+        // was getting NPE exceptions from the underlying map when just using
+        // #putAll, so going this safer route...
+<span class="nc" id="L590">        Iterator itr = merged.entrySet().iterator();</span>
+<span class="nc bnc" id="L591" title="All 2 branches missed.">        while (itr.hasNext()) {</span>
+<span class="nc" id="L592">            final Map.Entry entry = (Map.Entry) itr.next();</span>
+<span class="nc bnc" id="L593" title="All 2 branches missed.">            if (entry.getValue() == null) {</span>
+<span class="nc" id="L594">                itr.remove();</span>
+            }
+<span class="nc" id="L596">        }</span>
+
+<span class="nc" id="L598">        return merged;</span>
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private void processHibernateConfigurationElement(JaxbHibernateConfiguration configurationElement, Map mergeMap) {
+<span class="nc bnc" id="L603" title="All 2 branches missed.">        if (!mergeMap.containsKey(org.hibernate.cfg.AvailableSettings.SESSION_FACTORY_NAME)) {</span>
+<span class="nc" id="L604">            String cfgName = configurationElement.getSessionFactory().getName();</span>
+<span class="nc bnc" id="L605" title="All 2 branches missed.">            if (cfgName != null) {</span>
+<span class="nc" id="L606">                mergeMap.put(org.hibernate.cfg.AvailableSettings.SESSION_FACTORY_NAME, cfgName);</span>
+            }
+        }
+
+<span class="nc bnc" id="L610" title="All 2 branches missed.">        for (JaxbHibernateConfiguration.JaxbSessionFactory.JaxbProperty jaxbProperty : configurationElement</span>
+                .getSessionFactory().getProperty()) {
+<span class="nc" id="L612">            mergeMap.put(jaxbProperty.getName(), jaxbProperty.getValue());</span>
+<span class="nc" id="L613">        }</span>
+
+<span class="nc bnc" id="L615" title="All 2 branches missed.">        for (JaxbHibernateConfiguration.JaxbSessionFactory.JaxbMapping jaxbMapping : configurationElement</span>
+                .getSessionFactory().getMapping()) {
+<span class="nc" id="L617">            cfgXmlNamedMappings.add(jaxbMapping);</span>
+<span class="nc" id="L618">        }</span>
+
+<span class="nc bnc" id="L620" title="All 2 branches missed.">        for (Object cacheDeclaration : configurationElement.getSessionFactory().getClassCacheOrCollectionCache()) {</span>
+<span class="nc bnc" id="L621" title="All 2 branches missed.">            if (JaxbHibernateConfiguration.JaxbSessionFactory.JaxbClassCache.class.isInstance(cacheDeclaration)) {</span>
+<span class="nc" id="L622">                final JaxbHibernateConfiguration.JaxbSessionFactory.JaxbClassCache jaxbClassCache = (JaxbHibernateConfiguration.JaxbSessionFactory.JaxbClassCache) cacheDeclaration;</span>
+<span class="nc" id="L623">                cacheRegionDefinitions.add(new CacheRegionDefinition(CacheRegionDefinition.CacheType.ENTITY,</span>
+                        jaxbClassCache.getClazz(), jaxbClassCache.getUsage().value(), jaxbClassCache.getRegion(), &quot;all&quot;
+                                .equals(jaxbClassCache.getInclude())));
+<span class="nc" id="L626">            } else {</span>
+<span class="nc" id="L627">                final JaxbHibernateConfiguration.JaxbSessionFactory.JaxbCollectionCache jaxbCollectionCache = (JaxbHibernateConfiguration.JaxbSessionFactory.JaxbCollectionCache) cacheDeclaration;</span>
+<span class="nc" id="L628">                cacheRegionDefinitions.add(new CacheRegionDefinition(CacheRegionDefinition.CacheType.COLLECTION,</span>
+                        jaxbCollectionCache.getCollection(), jaxbCollectionCache.getUsage().value(),
+                        jaxbCollectionCache.getRegion(), false));
+            }
+<span class="nc" id="L632">        }</span>
+
+<span class="nc bnc" id="L634" title="All 2 branches missed.">        if (configurationElement.getSecurity() != null) {</span>
+<span class="nc bnc" id="L635" title="All 2 branches missed.">            for (JaxbHibernateConfiguration.JaxbSecurity.JaxbGrant grant : configurationElement.getSecurity()</span>
+                    .getGrant()) {
+<span class="nc" id="L637">                grantedJaccPermissions.add(new GrantedPermission(grant.getRole(), grant.getEntityName(), grant</span>
+                        .getActions()));
+<span class="nc" id="L639">            }</span>
+        }
+<span class="nc" id="L641">    }</span>
+
+    private String jaccContextId;
+
+    private void addJaccDefinition(String key, Object value) {
+<span class="nc bnc" id="L646" title="All 2 branches missed.">        if (jaccContextId == null) {</span>
+<span class="nc" id="L647">            jaccContextId = (String) configurationValues.get(AvailableSettings.JACC_CONTEXT_ID);</span>
+<span class="nc bnc" id="L648" title="All 2 branches missed.">            if (jaccContextId == null) {</span>
+<span class="nc" id="L649">                throw persistenceException(&quot;Entities have been configured for JACC, but &quot;</span>
+                        + AvailableSettings.JACC_CONTEXT_ID + &quot; has not been set&quot;);
+            }
+        }
+
+        try {
+<span class="nc" id="L655">            final int roleStart = AvailableSettings.JACC_PREFIX.length() + 1;</span>
+<span class="nc" id="L656">            final String role = key.substring(roleStart, key.indexOf('.', roleStart));</span>
+<span class="nc" id="L657">            final int classStart = roleStart + role.length() + 1;</span>
+<span class="nc" id="L658">            final String clazz = key.substring(classStart, key.length());</span>
+
+<span class="nc" id="L660">            grantedJaccPermissions.add(new GrantedPermission(role, clazz, (String) value));</span>
+<span class="nc" id="L661">        } catch (IndexOutOfBoundsException e) {</span>
+<span class="nc" id="L662">            throw persistenceException(&quot;Illegal usage of &quot; + AvailableSettings.JACC_PREFIX + &quot;: &quot; + key);</span>
+<span class="nc" id="L663">        }</span>
+<span class="nc" id="L664">    }</span>
+
+    private void addCacheRegionDefinition(String role, String value, CacheRegionDefinition.CacheType cacheType) {
+<span class="nc" id="L667">        final StringTokenizer params = new StringTokenizer(value, &quot;;, &quot;);</span>
+<span class="nc bnc" id="L668" title="All 2 branches missed.">        if (!params.hasMoreTokens()) {</span>
+<span class="nc" id="L669">            StringBuilder error = new StringBuilder(&quot;Illegal usage of &quot;);</span>
+<span class="nc bnc" id="L670" title="All 2 branches missed.">            if (cacheType == CacheRegionDefinition.CacheType.ENTITY) {</span>
+<span class="nc" id="L671">                error.append(AvailableSettings.CLASS_CACHE_PREFIX).append(&quot;: &quot;)</span>
+                        .append(AvailableSettings.CLASS_CACHE_PREFIX);
+            } else {
+<span class="nc" id="L674">                error.append(AvailableSettings.COLLECTION_CACHE_PREFIX).append(&quot;: &quot;)</span>
+                        .append(AvailableSettings.COLLECTION_CACHE_PREFIX);
+            }
+<span class="nc" id="L677">            error.append('.').append(role).append(' ').append(value)</span>
+                    .append(&quot;.  Was expecting configuration, but found none&quot;);
+<span class="nc" id="L679">            throw persistenceException(error.toString());</span>
+        }
+
+<span class="nc" id="L682">        String usage = params.nextToken();</span>
+<span class="nc" id="L683">        String region = null;</span>
+<span class="nc bnc" id="L684" title="All 2 branches missed.">        if (params.hasMoreTokens()) {</span>
+<span class="nc" id="L685">            region = params.nextToken();</span>
+        }
+<span class="nc" id="L687">        boolean lazyProperty = true;</span>
+<span class="nc bnc" id="L688" title="All 2 branches missed.">        if (cacheType == CacheRegionDefinition.CacheType.ENTITY) {</span>
+<span class="nc bnc" id="L689" title="All 2 branches missed.">            if (params.hasMoreTokens()) {</span>
+<span class="nc" id="L690">                lazyProperty = &quot;all&quot;.equalsIgnoreCase(params.nextToken());</span>
+            }
+        } else {
+<span class="nc" id="L693">            lazyProperty = false;</span>
+        }
+
+<span class="nc" id="L696">        final CacheRegionDefinition def = new CacheRegionDefinition(cacheType, role, usage, region, lazyProperty);</span>
+<span class="nc" id="L697">        cacheRegionDefinitions.add(def);</span>
+<span class="nc" id="L698">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private ScanResult scan(BootstrapServiceRegistry bootstrapServiceRegistry) {
+<span class="nc" id="L702">        final Scanner scanner = locateOrBuildScanner(bootstrapServiceRegistry);</span>
+<span class="nc" id="L703">        final ScanOptions scanOptions = determineScanOptions();</span>
+
+<span class="nc" id="L705">        return scanner.scan(persistenceUnit, scanOptions);</span>
+    }
+
+    private ScanOptions determineScanOptions() {
+<span class="nc" id="L709">        return new StandardScanOptions((String) configurationValues.get(AvailableSettings.AUTODETECTION),</span>
+                persistenceUnit.isExcludeUnlistedClasses());
+    }
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private Scanner locateOrBuildScanner(BootstrapServiceRegistry bootstrapServiceRegistry) {
+<span class="nc" id="L715">        final Object value = configurationValues.remove(AvailableSettings.SCANNER);</span>
+<span class="nc bnc" id="L716" title="All 2 branches missed.">        if (value == null) {</span>
+<span class="nc" id="L717">            return new StandardScanner();</span>
+        }
+
+<span class="nc bnc" id="L720" title="All 2 branches missed.">        if (Scanner.class.isInstance(value)) {</span>
+<span class="nc" id="L721">            return (Scanner) value;</span>
+        }
+
+        Class&lt;? extends Scanner&gt; scannerClass;
+<span class="nc bnc" id="L725" title="All 2 branches missed.">        if (Class.class.isInstance(value)) {</span>
+            try {
+<span class="nc" id="L727">                scannerClass = (Class&lt;? extends Scanner&gt;) value;</span>
+<span class="nc" id="L728">            } catch (ClassCastException e) {</span>
+<span class="nc" id="L729">                throw persistenceException(&quot;Expecting Scanner implementation, but found &quot; + ((Class) value).getName());</span>
+<span class="nc" id="L730">            }</span>
+        } else {
+<span class="nc" id="L732">            final String scannerClassName = value.toString();</span>
+            try {
+<span class="nc" id="L734">                scannerClass = bootstrapServiceRegistry.getService(ClassLoaderService.class).classForName(</span>
+                        scannerClassName);
+<span class="nc" id="L736">            } catch (ClassCastException e) {</span>
+<span class="nc" id="L737">                throw persistenceException(&quot;Expecting Scanner implementation, but found &quot; + scannerClassName);</span>
+<span class="nc" id="L738">            }</span>
+        }
+
+        try {
+<span class="nc" id="L742">            return scannerClass.newInstance();</span>
+<span class="nc" id="L743">        } catch (Exception e) {</span>
+<span class="nc" id="L744">            throw persistenceException(&quot;Unable to instantiate Scanner class: &quot; + scannerClass, e);</span>
+        }
+    }
+
+    @Override
+    public EntityManagerFactoryBuilder withValidatorFactory(Object validatorFactory) {
+<span class="nc" id="L750">        this.validatorFactory = validatorFactory;</span>
+
+<span class="nc bnc" id="L752" title="All 2 branches missed.">        if (validatorFactory != null) {</span>
+<span class="nc" id="L753">            BeanValidationIntegrator.validateFactory(validatorFactory);</span>
+        }
+<span class="nc" id="L755">        return this;</span>
+    }
+
+    @Override
+    public EntityManagerFactoryBuilder withDataSource(DataSource dataSource) {
+<span class="nc" id="L760">        this.dataSource = dataSource;</span>
+
+<span class="nc" id="L762">        return this;</span>
+    }
+
+    @Override
+    public void cancel() {
+        // todo : close the bootstrap registry (not critical, but nice to do)
+
+<span class="nc" id="L769">    }</span>
+
+    @Override
+    public void generateSchema() {
+<span class="nc" id="L773">        processProperties();</span>
+
+<span class="nc" id="L775">        final ServiceRegistry serviceRegistry = buildServiceRegistry();</span>
+<span class="nc" id="L776">        final ClassLoaderService classLoaderService = serviceRegistry.getService(ClassLoaderService.class);</span>
+
+        // IMPL NOTE : TCCL handling here is temporary.
+        // It is needed because this code still uses Hibernate Configuration and
+        // Hibernate commons-annotations
+        // in turn which relies on TCCL being set.
+
+<span class="nc" id="L783">        ((ClassLoaderServiceImpl) classLoaderService).withTccl(new ClassLoaderServiceImpl.Work() {</span>
+            @Override
+            public Object perform() {
+<span class="nc" id="L786">                final Configuration hibernateConfiguration = buildHibernateConfiguration(serviceRegistry);</span>
+
+                // This seems overkill, but building the SF is necessary to get
+                // the Integrators to kick in.
+                // Metamodel will clean this up...
+                try {
+<span class="nc" id="L792">                    hibernateConfiguration.buildSessionFactory(serviceRegistry);</span>
+<span class="nc" id="L793">                } catch (MappingException e) {</span>
+<span class="nc" id="L794">                    throw persistenceException(&quot;Unable to build Hibernate SessionFactory&quot;, e);</span>
+<span class="nc" id="L795">                }</span>
+
+<span class="nc" id="L797">                JpaSchemaGenerator.performGeneration(hibernateConfiguration, serviceRegistry);</span>
+
+<span class="nc" id="L799">                return null;</span>
+            }
+        });
+
+        // release this builder
+<span class="nc" id="L804">        cancel();</span>
+<span class="nc" id="L805">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    public EntityManagerFactory build() {
+<span class="nc" id="L809">        processProperties();</span>
+
+<span class="nc" id="L811">        final ServiceRegistry serviceRegistry = buildServiceRegistry();</span>
+<span class="nc" id="L812">        final ClassLoaderService classLoaderService = serviceRegistry.getService(ClassLoaderService.class);</span>
+
+        // IMPL NOTE : TCCL handling here is temporary.
+        // It is needed because this code still uses Hibernate Configuration and
+        // Hibernate commons-annotations
+        // in turn which relies on TCCL being set.
+
+<span class="nc" id="L819">        return ((ClassLoaderServiceImpl) classLoaderService)</span>
+<span class="nc" id="L820">                .withTccl(new ClassLoaderServiceImpl.Work&lt;EntityManagerFactoryImpl&gt;() {</span>
+                    @Override
+                    public EntityManagerFactoryImpl perform() {
+<span class="nc" id="L823">                        hibernateConfiguration = buildHibernateConfiguration(serviceRegistry);</span>
+
+                        SessionFactoryImplementor sessionFactory;
+                        try {
+<span class="nc" id="L827">                            sessionFactory = (SessionFactoryImplementor) hibernateConfiguration</span>
+                                    .buildSessionFactory(serviceRegistry);
+<span class="nc" id="L829">                        } catch (MappingException e) {</span>
+<span class="nc" id="L830">                            throw persistenceException(&quot;Unable to build Hibernate SessionFactory&quot;, e);</span>
+<span class="nc" id="L831">                        }</span>
+
+                        // must do after buildSessionFactory to let the
+                        // Integrators kick in
+<span class="nc" id="L835">                        JpaSchemaGenerator.performGeneration(hibernateConfiguration, serviceRegistry);</span>
+
+<span class="nc bnc" id="L837" title="All 2 branches missed.">                        if (suppliedSessionFactoryObserver != null) {</span>
+<span class="nc" id="L838">                            sessionFactory.addObserver(suppliedSessionFactoryObserver);</span>
+                        }
+<span class="nc" id="L840">                        sessionFactory.addObserver(new ServiceRegistryCloser());</span>
+
+                        // NOTE : passing cfg is temporary until
+<span class="nc" id="L843">                        return new EntityManagerFactoryImpl(persistenceUnit.getName(), sessionFactory, settings,</span>
+                                configurationValues, hibernateConfiguration);
+                    }
+                });
+    }
+
+    private void processProperties() {
+<span class="nc" id="L850">        applyJdbcConnectionProperties();</span>
+<span class="nc" id="L851">        applyTransactionProperties();</span>
+
+<span class="nc" id="L853">        Object validationFactory = this.validatorFactory;</span>
+<span class="nc bnc" id="L854" title="All 2 branches missed.">        if (validationFactory == null) {</span>
+<span class="nc" id="L855">            validationFactory = configurationValues.get(AvailableSettings.VALIDATION_FACTORY);</span>
+        }
+<span class="nc bnc" id="L857" title="All 2 branches missed.">        if (validationFactory != null) {</span>
+<span class="nc" id="L858">            BeanValidationIntegrator.validateFactory(validationFactory);</span>
+<span class="nc" id="L859">            serviceRegistryBuilder.applySetting(AvailableSettings.VALIDATION_FACTORY, validationFactory);</span>
+<span class="nc" id="L860">            configurationValues.put(AvailableSettings.VALIDATION_FACTORY, this.validatorFactory);</span>
+        }
+
+        // flush before completion validation
+<span class="nc bnc" id="L864" title="All 2 branches missed.">        if (&quot;true&quot;.equals(configurationValues.get(Environment.FLUSH_BEFORE_COMPLETION))) {</span>
+<span class="nc" id="L865">            serviceRegistryBuilder.applySetting(Environment.FLUSH_BEFORE_COMPLETION, &quot;false&quot;);</span>
+<span class="nc" id="L866">            LOG.definingFlushBeforeCompletionIgnoredInHem(Environment.FLUSH_BEFORE_COMPLETION);</span>
+        }
+
+<span class="nc" id="L869">        final StrategySelector strategySelector = serviceRegistryBuilder.getBootstrapServiceRegistry().getService(</span>
+                StrategySelector.class);
+
+<span class="nc bnc" id="L872" title="All 2 branches missed.">        for (Object oEntry : configurationValues.entrySet()) {</span>
+<span class="nc" id="L873">            Map.Entry entry = (Map.Entry) oEntry;</span>
+<span class="nc bnc" id="L874" title="All 2 branches missed.">            if (entry.getKey() instanceof String) {</span>
+<span class="nc" id="L875">                final String keyString = (String) entry.getKey();</span>
+
+<span class="nc bnc" id="L877" title="All 2 branches missed.">                if (AvailableSettings.INTERCEPTOR.equals(keyString)) {</span>
+<span class="nc" id="L878">                    sessionFactoryInterceptor = strategySelector.resolveStrategy(Interceptor.class, entry.getValue());</span>
+<span class="nc bnc" id="L879" title="All 2 branches missed.">                } else if (AvailableSettings.SESSION_INTERCEPTOR.equals(keyString)) {</span>
+<span class="nc" id="L880">                    settings.setSessionInterceptorClass(loadSessionInterceptorClass(entry.getValue(), strategySelector));</span>
+<span class="nc bnc" id="L881" title="All 2 branches missed.">                } else if (AvailableSettings.NAMING_STRATEGY.equals(keyString)) {</span>
+<span class="nc" id="L882">                    namingStrategy = strategySelector.resolveStrategy(NamingStrategy.class, entry.getValue());</span>
+<span class="nc bnc" id="L883" title="All 2 branches missed.">                } else if (AvailableSettings.SESSION_FACTORY_OBSERVER.equals(keyString)) {</span>
+<span class="nc" id="L884">                    suppliedSessionFactoryObserver = strategySelector.resolveStrategy(SessionFactoryObserver.class,</span>
+                            entry.getValue());
+<span class="nc bnc" id="L886" title="All 2 branches missed.">                } else if (AvailableSettings.DISCARD_PC_ON_CLOSE.equals(keyString)) {</span>
+<span class="nc" id="L887">                    settings.setReleaseResourcesOnCloseEnabled(&quot;true&quot;.equals(entry.getValue()));</span>
+<span class="nc bnc" id="L888" title="All 2 branches missed.">                } else if (keyString.startsWith(AvailableSettings.CLASS_CACHE_PREFIX)) {</span>
+<span class="nc" id="L889">                    addCacheRegionDefinition(keyString.substring(AvailableSettings.CLASS_CACHE_PREFIX.length() + 1),</span>
+                            (String) entry.getValue(), CacheRegionDefinition.CacheType.ENTITY);
+<span class="nc bnc" id="L891" title="All 2 branches missed.">                } else if (keyString.startsWith(AvailableSettings.COLLECTION_CACHE_PREFIX)) {</span>
+<span class="nc" id="L892">                    addCacheRegionDefinition(</span>
+                            keyString.substring(AvailableSettings.COLLECTION_CACHE_PREFIX.length() + 1),
+                            (String) entry.getValue(), CacheRegionDefinition.CacheType.COLLECTION);
+<span class="nc bnc" id="L895" title="All 6 branches missed.">                } else if (keyString.startsWith(AvailableSettings.JACC_PREFIX)</span>
+                        &amp;&amp; !(keyString.equals(AvailableSettings.JACC_CONTEXT_ID) || keyString
+                                .equals(AvailableSettings.JACC_ENABLED))) {
+<span class="nc" id="L898">                    addJaccDefinition((String) entry.getKey(), entry.getValue());</span>
+                }
+            }
+<span class="nc" id="L901">        }</span>
+<span class="nc" id="L902">    }</span>
+
+    private void applyJdbcConnectionProperties() {
+<span class="nc bnc" id="L905" title="All 2 branches missed.">        if (dataSource != null) {</span>
+<span class="nc" id="L906">            serviceRegistryBuilder.applySetting(org.hibernate.cfg.AvailableSettings.DATASOURCE, dataSource);</span>
+<span class="nc bnc" id="L907" title="All 2 branches missed.">        } else if (persistenceUnit.getJtaDataSource() != null) {</span>
+<span class="nc bnc" id="L908" title="All 2 branches missed.">            if (!serviceRegistryBuilder.getSettings().containsKey(org.hibernate.cfg.AvailableSettings.DATASOURCE)) {</span>
+<span class="nc" id="L909">                serviceRegistryBuilder.applySetting(org.hibernate.cfg.AvailableSettings.DATASOURCE,</span>
+                        persistenceUnit.getJtaDataSource());
+                // HHH-8121 : make the PU-defined value available to
+                // EMF.getProperties()
+<span class="nc" id="L913">                configurationValues.put(AvailableSettings.JTA_DATASOURCE, persistenceUnit.getJtaDataSource());</span>
+            }
+<span class="nc bnc" id="L915" title="All 2 branches missed.">        } else if (persistenceUnit.getNonJtaDataSource() != null) {</span>
+<span class="nc bnc" id="L916" title="All 2 branches missed.">            if (!serviceRegistryBuilder.getSettings().containsKey(org.hibernate.cfg.AvailableSettings.DATASOURCE)) {</span>
+<span class="nc" id="L917">                serviceRegistryBuilder.applySetting(org.hibernate.cfg.AvailableSettings.DATASOURCE,</span>
+                        persistenceUnit.getNonJtaDataSource());
+                // HHH-8121 : make the PU-defined value available to
+                // EMF.getProperties()
+<span class="nc" id="L921">                configurationValues.put(AvailableSettings.NON_JTA_DATASOURCE, persistenceUnit.getNonJtaDataSource());</span>
+            }
+        } else {
+<span class="nc" id="L924">            final String driver = (String) configurationValues.get(AvailableSettings.JDBC_DRIVER);</span>
+<span class="nc bnc" id="L925" title="All 2 branches missed.">            if (StringHelper.isNotEmpty(driver)) {</span>
+<span class="nc" id="L926">                serviceRegistryBuilder.applySetting(org.hibernate.cfg.AvailableSettings.DRIVER, driver);</span>
+            }
+<span class="nc" id="L928">            final String url = (String) configurationValues.get(AvailableSettings.JDBC_URL);</span>
+<span class="nc bnc" id="L929" title="All 2 branches missed.">            if (StringHelper.isNotEmpty(url)) {</span>
+<span class="nc" id="L930">                serviceRegistryBuilder.applySetting(org.hibernate.cfg.AvailableSettings.URL, url);</span>
+            }
+<span class="nc" id="L932">            final String user = (String) configurationValues.get(AvailableSettings.JDBC_USER);</span>
+<span class="nc bnc" id="L933" title="All 2 branches missed.">            if (StringHelper.isNotEmpty(user)) {</span>
+<span class="nc" id="L934">                serviceRegistryBuilder.applySetting(org.hibernate.cfg.AvailableSettings.USER, user);</span>
+            }
+<span class="nc" id="L936">            final String pass = (String) configurationValues.get(AvailableSettings.JDBC_PASSWORD);</span>
+<span class="nc bnc" id="L937" title="All 2 branches missed.">            if (StringHelper.isNotEmpty(pass)) {</span>
+<span class="nc" id="L938">                serviceRegistryBuilder.applySetting(org.hibernate.cfg.AvailableSettings.PASS, pass);</span>
+            }
+        }
+<span class="nc" id="L941">    }</span>
+
+    private void applyTransactionProperties() {
+<span class="nc" id="L944">        PersistenceUnitTransactionType txnType = PersistenceUnitTransactionTypeHelper</span>
+                .interpretTransactionType(configurationValues.get(AvailableSettings.TRANSACTION_TYPE));
+<span class="nc bnc" id="L946" title="All 2 branches missed.">        if (txnType == null) {</span>
+<span class="nc" id="L947">            txnType = persistenceUnit.getTransactionType();</span>
+        }
+<span class="nc bnc" id="L949" title="All 2 branches missed.">        if (txnType == null) {</span>
+            // is it more appropriate to have this be based on bootstrap entry
+            // point (EE vs SE)?
+<span class="nc" id="L952">            txnType = PersistenceUnitTransactionType.RESOURCE_LOCAL;</span>
+        }
+<span class="nc" id="L954">        settings.setTransactionType(txnType);</span>
+<span class="nc" id="L955">        boolean hasTxStrategy = configurationValues.containsKey(Environment.TRANSACTION_STRATEGY);</span>
+<span class="nc bnc" id="L956" title="All 2 branches missed.">        if (hasTxStrategy) {</span>
+<span class="nc" id="L957">            LOG.overridingTransactionStrategyDangerous(Environment.TRANSACTION_STRATEGY);</span>
+        } else {
+<span class="nc bnc" id="L959" title="All 2 branches missed.">            if (txnType == PersistenceUnitTransactionType.JTA) {</span>
+<span class="nc" id="L960">                serviceRegistryBuilder.applySetting(Environment.TRANSACTION_STRATEGY, CMTTransactionFactory.class);</span>
+<span class="nc bnc" id="L961" title="All 2 branches missed.">            } else if (txnType == PersistenceUnitTransactionType.RESOURCE_LOCAL) {</span>
+<span class="nc" id="L962">                serviceRegistryBuilder.applySetting(Environment.TRANSACTION_STRATEGY, JdbcTransactionFactory.class);</span>
+            }
+        }
+<span class="nc" id="L965">    }</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    private Class&lt;? extends Interceptor&gt; loadSessionInterceptorClass(Object value, StrategySelector strategySelector) {
+<span class="nc bnc" id="L969" title="All 2 branches missed.">        if (value == null) {</span>
+<span class="nc" id="L970">            return null;</span>
+        }
+
+<span class="nc bnc" id="L973" title="All 2 branches missed.">        return Class.class.isInstance(value) ? (Class&lt;? extends Interceptor&gt;) value : strategySelector</span>
+                .selectStrategyImplementor(Interceptor.class, value.toString());
+    }
+
+    public ServiceRegistry buildServiceRegistry() {
+<span class="nc" id="L978">        return serviceRegistryBuilder.build();</span>
+    }
+
+    public Configuration buildHibernateConfiguration(ServiceRegistry serviceRegistry) {
+<span class="nc" id="L982">        Properties props = new Properties();</span>
+<span class="nc" id="L983">        props.putAll(configurationValues);</span>
+<span class="nc" id="L984">        Configuration cfg = new Configuration();</span>
+<span class="nc" id="L985">        cfg.getProperties().putAll(props);</span>
+
+<span class="nc" id="L987">        cfg.setEntityNotFoundDelegate(jpaEntityNotFoundDelegate);</span>
+
+<span class="nc bnc" id="L989" title="All 2 branches missed.">        if (namingStrategy != null) {</span>
+<span class="nc" id="L990">            cfg.setNamingStrategy(namingStrategy);</span>
+        }
+
+<span class="nc bnc" id="L993" title="All 2 branches missed.">        if (sessionFactoryInterceptor != null) {</span>
+<span class="nc" id="L994">            cfg.setInterceptor(sessionFactoryInterceptor);</span>
+        }
+
+<span class="nc" id="L997">        final Object strategyProviderValue = props.get(AvailableSettings.IDENTIFIER_GENERATOR_STRATEGY_PROVIDER);</span>
+<span class="nc bnc" id="L998" title="All 2 branches missed.">        final IdentifierGeneratorStrategyProvider strategyProvider = strategyProviderValue == null</span>
+                ? null
+                : serviceRegistry.getService(StrategySelector.class).resolveStrategy(
+                        IdentifierGeneratorStrategyProvider.class, strategyProviderValue);
+
+<span class="nc bnc" id="L1003" title="All 2 branches missed.">        if (strategyProvider != null) {</span>
+<span class="nc" id="L1004">            final MutableIdentifierGeneratorFactory identifierGeneratorFactory = cfg.getIdentifierGeneratorFactory();</span>
+<span class="nc bnc" id="L1005" title="All 2 branches missed.">            for (Map.Entry&lt;String, Class&lt;?&gt;&gt; entry : strategyProvider.getStrategies().entrySet()) {</span>
+<span class="nc" id="L1006">                identifierGeneratorFactory.register(entry.getKey(), entry.getValue());</span>
+<span class="nc" id="L1007">            }</span>
+        }
+
+<span class="nc bnc" id="L1010" title="All 2 branches missed.">        if (grantedJaccPermissions != null) {</span>
+<span class="nc" id="L1011">            final JaccService jaccService = serviceRegistry.getService(JaccService.class);</span>
+<span class="nc bnc" id="L1012" title="All 2 branches missed.">            for (GrantedPermission grantedPermission : grantedJaccPermissions) {</span>
+<span class="nc" id="L1013">                jaccService.addPermission(grantedPermission);</span>
+<span class="nc" id="L1014">            }</span>
+        }
+
+<span class="nc bnc" id="L1017" title="All 2 branches missed.">        if (cacheRegionDefinitions != null) {</span>
+<span class="nc bnc" id="L1018" title="All 2 branches missed.">            for (CacheRegionDefinition cacheRegionDefinition : cacheRegionDefinitions) {</span>
+<span class="nc bnc" id="L1019" title="All 2 branches missed.">                if (cacheRegionDefinition.cacheType == CacheRegionDefinition.CacheType.ENTITY) {</span>
+<span class="nc" id="L1020">                    cfg.setCacheConcurrencyStrategy(cacheRegionDefinition.role, cacheRegionDefinition.usage,</span>
+                            cacheRegionDefinition.region, cacheRegionDefinition.cacheLazy);
+                } else {
+<span class="nc" id="L1023">                    cfg.setCollectionCacheConcurrencyStrategy(cacheRegionDefinition.role, cacheRegionDefinition.usage,</span>
+                            cacheRegionDefinition.region);
+                }
+<span class="nc" id="L1026">            }</span>
+        }
+
+        // todo : need to have this use the metamodel codebase eventually...
+
+<span class="nc bnc" id="L1031" title="All 2 branches missed.">        for (JaxbHibernateConfiguration.JaxbSessionFactory.JaxbMapping jaxbMapping : cfgXmlNamedMappings) {</span>
+<span class="nc bnc" id="L1032" title="All 2 branches missed.">            if (jaxbMapping.getClazz() != null) {</span>
+<span class="nc" id="L1033">                cfg.addAnnotatedClass(serviceRegistry.getService(ClassLoaderService.class).classForName(</span>
+                        jaxbMapping.getClazz()));
+<span class="nc bnc" id="L1035" title="All 2 branches missed.">            } else if (jaxbMapping.getResource() != null) {</span>
+<span class="nc" id="L1036">                cfg.addResource(jaxbMapping.getResource());</span>
+<span class="nc bnc" id="L1037" title="All 2 branches missed.">            } else if (jaxbMapping.getJar() != null) {</span>
+<span class="nc" id="L1038">                cfg.addJar(new File(jaxbMapping.getJar()));</span>
+<span class="nc bnc" id="L1039" title="All 2 branches missed.">            } else if (jaxbMapping.getPackage() != null) {</span>
+<span class="nc" id="L1040">                cfg.addPackage(jaxbMapping.getPackage());</span>
+            }
+<span class="nc" id="L1042">        }</span>
+
+<span class="nc" id="L1044">        List&lt;Class&gt; loadedAnnotatedClasses = (List&lt;Class&gt;) configurationValues.remove(AvailableSettings.LOADED_CLASSES);</span>
+<span class="nc bnc" id="L1045" title="All 2 branches missed.">        if (loadedAnnotatedClasses != null) {</span>
+<span class="nc bnc" id="L1046" title="All 2 branches missed.">            for (Class cls : loadedAnnotatedClasses) {</span>
+<span class="nc bnc" id="L1047" title="All 2 branches missed.">                if (AttributeConverter.class.isAssignableFrom(cls)) {</span>
+<span class="nc" id="L1048">                    cfg.addAttributeConverter((Class&lt;? extends AttributeConverter&gt;) cls);</span>
+                } else {
+<span class="nc" id="L1050">                    cfg.addAnnotatedClass(cls);</span>
+                }
+<span class="nc" id="L1052">            }</span>
+        }
+
+<span class="nc bnc" id="L1055" title="All 2 branches missed.">        for (String className : metadataSources.getAnnotatedMappingClassNames()) {</span>
+<span class="nc" id="L1056">            cfg.addAnnotatedClass(serviceRegistry.getService(ClassLoaderService.class).classForName(className));</span>
+<span class="nc" id="L1057">        }</span>
+
+<span class="nc bnc" id="L1059" title="All 2 branches missed.">        for (MetadataSources.ConverterDescriptor converterDescriptor : metadataSources.getConverterDescriptors()) {</span>
+            final Class&lt;? extends AttributeConverter&gt; converterClass;
+            try {
+<span class="nc" id="L1062">                Class theClass = serviceRegistry.getService(ClassLoaderService.class).classForName(</span>
+                        converterDescriptor.converterClassName);
+<span class="nc" id="L1064">                converterClass = (Class&lt;? extends AttributeConverter&gt;) theClass;</span>
+<span class="nc" id="L1065">            } catch (ClassCastException e) {</span>
+<span class="nc" id="L1066">                throw persistenceException(String.format(</span>
+                        &quot;AttributeConverter implementation [%s] does not implement AttributeConverter interface&quot;,
+                        converterDescriptor.converterClassName));
+<span class="nc" id="L1069">            }</span>
+<span class="nc" id="L1070">            cfg.addAttributeConverter(converterClass, converterDescriptor.autoApply);</span>
+<span class="nc" id="L1071">        }</span>
+
+<span class="nc bnc" id="L1073" title="All 2 branches missed.">        for (String resourceName : metadataSources.mappingFileResources) {</span>
+<span class="nc" id="L1074">            Boolean useMetaInf = null;</span>
+            try {
+<span class="nc bnc" id="L1076" title="All 2 branches missed.">                if (resourceName.endsWith(META_INF_ORM_XML)) {</span>
+<span class="nc" id="L1077">                    useMetaInf = true;</span>
+                }
+<span class="nc" id="L1079">                cfg.addResource(resourceName);</span>
+<span class="nc" id="L1080">            } catch (MappingNotFoundException e) {</span>
+<span class="nc bnc" id="L1081" title="All 2 branches missed.">                if (!resourceName.endsWith(META_INF_ORM_XML)) {</span>
+<span class="nc" id="L1082">                    throw persistenceException(&quot;Unable to find XML mapping file in classpath: &quot; + resourceName);</span>
+                } else {
+<span class="nc" id="L1084">                    useMetaInf = false;</span>
+                    // swallow it, the META-INF/orm.xml is optional
+                }
+<span class="nc" id="L1087">            } catch (MappingException me) {</span>
+<span class="nc" id="L1088">                throw persistenceException(&quot;Error while reading JPA XML file: &quot; + resourceName, me);</span>
+<span class="nc" id="L1089">            }</span>
+
+<span class="nc bnc" id="L1091" title="All 2 branches missed.">            if (Boolean.TRUE.equals(useMetaInf)) {</span>
+<span class="nc" id="L1092">                LOG.exceptionHeaderFound(getExceptionHeader(), META_INF_ORM_XML);</span>
+<span class="nc bnc" id="L1093" title="All 2 branches missed.">            } else if (Boolean.FALSE.equals(useMetaInf)) {</span>
+<span class="nc" id="L1094">                LOG.exceptionHeaderNotFound(getExceptionHeader(), META_INF_ORM_XML);</span>
+            }
+<span class="nc" id="L1096">        }</span>
+<span class="nc bnc" id="L1097" title="All 2 branches missed.">        for (NamedInputStream namedInputStream : metadataSources.namedMappingFileInputStreams) {</span>
+            try {
+                // addInputStream has the responsibility to close the stream
+<span class="nc" id="L1100">                cfg.addInputStream(new BufferedInputStream(namedInputStream.getStream()));</span>
+<span class="nc" id="L1101">            } catch (InvalidMappingException e) {</span>
+                // try our best to give the file name
+<span class="nc bnc" id="L1103" title="All 2 branches missed.">                if (StringHelper.isNotEmpty(namedInputStream.getName())) {</span>
+<span class="nc" id="L1104">                    throw new InvalidMappingException(&quot;Error while parsing file: &quot; + namedInputStream.getName(),</span>
+                            e.getType(), e.getPath(), e);
+                } else {
+<span class="nc" id="L1107">                    throw e;</span>
+                }
+<span class="nc" id="L1109">            } catch (MappingException me) {</span>
+                // try our best to give the file name
+<span class="nc bnc" id="L1111" title="All 2 branches missed.">                if (StringHelper.isNotEmpty(namedInputStream.getName())) {</span>
+<span class="nc" id="L1112">                    throw new MappingException(&quot;Error while parsing file: &quot; + namedInputStream.getName(), me);</span>
+                } else {
+<span class="nc" id="L1114">                    throw me;</span>
+                }
+<span class="nc" id="L1116">            }</span>
+<span class="nc" id="L1117">        }</span>
+<span class="nc bnc" id="L1118" title="All 2 branches missed.">        for (String packageName : metadataSources.packageNames) {</span>
+<span class="nc" id="L1119">            cfg.addPackage(packageName);</span>
+<span class="nc" id="L1120">        }</span>
+
+<span class="nc" id="L1122">        final TypeContributorList typeContributorList = (TypeContributorList) configurationValues</span>
+                .get(TYPE_CONTRIBUTORS);
+<span class="nc bnc" id="L1124" title="All 2 branches missed.">        if (typeContributorList != null) {</span>
+<span class="nc" id="L1125">            configurationValues.remove(TYPE_CONTRIBUTORS);</span>
+<span class="nc bnc" id="L1126" title="All 2 branches missed.">            for (TypeContributor typeContributor : typeContributorList.getTypeContributors()) {</span>
+<span class="nc" id="L1127">                cfg.registerTypeContributor(typeContributor);</span>
+<span class="nc" id="L1128">            }</span>
+        }
+
+<span class="nc" id="L1131">        return cfg;</span>
+    }
+
+<span class="nc" id="L1134">    public static class ServiceRegistryCloser implements SessionFactoryObserver {</span>
+        @Override
+        public void sessionFactoryCreated(SessionFactory sessionFactory) {
+            // nothing to do
+<span class="nc" id="L1138">        }</span>
+
+        @Override
+        public void sessionFactoryClosed(SessionFactory sessionFactory) {
+<span class="nc" id="L1142">            SessionFactoryImplementor sfi = ((SessionFactoryImplementor) sessionFactory);</span>
+<span class="nc" id="L1143">            sfi.getServiceRegistry().destroy();</span>
+<span class="nc" id="L1144">            ServiceRegistry basicRegistry = sfi.getServiceRegistry().getParentServiceRegistry();</span>
+<span class="nc" id="L1145">            ((ServiceRegistryImplementor) basicRegistry).destroy();</span>
+<span class="nc" id="L1146">        }</span>
+    }
+
+    private PersistenceException persistenceException(String message) {
+<span class="nc" id="L1150">        return persistenceException(message, null);</span>
+    }
+
+    private PersistenceException persistenceException(String message, Exception cause) {
+<span class="nc" id="L1154">        return new PersistenceException(getExceptionHeader() + message, cause);</span>
+    }
+
+    private String getExceptionHeader() {
+<span class="nc" id="L1158">        return &quot;[PersistenceUnit: &quot; + persistenceUnit.getName() + &quot;] &quot;;</span>
+    }
+
+    public static class CacheRegionDefinition {
+<span class="nc" id="L1162">        public static enum CacheType {</span>
+<span class="nc" id="L1163">            ENTITY,</span>
+<span class="nc" id="L1164">            COLLECTION</span>
+        }
+
+        public final CacheType cacheType;
+        public final String role;
+        public final String usage;
+        public final String region;
+        public final boolean cacheLazy;
+
+<span class="nc" id="L1173">        public CacheRegionDefinition(CacheType cacheType, String role, String usage, String region, boolean cacheLazy) {</span>
+<span class="nc" id="L1174">            this.cacheType = cacheType;</span>
+<span class="nc" id="L1175">            this.role = role;</span>
+<span class="nc" id="L1176">            this.usage = usage;</span>
+<span class="nc" id="L1177">            this.region = region;</span>
+<span class="nc" id="L1178">            this.cacheLazy = cacheLazy;</span>
+<span class="nc" id="L1179">        }</span>
+    }
+
+    public static class JaccDefinition {
+        public final String contextId;
+        public final String role;
+        public final String clazz;
+        public final String actions;
+
+<span class="nc" id="L1188">        public JaccDefinition(String contextId, String role, String clazz, String actions) {</span>
+<span class="nc" id="L1189">            this.contextId = contextId;</span>
+<span class="nc" id="L1190">            this.role = role;</span>
+<span class="nc" id="L1191">            this.clazz = clazz;</span>
+<span class="nc" id="L1192">            this.actions = actions;</span>
+<span class="nc" id="L1193">        }</span>
+    }
+
+<span class="nc" id="L1196">    public static class MetadataSources {</span>
+<span class="nc" id="L1197">        private final List&lt;String&gt; annotatedMappingClassNames = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L1198">        private final List&lt;ConverterDescriptor&gt; converterDescriptors = new ArrayList&lt;ConverterDescriptor&gt;();</span>
+<span class="nc" id="L1199">        private final List&lt;NamedInputStream&gt; namedMappingFileInputStreams = new ArrayList&lt;NamedInputStream&gt;();</span>
+<span class="nc" id="L1200">        private final List&lt;String&gt; mappingFileResources = new ArrayList&lt;String&gt;();</span>
+<span class="nc" id="L1201">        private final List&lt;String&gt; packageNames = new ArrayList&lt;String&gt;();</span>
+
+        public List&lt;String&gt; getAnnotatedMappingClassNames() {
+<span class="nc" id="L1204">            return annotatedMappingClassNames;</span>
+        }
+
+        public List&lt;ConverterDescriptor&gt; getConverterDescriptors() {
+<span class="nc" id="L1208">            return converterDescriptors;</span>
+        }
+
+        public List&lt;NamedInputStream&gt; getNamedMappingFileInputStreams() {
+<span class="nc" id="L1212">            return namedMappingFileInputStreams;</span>
+        }
+
+        public List&lt;String&gt; getPackageNames() {
+<span class="nc" id="L1216">            return packageNames;</span>
+        }
+
+        public List&lt;String&gt; collectMappingClassNames() {
+            // todo : the complete answer to this involves looking through the
+            // mapping files as well.
+            // Really need the metamodel branch code to do that properly
+<span class="nc" id="L1223">            return annotatedMappingClassNames;</span>
+        }
+
+<span class="nc" id="L1226">        public static class ConverterDescriptor {</span>
+            private final String converterClassName;
+            private final boolean autoApply;
+
+<span class="nc" id="L1230">            public ConverterDescriptor(String converterClassName, boolean autoApply) {</span>
+<span class="nc" id="L1231">                this.converterClassName = converterClassName;</span>
+<span class="nc" id="L1232">                this.autoApply = autoApply;</span>
+<span class="nc" id="L1233">            }</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

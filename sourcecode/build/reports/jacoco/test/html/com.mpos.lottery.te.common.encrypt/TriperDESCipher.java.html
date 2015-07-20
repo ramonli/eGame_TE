@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TriperDESCipher.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.common.encrypt</a> &gt; <span class="el_source">TriperDESCipher.java</span></div><h1>TriperDESCipher.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.common.encrypt;
+
+import com.mpos.lottery.te.common.util.Base64Coder;
+import com.mpos.lottery.te.common.util.HexCoder;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.security.MessageDigest;
+import java.security.SecureRandom;
+import java.security.spec.AlgorithmParameterSpec;
+import java.util.UUID;
+
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+/**
+ * DESede/3DES/TriperDES. There are at least five common conventions of padding:
+ * &lt;ul&gt;
+ * &lt;li&gt;1. Pad with bytes all of the same value as the number of padding bytes&lt;/li&gt;
+ * &lt;li&gt;2. Pad with 0x80 followed by zero bytes&lt;/li&gt;
+ * &lt;li&gt;3. Pad with zeroes except make the last byte equal to the number of padding bytes&lt;/li&gt;
+ * &lt;li&gt;4. Pad with zero (null) characters&lt;/li&gt;
+ * &lt;li&gt;5. Pad with space characters Method one is the method described in PKCS#5, PKCS#7 and RFC 3852 Section 6.3
+ * (formerly RFC 3369 and RFC 2630). It is the most commonly used. Refer to: http://www.di-mgt.com.au/cryptopad.html&lt;/li&gt;
+ * &lt;/ul&gt;
+ */
+<span class="nc" id="L30">public class TriperDESCipher {</span>
+<span class="fc" id="L31">    protected static Log logger = LogFactory.getLog(TriperDESCipher.class);</span>
+    // define the cipher algorithm
+    private static final String algorithm = &quot;DESede&quot;;
+    private static final String transformation = &quot;DESede/CBC/PKCS5Padding&quot;;
+<span class="fc" id="L35">    public static final byte[] IV = new byte[] { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };</span>
+    public static final String STR_IV = &quot;0000000000000000&quot;;
+
+    /**
+     * Generate a 24-bytes data key, it is encoded by 'Base64'.
+     * 
+     * @return a base64 representation of data key.
+     */
+    public static String generateDataKey() throws Exception {
+<span class="fc" id="L44">        int keySize = 24;</span>
+<span class="fc" id="L45">        MessageDigest md = MessageDigest.getInstance(&quot;SHA&quot;);</span>
+<span class="fc" id="L46">        md.update(random(25).getBytes());</span>
+<span class="fc" id="L47">        String tmpPass = md.digest().toString();</span>
+<span class="fc" id="L48">        String key = tmpPass + random(keySize - tmpPass.length());</span>
+
+<span class="fc" id="L50">        String dataKey = new String(Base64Coder.encode(key.getBytes()));</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L52">            logger.debug(&quot;Generated Data Key(base64): &quot; + dataKey);</span>
+        }
+<span class="fc" id="L54">        return dataKey;</span>
+    }
+
+    /**
+     * Encryption...
+     * 
+     * @param base64Key
+     *            The base64 representation of secret key
+     * @param input
+     *            The original input string.
+     * @param hexIv
+     *            The hex representation of IV.
+     * @return a base64 representation of encrypted output.
+     * @throws Exception
+     *             when encounter any exception.
+     */
+    public static String encrypt(String base64Key, String input, String hexIv) throws Exception {
+<span class="fc" id="L71">        byte[] keyBytes = Base64Coder.decode(base64Key);</span>
+        // use default
+        // Charset.getDefaultEncoding()
+<span class="fc" id="L74">        byte[] inputs = input.getBytes();</span>
+<span class="fc" id="L75">        byte[] ivBytes = HexCoder.hexToBuffer(hexIv);</span>
+<span class="fc" id="L76">        byte[] output = encrypt(keyBytes, inputs, ivBytes);</span>
+<span class="fc" id="L77">        return new String(Base64Coder.encode(output));</span>
+    }
+
+    public static byte[] encrypt(byte[] keyBytes, byte[] src, byte[] ivBytes) throws Exception {
+<span class="fc" id="L81">        SecretKey deskey = new SecretKeySpec(keyBytes, algorithm);</span>
+<span class="fc" id="L82">        AlgorithmParameterSpec iv = new IvParameterSpec(ivBytes);</span>
+
+        // do encryption
+<span class="fc" id="L85">        Cipher c1 = Cipher.getInstance(transformation);</span>
+<span class="fc" id="L86">        c1.init(Cipher.ENCRYPT_MODE, deskey, iv, new SecureRandom());</span>
+<span class="fc" id="L87">        return c1.doFinal(src);</span>
+    }
+
+    /**
+     * Decryption...
+     * 
+     * @param base64Key
+     *            The base64 representation of secret key.
+     * @param cipher
+     *            The base64 representation of encrypted output.
+     * @param hexIv
+     *            The hex representation of IV.
+     * @return original input string.
+     */
+    public static String decrypt(String base64Key, String cipher, String hexIv) throws Exception {
+<span class="fc" id="L102">        byte[] keyBytes = Base64Coder.decode(base64Key);</span>
+<span class="fc" id="L103">        byte[] ciphers = Base64Coder.decode(cipher);</span>
+<span class="fc" id="L104">        byte[] ivBytes = HexCoder.hexToBuffer(hexIv);</span>
+<span class="fc" id="L105">        return new String(decrypt(keyBytes, ciphers, ivBytes));</span>
+    }
+
+    public static byte[] decrypt(byte[] keyBytes, byte[] cipher, byte[] ivBytes) throws Exception {
+<span class="fc" id="L109">        SecretKey deskey = new SecretKeySpec(keyBytes, algorithm);</span>
+        // length: 8 bytes
+<span class="fc" id="L111">        AlgorithmParameterSpec iv = new IvParameterSpec(ivBytes);</span>
+
+        // do decryption
+<span class="fc" id="L114">        Cipher c1 = Cipher.getInstance(transformation);</span>
+<span class="fc" id="L115">        c1.init(Cipher.DECRYPT_MODE, deskey, iv, new SecureRandom());</span>
+<span class="fc" id="L116">        return c1.doFinal(cipher);</span>
+    }
+
+    private static String random(int length) {
+<span class="fc" id="L120">        UUID uuid = UUID.randomUUID();</span>
+<span class="fc" id="L121">        String myRandom = uuid.toString();</span>
+<span class="fc" id="L122">        return myRandom.substring(0, length);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

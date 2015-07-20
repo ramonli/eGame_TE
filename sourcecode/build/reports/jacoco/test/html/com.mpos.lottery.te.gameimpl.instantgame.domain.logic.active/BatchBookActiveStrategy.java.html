@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BatchBookActiveStrategy.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.instantgame.domain.logic.active</a> &gt; <span class="el_source">BatchBookActiveStrategy.java</span></div><h1>BatchBookActiveStrategy.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.instantgame.domain.logic.active;
+
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.IgOperationParameter;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.InstantTicketSerialNo;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.dto.ActiveCriteria;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.dto.ActiveResult;
+
+import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+<span class="nc" id="L14">public class BatchBookActiveStrategy extends AbstractCriteriaActiveStrategy {</span>
+
+    public ActiveResult active(ActiveCriteria criteria) throws ApplicationException {
+<span class="nc" id="L17">        ActiveResult batchResult = new ActiveResult();</span>
+<span class="nc" id="L18">        JSONObject jsonResult = new JSONObject();</span>
+<span class="nc" id="L19">        List&lt;InstantTicketSerialNo&gt; serialList = this.parseCriteria(criteria);</span>
+<span class="nc bnc" id="L20" title="All 2 branches missed.">        for (InstantTicketSerialNo no : serialList) {</span>
+            // check if the criteria supports the first ticket serial
+<span class="nc" id="L22">            IgOperationParameter param = this.getIgOperationParameter(no.getGGG());</span>
+
+            // find the tickets by first and last ticket
+<span class="nc" id="L25">            String beginSerial = this.assembleSerialNo(no, param.getBeginTicketIndex());</span>
+<span class="nc" id="L26">            String endSerial = this.assembleSerialNo(no, param.getEndTicketIndex());</span>
+<span class="nc" id="L27">            ActiveResult result = this.batchActive(beginSerial, endSerial, criteria.getTrans());</span>
+
+<span class="nc bnc" id="L29" title="All 2 branches missed.">            if (result.isBatchSuccessful()) {</span>
+<span class="nc" id="L30">                batchResult.setCount(batchResult.getCount() + result.getCount());</span>
+            } else {
+<span class="nc" id="L32">                batchResult.appendFailure(no.getBookNumber());</span>
+<span class="nc" id="L33">                batchResult.setErrorCode(result.getErrorCode());</span>
+<span class="nc" id="L34">                batchResult.setBatchSuccessful(false);</span>
+            }
+<span class="nc" id="L36">            jsonResult.put(no.getBookNumber(), result.getErrorCode());</span>
+<span class="nc" id="L37">        }</span>
+<span class="nc" id="L38">        batchResult.setActiveResult(criteria.toJSONString(jsonResult));</span>
+<span class="nc" id="L39">        return batchResult;</span>
+    }
+
+    private List&lt;InstantTicketSerialNo&gt; parseCriteria(ActiveCriteria criteria) throws ApplicationException {
+<span class="nc" id="L43">        List&lt;InstantTicketSerialNo&gt; serialList = new ArrayList&lt;InstantTicketSerialNo&gt;();</span>
+<span class="nc" id="L44">        String bookTokens[] = criteria.getValue().split(ActiveCriteria.TOKEN_SEPERATOR);</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        for (String bookToken : bookTokens) {</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">            if (!&quot;&quot;.equals(bookToken)) {</span>
+<span class="nc" id="L47">                serialList.add(new InstantTicketSerialNo(bookToken + &quot;000&quot;));</span>
+            }
+        }
+<span class="nc" id="L50">        return serialList;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.merchant.service.balance.CashoutBalanceServiceIntegrationTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:54" hostname="Ramon-PC" time="0.088">
+  <properties/>
+  <testcase name="testReduceCashoutBalance_UseParent" classname="com.mpos.lottery.te.merchant.service.balance.CashoutBalanceServiceIntegrationTest" time="0.03"/>
+  <testcase name="testTopupCashoutBalance_Operator" classname="com.mpos.lottery.te.merchant.service.balance.CashoutBalanceServiceIntegrationTest" time="0.014"/>
+  <testcase name="testTopupCashoutBalance_UseParent" classname="com.mpos.lottery.te.merchant.service.balance.CashoutBalanceServiceIntegrationTest" time="0.024"/>
+  <testcase name="testReduceCashoutBalance_Operator" classname="com.mpos.lottery.te.merchant.service.balance.CashoutBalanceServiceIntegrationTest" time="0.019"/>
+  <system-out><![CDATA[[2015-05-29 17:13:54,381][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:54,381][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:54,381][Test worker][INFO ][BaseTransactionalIntegrationTest] | CashoutBalanceServiceIntegrationTest.testReduceCashoutBalance_UseParent                                                |
+[2015-05-29 17:13:54,381][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:54,392][Test worker][DEBUG][DefaultBalanceService] Ignore balance calculation of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0], as its credit type is USE PARENT... check its parent merchant
+[2015-05-29 17:13:54,395][Test worker][DEBUG][DefaultBalanceService] Merchant before transaction: Merchant [id=111, name=M-111, saleCreditLevel=100000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:54,395][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.CashoutBalanceStrategy@2000a103
+[2015-05-29 17:13:54,395][Test worker][DEBUG][DefaultBalanceService] Merchant after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:54,403][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:54,403][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:54,403][Test worker][INFO ][BaseTransactionalIntegrationTest] | CashoutBalanceServiceIntegrationTest.testTopupCashoutBalance_Operator                                                  |
+[2015-05-29 17:13:54,403][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:54,410][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:54,410][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.CashoutBalanceStrategy@2000a103
+[2015-05-29 17:13:54,410][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=200, commisionBalance=0]
+[2015-05-29 17:13:54,419][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:54,419][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:54,419][Test worker][INFO ][BaseTransactionalIntegrationTest] | CashoutBalanceServiceIntegrationTest.testTopupCashoutBalance_UseParent                                                 |
+[2015-05-29 17:13:54,419][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:54,430][Test worker][DEBUG][DefaultBalanceService] Ignore balance calculation of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0], as its credit type is USE PARENT... check its parent merchant
+[2015-05-29 17:13:54,433][Test worker][DEBUG][DefaultBalanceService] Merchant before transaction: Merchant [id=111, name=M-111, saleCreditLevel=100000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:54,433][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.CashoutBalanceStrategy@2000a103
+[2015-05-29 17:13:54,433][Test worker][DEBUG][DefaultBalanceService] Merchant after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:54,445][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:54,445][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:54,445][Test worker][INFO ][BaseTransactionalIntegrationTest] | CashoutBalanceServiceIntegrationTest.testReduceCashoutBalance_Operator                                                 |
+[2015-05-29 17:13:54,445][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:54,452][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:54,452][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.CashoutBalanceStrategy@2000a103
+[2015-05-29 17:13:54,453][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=-200, commisionBalance=0]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+	<class name="com.mpos.lottery.te.trans.domain.Transaction">
+		<map-to xml="Transaction" />
+
+		<field name="id" type="java.lang.String" required="true">
+			<bind-xml name="id" node="attribute" />
+		</field>
+		<field name="type" type="integer" required="true">
+			<bind-xml name="type" node="attribute" />
+		</field>
+		<field name="createTime" type="string"
+			handler="com.mpos.lottery.te.port.protocol.TimestampFieldHandler"
+			required="true">
+			<bind-xml name="createTime" node="attribute" />
+		</field>
+		<field name="responseCode" type="integer" required="true">
+			<bind-xml name="responseCode" node="attribute" />
+		</field>
+		<field name="object"
+			type="com.mpos.lottery.te.valueaddservice.airtime.AirtimeTopup"
+			required="false">
+			<bind-xml name="AirtimeTopup" />
+		</field>
+	</class>
+
+	<class name="com.mpos.lottery.te.valueaddservice.airtime.AirtimeTopup">
+        <map-to xml="AirtimeTopup" />
+
+        <field name="mobileNo" type="string" required="true">
+            <bind-xml name="mobile" node="attribute" />
+        </field>
+        <field name="amount" type="java.math.BigDecimal" required="true">
+            <bind-xml name="amount" node="attribute" />
+        </field>  
+        <field name="status" type="int" required="true">
+            <bind-xml name="status" node="attribute" />
+        </field>                 
+        <field name="game"
+            type="com.mpos.lottery.te.gamespec.game.Game" required="true">
+            <bind-xml name="Game"/>
+        </field>
+    </class>
+
+    <class name="com.mpos.lottery.te.gamespec.game.Game">
+        <field name="id" type="string" required="true">
+            <bind-xml name="id" node="attribute" />
+        </field>
+    </class>
+</mapping>

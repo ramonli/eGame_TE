@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+    <class name="com.mpos.lottery.te.gameimpl.lotto.sale.domain.dto.OfflineTicket">
+        <map-to xml="OfflineSaleUpload" />
+        
+        <field name="tickets" type="com.mpos.lottery.te.gameimpl.lotto.sale.domain.LottoTicket" collection="arraylist" required="true">
+            <bind-xml name="Ticket" />
+        </field>
+    </class>
+    
+	<class name="com.mpos.lottery.te.gameimpl.lotto.sale.domain.LottoTicket">
+        <field name="rawSerialNo" type="java.lang.String" required="true">
+            <bind-xml name="serialNo" node="attribute" />
+        </field>	
+		<field name="multipleDraws" type="integer" required="true">
+			<bind-xml name="multipleDraws" node="attribute" />
+		</field>
+		<field name="totalAmount" type="java.math.BigDecimal" required="true">
+			<bind-xml name="totalAmount" node="attribute" />
+		</field>
+		<field name="PIN" type="java.lang.String" required="true">
+			<bind-xml name="PIN" node="attribute" />
+		</field>
+        <field name="gameDraw" type="com.mpos.lottery.te.gameimpl.lotto.draw.domain.LottoGameInstance" required="true">
+            <bind-xml name="GameDraw" />
+        </field>		
+		<field name="entries" type="com.mpos.lottery.te.gameimpl.lotto.sale.domain.LottoEntry" collection="arraylist"  required="true">
+			<bind-xml name="Entry" />
+		</field>
+	</class>
+	
+	<class name="com.mpos.lottery.te.gameimpl.lotto.draw.domain.LottoGameInstance" >
+	   <field name="number" type="java.lang.String" required="true">
+	       <bind-xml name="number" node="attribute" />
+	   </field>
+        <field name="gameId" type="java.lang.String" required="true">
+            <bind-xml name="gameId" node="attribute" />
+        </field>	   
+	</class>
+
+	<class name="com.mpos.lottery.te.gameimpl.lotto.sale.domain.LottoEntry" >
+		<field name="selectNumber" type="java.lang.String" required="true">
+			<bind-xml name="selectedNumber" node="attribute" />
+		</field>
+		<field name="betOption" type="integer" required="true">
+			<bind-xml name="betOption" node="attribute" />
+		</field>
+		<field name="quickPick" type="integer" required="true">
+			<bind-xml name="isQuickPick" node="attribute" />
+		</field>
+	</class>
+</mapping>

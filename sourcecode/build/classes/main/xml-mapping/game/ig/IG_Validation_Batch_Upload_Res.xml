@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+    <class
+        name="com.mpos.lottery.te.gameimpl.instantgame.domain.dto.InstantBatchPayoutDto">
+        <map-to xml="OfflineValidation" />
+        <field name="payouts" type="com.mpos.lottery.te.gameimpl.instantgame.domain.dto.PrizeLevelDto"
+            collection="collection" required="true">
+            <bind-xml name="Prize" />
+        </field>
+    </class>
+
+    <class name="com.mpos.lottery.te.gameimpl.instantgame.domain.dto.PrizeLevelDto">
+        <field name="prizeAmount" type="java.math.BigDecimal" required="true">
+            <bind-xml name="prizeAmount" node="attribute" />
+        </field>
+        <field name="taxAmount" type="java.math.BigDecimal" required="true">
+            <bind-xml name="taxAmount" node="attribute" />
+        </field>
+        <field name="actualAmount" type="java.math.BigDecimal" required="true">
+            <bind-xml name="actualAmount" node="attribute" />
+        </field>
+        <field name="statusCode" type="integer" required="true">
+            <bind-xml name="statusCode" node="attribute" />
+        </field>
+        <field name="ticket"
+            type="com.mpos.lottery.te.gameimpl.instantgame.domain.InstantTicket" required="true">
+            <bind-xml name="Ticket" />
+        </field>
+    </class>
+
+    <class name="com.mpos.lottery.te.gameimpl.instantgame.domain.InstantTicket">
+        <field name="rawSerialNo" type="java.lang.String" required="true">
+            <bind-xml name="serialNo" node="attribute" />
+        </field>
+    </class>
+
+</mapping>

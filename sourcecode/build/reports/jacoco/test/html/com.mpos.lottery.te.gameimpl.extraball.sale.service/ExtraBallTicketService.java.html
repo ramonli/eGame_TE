@@ -1,0 +1,522 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ExtraBallTicketService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.extraball.sale.service</a> &gt; <span class="el_source">ExtraBallTicketService.java</span></div><h1>ExtraBallTicketService.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.extraball.sale.service;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gameimpl.extraball.sale.ExtraBallEntry;
+import com.mpos.lottery.te.gameimpl.extraball.sale.ExtraBallFunType;
+import com.mpos.lottery.te.gameimpl.extraball.sale.ExtraBallGameInstance;
+import com.mpos.lottery.te.gameimpl.extraball.sale.ExtraBallOperationParameter;
+import com.mpos.lottery.te.gameimpl.extraball.sale.ExtraBallTicket;
+import com.mpos.lottery.te.gameimpl.extraball.sale.dao.ExtraBallAlgorithmDao;
+import com.mpos.lottery.te.gameimpl.lotto.draw.LottoOperationParameter;
+import com.mpos.lottery.te.gameimpl.lotto.sale.domain.LottoTicket;
+import com.mpos.lottery.te.gamespec.game.BaseGameInstance;
+import com.mpos.lottery.te.gamespec.game.Game;
+import com.mpos.lottery.te.gamespec.game.GameType;
+import com.mpos.lottery.te.gamespec.game.dao.BaseGameInstanceDao;
+import com.mpos.lottery.te.gamespec.game.dao.GameDao;
+import com.mpos.lottery.te.gamespec.game.service.GameInstanceService;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.gamespec.sale.dao.BaseEntryDao;
+import com.mpos.lottery.te.gamespec.sale.dao.BaseTicketDao;
+import com.mpos.lottery.te.gamespec.sale.service.CompositeTicketService;
+import com.mpos.lottery.te.gamespec.sale.web.QPEnquiryDto;
+import com.mpos.lottery.te.merchant.domain.Merchant;
+import com.mpos.lottery.te.merchant.service.CreditService;
+import com.mpos.lottery.te.merchant.service.MerchantService;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.port.domain.router.RoutineKey;
+import com.mpos.lottery.te.sequence.service.UUIDService;
+import com.mpos.lottery.te.trans.domain.Transaction;
+import com.mpos.lottery.te.trans.domain.TransactionType;
+import com.mpos.lottery.te.trans.domain.logic.AbstractReversalOrCancelStrategy;
+import com.mpos.lottery.te.trans.service.TransactionService;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+<span class="fc" id="L44">public class ExtraBallTicketService extends AbstractReversalOrCancelStrategy implements CompositeTicketService {</span>
+<span class="fc" id="L45">    private Log logger = LogFactory.getLog(ExtraBallTicketService.class);</span>
+    // SPRING DEPENDENCIES
+    private BaseTicketDao baseTicketDao;
+    private BaseEntryDao baseEntryDao;
+    private GameInstanceService gameInstanceService;
+    private BaseGameInstanceDao baseGameInstanceDao;
+    private CreditService creditService;
+    private MerchantService merchantService;
+    private BaseJpaDao baseJpaDao;
+    private UUIDService uuidService;
+    private GameDao gameDao;
+    private TransactionService transactionService;
+    // private IncentiveStrategyFactory incentiveStrategyFactory;
+    private ExtraBallAlgorithmDao extraBallAlgorithmDao;
+
+    @Override
+    public BaseTicket enquiry(Context&lt;?&gt; respCtx, BaseTicket clientTicket, boolean fetchEntries)
+            throws ApplicationException {
+<span class="nc" id="L63">        List&lt;ExtraBallTicket&gt; tickets = this.getBaseTicketDao().findBySerialNo(ExtraBallTicket.class,</span>
+                clientTicket.getSerialNo(), true);
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (tickets.size() == 0) {</span>
+<span class="nc" id="L66">            throw new ApplicationException(SystemException.CODE_NO_TICKET, &quot;can NOT find ticket(serialNO=&quot;</span>
+                    + clientTicket.getSerialNo() + &quot;) from underlying database.&quot;);
+        }
+        /**
+         * new a ticket, other entity manager will persist it to underlying database automatically when commit
+         * transaction.
+         */
+<span class="nc" id="L73">        ExtraBallTicket boughtTicket = tickets.get(0);</span>
+<span class="nc" id="L74">        ExtraBallTicket ticket = (ExtraBallTicket) clientTicket;</span>
+<span class="nc" id="L75">        ticket.setGameInstance(this.getBaseGameInstanceDao().findById(ExtraBallGameInstance.class,</span>
+                boughtTicket.getGameInstance().getId()));
+        // set gameId
+<span class="nc" id="L78">        Game game = ticket.getGameInstance().getGame();</span>
+<span class="nc" id="L79">        game.setFunType(this.getBaseJpaDao().findById(ExtraBallFunType.class, game.getFunTypeId()));</span>
+<span class="nc" id="L80">        ticket.setCreateTime(boughtTicket.getCreateTime());</span>
+<span class="nc" id="L81">        ticket.setUpdateTime(boughtTicket.getUpdateTime());</span>
+        // ticket.setPIN(boughtTicket.getPIN());
+<span class="nc" id="L83">        ticket.setStatus(boughtTicket.getStatus());</span>
+<span class="nc" id="L84">        ticket.setTransaction(boughtTicket.getTransaction());</span>
+        // avoid LazyInitilizationException
+<span class="nc" id="L86">        ticket.getTransaction().getId();</span>
+<span class="nc" id="L87">        ticket.setWinning(boughtTicket.isWinning());</span>
+<span class="nc" id="L88">        ticket.setRawSerialNo(false, BaseTicket.descryptSerialNo(ticket.getSerialNo()));</span>
+        // set multiple draws
+<span class="nc" id="L90">        ticket.setMultipleDraws(boughtTicket.getMultipleDraws());</span>
+<span class="nc" id="L91">        BigDecimal totalAmount = boughtTicket.getTotalAmount().multiply(new BigDecimal(tickets.size()));</span>
+<span class="nc" id="L92">        ticket.setTotalAmount(totalAmount);</span>
+
+        // lookup lastDrawNo
+<span class="nc" id="L95">        BaseGameInstance lastDraw = this.getBaseGameInstanceDao().findById(ExtraBallGameInstance.class,</span>
+                tickets.get(tickets.size() - 1).getGameInstance().getId());
+<span class="nc" id="L97">        ticket.setLastDrawNo(lastDraw.getNumber());</span>
+
+<span class="nc" id="L99">        return ticket;</span>
+    }
+
+    @Override
+    public List&lt;? extends BaseTicket&gt; sell(Context&lt;?&gt; respCtx, BaseTicket clientTicket) throws ApplicationException {
+<span class="nc" id="L104">        ExtraBallTicket ticket = (ExtraBallTicket) clientTicket;</span>
+        // validate ticket
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (ticket.getMultipleDraws() &lt; 1) {</span>
+<span class="nc" id="L107">            throw new ApplicationException(SystemException.CODE_MULTIPLEDRAW_NEGATIVE, &quot;The multipleDraw(&quot;</span>
+                    + ticket.getMultipleDraws() + &quot;) is 1 at least.&quot;);
+        }
+        // check game draw, and set current draw to ticket.
+<span class="nc" id="L111">        List&lt;? extends BaseGameInstance&gt; gameInstances = this.lookupGameInstance(respCtx, ticket);</span>
+        // generate serial number for ticket.
+<span class="nc" id="L113">        ticket.setRawSerialNo(this.getUuidService().getTicketSerialNo(gameInstances.get(0).getGame().getType()));</span>
+        // check pre-condition of sale
+<span class="nc" id="L115">        this.beforeSale(respCtx, ticket);</span>
+        // apply incentive strategy
+<span class="nc" id="L117">        this.countIncentive(respCtx, ticket.getTotalAmount(), false);</span>
+
+        // update the credit level
+<span class="nc bnc" id="L120" title="All 2 branches missed.">        if (LottoTicket.TICKET_TYPE_NORMAL == ticket.getTicketType()) {</span>
+<span class="nc" id="L121">            this.getCreditService().credit(ticket.getTransaction().getOperatorId(),</span>
+                    ticket.getTransaction().getMerchantId(), ticket.getTotalAmount(),
+                    ticket.getGameInstance().getGame().getId(), false, true, ticket.isSoldByCreditCard());
+        }
+
+        // generate new tickets
+<span class="nc" id="L127">        List&lt;ExtraBallTicket&gt; tickets = this.generateTicket(ticket, gameInstances);</span>
+
+        // // update instantaneous sale
+        // for (LottoTicket t : tickets) {
+        // this.snapshotSale(respCtx, t, true);
+        // }
+<span class="nc" id="L133">        return tickets;</span>
+    }
+
+    @Override
+    public boolean cancelByTicket(Context&lt;?&gt; respCtx, BaseTicket clientTicket) throws ApplicationException {
+<span class="nc" id="L138">        throw new UnsupportedOperationException(&quot;Rewrite this method&quot;);</span>
+        // List&lt;ExtraBallTicket&gt; tickets =
+        // this.getBaseTicketDao().findBySerialNo(ExtraBallTicket.class,
+        // clientTicket.getSerialNo(), true);
+        // if (tickets.size() == 0) {
+        // this.getTransactionService().pendTransaction(TransactionType.CANCEL_BY_TICKET.getRequestType(),
+        // clientTicket.getSerialNo(), respCtx.getTransaction().getDeviceId(),
+        // respCtx.getTransaction().getTraceMessageId());
+        // return false;
+        // }
+        // /**
+        // * A ticket can be canceled only when the game-draw in which a
+        // customer
+        // * bought the ticket is active and between start selling time and stop
+        // * selling time, or the ticket is frozen. The returned ticket list is
+        // * order by game-draw.number, so the game-draw associates with the
+        // first
+        // * ticket is the game-draw in which customer bought this ticket.
+        // */
+        // BaseGameInstance currentDraw =
+        // this.getBaseJpaDao().findById(ExtraBallGameInstance.class,
+        // tickets.get(0).getGameInstance().getId());
+        // respCtx.getTransaction().setGameId(currentDraw.getGame().getId());
+        // respCtx.getTransaction().setTicketSerialNo(clientTicket.getSerialNo());
+        //
+        // boolean isCancelDeclined = false;
+        // // check the status of current game draw
+        // Date now = new Date();
+        // if (now.before(currentDraw.getFreezeTime())) {
+        // if (currentDraw.getState() == LottoGameInstance.STATE_INACTIVE) {
+        // throw new ApplicationException(SystemException.CODE_NO_ACTIVE_DRAW,
+        // &quot;Game instance(number=&quot;
+        // + currentDraw.getNumber() + &quot;,gameId=&quot; +
+        // currentDraw.getGame().getId()
+        // + &quot;) is not active.&quot;);
+        // }
+        // if (currentDraw.getState() &gt;= LottoGameInstance.STATE_PAYOUT_STARTED)
+        // {
+        // // TODO: reject canceling request
+        // }
+        // }
+        // else {
+        // isCancelDeclined = true;
+        // }
+        // /**
+        // * check if ticket has been canceled. Guarantee there are only one
+        // * successful cancel transaction associates with a ticket, or
+        // settlement
+        // * will fail.
+        // */
+        // ExtraBallTicket boughtTicket = tickets.get(0);
+        // if (LottoTicket.STATUS_CANCELED == boughtTicket.getStatus()
+        // || LottoTicket.STATUS_CANCEL_DECLINED == boughtTicket.getStatus()) {
+        // throw new
+        // ApplicationException(SystemException.CODE_CANCEL_CANCELED_TICKET,
+        // &quot;Can NOT cancel a cancel/cancel declined ticket(status=&quot; +
+        // boughtTicket.getStatus()
+        // + &quot;) repeatedly.&quot;);
+        // }
+        //
+        // // update credit
+        // if (BaseTicket.TICKET_TYPE_NORMAL == boughtTicket.getTicketType()) {
+        // // restore the credit of merchants
+        // Transaction saleTrans = boughtTicket.getTransaction();
+        // this.getMerchantService().credit(saleTrans.getOperatorId(),
+        // saleTrans.getMerchantId(),
+        // boughtTicket.getTotalAmount().multiply(new
+        // BigDecimal(tickets.size())),
+        // respCtx.getTransaction().getGameId(), true, true,
+        // boughtTicket.isSoldByCreditCard());
+        // }
+        // // resotre incentive counter
+        // BigDecimal totalAmount = boughtTicket.getTotalAmount().multiply(new
+        // BigDecimal(tickets.size()));
+        // this.countIncentive(respCtx, totalAmount, true);
+        //
+        // // update ticket
+        // for (ExtraBallTicket ticket : tickets) {
+        // ticket.setStatus(isCancelDeclined ?
+        // LottoTicket.STATUS_CANCEL_DECLINED
+        // : LottoTicket.STATUS_CANCELED);
+        // ticket.setBatchNo(respCtx.getTransaction().getBatchNumber());
+        // ticket.setTransaction(respCtx.getTransaction());
+        // ticket.setCountInPool(isCancelDeclined ? true : false);
+        // ticket.setUpdateTime(new Date());
+        // }
+        // this.getBaseTicketDao().update(tickets);
+        //
+        // // update total_amount field in te_transaction after cancel ticket
+        // respCtx.getTransaction().setTotalAmount(totalAmount);
+        //
+        // return isCancelDeclined;
+    }
+
+    /**
+     * A implement of cancel by transaction.
+     */
+    @Override
+    public boolean cancelOrReverse(Context&lt;?&gt; respCtx, Transaction targetTrans) throws ApplicationException {
+<span class="nc bnc" id="L237" title="All 2 branches missed.">        if (TransactionType.SELL_TICKET.getRequestType() != targetTrans.getType()) {</span>
+<span class="nc" id="L238">            throw new SystemException(&quot;can't reverse a transaction of type:&quot; + targetTrans.getType());</span>
+        }
+
+<span class="nc" id="L241">        boolean isCancelDecline = false;</span>
+        // assemble a LottoTicket
+<span class="nc" id="L243">        BaseTicket ticket = new ExtraBallTicket();</span>
+<span class="nc" id="L244">        ticket.setSerialNo(targetTrans.getTicketSerialNo());</span>
+<span class="nc" id="L245">        ticket.setTransaction(targetTrans);</span>
+<span class="nc" id="L246">        isCancelDecline = this.cancelByTicket(respCtx, ticket);</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">        if (isCancelDecline) {</span>
+<span class="nc" id="L248">            respCtx.setResponseCode(SystemException.CODE_FAILTO_CANCEL);</span>
+        }
+<span class="nc" id="L250">        return isCancelDecline;</span>
+    }
+
+    @Override
+    public QPEnquiryDto enquiryQP(Context&lt;?&gt; respCtx, QPEnquiryDto dto) throws ApplicationException {
+        // TODO Auto-generated method stub
+<span class="nc" id="L256">        return null;</span>
+    }
+
+    /**
+     * Customize the routine key for &lt;code&gt;ReversalOrCancelStrategy&lt;/code&gt;.
+     */
+    @Override
+    public RoutineKey supportedReversalRoutineKey() {
+<span class="fc" id="L264">        return new RoutineKey(Game.TYPE_EXTRABALL, TransactionType.SELL_TICKET.getRequestType(), null);</span>
+    }
+
+    @Override
+    public GameType supportedGameType() {
+<span class="nc" id="L269">        return GameType.EXTRABALL;</span>
+    }
+
+    // --------------------------------------------------
+    // HELPER METHODS
+    // --------------------------------------------------
+
+    /**
+     * When sell extraball ticket, its total amount will be counted to LG incentive counter.
+     */
+    public void countIncentive(Context&lt;?&gt; respCtx, BigDecimal totalAmount, boolean isCancel)
+            throws ApplicationException {
+        // Lookup the base amount of LG game
+        // There should be only one LG game for LOTTO
+<span class="nc" id="L283">        Game game = this.getGameDao().findSingleByType(Game.TYPE_LOTT, false);</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L285">            logger.debug(&quot;Found lotto game(id=&quot; + game.getId() + &quot;).&quot;);</span>
+        }
+<span class="nc" id="L287">        LottoOperationParameter lottoOpParam = this.getBaseJpaDao().findById(LottoOperationParameter.class,</span>
+                game.getOperatorParameterId(), false);
+        // IncentiveStrategy incentStrategy =
+        // this.getIncentiveStrategyFactory().getIncentiveStrategy(
+        // respCtx.getProtocalVersion());
+        // int counter =
+        // totalAmount.divide(lottoOpParam.getBaseAmount()).intValue();
+        // incentStrategy.counter(respCtx, isCancel ? -1 * counter : counter);
+<span class="nc" id="L295">    }</span>
+
+    /**
+     * Generate ticket according to request.
+     */
+    private List&lt;ExtraBallTicket&gt; generateTicket(ExtraBallTicket ticket, List&lt;? extends BaseGameInstance&gt; gameInstances)
+            throws ApplicationException {
+        // save ticket
+<span class="nc" id="L303">        List&lt;ExtraBallTicket&gt; tickets = this.assembleMultiplDrawTickets(ticket, gameInstances);</span>
+<span class="nc" id="L304">        this.getBaseTicketDao().insert(tickets);</span>
+
+        // prepare and save entries
+<span class="nc" id="L307">        this.getBaseJpaDao().insert(tickets.get(0).getEntries());</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="nc" id="L309">            logger.debug(&quot;Generate ticket(serialNo=&quot; + ticket.getSerialNo() + &quot;) successfully.&quot;);</span>
+        }
+
+<span class="nc" id="L312">        return tickets;</span>
+    }
+
+    /**
+     * If a ticket is multipleDraws, then multiple ticket records will be saved.
+     */
+    protected List&lt;ExtraBallTicket&gt; assembleMultiplDrawTickets(ExtraBallTicket ticket,
+            List&lt;? extends BaseGameInstance&gt; gameInstances) throws ApplicationException {
+        // assemble entries
+<span class="nc" id="L321">        this.assembleEntries(ticket, ticket.getEntries());</span>
+
+<span class="nc" id="L323">        List&lt;ExtraBallTicket&gt; tickets = new LinkedList&lt;ExtraBallTicket&gt;();</span>
+<span class="nc" id="L324">        BigDecimal singleDrawAmount = ticket.getTotalAmount().divide(new BigDecimal(gameInstances.size()), 2,</span>
+                BigDecimal.ROUND_HALF_UP);
+<span class="nc bnc" id="L326" title="All 2 branches missed.">        for (int i = 0; i &lt; ticket.getMultipleDraws(); i++) {</span>
+            /**
+             * For a multiple draw ticket, only the first entity will be set the value of requested multple draw, all
+             * other will be set to 0.
+             */
+<span class="nc" id="L331">            int multpleDraws = ticket.getMultipleDraws();</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">            if (i != 0) {</span>
+<span class="nc" id="L333">                multpleDraws = 0;</span>
+            }
+            // must new a instance
+<span class="nc" id="L336">            ExtraBallTicket t = new ExtraBallTicket(this.getUuidService().getGeneralID(), gameInstances.get(i).getId(),</span>
+                    ticket.getTransaction(), ticket.getSerialNo(), singleDrawAmount, multpleDraws);
+<span class="nc" id="L338">            t.setGameInstance(gameInstances.get(i));</span>
+<span class="nc" id="L339">            t.setEntries(ticket.getEntries());</span>
+
+<span class="nc" id="L341">            tickets.add(t);</span>
+        }
+
+<span class="nc" id="L344">        return tickets;</span>
+    }
+
+    /**
+     * Save lotto/racing.... entries of ticket. Before saving, the identifier of entry should be assigned.
+     */
+    protected void assembleEntries(ExtraBallTicket ticket, List entries) throws ApplicationException {
+<span class="nc" id="L351">        int index = 1;</span>
+        // assign identifier to Entry
+<span class="nc bnc" id="L353" title="All 2 branches missed.">        for (Object entry : entries) {</span>
+<span class="nc" id="L354">            ExtraBallEntry lEntry = (ExtraBallEntry) entry;</span>
+<span class="nc" id="L355">            lEntry.setId(this.getUuidService().getGeneralID());</span>
+<span class="nc" id="L356">            lEntry.setTicketSerialNo(ticket.getSerialNo());</span>
+<span class="nc" id="L357">            lEntry.setCreateTime(new Date());</span>
+<span class="nc" id="L358">            lEntry.setEntryNo((index++) + &quot;&quot;);</span>
+<span class="nc" id="L359">            lEntry.setUpdateTime(lEntry.getCreateTime());</span>
+<span class="nc" id="L360">            lEntry.setArgorithm(this.getExtraBallAlgorithmDao().findByType(lEntry.getBetOption()));</span>
+<span class="nc" id="L361">        }</span>
+<span class="nc" id="L362">    }</span>
+
+    /**
+     * Check the pre-conditions before sale.
+     */
+    private void beforeSale(Context respCtx, ExtraBallTicket ticket) throws ApplicationException {
+        // check the status of current game draw
+<span class="nc" id="L369">        Game game = ticket.getGameInstance().getGame();</span>
+        // check if the operator can sell this game
+<span class="nc" id="L371">        Transaction trans = ticket.getTransaction();</span>
+<span class="nc" id="L372">        trans.setGameId(game.getId());</span>
+        // OperatorCommission comm =
+        // this.getOperatorCommissionDao().getByOperatorAndMerchantAndGame(
+        // trans.getOperatorId(), trans.getMerchantId(), game.getId());
+        // if (comm == null) {
+        // throw new SystemException(SystemException.CODE_OPERATOR_NOPRIVILEDGE,
+        // &quot;operator(id=&quot;
+        // + trans.getOperatorId() +
+        // &quot;) has no priviledge to sell ticket of game '&quot; + game.getId()
+        // + &quot;'.&quot;);
+        // }
+        // check whether this sale exceeds the allowed multi-draw
+<span class="nc" id="L384">        Merchant merchant = this.getMerchantService().getMerchant(trans.getMerchantId());</span>
+<span class="nc bnc" id="L385" title="All 2 branches missed.">        if (ticket.getMultipleDraws() &gt; merchant.getAllowedMultiDraw()) {</span>
+<span class="nc" id="L386">            throw new ApplicationException(SystemException.CODE_EXCEED_ALLOWD_MULTI_DRAW, &quot;The multi-draw(&quot;</span>
+                    + ticket.getMultipleDraws() + &quot;) of ticket(&quot; + ticket.getSerialNo()
+                    + &quot;) has exceeds the allowed number(&quot; + merchant.getAllowedMultiDraw() + &quot;) of merchant(id=&quot;
+                    + trans.getMerchantId() + &quot;).&quot;);
+        }
+
+        // validate ticket format and amount etc
+<span class="nc" id="L393">        ticket.validate(this.getBaseJpaDao().findById(ExtraBallFunType.class, game.getFunTypeId(), false), this</span>
+                .getBaseJpaDao().findById(ExtraBallOperationParameter.class, game.getOperatorParameterId(), false));
+<span class="nc" id="L395">    }</span>
+
+    /**
+     * Check if game draw exist, then the transaction will be accepted only below two conditions if fulfilled:
+     * &lt;ul&gt;
+     * &lt;li&gt;current time is between start selling time and stop selling time.&lt;/li&gt;
+     * &lt;li&gt;the game draw is not inactive.&lt;/li&gt;
+     * &lt;/ul&gt;
+     * 
+     * @param ticket
+     *            The sold ticket.
+     * @return the required future game instances, they are ordered by stop selling time.
+     * @throws ApplicationException
+     *             when encounter any business exception.
+     */
+    protected List&lt;? extends BaseGameInstance&gt; lookupGameInstance(Context respCtx, ExtraBallTicket ticket)
+            throws ApplicationException {
+<span class="nc" id="L412">        BaseGameInstance gameInstance = ticket.getGameInstance();</span>
+<span class="nc" id="L413">        List&lt;? extends BaseGameInstance&gt; gameInstances = this.getGameInstanceService().enquirySaleReady(respCtx,</span>
+                gameInstance.getGame().getId(), gameInstance.getNumber(), ticket.getMultipleDraws());
+<span class="nc" id="L415">        ticket.setGameInstance(gameInstances.get(0));</span>
+<span class="nc" id="L416">        ticket.setLastDrawNo(gameInstances.get(gameInstances.size() - 1).getNumber());</span>
+<span class="nc" id="L417">        return gameInstances;</span>
+    }
+
+    // --------------------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // --------------------------------------------------
+
+    public MerchantService getMerchantService() {
+<span class="nc" id="L425">        return merchantService;</span>
+    }
+
+    public GameInstanceService getGameInstanceService() {
+<span class="nc" id="L429">        return gameInstanceService;</span>
+    }
+
+    public void setGameInstanceService(GameInstanceService gameInstanceService) {
+<span class="nc" id="L433">        this.gameInstanceService = gameInstanceService;</span>
+<span class="nc" id="L434">    }</span>
+
+    public void setMerchantService(MerchantService merchantService) {
+<span class="fc" id="L437">        this.merchantService = merchantService;</span>
+<span class="fc" id="L438">    }</span>
+
+    public BaseJpaDao getBaseJpaDao() {
+<span class="nc" id="L441">        return baseJpaDao;</span>
+    }
+
+    public void setBaseJpaDao(BaseJpaDao baseJpaDao) {
+<span class="fc" id="L445">        this.baseJpaDao = baseJpaDao;</span>
+<span class="fc" id="L446">    }</span>
+
+    public UUIDService getUuidService() {
+<span class="nc" id="L449">        return uuidService;</span>
+    }
+
+    public void setUuidService(UUIDService uuidService) {
+<span class="fc" id="L453">        this.uuidService = uuidService;</span>
+<span class="fc" id="L454">    }</span>
+
+    public GameDao getGameDao() {
+<span class="nc" id="L457">        return gameDao;</span>
+    }
+
+    public void setGameDao(GameDao gameDao) {
+<span class="fc" id="L461">        this.gameDao = gameDao;</span>
+<span class="fc" id="L462">    }</span>
+
+    public TransactionService getTransactionService() {
+<span class="nc" id="L465">        return transactionService;</span>
+    }
+
+    public void setTransactionService(TransactionService transactionService) {
+<span class="fc" id="L469">        this.transactionService = transactionService;</span>
+<span class="fc" id="L470">    }</span>
+
+    // public IncentiveStrategyFactory getIncentiveStrategyFactory() {
+    // return incentiveStrategyFactory;
+    // }
+    //
+    // public void setIncentiveStrategyFactory(IncentiveStrategyFactory
+    // incentiveStrategyFactory) {
+    // this.incentiveStrategyFactory = incentiveStrategyFactory;
+    // }
+
+    public BaseTicketDao getBaseTicketDao() {
+<span class="nc" id="L482">        return baseTicketDao;</span>
+    }
+
+    public void setBaseTicketDao(BaseTicketDao baseTicketDao) {
+<span class="fc" id="L486">        this.baseTicketDao = baseTicketDao;</span>
+<span class="fc" id="L487">    }</span>
+
+    public BaseEntryDao getBaseEntryDao() {
+<span class="nc" id="L490">        return baseEntryDao;</span>
+    }
+
+    public void setBaseEntryDao(BaseEntryDao baseEntryDao) {
+<span class="fc" id="L494">        this.baseEntryDao = baseEntryDao;</span>
+<span class="fc" id="L495">    }</span>
+
+    public ExtraBallAlgorithmDao getExtraBallAlgorithmDao() {
+<span class="nc" id="L498">        return extraBallAlgorithmDao;</span>
+    }
+
+    public void setExtraBallAlgorithmDao(ExtraBallAlgorithmDao extraBallAlgorithmDao) {
+<span class="fc" id="L502">        this.extraBallAlgorithmDao = extraBallAlgorithmDao;</span>
+<span class="fc" id="L503">    }</span>
+
+    public BaseGameInstanceDao getBaseGameInstanceDao() {
+<span class="nc" id="L506">        return baseGameInstanceDao;</span>
+    }
+
+    public void setBaseGameInstanceDao(BaseGameInstanceDao baseGameInstanceDao) {
+<span class="fc" id="L510">        this.baseGameInstanceDao = baseGameInstanceDao;</span>
+<span class="fc" id="L511">    }</span>
+
+    public CreditService getCreditService() {
+<span class="nc" id="L514">        return creditService;</span>
+    }
+
+    public void setCreditService(CreditService creditService) {
+<span class="nc" id="L518">        this.creditService = creditService;</span>
+<span class="nc" id="L519">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

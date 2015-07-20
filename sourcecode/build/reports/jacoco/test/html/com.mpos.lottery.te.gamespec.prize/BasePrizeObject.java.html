@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BasePrizeObject.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.prize</a> &gt; <span class="el_source">BasePrizeObject.java</span></div><h1>BasePrizeObject.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.prize;
+
+import java.math.BigDecimal;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;BD_PRIZE_OBJECT&quot;)
+<span class="fc" id="L12">public class BasePrizeObject {</span>
+    @Id
+    @Column(name = &quot;ID&quot;)
+    private String id;
+<span class="fc" id="L16">    @Column(name = &quot;PRICE&quot;)</span>
+    private BigDecimal price = new BigDecimal(&quot;0&quot;);
+<span class="fc" id="L18">    @Column(name = &quot;TAX_AMOUNT&quot;)</span>
+    private BigDecimal tax = new BigDecimal(&quot;0&quot;);
+    @Column(name = &quot;OBJECT_NAME&quot;)
+    private String name;
+    // refer to ObjectPrizeLevelDefItem.type_XXX
+    @Column(name = &quot;OBJECT_TYPE&quot;)
+    private int type;
+
+    public String getId() {
+<span class="nc" id="L27">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="nc" id="L31">        this.id = id;</span>
+<span class="nc" id="L32">    }</span>
+
+    public BigDecimal getPrice() {
+<span class="fc" id="L35">        return price;</span>
+    }
+
+    public void setPrice(BigDecimal price) {
+<span class="nc" id="L39">        this.price = price;</span>
+<span class="nc" id="L40">    }</span>
+
+    public BigDecimal getTax() {
+<span class="fc" id="L43">        return tax;</span>
+    }
+
+    public void setTax(BigDecimal tax) {
+<span class="nc" id="L47">        this.tax = tax;</span>
+<span class="nc" id="L48">    }</span>
+
+    public int getType() {
+<span class="nc" id="L51">        return type;</span>
+    }
+
+    public void setType(int type) {
+<span class="nc" id="L55">        this.type = type;</span>
+<span class="nc" id="L56">    }</span>
+
+    public String getName() {
+<span class="fc" id="L59">        return name;</span>
+    }
+
+    public void setName(String name) {
+<span class="nc" id="L63">        this.name = name;</span>
+<span class="nc" id="L64">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

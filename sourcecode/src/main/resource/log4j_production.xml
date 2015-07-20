@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+	<appender name="LOG_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="file" value="${catalina.base}/logs/TE/core/mlottery_te.core.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d][%t][%-5p][%c{1}] %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="SQLTIMING_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="file"
+			value="${catalina.base}/logs/TE/sql/mlottery_te.sqltiming.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d][%t] %m%n" />
+		</layout>
+	</appender>
+
+	<appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+		<!-- param name="Target" value="System.out" / -->
+		<param name="Threshold" value="TRACE" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<!-- The default pattern: Date Priority [Category] Message\n -->
+			<param name="ConversionPattern" value="[%d][%t][%-5p][%c{1}] %m%n" />
+		</layout>
+	</appender>
+
+	<!-- =============================================================== -->
+	<!-- PERF4j ........................................................ -->
+	<!-- =============================================================== -->
+	<!-- This file appender is used to output aggregated performance statistics -->
+	<appender name="perf4jAppender" class="org.apache.log4j.FileAppender">
+		<param name="File"
+			value="${catalina.base}/logs/TE/perf/mlottery_te.perf4j.log" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%d][%t] %m%n" />
+		</layout>
+	</appender>
+
+	<logger name="org.perf4j.TimingLogger" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="perf4jAppender" />
+	</logger>
+
+	<!-- =============================================================== -->
+	<!-- LOG4JDBC:SQL .................................................. -->
+	<!-- =============================================================== -->
+	<!-- Disable all log of Log4Jdbc, as some SQLException is normal in some 
+		case, for example exception(SQlSTATE:54, resource busy and acquire with NOWAIT 
+		specified), when lookup Bingo referenced ticket/entry, this exception is 
+		allowed, and once encounter this exception, system will try to lock next 
+		entity. So we don't want such a SQL exception which may panic operation. 
+		However we must also define a logger category 'jdbc.sqltiming' to log all 
+		SQL log, that is a must. -->
+	<logger name="jdbc" additivity="false">
+		<level value="FATAL" />
+		<appender-ref ref="CONSOLE" />
+	</logger>
+
+	<logger name="jdbc.sqltiming" additivity="false">
+		<level value="INFO" />
+		<appender-ref ref="SQLTIMING_FILE" />
+		<!-- appender-ref ref="CONSOLE" / -->
+	</logger>
+
+	<category name="com.mpos">
+		<priority value="DEBUG" />
+	</category>
+
+	<root>
+		<priority value="WARN" />
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="LOG_FILE" />
+	</root>
+</log4j:configuration>

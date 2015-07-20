@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PrizeGroupItemDaoImpl.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.prize.dao.jpa</a> &gt; <span class="el_source">PrizeGroupItemDaoImpl.java</span></div><h1>PrizeGroupItemDaoImpl.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.prize.dao.jpa;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.gamespec.prize.PrizeGroupItem;
+import com.mpos.lottery.te.gamespec.prize.dao.PrizeGroupItemDao;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+
+<span class="fc" id="L12">public class PrizeGroupItemDaoImpl extends BaseJpaDao implements PrizeGroupItemDao {</span>
+
+    @SuppressWarnings(&quot;unchecked&quot;)
+    @Override
+    public List&lt;PrizeGroupItem&gt; findByGroupAndGameTypeAndGroupType(final String prizeGroupId, final int gameType,
+            final int groupType) {
+<span class="fc" id="L18">        String sql = &quot;SELECT I.ID,I.PRIZE_LEVEL FROM BD_PRIZE_GROUP_ITEM I &quot;</span>
+                + &quot;WHERE I.BD_PRIZE_GROUP_ID=? AND I.GAME_TYPE=? AND I.PRIZE_TYPE=?&quot;;
+
+<span class="fc" id="L21">        return this.queryList(sql, new JdbcQueryCallback() {</span>
+
+            @Override
+            public void setParameter(PreparedStatement ps) throws SQLException {
+<span class="fc" id="L25">                ps.setString(1, prizeGroupId);</span>
+<span class="fc" id="L26">                ps.setInt(2, gameType);</span>
+<span class="fc" id="L27">                ps.setInt(3, groupType);</span>
+<span class="fc" id="L28">            }</span>
+
+            @Override
+            public Object objectFromRow(ResultSet rs) throws SQLException {
+<span class="fc" id="L32">                PrizeGroupItem item = new PrizeGroupItem();</span>
+<span class="fc" id="L33">                item.setId(rs.getString(1));</span>
+<span class="fc" id="L34">                item.setPrizeGroupId(prizeGroupId);</span>
+<span class="fc" id="L35">                item.setStrPrizeLevel(rs.getString(2));</span>
+<span class="fc" id="L36">                item.setGameType(gameType);</span>
+<span class="fc" id="L37">                item.setGroupType(groupType);</span>
+<span class="fc" id="L38">                return item;</span>
+            }
+
+        });
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

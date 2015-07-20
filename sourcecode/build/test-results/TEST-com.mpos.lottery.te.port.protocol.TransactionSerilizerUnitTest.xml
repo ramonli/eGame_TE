@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.port.protocol.TransactionSerilizerUnitTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:54" hostname="Ramon-PC" time="0.001">
+  <properties/>
+  <testcase name="testSerialize" classname="com.mpos.lottery.te.port.protocol.TransactionSerilizerUnitTest" time="0.001"/>
+  <system-out><![CDATA[[2015-05-29 17:13:54,588][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.trans.domain.Transaction, mappingFile=xml-mapping/game/lotto/TransactionEnquiry_Res.xml).
+<?xml version="1.0" encoding="UTF-8"?>
+<Transaction id="3f32c904069842c3ad1521e61d3aa0e5" type="201" createTime="20150529171354" responseCode="200"><Ticket barcode="01cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt/ITKo3ngns+4pjWl52Uuv1" validationCode="122345" multipleDraws="1" totalBets="0" totalAmount="800" serialNo="123456" type="1" lastDrawNo="20090416" status="1"><GameDraw number="20090408" gameId="GAME-111"/><Entry selectedNumber="1,2,3,6,7,13" betOption="1" inputChannel="1" boostAmount="100"/><Entry selectedNumber="3,11,14,16,22,25,36" betOption="2" inputChannel="1" boostAmount="0"/></Ticket></Transaction>
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

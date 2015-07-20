@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+    <class name="com.mpos.lottery.te.valueaddservice.vat.web.OfflineTicketPackDto">
+		<map-to xml="OfflineTicketPack" />
+
+		<field name="vat"
+            type="com.mpos.lottery.te.valueaddservice.vat.VAT"
+            required="true">
+            <bind-xml name="VAT" />
+        </field> 
+        
+        <field name="vatRefNoPackDto"
+            type="com.mpos.lottery.te.valueaddservice.vat.web.VatRefNoPackDto"
+            required="false">
+            <bind-xml name="VatRefNoPack" />
+        </field>
+        
+        <field name="ticketPackDto"
+            type="com.mpos.lottery.te.valueaddservice.vat.web.TicketPackDto"
+            required="false">
+            <bind-xml name="TicketPack" />
+        </field>
+        
+        <field name="selectedNumberPackDto"
+            type="com.mpos.lottery.te.valueaddservice.vat.web.SelectedNumberPackDto"
+            required="false">
+            <bind-xml name="SelectedNumberPack" />
+        </field> 
+           	
+	</class>
+	
+	<class name="com.mpos.lottery.te.valueaddservice.vat.VAT">
+	        <field name="code" type="java.lang.String" required="true">
+	            <bind-xml name="code" node="attribute" />
+	        </field>             
+	</class> 
+	
+	<class name="com.mpos.lottery.te.valueaddservice.vat.web.VatRefNoPackDto">
+	        <field name="requestCount" type="long" required="true">
+	            <bind-xml name="requestCount" node="attribute" />
+	        </field>
+	        <field name="vatRefNoDtos"
+				type="com.mpos.lottery.te.valueaddservice.vat.web.VatRefNoDto"
+				collection="collection" required="true">
+			    <bind-xml name="VatRefNo" />
+		    </field>    
+    </class>
+	<class name="com.mpos.lottery.te.valueaddservice.vat.web.VatRefNoDto">
+		 <field name="refNo" type="java.lang.String" required="true">
+		      <bind-xml name="refNo" node="attribute" />
+		 </field>             
+	</class>  
+	  
+    <class name="com.mpos.lottery.te.valueaddservice.vat.web.TicketPackDto">
+	        <field name="requestCount" type="long" required="true">
+	            <bind-xml name="requestCount" node="attribute" />
+	        </field> 
+	        <field name="tickets"
+				type="com.mpos.lottery.te.valueaddservice.vat.web.OfflineTicketDto"
+				collection="collection" required="true">
+			    <bind-xml name="Ticket" />
+		    </field>             
+	</class>
+	<class name="com.mpos.lottery.te.valueaddservice.vat.web.OfflineTicketDto">
+	    <field name="rawSerialNo" type="java.lang.String" required="true">
+			<bind-xml name="serialNo" node="attribute" />
+		</field>
+		<field name="barcode" type="java.lang.String" required="true">
+            <bind-xml name="barcode" node="attribute" />
+        </field>    
+        <field name="validationCode" type="string" required="true">
+            <bind-xml name="validationCode" node="attribute" />
+        </field>              
+	</class> 
+	
+	<class name="com.mpos.lottery.te.valueaddservice.vat.web.SelectedNumberPackDto">
+	        <field name="requestCount" type="long" required="true">
+	            <bind-xml name="requestCount" node="attribute" />
+	        </field>
+	        <field name="numberDtos"
+				type="com.mpos.lottery.te.valueaddservice.vat.web.NumberDto"
+				collection="collection" required="true">
+			    <bind-xml name="SelectedNumber" />
+		    </field>             
+	</class> 
+	<class name="com.mpos.lottery.te.valueaddservice.vat.web.NumberDto">
+		<field name="sequence" type="long" required="true">
+			<bind-xml name="sequence" node="attribute" />
+		</field>
+		<field name="luckyNumber" type="java.lang.String" required="true">
+			<bind-xml name="luckyNumber" node="attribute" />
+		</field>
+		<field name="prizeAmount" type="java.math.BigDecimal" required="true">
+			<bind-xml name="prizeAmount" node="attribute" />
+		</field>
+	</class>
+
+</mapping>

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AbstractPayoutStrategy.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.prize.support.payoutstrategy</a> &gt; <span class="el_source">AbstractPayoutStrategy.java</span></div><h1>AbstractPayoutStrategy.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.prize.support.payoutstrategy;
+
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.gamespec.game.GameType;
+import com.mpos.lottery.te.gamespec.prize.Payout;
+import com.mpos.lottery.te.gamespec.prize.PayoutDetail;
+import com.mpos.lottery.te.gamespec.prize.PrizeLevel;
+import com.mpos.lottery.te.gamespec.prize.dao.PayoutDao;
+import com.mpos.lottery.te.gamespec.prize.dao.PayoutDetailDao;
+import com.mpos.lottery.te.gamespec.prize.web.PrizeDto;
+import com.mpos.lottery.te.gamespec.prize.web.PrizeItemDto;
+import com.mpos.lottery.te.gamespec.prize.web.PrizeLevelItemDto;
+import com.mpos.lottery.te.gamespec.prize.web.PrizeLevelObjectItemDto;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.sequence.service.UUIDService;
+import com.mpos.lottery.te.trans.domain.Transaction;
+
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+
+<span class="fc" id="L23">public abstract class AbstractPayoutStrategy implements PayoutStrategy {</span>
+    // SPRING DEPENDENCIES INJECTION
+    private UUIDService uuidService;
+    private PayoutDao payoutDao;
+    private PayoutDetailDao payoutDetailDao;
+
+    @Override
+    public final void reverse(Context respCtx, GameType supportedGameType, List&lt;? extends BaseTicket&gt; hostTickets,
+            Transaction targetTrans) throws ApplicationException {
+<span class="fc" id="L32">        List&lt;Payout&gt; payouts = this.getPayoutDao().getByTransactionAndStatus(targetTrans.getId(), Payout.STATUS_PAID);</span>
+        // update payouts and calculate credit amount
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        for (Payout payout : payouts) {</span>
+<span class="fc" id="L35">            payout.setStatus(Payout.STATUS_REVERSED);</span>
+<span class="fc" id="L36">        }</span>
+<span class="fc" id="L37">        this.getPayoutDao().update(payouts);</span>
+
+<span class="fc" id="L39">        this.doReversal(respCtx, supportedGameType, hostTickets);</span>
+<span class="fc" id="L40">    }</span>
+
+    protected void doReversal(Context respCtx, GameType supportedGameType, List&lt;? extends BaseTicket&gt; hostTickets)
+            throws ApplicationException {
+        // template method
+<span class="nc" id="L45">    }</span>
+
+    @Override
+    public final void payout(Context&lt;?&gt; respCtx, GameType supportedGameType, PrizeDto prize,
+            List&lt;? extends BaseTicket&gt; hostTickets) throws ApplicationException {
+<span class="fc" id="L50">        this.doPayout(respCtx, supportedGameType, prize, hostTickets);</span>
+
+        // generate payout records
+<span class="fc" id="L53">        List&lt;Payout&gt; payouts = new LinkedList&lt;Payout&gt;();</span>
+        // handle prize payout
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        for (PrizeItemDto prizeItem : prize.getPrizeItems()) {</span>
+            /*
+             * If a ticket entry(multiple ticket entries for a multi-draw ticket) win nothing(neither cash prize nor
+             * object prize), don't write payout record
+             */
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">            if (prizeItem.getPrizeLevelItems().size() == 0) {</span>
+<span class="nc" id="L61">                continue;</span>
+            }
+
+<span class="fc" id="L64">            Payout payout = this.assemblePayout(respCtx, prizeItem, prize);</span>
+<span class="fc" id="L65">            payouts.add(payout);</span>
+<span class="fc" id="L66">        }</span>
+<span class="fc" id="L67">        this.getPayoutDao().insert(payouts);</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        for (Payout payout : payouts) {</span>
+<span class="pc bpc" id="L69" title="2 of 4 branches missed.">            if (payout.getPayoutDetails() != null &amp;&amp; payout.getPayoutDetails().size() &gt; 0) {</span>
+<span class="fc" id="L70">                this.getPayoutDetailDao().insert(payout.getPayoutDetails());</span>
+            }
+<span class="fc" id="L72">        }</span>
+
+<span class="fc" id="L74">    }</span>
+
+    /**
+     * A subclass should override this method to implement required logic of a specific payout mode.
+     */
+    protected void doPayout(Context&lt;?&gt; respCtx, GameType supportedGameType, PrizeDto prize,
+            List&lt;? extends BaseTicket&gt; hostTickets) throws ApplicationException {
+        // template method
+<span class="nc" id="L82">    }</span>
+
+    /**
+     * Generate payout record based on a given game instance.
+     */
+    protected Payout assemblePayout(Context respCtx, PrizeItemDto prizeItem, PrizeDto prize)
+            throws ApplicationException {
+<span class="fc" id="L89">        Payout payout = new Payout();</span>
+<span class="fc" id="L90">        payout.setGameInstanceId(prizeItem.getGameInstance().getId());</span>
+<span class="fc" id="L91">        payout.setGameId(prizeItem.getGameInstance().getGame().getId());</span>
+<span class="fc" id="L92">        payout.setId(this.getUuidService().getGeneralID());</span>
+<span class="fc" id="L93">        payout.setCreateTime(new Date());</span>
+<span class="fc" id="L94">        payout.setUpdateTime(payout.getCreateTime());</span>
+<span class="fc" id="L95">        payout.setTransaction(respCtx.getTransaction());</span>
+<span class="fc" id="L96">        payout.setTicketSerialNo(prize.getWinningTicket().getSerialNo());</span>
+<span class="fc" id="L97">        payout.setType(Payout.TYPE_WINNING);</span>
+<span class="fc" id="L98">        payout.setValid(true);</span>
+<span class="fc" id="L99">        payout.setStatus(Payout.STATUS_PAID);</span>
+<span class="fc" id="L100">        payout.setTotalAmount(prizeItem.getActualAmount());</span>
+<span class="fc" id="L101">        payout.setBeforeTaxTotalAmount(prizeItem.getPrizeAmount());</span>
+<span class="fc" id="L102">        payout.setType(Payout.TYPE_WINNING);</span>
+<span class="fc" id="L103">        payout.setInputChannel(prize.getWinningTicket().getPayoutInputChannel());</span>
+
+<span class="fc" id="L105">        payout.setOperatorId(respCtx.getTransaction().getOperatorId());</span>
+<span class="fc" id="L106">        payout.setDevId((int) respCtx.getTransaction().getDeviceId());</span>
+<span class="fc" id="L107">        payout.setMerchantId((int) respCtx.getTransaction().getMerchantId());</span>
+
+<span class="fc" id="L109">        this.customizeAssemblePayout(respCtx, prizeItem, prize, payout);</span>
+<span class="fc" id="L110">        this.assemblePayoutDetail(respCtx, payout, prizeItem, prize);</span>
+
+<span class="fc" id="L112">        return payout;</span>
+    }
+
+    /**
+     * Generate payout details. Based on a single 'prizeItem', single cash payout detail record(sum the cash of all
+     * prizeLevelItems) and multiple object payout detail records(if exists) will be generated.
+     */
+    protected void assemblePayoutDetail(Context&lt;?&gt; respCtx, Payout payout, PrizeItemDto prizeItem, PrizeDto prize)
+            throws ApplicationException {
+        // generate cash payout detail first
+<span class="fc" id="L122">        PayoutDetail cashPayoutDetail = new PayoutDetail();</span>
+<span class="fc" id="L123">        cashPayoutDetail.setId(this.getUuidService().getGeneralID());</span>
+<span class="fc" id="L124">        cashPayoutDetail.setPayoutId(payout.getId());</span>
+<span class="fc" id="L125">        cashPayoutDetail.setPayoutType(PrizeLevel.PRIZE_TYPE_CASH);</span>
+
+        // generate object payout detail then
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        for (PrizeLevelItemDto prizeLevelItem : prizeItem.getPrizeLevelItems()) {</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">            for (PrizeLevelObjectItemDto objectPrizeLevelItem : prizeLevelItem.getPrizeLevelObjectItems()) {</span>
+<span class="fc" id="L130">                PayoutDetail objectPayoutDetail = new PayoutDetail();</span>
+<span class="fc" id="L131">                objectPayoutDetail.setId(this.getUuidService().getGeneralID());</span>
+<span class="fc" id="L132">                objectPayoutDetail.setPayoutId(payout.getId());</span>
+<span class="fc" id="L133">                objectPayoutDetail.setPayoutType(PrizeLevel.PRIZE_TYPE_OBJECT);</span>
+<span class="fc" id="L134">                objectPayoutDetail.setObjectId(objectPrizeLevelItem.getObjectId());</span>
+<span class="fc" id="L135">                objectPayoutDetail.setObjectName(objectPrizeLevelItem.getObjectName());</span>
+                // set prize_amount to total_amount
+<span class="fc" id="L137">                objectPayoutDetail.setPrizeAmount(objectPrizeLevelItem.getPrice());</span>
+                // set actual_amount to cash_amount
+<span class="fc" id="L139">                objectPayoutDetail.setActualAmount(objectPrizeLevelItem.getPrice().subtract(</span>
+                        objectPrizeLevelItem.getTaxAmount()));
+<span class="fc" id="L141">                objectPayoutDetail.setNumberOfObject(objectPrizeLevelItem.getNumberOfObject()</span>
+                        * prizeLevelItem.getNumberOfPrizeLevel());
+<span class="fc" id="L143">                objectPayoutDetail.setUpdateTime(respCtx.getTransaction().getCreateTime());</span>
+<span class="fc" id="L144">                objectPayoutDetail.setCreateTime(respCtx.getTransaction().getCreateTime());</span>
+<span class="fc" id="L145">                objectPayoutDetail.setCreateBy(payout.getOperatorId());</span>
+<span class="fc" id="L146">                objectPayoutDetail.setUpdateBy(payout.getOperatorId());</span>
+<span class="fc" id="L147">                payout.getPayoutDetails().add(objectPayoutDetail);</span>
+<span class="fc" id="L148">            }</span>
+<span class="fc" id="L149">        }</span>
+
+        // set prize_amount to total_amount
+<span class="fc" id="L152">        cashPayoutDetail.setPrizeAmount(prizeItem.getPrizeAmount());</span>
+        // set actual_amount to cash_amount
+<span class="fc" id="L154">        cashPayoutDetail.setActualAmount(prizeItem.getActualAmount());</span>
+        // for cash prize, this value will always be 1.
+<span class="fc" id="L156">        cashPayoutDetail.setNumberOfObject(1);</span>
+<span class="fc" id="L157">        cashPayoutDetail.setUpdateTime(respCtx.getTransaction().getCreateTime());</span>
+<span class="fc" id="L158">        cashPayoutDetail.setCreateTime(respCtx.getTransaction().getCreateTime());</span>
+<span class="fc" id="L159">        cashPayoutDetail.setCreateBy(payout.getOperatorId());</span>
+<span class="fc" id="L160">        cashPayoutDetail.setUpdateBy(payout.getOperatorId());</span>
+<span class="fc" id="L161">        payout.getPayoutDetails().add(cashPayoutDetail);</span>
+<span class="fc" id="L162">    }</span>
+
+    /**
+     * A template method for a gametype specific implementation to customize the process of assembling a
+     * &lt;code&gt;Payout&lt;/code&gt; instance.
+     */
+    protected void customizeAssemblePayout(Context respCtx, PrizeItemDto prizeItem, PrizeDto prize, Payout payout) {
+
+<span class="fc" id="L170">    }</span>
+
+    public UUIDService getUuidService() {
+<span class="fc" id="L173">        return uuidService;</span>
+    }
+
+    public void setUuidService(UUIDService uuidService) {
+<span class="fc" id="L177">        this.uuidService = uuidService;</span>
+<span class="fc" id="L178">    }</span>
+
+    public PayoutDao getPayoutDao() {
+<span class="fc" id="L181">        return payoutDao;</span>
+    }
+
+    public void setPayoutDao(PayoutDao payoutDao) {
+<span class="fc" id="L185">        this.payoutDao = payoutDao;</span>
+<span class="fc" id="L186">    }</span>
+
+    public PayoutDetailDao getPayoutDetailDao() {
+<span class="fc" id="L189">        return payoutDetailDao;</span>
+    }
+
+    public void setPayoutDetailDao(PayoutDetailDao payoutDetailDao) {
+<span class="fc" id="L193">        this.payoutDetailDao = payoutDetailDao;</span>
+<span class="fc" id="L194">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

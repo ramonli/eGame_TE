@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.common.encrypt.RsaCipherUnitTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:12:32" hostname="Ramon-PC" time="0.389">
+  <properties/>
+  <testcase name="testCipher" classname="com.mpos.lottery.te.common.encrypt.RsaCipherUnitTest" time="0.389"/>
+  <system-out><![CDATA[Length:172,Output:KgWPkY7fKMmNS3F5m5WpNEk8ETVYZ8cOuM6UJSJE6gU8kRR877zsKVw+hjpiIgs5ojAOlVnPAHHoAIdtLntdAujayRKYfsnv9sN9vgqPbtnFJgXqCUktXTZKkJwBUmICFY+rYAEeYawJBlqgDZDukklsBs5novvygo7q6K2d6gc=
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

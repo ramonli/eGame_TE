@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+    <class name="com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction">
+        <map-to xml="VAT" />
+        <field name="vatTotalAmount" type="java.math.BigDecimal"
+            required="true">
+            <bind-xml name="totalAmount" node="attribute" />
+        </field>
+        <field name="vatCode" type="java.lang.String" required="true">
+            <bind-xml name="code" node="attribute" />
+        </field>
+        <field name="buyerTaxNo" type="java.lang.String" required="false">
+            <bind-xml name="buyerTaxNo" node="attribute" />
+        </field>
+        <field name="vatRate" type="java.math.BigDecimal" required="false">
+            <bind-xml name="rate" node="attribute" />
+        </field>
+    </class>
+</mapping>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BingoPrizeService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.bingo.prize.service</a> &gt; <span class="el_source">BingoPrizeService.java</span></div><h1>BingoPrizeService.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.bingo.prize.service;
+
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gameimpl.bingo.game.BingoGameInstance;
+import com.mpos.lottery.te.gameimpl.bingo.prize.BingoWinningStatistics;
+import com.mpos.lottery.te.gameimpl.bingo.prize.support.second.BingoLuckyPrizeResult;
+import com.mpos.lottery.te.gameimpl.bingo.prize.support.second.BingoWinningLuckyItem;
+import com.mpos.lottery.te.gamespec.game.BaseGameInstance;
+import com.mpos.lottery.te.gamespec.game.GameType;
+import com.mpos.lottery.te.gamespec.prize.BasePrizeObject;
+import com.mpos.lottery.te.gamespec.prize.BaseWinningItem;
+import com.mpos.lottery.te.gamespec.prize.PrizeLevel;
+import com.mpos.lottery.te.gamespec.prize.PrizeLevelItem;
+import com.mpos.lottery.te.gamespec.prize.service.impl.AbstractPrizeService;
+import com.mpos.lottery.te.gamespec.prize.web.PrizeAmount;
+import com.mpos.lottery.te.gamespec.prize.web.PrizeDto;
+import com.mpos.lottery.te.gamespec.prize.web.PrizeItemDto;
+import com.mpos.lottery.te.gamespec.prize.web.PrizeLevelItemDto;
+import com.mpos.lottery.te.gamespec.prize.web.PrizeLevelObjectItemDto;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+
+import org.perf4j.StopWatch;
+import org.perf4j.log4j.Log4JStopWatch;
+import org.springframework.dao.DataIntegrityViolationException;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+<span class="fc" id="L32">public class BingoPrizeService extends AbstractPrizeService {</span>
+    @Override
+    public GameType supportedGameType() {
+<span class="fc" id="L35">        return GameType.BINGO;</span>
+    }
+
+    private BingoWinningStatistics lookupWinningStatistics(BaseGameInstance gameInstance, BaseWinningItem winningItem)
+            throws ApplicationException {
+        // should cache winning statistics
+<span class="fc" id="L41">        BingoWinningStatistics stat = this.getBaseWinningStatisticsDao().getByGameDrawAndPrizeLevelAndVersion(</span>
+                BingoWinningStatistics.class, gameInstance.getId(), winningItem.getPrizeLevel(),
+                gameInstance.getVersion());
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (stat == null) {</span>
+<span class="nc" id="L45">            throw new ApplicationException(SystemException.CODE_INTERNAL_SERVER_ERROR,</span>
+                    &quot;can NOT Bingo find winning statistics(gameDrawId=&quot; + gameInstance.getId() + &quot;,prizeLeve=&quot;
+                            + winningItem.getPrizeLevel() + &quot;,version=&quot; + gameInstance.getVersion() + &quot;).&quot;);
+        }
+<span class="fc" id="L49">        return stat;</span>
+    }
+
+    @Override
+    protected PrizeAmount lookupAnnouncedPrizeAmount(BaseWinningItem winningItem, BaseTicket ticket)
+            throws ApplicationException {
+<span class="fc" id="L55">        BingoWinningStatistics stat = this.lookupWinningStatistics(ticket.getGameInstance(), winningItem);</span>
+<span class="fc" id="L56">        return new PrizeAmount(stat.getPrizeAmount(), stat.getTaxAmount(), stat.getActualAmount());</span>
+    }
+
+    @Override
+    protected void assembleSecondPrize(PrizeDto prize, BaseTicket t, boolean isPrizeEnquiry)
+            throws ApplicationException {
+<span class="fc" id="L62">        StopWatch sw = new Log4JStopWatch();</span>
+
+<span class="fc" id="L64">        List&lt;BingoWinningLuckyItem&gt; bingoWinningLuckyItems = this.getBaseWinningItemDao().findSecondPrizeBySerialNo(</span>
+                t.getSerialNo());
+<span class="fc" id="L66">        List&lt;PrizeItemDto&gt; bingoPrizeItemList = new ArrayList&lt;PrizeItemDto&gt;();</span>
+<span class="pc bpc" id="L67" title="2 of 4 branches missed.">        if (bingoWinningLuckyItems != null &amp;&amp; bingoWinningLuckyItems.size() &gt; 0) {</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">            for (BingoWinningLuckyItem soldPrizeItem : bingoWinningLuckyItems) {</span>
+                /**
+                 * lookup lucky-prize game instance ... refactor to reduce the enquiry of game instance, as multiple
+                 * winning items may associate with same game instance
+                 * &lt;p&gt;
+                 * FIX - no worry, check the API doc of JPA2.0.
+                 * &lt;p&gt;
+                 * Find by primary key. Search for an entity of the specified class and primary key. If the entity
+                 * instance is contained in the persistence context, it is returned from there.
+                 */
+<span class="fc" id="L78">                BingoGameInstance bingoGameInstance = this.getBaseJpaDao().findById(BingoGameInstance.class,</span>
+                        t.getGameInstance().getId());
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">                if (bingoGameInstance == null) {</span>
+<span class="nc" id="L81">                    throw new DataIntegrityViolationException(&quot;No lucky prize found by id(&quot;</span>
+                            + t.getGameInstance().getId() + &quot;).&quot;);
+                }
+<span class="fc" id="L84">                PrizeItemDto prizeItem = prize.lookupPrizeItem(bingoGameInstance.getKey());</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">                if (null == prizeItem) {</span>
+<span class="nc" id="L86">                    prizeItem = new PrizeItemDto();</span>
+<span class="nc" id="L87">                    prizeItem.setGameInstance(bingoGameInstance);</span>
+<span class="nc" id="L88">                    prizeItem.getGameInstance().setGameId(bingoGameInstance.getGame().getId());</span>
+<span class="nc" id="L89">                    prize.addPrizeItem(prizeItem);</span>
+<span class="nc" id="L90">                    bingoPrizeItemList.add(prizeItem);</span>
+                }
+
+<span class="fc" id="L93">                List&lt;BingoLuckyPrizeResult&gt; list = this.getBaseWinningItemDao()</span>
+                        .findLuckyPrizeResultByLuckyNoAndSerialNoAndVersion(soldPrizeItem.getGameInstanceId(),
+                                soldPrizeItem.getLuckyNo(), soldPrizeItem.getVersion());
+<span class="fc bfc" id="L96" title="All 2 branches covered.">                for (BingoLuckyPrizeResult soldWinning : list) {</span>
+<span class="fc" id="L97">                    PrizeLevel soldWinningLevel = this.getPrizeLevelDao().findByPrizeLogicAndLevel(</span>
+                            bingoGameInstance.getLuckyPrizeLogicId(), soldWinning.getPrizeLevel());
+<span class="fc" id="L99">                    PrizeLevelItemDto prizeLevelItemDto = assemblePrizeItemFromBasePrizeLeveDef(soldWinningLevel,</span>
+                            prizeItem);
+<span class="fc" id="L101">                    this.updatePrizeStatPerDraw(prize, prizeItem, prizeLevelItemDto);</span>
+
+<span class="fc" id="L103">                }</span>
+
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">                for (PrizeItemDto bingoPrizeItem : bingoPrizeItemList) {</span>
+<span class="nc" id="L106">                    this.calculateTaxBasedOnPerTicket(prize, t, bingoPrizeItem);</span>
+<span class="nc" id="L107">                }</span>
+
+<span class="fc" id="L109">            }</span>
+        }
+
+<span class="fc" id="L112">        sw.stop(&quot;Assemble_Second_Prize&quot;, &quot;Assemble Second prize of ticket(&quot; + t.getSerialNo() + &quot;)&quot;);</span>
+<span class="fc" id="L113">    }</span>
+
+    /**
+     * Assemble a &lt;code&gt;PrizeItemDto&lt;/code&gt; which represents a single winning item based on the base prize level
+     * definition.
+     */
+    protected PrizeLevelItemDto assemblePrizeItemFromBasePrizeLeveDef(PrizeLevel prizeLevel, PrizeItemDto prizeItem)
+            throws ApplicationException {
+        // lookup prize level definition...for lucky draw, prize level
+        // information must be retrieved from bd_prize_level.
+<span class="fc" id="L123">        PrizeLevelItemDto prizeLevelItemDto = null;</span>
+<span class="fc" id="L124">        Collections.sort(prizeLevel.getLevelItems(), new Comparator&lt;PrizeLevelItem&gt;() {</span>
+
+            @Override
+            public int compare(PrizeLevelItem o1, PrizeLevelItem o2) {
+<span class="fc" id="L128">                return o1.getPrizeType() - o2.getPrizeType();</span>
+            }
+        });
+<span class="fc bfc" id="L131" title="All 2 branches covered.">        for (PrizeLevelItem prizeLevelItem : prizeLevel.getLevelItems()) {</span>
+<span class="fc bfc" id="L132" title="All 2 branches covered.">            if (PrizeLevel.PRIZE_TYPE_CASH == prizeLevelItem.getPrizeType()) {</span>
+                // for cash, the prizeLevelItem.getNumberOfObject() should
+                // always be 1.
+<span class="fc" id="L135">                prizeLevelItemDto = this.assemblePrizeLevelInfo(prizeItem.getGameInstance(),</span>
+                        prizeLevel.getPrizeLevel(), prizeLevelItem.getPrizeAmount(), prizeLevelItem.getTaxAmount(),
+                        prizeLevelItem.getActualAmount(), 1);
+            } else {
+<span class="fc bfc" id="L139" title="All 2 branches covered.">                if (prizeLevelItemDto == null) {</span>
+<span class="fc" id="L140">                    prizeLevelItemDto = new PrizeLevelItemDto();</span>
+<span class="fc" id="L141">                    prizeLevelItemDto.setPrizeLevel(prizeLevel.getPrizeLevel() + &quot;&quot;);</span>
+<span class="fc" id="L142">                    prizeLevelItemDto.setNumberOfPrizeLevel(1);</span>
+                }
+<span class="fc" id="L144">                PrizeLevelObjectItemDto objectItemDto = new PrizeLevelObjectItemDto();</span>
+<span class="fc" id="L145">                objectItemDto.setObjectId(prizeLevelItem.getObjectId());</span>
+<span class="fc" id="L146">                objectItemDto.setNumberOfObject(prizeLevelItem.getNumberOfObject());</span>
+                // retrieve information from bd_prize_object
+<span class="fc" id="L148">                BasePrizeObject prizeObject = this.getBaseJpaDao().findById(BasePrizeObject.class,</span>
+                        prizeLevelItem.getObjectId());
+                // objectItemDto.setObjectName(prizeLevelItem.getObjectName());
+                // objectItemDto.setPrice(prizeLevelItem.getPrizeAmount());
+                // objectItemDto.setTaxAmount(prizeLevelItem.getTaxAmount());
+<span class="fc" id="L153">                objectItemDto.setObjectName(prizeObject.getName());</span>
+<span class="fc" id="L154">                objectItemDto.setPrice(prizeObject.getPrice());</span>
+<span class="fc" id="L155">                objectItemDto.setTaxAmount(prizeObject.getTax());</span>
+
+<span class="fc" id="L157">                prizeLevelItemDto.getPrizeLevelObjectItems().add(objectItemDto);</span>
+            }
+<span class="fc" id="L159">        }</span>
+
+<span class="fc" id="L161">        PrizeLevelItemDto existLevelItem = prizeItem.lookupPrizeLevelItem(prizeLevel.getPrizeLevel(), false);</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">        if (existLevelItem == null) {</span>
+<span class="fc" id="L163">            existLevelItem = prizeLevelItemDto;</span>
+<span class="fc" id="L164">            prizeItem.getPrizeLevelItems().add(existLevelItem);</span>
+        } else {
+<span class="fc" id="L166">            existLevelItem.setNumberOfPrizeLevel(existLevelItem.getNumberOfPrizeLevel()</span>
+                    + prizeLevelItemDto.getNumberOfPrizeLevel());
+        }
+<span class="fc" id="L169">        return prizeLevelItemDto;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

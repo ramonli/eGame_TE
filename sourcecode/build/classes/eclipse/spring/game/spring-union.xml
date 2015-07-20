@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+	<bean id="unionPrizeService"
+		class="com.mpos.lottery.te.gameimpl.union.prize.service.UnionPrizeServiceImpl">
+		<property name="reversalStrategyFactory" ref="reversalStrategyFactory" />
+        <property name="baseTicketDao" ref="baseTicketDao" />
+        <property name="baseEntryDao" ref="baseEntryDao" />
+        <property name="creditService" ref="creditService" />
+        <property name="merchantService" ref="merchantService" />
+        <property name="gameInstanceService" ref="unionGameInstanceService" />
+        <property name="baseJpaDao" ref="baseJpaDao" />
+        <property name="baseWinningItemDao" ref="baseWinningItemDao" />
+        <property name="baseWinningStatisticsDao" ref="baseWinningStatisticsDao" />
+        <property name="taxService" ref="taxService" />
+        <property name="payoutStrategyFactory" ref="defaultPayoutStrategyFactory" />
+        <property name="prizeLevelDao" ref="prizeLevelDao" />
+	</bean>
+
+	<bean id="unionSaleService"
+		class="com.mpos.lottery.te.gameimpl.union.sale.service.UnionTicketServiceImpl">
+        <property name="reversalStrategyFactory" ref="reversalStrategyFactory" />
+        <property name="baseTicketDao" ref="baseTicketDao" />
+        <property name="merchantService" ref="merchantService" />
+        <property name="uuidService" ref="uuidManager" />
+        <property name="gameInstanceService" ref="unionGameInstanceService" />
+        <property name="transactionService" ref="transService" />
+        <property name="baseJpaDao" ref="baseJpaDao" />
+        <property name="ticketValidator" ref="unionTicketValidator" />
+        <property name="baseEntryDao" ref="baseEntryDao" />
+	</bean>
+
+	<bean id="unionGameInstanceService"
+		class="com.mpos.lottery.te.gameimpl.union.game.service.UnionGameInstanceService">
+        <property name="gameInstanceServiceFactory" ref="gameInstanceServiceFactory" />
+        <property name="channelGameInstanceTimeDao" ref="channelGameInstanceTimeDao" />
+        <property name="gameInstanceDao" ref="baseGameInstanceDao" />
+        <property name="baseJpaDao" ref="baseJpaDao" />
+        <property name="merchantService" ref="merchantService" />
+	</bean>
+
+	<bean id="unionActivityReportHandler"
+		class="com.mpos.lottery.te.merchant.domain.logic.DefaultGameTypeActivityReportHandler">
+		<property name="activityReportDao" ref="unionActivityReportDao" />
+		<property name="activityReportService" ref="activityReportService" />
+		<property name="supportedGameType" value="UNION" />
+	</bean>
+    
+	<bean id="unionTicketValidator"
+        class="com.mpos.lottery.te.gameimpl.union.sale.support.UnionTicketValidator">
+        <property name="baseJpaDao" ref="baseJpaDao" />
+        <property name="selectedNumberValidatorFactory" ref="unionSelectedNumberValidatorFactory" />
+        <property name="cOperationParameterDao" ref="unionCOperationParameterDao" />
+    </bean>
+    
+    <bean id="unionSelectedNumberValidatorFactory"
+        class="com.mpos.lottery.te.gameimpl.union.sale.support.UnionSelectedNumberValidatorFactory">
+    </bean>
+    
+	<!-- ==================================================== -->
+	<!-- DAO DEFINITION ..................................... -->
+	<!-- ==================================================== -->
+
+    <bean id="unionCOperationParameterDao" parent="baseJpaDao"
+        class="com.mpos.lottery.te.gameimpl.union.game.dao.jpa.JpaUnionCOperationParameterDao">
+    </bean>
+
+	<bean id="unionActivityReportDao" parent="baseJpaDao"
+        class="com.mpos.lottery.te.merchant.dao.BaseActivityReportJpaDao">
+        <property name="ticketTableName" value="UN_TE_TICKET" />
+	</bean>
+
+</beans>
+

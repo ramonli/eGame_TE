@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.common.util.JSONHelperUnitTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:12:33" hostname="Ramon-PC" time="0.022">
+  <properties/>
+  <testcase name="testEncodeMap" classname="com.mpos.lottery.te.common.util.JSONHelperUnitTest" time="0.015"/>
+  <testcase name="testEncodeList" classname="com.mpos.lottery.te.common.util.JSONHelperUnitTest" time="0.001"/>
+  <testcase name="testGson" classname="com.mpos.lottery.te.common.util.JSONHelperUnitTest" time="0.003"/>
+  <testcase name="testEncodeObjectArray" classname="com.mpos.lottery.te.common.util.JSONHelperUnitTest" time="0.0"/>
+  <testcase name="testDecode" classname="com.mpos.lottery.te.common.util.JSONHelperUnitTest" time="0.0"/>
+  <system-out><![CDATA[{"value":{"phone":"33sdf9234112","name":true,"mobile":"09123459s7123"},"type":1}
+{"fromOperatorLoginName":"OPERATOR-LOGIN","toOperatorLoginName":"OPERATOR-LOGIN-2","creditType":1,"amount":500,"creditBalanceOfFromOperator":0,"creditBalanceOfToOperator":0}
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

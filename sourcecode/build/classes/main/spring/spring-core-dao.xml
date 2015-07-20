@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+	<!-- ==================================================== -->
+	<!-- ENTITY MANAGER DEFINITION .......................... -->
+	<!-- ==================================================== -->
+	<bean id="dataSource" class="com.jolbox.bonecp.BoneCPDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${jdbc.driver}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.user}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="minConnectionsPerPartition" value="${min_conn_per_partition}" />
+		<property name="maxConnectionsPerPartition" value="${max_conn_per_partition}" />
+		<property name="partitionCount" value="${partition_count}" />
+		<property name="acquireIncrement" value="${conn_acquire_increment}" />
+		<property name="statementsCacheSize" value="${statement_cache_size}" />
+		<!-- property name="releaseHelperThreads" value="${number_of_helper_threads}" 
+			/ -->
+		<property name="idleConnectionTestPeriodInMinutes" value="${idle_connection_test_period}" />
+		<property name="connectionTestStatement" value="select sysdate from DUAL" />
+		<property name="logStatementsEnabled" value="false" />
+		<!-- property name="initSQL" value="${init_sql}" / -->
+	</bean>
+
+	<!-- Refer to http://spring.io/blog/2012/04/06/migrating-to-spring-3-1-and-hibernate-4-1 -->
+	<bean id="entityManagerFactory"
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="lottery_te" />
+		<property name="dataSource" ref="dataSource" />
+		<!-- by packagesToScan, no need of persisten.xml any more -->
+		<property name="packagesToScan">
+			<list>
+				<value>com/mpos</value>
+			</list>
+		</property>
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+				<property name="databasePlatform" value="org.hibernate.dialect.Oracle10gDialect" />
+			</bean>
+		</property>
+		<property name="jpaProperties">
+			<props>
+				<prop key="hibernate.jdbc.batch_size">20</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- ==================================================== -->
+	<!-- GAME SPECIFICATION DAO ............................. -->
+	<!-- ==================================================== -->
+
+	<bean id="baseJpaDao" class="com.mpos.lottery.te.common.dao.BaseJpaDao">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="baseTicketDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gamespec.sale.dao.jpa.JpaBaseTicketDao">
+	</bean>
+
+	<bean id="baseGameInstanceDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gamespec.game.dao.jpa.JpaBaseGameInstanceDao">
+	</bean>
+
+	<bean id="channelGameInstanceTimeDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gamespec.game.dao.jpa.JpaChannelGameInstanceTimeDao">
+	</bean>
+
+	<bean id="baseEntryDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gamespec.sale.dao.jpa.JpaBaseEntryDao">
+	</bean>
+
+	<bean id="baseWinningItemDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gamespec.prize.dao.jpa.JpaBaseWinningItemDao">
+	</bean>
+
+	<bean id="baseWinningStatisticsDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gamespec.prize.dao.jpa.JpaBaseWinningStatisticsDao">
+	</bean>
+
+	<bean id="prizeObjectDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gameimpl.lotto.prize.dao.jpa.PrizeObjectDaoImpl">
+	</bean>
+
+	<bean id="gameDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gamespec.game.dao.jpa.GameDaoImpl">
+	</bean>
+
+	<bean id="workingKeyDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.workingkey.dao.jpa.WorkingKeyDaoImpl">
+	</bean>
+
+	<bean id="transactionDao" class="com.mpos.lottery.te.trans.dao.jpa.TransactionDaoImpl">
+	</bean>
+
+	<bean id="transMessageDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.trans.dao.jpa.TransactionMessageDaoImpl">
+	</bean>
+
+	<bean id="prizeParameterDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gameimpl.lotto.prize.dao.jpa.PrizeParameterDaoImpl">
+	</bean>
+
+	<bean id="prizeLogicDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.common.dao.BaseJpaDao">
+	</bean>
+
+	<bean id="basePrizeObjectDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gameimpl.lotto.prize.dao.jpa.BasePrizeObjectDaoImpl">
+	</bean>
+
+	<bean id="merchantDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.merchant.dao.jpa.MerchantDaoImpl">
+	</bean>
+
+	<bean id="operatorDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.merchant.dao.jpa.OperatorDaoImpl">
+	</bean>
+	
+	<bean id="cashoutPassDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.merchant.dao.jpa.CashoutPassDaoImpl">
+	</bean>
+
+	<bean id="prizeLevelDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gamespec.prize.dao.jpa.PrizeLevelDaoImpl">
+	</bean>
+
+	<bean id="operatorMerchantDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.merchant.dao.jpa.OperatorMerchantDaoImpl">
+	</bean>
+
+	<bean id="payoutDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gamespec.prize.dao.jpa.PayoutDaoImpl">
+	</bean>
+
+	<bean id="payoutDetailDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gamespec.prize.dao.jpa.PayoutDetailDaoImpl">
+	</bean>
+
+	<bean id="prizeGroupItemDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gamespec.prize.dao.jpa.PrizeGroupItemDaoImpl">
+	</bean>
+
+	<bean id="taxThresholdDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gamespec.prize.dao.jpa.TaxThresholdDaoImpl">
+	</bean>
+
+	<bean id="merchantCommissionDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.merchant.dao.jpa.MerchantCommissionDaoImpl">
+	</bean>
+	<bean id="operatorCommissionDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.merchant.dao.jpa.OperatorCommissionDaoImpl">
+	</bean>
+
+	<bean id="sysConfigurationDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.config.dao.jpa.SysConfigurationDaoImpl">
+	</bean>
+
+	<bean id="transactionRetryLogDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.trans.dao.jpa.TransactionRetryLogDaoImpl">
+	</bean>
+
+	<bean id="newPrintTicketDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gamespec.prize.dao.jpa.NewPrintTicketDaoImpl">
+	</bean>
+
+	<bean id="creditTransferLogDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.merchant.dao.jpa.CreditTransferLogDaoImpl">
+	</bean>
+
+	<bean id="riskControlLogDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gamespec.sale.dao.jpa.JpaRiskControlLogDao">
+	</bean>
+
+	<bean id="instantaneousSaleDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.gamespec.sale.dao.jpa.InstantaneousSaleDaoImpl">
+	</bean>
+
+	<bean id="pendingTransactionDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.trans.dao.jpa.PendingTransactionDaoImpl">
+	</bean>
+	<bean id="commissionDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.merchant.dao.jpa.ActivityReportDaoImpl">
+	</bean>
+	<!-- transferActivityReportDao is  added by James -->
+	
+	<bean id="transferActivityReportDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.merchant.dao.jpa.TransferActivityReportDaoImpl">
+	</bean>
+	
+	<bean id="destinationActivityReportDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.merchant.dao.jpa.DestinationActivityReportDaoImpl">
+	</bean>
+	<bean id="generalActivityReportDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.merchant.dao.jpa.GeneralActivityReportDaoImpl">
+	</bean>
+	<bean id="balanceTransactionsDao" parent="baseJpaDao"
+		class="com.mpos.lottery.te.merchant.dao.jpa.BalanceTransactionsDaoImpl">
+		<property name="uuidService" ref="uuidManager" />
+	</bean>
+</beans>
+

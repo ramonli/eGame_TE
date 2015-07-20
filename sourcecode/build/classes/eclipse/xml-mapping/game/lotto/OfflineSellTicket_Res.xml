@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+    <class name="com.mpos.lottery.te.gameimpl.lotto.sale.domain.dto.OfflineTicketResult">
+        <map-to xml="OfflineSaleUpload" />
+        
+        <field name="results" type="com.mpos.lottery.te.gameimpl.lotto.sale.domain.dto.TicketResult" collection="arraylist" required="true">
+            <bind-xml name="TicketResult" />
+        </field>
+    </class>
+    
+	<class name="com.mpos.lottery.te.gameimpl.lotto.sale.domain.dto.TicketResult">
+        <field name="transactionId" type="java.lang.String" required="true">
+            <bind-xml name="transactionId" node="attribute" />
+        </field>	
+		<field name="rawSerialNo" type="java.lang.String" required="true">
+			<bind-xml name="serialNo" node="attribute" />
+		</field>
+		<field name="code" type="integer" required="true">
+			<bind-xml name="code" node="attribute" />
+		</field>
+	</class>
+</mapping>

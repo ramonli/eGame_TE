@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>RaffleSingleSelectedNumberValidator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.raffle.sale.support</a> &gt; <span class="el_source">RaffleSingleSelectedNumberValidator.java</span></div><h1>RaffleSingleSelectedNumberValidator.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.raffle.sale.support;
+
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gamespec.game.Game;
+import com.mpos.lottery.te.gamespec.sale.BaseEntry;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.gamespec.sale.support.validator.AbstractSelectedNumberValidator;
+import com.mpos.lottery.te.port.Context;
+
+public class RaffleSingleSelectedNumberValidator extends AbstractSelectedNumberValidator {
+
+    public RaffleSingleSelectedNumberValidator(String numberFormat) {
+<span class="fc" id="L14">        super(numberFormat);</span>
+<span class="fc" id="L15">    }</span>
+
+    @Override
+    public long calTotalBets(BaseEntry entry) throws ApplicationException {
+<span class="fc" id="L19">        return entry.getTotalBets();</span>
+    }
+
+    public void validate(Context respCtx, BaseTicket ticket, Game game, BaseEntry entry) throws ApplicationException {
+        // check format
+<span class="pc bpc" id="L24" title="1 of 2 branches missed.">        if (!this.checkFormat(entry.getSelectNumber(), this.getNumberFormat())) {</span>
+<span class="nc" id="L25">            throw new SystemException(SystemException.CODE_WRONGFORMAT_SELECTEDNUMBER, &quot;The selected number(&quot;</span>
+                    + entry.getSelectNumber() + &quot;) of ticket(serialNo=&quot; + entry.getTicketSerialNo()
+                    + &quot;) is not match to '&quot; + this.getNumberFormat() + &quot;'.&quot;);
+        }
+<span class="fc" id="L29">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

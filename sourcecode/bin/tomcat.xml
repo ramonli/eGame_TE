@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	* Download the binary distribution of Ant from http://ant.apache.org.
+	You must use version 1.4 or later. 
+	* Install the Ant distribution in a	convenient directory (called ANT_HOME 
+	in the remainder of these instructions). 
+	* Copy the file server/lib/catalina-ant.jar from your
+	Tomcat 5 installation into Ant's library directory ($ANT_HOME/lib). 
+	* Add the $ANT_HOME/bin directory to your PATH environment variable. 
+	* Configure at least one username/password combination in your Tomcat
+	user database that includes the 'manager' role.
+-->
+<project name="tomcat" default="" basedir=".">
+  	<!-- Configure the custom Ant tasks for the Manager application -->
+	<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask" classpathref="project.classpath"/>
+	<taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask" classpathref="project.classpath"/>
+	<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask" classpathref="project.classpath"/>
+	<taskdef name="resources" classname="org.apache.catalina.ant.ResourcesTask" classpathref="project.classpath"/>
+	<taskdef name="roles" classname="org.apache.catalina.ant.RolesTask" classpathref="project.classpath"/>
+	<taskdef name="start" classname="org.apache.catalina.ant.StartTask" classpathref="project.classpath"/>
+	<taskdef name="stop" classname="org.apache.catalina.ant.StopTask" classpathref="project.classpath"/>
+	
+	<target name="tomcat.deploy" description="Install web application">
+		<deploy url="${tomcat.url}" username="${tomcat.username}" password="${tomcat.password}"
+			path="${tomcat.apppath}" war="${war.file}" />
+	</target>
+	
+	<target name="tomcat.reload" description="Reload web application">
+		<reload url="${tomcat.url}" username="${tomcat.username}" password="${tomcat.password}"
+			path="${tomcat.apppath}" />
+	</target>
+	
+	<target name="tomcat.undeploy" description="Remove web application">
+		<undeploy url="${tomcat.url}" username="${tomcat.username}" password="${tomcat.password}"
+			path="${tomcat.apppath}" failonerror="false"/>
+	</target>
+	
+    <target name="tomcat.start" description="Start web application">
+        <start url="${tomcat.url}" username="${tomcat.username}" password="${tomcat.password}"
+        	path="${tomcat.apppath}" failonerror="false" />
+    </target>
+
+    <target name="tomcat.stop" description="Stop web application">
+        <stop url="${tomcat.url}" username="${tomcat.username}" password="${tomcat.password}"
+        	path="${tomcat.apppath}" failonerror="false" />
+    </target>	
+	
+    <target name="tomcat.startup" description="Start tomcat server">
+    	<parallel>
+    		<sequential>
+            <exec executable="cmd.exe" dir="${tomcat.home}/bin" failonerror="false">
+            	<arg value="/c" />
+            	<arg value="startup.bat" />
+        	</exec>
+    		</sequential>
+    		<sequential>
+    			<sleep seconds="30" />
+    		</sequential>
+    	</parallel>
+    </target>
+
+    <target name="tomcat.shutdown" description="Stop tomcat server">
+        <exec executable="cmd.exe" dir="${tomcat.home}/bin" failonerror="false">
+            <arg value="/c" />
+            <arg value="shutdown.bat" />
+        </exec>
+    </target>	
+</project>

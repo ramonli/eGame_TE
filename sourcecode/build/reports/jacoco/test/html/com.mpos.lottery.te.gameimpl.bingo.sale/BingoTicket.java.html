@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BingoTicket.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.bingo.sale</a> &gt; <span class="el_source">BingoTicket.java</span></div><h1>BingoTicket.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.bingo.sale;
+
+import com.mpos.lottery.te.common.util.Barcoder;
+import com.mpos.lottery.te.gameimpl.bingo.game.BingoGameInstance;
+import com.mpos.lottery.te.gamespec.game.BaseGameInstance;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+@Entity
+@Table(name = &quot;TE_BG_TICKET&quot;)
+public class BingoTicket extends BaseTicket {
+    private static final long serialVersionUID = 4575146870775685915L;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = &quot;BG_GAME_INSTANCE_ID&quot;, nullable = false)
+    private BingoGameInstance gameInstance;
+
+    @Column(name = &quot;SERIAL&quot;)
+    private String luckySerial;
+
+    @Column(name = &quot;BOOK&quot;)
+    private String bookNo;
+
+    @Column(name = &quot;IMPORTED_SERIALNO&quot;)
+    private String importedSerialNo;
+
+    @Transient
+    private BingoTicketRef ticketRef;
+
+<span class="fc" id="L37">    public BingoTicket() {</span>
+<span class="fc" id="L38">    }</span>
+
+    public void merge(BingoTicketRef ticketRef) {
+<span class="fc" id="L41">        this.ticketRef = ticketRef;</span>
+        // set serialNo to in-advanced generated one
+<span class="fc" id="L43">        this.setRawSerialNo(ticketRef.getImportTicketSerialNo());</span>
+        // regenerate barcode
+<span class="fc" id="L45">        this.setBarcode(new Barcoder(this.getGameInstance().getGame().getType(), this.getRawSerialNo()).getBarcode());</span>
+<span class="fc" id="L46">        this.setImportedSerialNo(ticketRef.getImportTicketSerialNo());</span>
+        // use the client supplied total_amount
+        // this.setTotalAmount(ticketRef.getTotalAmount());
+        // TODO what is difference with user supplied PIN??
+        // this.setPIN(ticketRef.getPin());
+<span class="fc" id="L51">        this.setBookNo(ticketRef.getBookNo());</span>
+<span class="fc" id="L52">        this.setLuckySerial(ticketRef.getLuckySerial());</span>
+
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        for (BingoEntryRef entryRef : ticketRef.getEntryRefs()) {</span>
+<span class="fc" id="L55">            this.getEntries().add(new BingoEntry(entryRef));</span>
+<span class="fc" id="L56">        }</span>
+<span class="fc" id="L57">    }</span>
+
+    @Override
+    public BaseGameInstance getGameInstance() {
+<span class="fc" id="L61">        return this.gameInstance;</span>
+    }
+
+    @Override
+    public void setGameInstance(BaseGameInstance gameInstance) {
+<span class="fc" id="L66">        this.gameInstance = (BingoGameInstance) gameInstance;</span>
+<span class="fc" id="L67">    }</span>
+
+    public String getLuckySerial() {
+<span class="fc" id="L70">        return luckySerial;</span>
+    }
+
+    public void setLuckySerial(String luckySerial) {
+<span class="fc" id="L74">        this.luckySerial = luckySerial;</span>
+<span class="fc" id="L75">    }</span>
+
+    public String getBookNo() {
+<span class="fc" id="L78">        return bookNo;</span>
+    }
+
+    public void setBookNo(String bookNo) {
+<span class="fc" id="L82">        this.bookNo = bookNo;</span>
+<span class="fc" id="L83">    }</span>
+
+    public String getImportedSerialNo() {
+<span class="fc" id="L86">        return importedSerialNo;</span>
+    }
+
+    public void setImportedSerialNo(String importedSerialNo) {
+<span class="fc" id="L90">        this.importedSerialNo = importedSerialNo;</span>
+<span class="fc" id="L91">    }</span>
+
+    public BingoTicketRef getTicketRef() {
+<span class="nc" id="L94">        return ticketRef;</span>
+    }
+
+    public void setTicketRef(BingoTicketRef ticketRef) {
+<span class="nc" id="L98">        this.ticketRef = ticketRef;</span>
+<span class="nc" id="L99">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

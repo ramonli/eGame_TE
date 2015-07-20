@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DefaultOfflineTicketService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.sale.service</a> &gt; <span class="el_source">DefaultOfflineTicketService.java</span></div><h1>DefaultOfflineTicketService.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.sale.service;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.common.util.SimpleToolkit;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gamespec.game.BaseGameInstance;
+import com.mpos.lottery.te.gamespec.game.service.GameInstanceService;
+import com.mpos.lottery.te.gamespec.sale.BaseEntry;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.gamespec.sale.OfflineTicketLog;
+import com.mpos.lottery.te.gamespec.sale.dao.BaseEntryDao;
+import com.mpos.lottery.te.gamespec.sale.dao.BaseTicketDao;
+import com.mpos.lottery.te.merchant.service.CreditService;
+import com.mpos.lottery.te.merchant.service.MerchantService;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.sequence.service.UUIDService;
+import com.mpos.lottery.te.trans.service.TransactionService;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+<span class="fc" id="L27">public class DefaultOfflineTicketService implements OfflineTicketService {</span>
+<span class="fc" id="L28">    private Log logger = LogFactory.getLog(DefaultOfflineTicketService.class);</span>
+    // SPRING DEPENDENCIES
+    @Resource(name = &quot;uuidManager&quot;)
+    private UUIDService uuidService;
+    @Resource(name = &quot;transService&quot;)
+    private TransactionService transactionService;
+    @Resource(name = &quot;creditService&quot;)
+    private CreditService creditService;
+    @Resource(name = &quot;merchantService&quot;)
+    private MerchantService merchantService;
+    @Resource(name = &quot;baseJpaDao&quot;)
+    private BaseJpaDao baseJpaDao;
+    // setup the dependency in XML file
+    private GameInstanceService gameInstanceService;
+    @Resource(name = &quot;baseTicketDao&quot;)
+    private BaseTicketDao baseTicketDao;
+    @Resource(name = &quot;baseEntryDao&quot;)
+    private BaseEntryDao baseEntryDao;
+
+    @Override
+    public BaseTicket sync(Context&lt;?&gt; respCtx, BaseTicket clientTicket) throws ApplicationException {
+<span class="fc" id="L49">        BaseTicket hostTicket = null;</span>
+<span class="fc" id="L50">        clientTicket.setTransaction(respCtx.getTransaction());</span>
+        // verify the status of game instance...cant be 'in progress of winner
+        // analysis'.
+<span class="fc" id="L53">        List&lt;? extends BaseGameInstance&gt; gameInstances = this.getGameInstanceService().enquiryMultiDraw(respCtx,</span>
+                clientTicket.getGameInstance().getGameId(), clientTicket.getGameInstance().getNumber(),
+                clientTicket.getMultipleDraws());
+<span class="fc" id="L56">        clientTicket.setGameInstance(gameInstances.get(0));</span>
+        // lookup current active game instance
+<span class="fc" id="L58">        List&lt;? extends BaseGameInstance&gt; currentGameInstances = this.getGameInstanceService().enquirySaleReady(respCtx,</span>
+                clientTicket.getGameInstance().getGameId());
+<span class="pc bpc" id="L60" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L61">            logger.debug(&quot;The ID of current active game instance is &quot; + currentGameInstances.get(0).getId()</span>
+                    + &quot; of gameType:&quot; + currentGameInstances.get(0).getGame().getType());
+        }
+
+<span class="fc bfc" id="L65" title="All 2 branches covered.">        for (int i = 0; i &lt; gameInstances.size(); i++) {</span>
+            // can't upload offline sales when a game instance is in winer
+            // analysis
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">            if (BaseGameInstance.STATE_WINANALYSIS_STARTED == gameInstances.get(i).getState()) {</span>
+<span class="nc" id="L69">                throw new ApplicationException(SystemException.CODE_INPROGRESSOF_WINNINGANALYSIS, &quot;Game instance(&quot;</span>
+                        + gameInstances.get(i).getKey() + &quot; is under winner analysis, can't perform synchrotion now.&quot;);
+            }
+
+<span class="fc" id="L73">            BaseTicket generatedTicket = (BaseTicket) clientTicket.clone();</span>
+            // assemble ticket entity
+<span class="fc" id="L75">            generatedTicket.setId(this.getUuidService().getGeneralID());</span>
+<span class="fc" id="L76">            generatedTicket.setCreateTime(respCtx.getTransaction().getCreateTime());</span>
+<span class="fc" id="L77">            generatedTicket.setUpdateTime(generatedTicket.getCreateTime());</span>
+<span class="fc" id="L78">            generatedTicket.setGameInstance(gameInstances.get(0));</span>
+<span class="fc" id="L79">            generatedTicket.setTotalAmount(generatedTicket.calculateMultipleDrawAmount());</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">            generatedTicket.setMultipleDraws(i == 0 ? generatedTicket.getMultipleDraws() : 0);</span>
+<span class="fc" id="L81">            generatedTicket.setOperatorId(respCtx.getTransaction().getOperatorId());</span>
+<span class="fc" id="L82">            generatedTicket.setMerchantId((int) respCtx.getTransaction().getMerchantId());</span>
+<span class="fc" id="L83">            generatedTicket.setDevId((int) respCtx.getTransaction().getDeviceId());</span>
+<span class="fc" id="L84">            generatedTicket.setOffline(true);</span>
+<span class="fc" id="L85">            generatedTicket.setPIN(SimpleToolkit.md5(clientTicket.getPIN()));</span>
+            // if (clientTicket.getUser() != null) {
+            // clientTicket.setMobile(clientTicket.getUser().getMobile());
+            // clientTicket.setCreditCardSN(clientTicket.getUser().getCreditCardSN());
+            // clientTicket.setUserId(clientTicket.getUser().getId());
+            // }
+<span class="fc" id="L91">            generatedTicket.setTicketFrom(respCtx.getGpe().getTicketFrom());</span>
+<span class="fc" id="L92">            this.customizeAssembleTicket(respCtx, generatedTicket, clientTicket);</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">            if (i == 0) {</span>
+<span class="fc" id="L94">                hostTicket = generatedTicket;</span>
+            }
+
+<span class="fc" id="L97">            this.getBaseTicketDao().insert(generatedTicket);</span>
+
+            // generate Offline Ticket Log
+<span class="fc" id="L100">            OfflineTicketLog ot = this.generateOfflineTicketLog(respCtx, currentGameInstances, generatedTicket);</span>
+<span class="fc" id="L101">            this.getBaseJpaDao().insert(ot);</span>
+        }
+
+        // persist entries
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (clientTicket.getEntries().size() &gt; 0) {</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">            for (int i = 0; i &lt; clientTicket.getEntries().size(); i++) {</span>
+<span class="fc" id="L107">                BaseEntry generatedEntry = clientTicket.getEntries().get(i);</span>
+<span class="fc" id="L108">                generatedEntry.setId(this.getUuidService().getGeneralID());</span>
+<span class="fc" id="L109">                generatedEntry.setTicketSerialNo(clientTicket.getSerialNo());</span>
+<span class="fc" id="L110">                generatedEntry.setEntryNo((i + 1) + &quot;&quot;);</span>
+<span class="fc" id="L111">                this.customizeAssembleEntry(respCtx, clientTicket, generatedEntry);</span>
+
+<span class="fc" id="L113">                this.getBaseEntryDao().insert(generatedEntry);</span>
+            }
+        }
+
+        // update the sale balance of operator
+        // check and update the credit level
+<span class="pc bpc" id="L119" title="1 of 2 branches missed.">        if (BaseTicket.TICKET_TYPE_NORMAL == clientTicket.getTicketType()) {</span>
+<span class="fc" id="L120">            long merchantId = respCtx.getTransaction().getMerchantId();</span>
+<span class="fc" id="L121">            String gameId = clientTicket.getGameInstance().getGame().getId();</span>
+<span class="fc" id="L122">            this.getCreditService().credit(respCtx.getTransaction().getOperatorId(), merchantId,</span>
+                    clientTicket.getTotalAmount(), gameId, false, true, clientTicket.isSoldByCreditCard());
+        }
+<span class="fc" id="L125">        return hostTicket;</span>
+    }
+
+    // -----------------------------------------------------------
+    // HELP METHODS
+    // -----------------------------------------------------------
+
+    protected OfflineTicketLog generateOfflineTicketLog(Context&lt;?&gt; respCtx,
+            List&lt;? extends BaseGameInstance&gt; currentGameInstances, BaseTicket generatedTicket)
+            throws ApplicationException {
+<span class="fc" id="L135">        OfflineTicketLog ot = new OfflineTicketLog();</span>
+<span class="fc" id="L136">        ot.setId(this.getUuidService().getGeneralID());</span>
+<span class="fc" id="L137">        ot.setTransactionId(respCtx.getTransaction().getId());</span>
+<span class="fc" id="L138">        ot.setSerialNo(generatedTicket.getSerialNo());</span>
+<span class="fc" id="L139">        ot.setGameInstanceId(generatedTicket.getGameInstance().getId());</span>
+<span class="fc" id="L140">        ot.setGameId(generatedTicket.getGameInstance().getGame().getId());</span>
+<span class="fc" id="L141">        ot.setGameType(generatedTicket.getGameInstance().getGame().getType());</span>
+<span class="fc" id="L142">        ot.setUploadedGameInstanceId(currentGameInstances.get(0).getId());</span>
+<span class="fc" id="L143">        ot.setCreateTime(respCtx.getTransaction().getCreateTime());</span>
+<span class="fc" id="L144">        ot.setUpdateTime(ot.getCreateTime());</span>
+<span class="fc" id="L145">        ot.setOperatorId(respCtx.getTransaction().getOperatorId());</span>
+<span class="fc" id="L146">        ot.setMerchantId(respCtx.getTransaction().getMerchantId());</span>
+<span class="fc" id="L147">        ot.setDevId(respCtx.getTransaction().getDeviceId());</span>
+<span class="fc" id="L148">        ot.setTotalAmount(generatedTicket.getTotalAmount());</span>
+<span class="fc" id="L149">        ot.setTicketType(generatedTicket.getTicketType());</span>
+<span class="fc" id="L150">        ot.setTicketFrom(generatedTicket.getTicketFrom());</span>
+<span class="fc" id="L151">        return ot;</span>
+    }
+
+    // -----------------------------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // -----------------------------------------------------------
+
+    /**
+     * Template method for subclass to implement specific operations.
+     */
+    protected void customizeAssembleTicket(Context&lt;?&gt; respCtx, BaseTicket generatedTicket, BaseTicket clientTicket) {
+<span class="fc" id="L162">    }</span>
+
+    /**
+     * Template method for subclass to implement specific operations.
+     */
+    protected void customizeAssembleEntry(Context&lt;?&gt; respCtx, BaseTicket clientTicket, BaseEntry genereatedEntry) {
+
+<span class="fc" id="L169">    }</span>
+
+    public UUIDService getUuidService() {
+<span class="fc" id="L172">        return uuidService;</span>
+    }
+
+    public void setUuidService(UUIDService uuidService) {
+<span class="nc" id="L176">        this.uuidService = uuidService;</span>
+<span class="nc" id="L177">    }</span>
+
+    public TransactionService getTransactionService() {
+<span class="nc" id="L180">        return transactionService;</span>
+    }
+
+    public void setTransactionService(TransactionService transactionService) {
+<span class="nc" id="L184">        this.transactionService = transactionService;</span>
+<span class="nc" id="L185">    }</span>
+
+    public MerchantService getMerchantService() {
+<span class="nc" id="L188">        return merchantService;</span>
+    }
+
+    public void setMerchantService(MerchantService merchantService) {
+<span class="nc" id="L192">        this.merchantService = merchantService;</span>
+<span class="nc" id="L193">    }</span>
+
+    public BaseJpaDao getBaseJpaDao() {
+<span class="fc" id="L196">        return baseJpaDao;</span>
+    }
+
+    public void setBaseJpaDao(BaseJpaDao baseJpaDao) {
+<span class="nc" id="L200">        this.baseJpaDao = baseJpaDao;</span>
+<span class="nc" id="L201">    }</span>
+
+    public GameInstanceService getGameInstanceService() {
+<span class="fc" id="L204">        return gameInstanceService;</span>
+    }
+
+    public void setGameInstanceService(GameInstanceService gameInstanceService) {
+<span class="fc" id="L208">        this.gameInstanceService = gameInstanceService;</span>
+<span class="fc" id="L209">    }</span>
+
+    public BaseTicketDao getBaseTicketDao() {
+<span class="fc" id="L212">        return baseTicketDao;</span>
+    }
+
+    public void setBaseTicketDao(BaseTicketDao baseTicketDao) {
+<span class="nc" id="L216">        this.baseTicketDao = baseTicketDao;</span>
+<span class="nc" id="L217">    }</span>
+
+    public BaseEntryDao getBaseEntryDao() {
+<span class="fc" id="L220">        return baseEntryDao;</span>
+    }
+
+    public void setBaseEntryDao(BaseEntryDao baseEntryDao) {
+<span class="nc" id="L224">        this.baseEntryDao = baseEntryDao;</span>
+<span class="nc" id="L225">    }</span>
+
+    public CreditService getCreditService() {
+<span class="fc" id="L228">        return creditService;</span>
+    }
+
+    public void setCreditService(CreditService creditService) {
+<span class="nc" id="L232">        this.creditService = creditService;</span>
+<span class="nc" id="L233">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - Class com.mpos.lottery.te.gameimpl.magic100.sale.Magic100SaleIntegrationTest</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>Class com.mpos.lottery.te.gameimpl.magic100.sale.Magic100SaleIntegrationTest</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.mpos.lottery.te.gameimpl.magic100.sale.html">com.mpos.lottery.te.gameimpl.magic100.sale</a> &gt; Magic100SaleIntegrationTest</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">10</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">1.034s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success" id="successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Tests</a>
+</li>
+<li>
+<a href="#tab1">Standard output</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="success">testSell_1st_Win_SuspendGameInstance</td>
+<td>0.058s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testSell_1st_Win_TaxWhenPayout</td>
+<td>0.128s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testSell_1st_Win_TaxWhenWinnerAnalysis</td>
+<td>0.129s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testSell_1st_Win_TaxWhenWinnerAnalysis_NoAutoPayout</td>
+<td>0.104s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testSell_ErrorEntryFormat</td>
+<td>0.124s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testSell_GameInstanceSuspendSale</td>
+<td>0.037s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testSell_NoWin</td>
+<td>0.101s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testSell_SingleNumber_NoWin_TaxWhenWinnerAnalysis</td>
+<td>0.132s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testSell_Win_NoGameDrawProvidedByClient</td>
+<td>0.089s</td>
+<td class="success">passed</td>
+</tr>
+<tr>
+<td class="success">testSell_Win_TaxWhenPayout_OperatorUseParent</td>
+<td>0.132s</td>
+<td class="success">passed</td>
+</tr>
+</table>
+</div>
+<div id="tab1" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>[2015-05-29 17:13:33,127][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:33,127][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:33,127][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@909e197) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:33,128][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:33,128][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,128][Test worker][INFO ][BaseTransactionalIntegrationTest] | Magic100SaleIntegrationTest.testSell_1st_Win_SuspendGameInstance                                                       |
+[2015-05-29 17:13:33,128][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,130][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,144][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml).
+[2015-05-29 17:13:33,145][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813129|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=1919138095), get digest:16e67614179f7b3ec34cde609a925345
+[2015-05-29 17:13:33,145][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:33,145][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:33,145][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171333).
+[2015-05-29 17:13:33,145][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:33,145][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890813129).
+[2015-05-29 17:13:33,145][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:33,145][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:33,145][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=16e67614179f7b3ec34cde609a925345).
+[2015-05-29 17:13:33,145][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=18).
+[2015-05-29 17:13:33,145][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:33,145][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:33,147][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnuO2taDRjXWCxHHHe4Qt36fAfFB33rSVDACrbWnPg/DemXvJASO7iCLuAO4gyCEnDo0YmXYatjtvx/4vawF5fmKvcy6y3OGpne4KYTTRzaz+rF0MDrXB++dOTvd5Fn6AkBiVVDSSby3fO4ETpZWFpBI2KUCNpMdGMU5l6EM+5IolpRDkWHrNZPUabJ+SyUo2qmTSgiOa5rwtdKi3DsJ+KQz7CwuaOvv+AitkgcNKdy64=.
+[2015-05-29 17:13:33,147][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813129|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:33,147][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:33,148][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813129|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=1919138095), get digest:16e67614179f7b3ec34cde609a925345
+[2015-05-29 17:13:33,148][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,148][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml
+[2015-05-29 17:13:33,148][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,161][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_1.5.0).
+[2015-05-29 17:13:33,161][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_).
+[2015-05-29 17:13:33,161][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(18_200_), found controller(com.mpos.lottery.te.gameimpl.magic100.Magic100Controller@7081c100) and method(public void com.mpos.lottery.te.gameimpl.magic100.Magic100Controller.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:33,169][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:33,170][Test worker][ERROR][TEPortServlet] Game instance(id=GII-111) is suspended.
+com.mpos.lottery.te.config.exception.ApplicationException: Game instance(id=GII-111) is suspended.
+	at com.mpos.lottery.te.gameimpl.magic100.game.service.Magic100GameInstanceService.customVerifySaleReadyGameInstance(Magic100GameInstanceService.java:23)
+	at com.mpos.lottery.te.gamespec.game.service.impl.AbstractGameInstanceService.doEnquiryMultiDraw(AbstractGameInstanceService.java:184)
+	at com.mpos.lottery.te.gamespec.game.service.impl.AbstractGameInstanceService.enquirySaleReady(AbstractGameInstanceService.java:98)
+	at sun.reflect.GeneratedMethodAccessor131.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy54.enquirySaleReady(Unknown Source)
+	at com.mpos.lottery.te.gameimpl.magic100.sale.service.Magic100SaleService.lookupSaleReadyGameInstance(Magic100SaleService.java:139)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.sell(AbstractTicketService.java:123)
+	at sun.reflect.GeneratedMethodAccessor130.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy58.sell(Unknown Source)
+	at com.mpos.lottery.te.gameimpl.magic100.Magic100Controller.sell(Magic100Controller.java:36)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.gameimpl.magic100.sale.Magic100SaleIntegrationTest.testSell_1st_Win_SuspendGameInstance(Magic100SaleIntegrationTest.java:922)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:33,171][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813129|Timestamp:20150529171333|Transaction-Type:4200|Transaction-Id:0115052900000000001695|Response-Code:304|):6080b586da196f44559157f32ffc23ec
+[2015-05-29 17:13:33,171][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=304,length=0): 
+[2015-05-29 17:13:33,179][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:33,180][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:33,180][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@1da71aba) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:33,180][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:33,180][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,180][Test worker][INFO ][BaseTransactionalIntegrationTest] | Magic100SaleIntegrationTest.testSell_SingleNumber_NoWin_TaxWhenWinnerAnalysis                                          |
+[2015-05-29 17:13:33,180][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,184][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,184][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml).
+[2015-05-29 17:13:33,185][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813184|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;100&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;1&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=846054744), get digest:e5804546fdb4f189fe38b096f5131f33
+[2015-05-29 17:13:33,185][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:33,185][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:33,185][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171333).
+[2015-05-29 17:13:33,185][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:33,185][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890813184).
+[2015-05-29 17:13:33,185][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:33,185][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:33,185][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=e5804546fdb4f189fe38b096f5131f33).
+[2015-05-29 17:13:33,185][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=18).
+[2015-05-29 17:13:33,185][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:33,185][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:33,187][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnPu+mFv+jPpZSEGeQWg55MWTxcEHbZVRIidLHuD42qgVcHruOrzYtlgLWFzx639fX+YIfMl8lGzcSQdWKOSOkp0A76mkNipmGlx4rYgTj9zZaKSnOYlsNX/eXwDG61hrw4ZcXg+aM47dGAGvKGoJi0FvzPyAZi7fofN+fHFO+WND8RZG6FL3PZqhWueh3H5a4MOj2MKZ1zN8wFgSc2LcFulbG8PHZg8OFA0Lb1cPnMgc=.
+[2015-05-29 17:13:33,187][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813184|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:33,187][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;100&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;1&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:33,187][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813184|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;100&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;1&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=846054744), get digest:e5804546fdb4f189fe38b096f5131f33
+[2015-05-29 17:13:33,187][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,187][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml
+[2015-05-29 17:13:33,187][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,198][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_1.5.0).
+[2015-05-29 17:13:33,198][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_).
+[2015-05-29 17:13:33,198][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(18_200_), found controller(com.mpos.lottery.te.gameimpl.magic100.Magic100Controller@7081c100) and method(public void com.mpos.lottery.te.gameimpl.magic100.Magic100Controller.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:33,206][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:33,207][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745819300012572
+[2015-05-29 17:13:33,221][Test worker][DEBUG][DefaultLuckyNumberService] Use lucky number from REQUEUED RANGE(id=1) instead of main cycle.
+[2015-05-29 17:13:33,222][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:33,236][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:33,236][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:33,236][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999900, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:33,247][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.18]: transaction {
+  id: &quot;0115052900000000001696&quot;
+  dev_id: &quot;111&quot;
+  operator_id: &quot;OPERATOR-111&quot;
+  merchant_id: &quot;111&quot;
+  create_time: 1432890813000
+  trans_type: 200
+  game_id: &quot;LK-1&quot;
+  game_type: 18
+  total_amount: &quot;100&quot;
+}
+multi_draw: 1
+total_amount: &quot;100&quot;
+serial_no: &quot;y013eOifYgIYr8cogzQpk2tqOhNUNNSR&quot;
+game_instance {
+  id: &quot;GII-111&quot;
+}
+entries {
+  selected_number: &quot;7&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+
+[2015-05-29 17:13:33,248][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:33,248][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,248][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket),mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml
+[2015-05-29 17:13:33,248][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,264][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml).
+[2015-05-29 17:13:33,264][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813184|Timestamp:20150529171333|Transaction-Type:4200|Transaction-Id:0115052900000000001696|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300012572&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQpt4TI8rUaq4=&quot; validationCode=&quot;711251&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;1&quot; totalAmount=&quot;100.00&quot; isWinning=&quot;0&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;):4e8052784b5aa3c9b31a1a172abd666c
+[2015-05-29 17:13:33,265][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=608) succesfully.
+[2015-05-29 17:13:33,265][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=608): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300012572&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQpt4TI8rUaq4=&quot; validationCode=&quot;711251&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;1&quot; totalAmount=&quot;100.00&quot; isWinning=&quot;0&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:33,265][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,312][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:33,312][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:33,312][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@30186317) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:33,312][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:33,313][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,313][Test worker][INFO ][BaseTransactionalIntegrationTest] | Magic100SaleIntegrationTest.testSell_GameInstanceSuspendSale                                                           |
+[2015-05-29 17:13:33,313][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,314][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,315][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml).
+[2015-05-29 17:13:33,315][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813314|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;100&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;1&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=-630277617), get digest:98f89d32bbb36f76d64dfba8c950f50d
+[2015-05-29 17:13:33,315][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:33,315][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:33,315][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171333).
+[2015-05-29 17:13:33,315][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:33,315][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890813314).
+[2015-05-29 17:13:33,315][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:33,315][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:33,315][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=98f89d32bbb36f76d64dfba8c950f50d).
+[2015-05-29 17:13:33,315][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=18).
+[2015-05-29 17:13:33,315][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:33,315][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:33,317][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnPu+mFv+jPpZSEGeQWg55MWTxcEHbZVRIidLHuD42qgVcHruOrzYtlgLWFzx639fX+YIfMl8lGzcSQdWKOSOkp0A76mkNipmGlx4rYgTj9zZaKSnOYlsNX/eXwDG61hrw4ZcXg+aM47dGAGvKGoJi0FvzPyAZi7fofN+fHFO+WND8RZG6FL3PZqhWueh3H5a4MOj2MKZ1zN8wFgSc2LcFulbG8PHZg8OFA0Lb1cPnMgc=.
+[2015-05-29 17:13:33,317][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813314|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:33,317][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;100&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;1&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:33,318][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813314|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;100&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;1&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=-630277617), get digest:98f89d32bbb36f76d64dfba8c950f50d
+[2015-05-29 17:13:33,318][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,318][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml
+[2015-05-29 17:13:33,318][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,330][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_1.5.0).
+[2015-05-29 17:13:33,330][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_).
+[2015-05-29 17:13:33,330][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(18_200_), found controller(com.mpos.lottery.te.gameimpl.magic100.Magic100Controller@7081c100) and method(public void com.mpos.lottery.te.gameimpl.magic100.Magic100Controller.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:33,339][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:33,339][Test worker][ERROR][AbstractGameInstanceService] The game instance(number=001,game.type=18,status=2,startSellintTime=2015-05-28 17:12:15.0,stopSellTime=2015-09-06 17:12:15.0,suspendSale=true) doesn't accept sale.
+[2015-05-29 17:13:33,339][Test worker][ERROR][TEPortServlet] Game instance has suspended sale.
+com.mpos.lottery.te.config.exception.ApplicationException: Game instance has suspended sale.
+	at com.mpos.lottery.te.gamespec.game.service.impl.AbstractGameInstanceService.allowSale(AbstractGameInstanceService.java:242)
+	at com.mpos.lottery.te.gamespec.game.service.impl.AbstractGameInstanceService.doEnquiryMultiDraw(AbstractGameInstanceService.java:182)
+	at com.mpos.lottery.te.gamespec.game.service.impl.AbstractGameInstanceService.enquirySaleReady(AbstractGameInstanceService.java:98)
+	at sun.reflect.GeneratedMethodAccessor131.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy54.enquirySaleReady(Unknown Source)
+	at com.mpos.lottery.te.gameimpl.magic100.sale.service.Magic100SaleService.lookupSaleReadyGameInstance(Magic100SaleService.java:139)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.sell(AbstractTicketService.java:123)
+	at sun.reflect.GeneratedMethodAccessor130.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy58.sell(Unknown Source)
+	at com.mpos.lottery.te.gameimpl.magic100.Magic100Controller.sell(Magic100Controller.java:36)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.gameimpl.magic100.sale.Magic100SaleIntegrationTest.testSell_GameInstanceSuspendSale(Magic100SaleIntegrationTest.java:974)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:33,340][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813314|Timestamp:20150529171333|Transaction-Type:4200|Transaction-Id:0115052900000000001699|Response-Code:310|):86bbdfc9a7717cf789d12fc48dba0ef6
+[2015-05-29 17:13:33,341][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=310,length=0): 
+[2015-05-29 17:13:33,348][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:33,349][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:33,349][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@8eebdba) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:33,349][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:33,349][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,349][Test worker][INFO ][BaseTransactionalIntegrationTest] | Magic100SaleIntegrationTest.testSell_Win_TaxWhenPayout_OperatorUseParent                                               |
+[2015-05-29 17:13:33,349][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,356][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,356][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml).
+[2015-05-29 17:13:33,357][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813355|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=1699748404), get digest:3aabdd61d63cb3d37cbad892257a85e1
+[2015-05-29 17:13:33,357][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:33,357][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:33,357][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171333).
+[2015-05-29 17:13:33,357][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:33,357][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890813355).
+[2015-05-29 17:13:33,357][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:33,357][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:33,357][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=3aabdd61d63cb3d37cbad892257a85e1).
+[2015-05-29 17:13:33,357][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=18).
+[2015-05-29 17:13:33,357][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:33,357][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:33,358][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnuO2taDRjXWCxHHHe4Qt36fAfFB33rSVDACrbWnPg/DemXvJASO7iCLuAO4gyCEnDo0YmXYatjtvx/4vawF5fmKvcy6y3OGpne4KYTTRzaz+rF0MDrXB++dOTvd5Fn6AkBiVVDSSby3fO4ETpZWFpBI2KUCNpMdGMU5l6EM+5IolpRDkWHrNZPUabJ+SyUo2qmTSgiOa5rwtdKi3DsJ+KQz7CwuaOvv+AitkgcNKdy64=.
+[2015-05-29 17:13:33,358][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813355|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:33,359][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:33,359][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813355|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=1699748404), get digest:3aabdd61d63cb3d37cbad892257a85e1
+[2015-05-29 17:13:33,359][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,359][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml
+[2015-05-29 17:13:33,359][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,368][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_1.5.0).
+[2015-05-29 17:13:33,368][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_).
+[2015-05-29 17:13:33,368][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(18_200_), found controller(com.mpos.lottery.te.gameimpl.magic100.Magic100Controller@7081c100) and method(public void com.mpos.lottery.te.gameimpl.magic100.Magic100Controller.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:33,375][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:33,375][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745819300012669
+[2015-05-29 17:13:33,387][Test worker][DEBUG][DefaultLuckyNumberService] Use lucky number from REQUEUED RANGE(id=2) instead of main cycle.
+[2015-05-29 17:13:33,388][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:33,394][Test worker][DEBUG][DefaultTaxService] Calculate tax for amount:1000 based on threshold(com.mpos.lottery.te.gamespec.prize.TaxThreshold@1b85416[id=WTT-1,taxPolicyId=TP-1,taxDateRange=com.mpos.lottery.te.gamespec.prize.TaxDateRange@14d704df[id=TDR-1,beginDate=2009-03-20 21:00:00.0,endDate=2099-03-20 21:00:00.0],minAmount=1000,maxAmount=9999999999,ruleType=1,taxAmount=0.2,taxBase=1])...tax:166.67
+[2015-05-29 17:13:33,395][Test worker][DEBUG][Magic100SaleService] the tax amount of entry(BaseEntry [ticketSerialNo=y013eOifYgIYr8cogzQpk0EhMrYR5zOb, selectNumber=8, betOption=1, totalBets=1, entryAmount=100]) is 166.67
+[2015-05-29 17:13:33,397][Test worker][DEBUG][DefaultBalanceService] Ignore balance calculation of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0], as its credit type is USE PARENT... check its parent merchant
+[2015-05-29 17:13:33,409][Test worker][DEBUG][DefaultBalanceService] Merchant before transaction: Merchant [id=111, name=M-111, saleCreditLevel=100000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:33,409][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.PayoutBalanceStrategy@57df81d2
+[2015-05-29 17:13:33,409][Test worker][DEBUG][DefaultBalanceService] Merchant after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:33,416][Test worker][DEBUG][DefaultBalanceService] Ignore balance calculation of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0], as its credit type is USE PARENT... check its parent merchant
+[2015-05-29 17:13:33,423][Test worker][DEBUG][DefaultBalanceService] Merchant before transaction: Merchant [id=111, name=M-111, saleCreditLevel=100000000, payoutCreditLevel=1833.33, creditType=1, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:33,423][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:33,424][Test worker][DEBUG][DefaultBalanceService] Merchant after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:33,439][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.18]: transaction {
+  id: &quot;0115052900000000001700&quot;
+  dev_id: &quot;111&quot;
+  operator_id: &quot;OPERATOR-111&quot;
+  merchant_id: &quot;111&quot;
+  create_time: 1432890813000
+  trans_type: 200
+  game_id: &quot;LK-1&quot;
+  game_type: 18
+  total_amount: &quot;300.0&quot;
+}
+multi_draw: 1
+total_amount: &quot;300.0&quot;
+serial_no: &quot;y013eOifYgIYr8cogzQpk0EhMrYR5zOb&quot;
+game_instance {
+  id: &quot;GII-111&quot;
+}
+entries {
+  selected_number: &quot;6&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;7&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;8&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+
+[2015-05-29 17:13:33,440][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:33,440][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,440][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket),mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml
+[2015-05-29 17:13:33,440][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,441][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml).
+[2015-05-29 17:13:33,441][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813355|Timestamp:20150529171333|Transaction-Type:4200|Transaction-Id:0115052900000000001700|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300012669&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQUtG3CDC3Sqg=&quot; validationCode=&quot;736263&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;3&quot; totalAmount=&quot;300.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;166.67&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;):b0c0b5a6ce0398d6783433503dbc1522
+[2015-05-29 17:13:33,442][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=940) succesfully.
+[2015-05-29 17:13:33,442][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=940): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300012669&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQUtG3CDC3Sqg=&quot; validationCode=&quot;736263&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;3&quot; totalAmount=&quot;300.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;166.67&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:33,442][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,482][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:33,482][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:33,482][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@6484e8a3) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:33,482][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:33,483][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,483][Test worker][INFO ][BaseTransactionalIntegrationTest] | Magic100SaleIntegrationTest.testSell_NoWin                                                                             |
+[2015-05-29 17:13:33,483][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,488][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,489][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml).
+[2015-05-29 17:13:33,489][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813488|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=-734975309), get digest:4796ba0e5a82c359c836ee27d975b19b
+[2015-05-29 17:13:33,489][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:33,489][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:33,489][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171333).
+[2015-05-29 17:13:33,489][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:33,489][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890813488).
+[2015-05-29 17:13:33,489][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:33,489][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:33,489][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=4796ba0e5a82c359c836ee27d975b19b).
+[2015-05-29 17:13:33,490][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=18).
+[2015-05-29 17:13:33,490][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:33,490][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:33,491][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnuO2taDRjXWCxHHHe4Qt36fAfFB33rSVDACrbWnPg/DemXvJASO7iCLuAO4gyCEnDo0YmXYatjtvx/4vawF5fmKvcy6y3OGpne4KYTTRzaz+rF0MDrXB++dOTvd5Fn6AkBiVVDSSby3fO4ETpZWFpBI2KUCNpMdGMU5l6EM+5IolpRDkWHrNZPUabJ+SyUo2qmTSgiOa5rwtdKi3DsJ+KQz7CwuaOvv+AitkgcNKdy64=.
+[2015-05-29 17:13:33,491][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813488|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:33,491][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:33,492][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813488|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=-734975309), get digest:4796ba0e5a82c359c836ee27d975b19b
+[2015-05-29 17:13:33,492][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,492][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml
+[2015-05-29 17:13:33,492][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,503][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_1.5.0).
+[2015-05-29 17:13:33,503][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_).
+[2015-05-29 17:13:33,503][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(18_200_), found controller(com.mpos.lottery.te.gameimpl.magic100.Magic100Controller@7081c100) and method(public void com.mpos.lottery.te.gameimpl.magic100.Magic100Controller.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:33,510][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:33,511][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745819300012705
+[2015-05-29 17:13:33,524][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:33,537][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:33,537][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:33,537][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999700.0, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:33,546][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.18]: transaction {
+  id: &quot;0115052900000000001706&quot;
+  dev_id: &quot;111&quot;
+  operator_id: &quot;OPERATOR-111&quot;
+  merchant_id: &quot;111&quot;
+  create_time: 1432890813000
+  trans_type: 200
+  game_id: &quot;LK-1&quot;
+  game_type: 18
+  total_amount: &quot;300.0&quot;
+}
+multi_draw: 1
+total_amount: &quot;300.0&quot;
+serial_no: &quot;y013eOifYgIYr8cogzQpkxHfb8DWkYJI&quot;
+game_instance {
+  id: &quot;GII-111&quot;
+}
+entries {
+  selected_number: &quot;4&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;5&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;6&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+
+[2015-05-29 17:13:33,546][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:33,547][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,547][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket),mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml
+[2015-05-29 17:13:33,547][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,549][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml).
+[2015-05-29 17:13:33,549][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813488|Timestamp:20150529171333|Transaction-Type:4200|Transaction-Id:0115052900000000001706|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300012705&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQUYR+Cs8G1UA=&quot; validationCode=&quot;928491&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;3&quot; totalAmount=&quot;300.00&quot; isWinning=&quot;0&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;4&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;):4eb8c3cc567cb73d8e6851af3c902985
+[2015-05-29 17:13:33,550][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=928) succesfully.
+[2015-05-29 17:13:33,550][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=928): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300012705&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQUYR+Cs8G1UA=&quot; validationCode=&quot;928491&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;3&quot; totalAmount=&quot;300.00&quot; isWinning=&quot;0&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;4&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;5&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:33,550][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,583][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:33,583][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:33,583][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@1c4e7a5) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:33,583][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:33,584][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,584][Test worker][INFO ][BaseTransactionalIntegrationTest] | Magic100SaleIntegrationTest.testSell_ErrorEntryFormat                                                                  |
+[2015-05-29 17:13:33,584][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,585][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,586][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml).
+[2015-05-29 17:13:33,587][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813585|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;Entry selectedNumber=&quot;XX&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=-1993896342), get digest:1fb4fe979e34640a8c8b82d9ad3e3522
+[2015-05-29 17:13:33,587][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:33,587][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:33,587][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171333).
+[2015-05-29 17:13:33,587][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:33,587][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890813585).
+[2015-05-29 17:13:33,587][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:33,587][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:33,587][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=1fb4fe979e34640a8c8b82d9ad3e3522).
+[2015-05-29 17:13:33,587][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=18).
+[2015-05-29 17:13:33,587][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:33,587][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:33,589][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnuO2taDRjXWCxHHHe4Qt36fAfFB33rSVDDCzw0nS1F/0jCouaRJBT/tb8EaiL4vf93LDwP8RVbzhoGdt5IV9ya7cmIcMnf8+rzDGVBZ+vGA1VZNXwtuAzJoRBxz5Nk7FMsr28EEwU3Rzg5ZGmGzcJUIy3UMifvDyCPLGkhlDgV/rAjIY0cskVDQ==.
+[2015-05-29 17:13:33,589][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813585|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:33,589][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;Entry selectedNumber=&quot;XX&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:33,590][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813585|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;Entry selectedNumber=&quot;XX&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=-1993896342), get digest:1fb4fe979e34640a8c8b82d9ad3e3522
+[2015-05-29 17:13:33,590][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,590][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml
+[2015-05-29 17:13:33,590][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,603][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_1.5.0).
+[2015-05-29 17:13:33,603][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_).
+[2015-05-29 17:13:33,603][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(18_200_), found controller(com.mpos.lottery.te.gameimpl.magic100.Magic100Controller@7081c100) and method(public void com.mpos.lottery.te.gameimpl.magic100.Magic100Controller.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:33,603][Test worker][DEBUG][Magic100SaleService] No game draw provided by client, the service side will randomly pick a active game instance of Magic100.
+[2015-05-29 17:13:33,617][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:33,617][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745819300012861
+[2015-05-29 17:13:33,636][Test worker][DEBUG][DefaultLuckyNumberService] Use lucky number from REQUEUED RANGE(id=2) instead of main cycle.
+[2015-05-29 17:13:33,636][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:33,665][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:33,665][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.PayoutBalanceStrategy@57df81d2
+[2015-05-29 17:13:33,665][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:33,678][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=200]
+[2015-05-29 17:13:33,678][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:33,678][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999700.0, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=200]
+[2015-05-29 17:13:33,688][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.18]: transaction {
+  id: &quot;0115052900000000001711&quot;
+  dev_id: &quot;111&quot;
+  operator_id: &quot;OPERATOR-111&quot;
+  merchant_id: &quot;111&quot;
+  create_time: 1432890813000
+  trans_type: 200
+  game_id: &quot;LK-1&quot;
+  game_type: 18
+  total_amount: &quot;300.0&quot;
+}
+multi_draw: 1
+total_amount: &quot;300.0&quot;
+serial_no: &quot;y013eOifYgIYr8cogzQpk6432QzgI+pp&quot;
+game_instance {
+  id: &quot;GII-111&quot;
+}
+entries {
+  selected_number: &quot;6&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;7&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;8&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+
+[2015-05-29 17:13:33,688][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:33,689][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,689][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket),mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml
+[2015-05-29 17:13:33,689][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,689][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml).
+[2015-05-29 17:13:33,689][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813585|Timestamp:20150529171333|Transaction-Type:4200|Transaction-Id:0115052900000000001711|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300012861&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQzzgGLIp5miA=&quot; validationCode=&quot;543242&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;3&quot; totalAmount=&quot;300.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;):23a60598d59507544431b6a873359498
+[2015-05-29 17:13:33,690][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=928) succesfully.
+[2015-05-29 17:13:33,690][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=928): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300012861&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQzzgGLIp5miA=&quot; validationCode=&quot;543242&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;3&quot; totalAmount=&quot;300.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:33,690][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,707][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:33,707][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:33,707][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@29bacfa) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:33,707][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:33,708][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,708][Test worker][INFO ][BaseTransactionalIntegrationTest] | Magic100SaleIntegrationTest.testSell_1st_Win_TaxWhenWinnerAnalysis_NoAutoPayout                                        |
+[2015-05-29 17:13:33,708][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,712][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,712][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml).
+[2015-05-29 17:13:33,713][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813712|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=-689856817), get digest:d1b108034194c749f6ba3af6186cd48d
+[2015-05-29 17:13:33,713][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:33,713][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:33,713][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171333).
+[2015-05-29 17:13:33,713][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:33,713][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890813712).
+[2015-05-29 17:13:33,713][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:33,713][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:33,713][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=d1b108034194c749f6ba3af6186cd48d).
+[2015-05-29 17:13:33,713][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=18).
+[2015-05-29 17:13:33,713][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:33,713][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:33,715][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnuO2taDRjXWCxHHHe4Qt36fAfFB33rSVDACrbWnPg/DemXvJASO7iCLuAO4gyCEnDo0YmXYatjtvx/4vawF5fmKvcy6y3OGpne4KYTTRzaz+rF0MDrXB++dOTvd5Fn6AkBiVVDSSby3fO4ETpZWFpBI2KUCNpMdGMU5l6EM+5IolpRDkWHrNZPUabJ+SyUo2qmTSgiOa5rwtdKi3DsJ+KQz7CwuaOvv+AitkgcNKdy64=.
+[2015-05-29 17:13:33,715][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813712|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:33,715][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:33,715][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813712|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=-689856817), get digest:d1b108034194c749f6ba3af6186cd48d
+[2015-05-29 17:13:33,715][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,715][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml
+[2015-05-29 17:13:33,715][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,725][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_1.5.0).
+[2015-05-29 17:13:33,725][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_).
+[2015-05-29 17:13:33,725][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(18_200_), found controller(com.mpos.lottery.te.gameimpl.magic100.Magic100Controller@7081c100) and method(public void com.mpos.lottery.te.gameimpl.magic100.Magic100Controller.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:33,733][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:33,733][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745819300012973
+[2015-05-29 17:13:33,745][Test worker][DEBUG][DefaultLuckyNumberService] Use lucky number from REQUEUED RANGE(id=2) instead of main cycle.
+[2015-05-29 17:13:33,746][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:33,764][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:33,764][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:33,764][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999700.0, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:33,774][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.18]: transaction {
+  id: &quot;0115052900000000001717&quot;
+  dev_id: &quot;111&quot;
+  operator_id: &quot;OPERATOR-111&quot;
+  merchant_id: &quot;111&quot;
+  create_time: 1432890813000
+  trans_type: 200
+  game_id: &quot;LK-1&quot;
+  game_type: 18
+  total_amount: &quot;300.0&quot;
+}
+multi_draw: 1
+total_amount: &quot;300.0&quot;
+serial_no: &quot;y013eOifYgIYr8cogzQpk57QKrXMyGUp&quot;
+game_instance {
+  id: &quot;GII-111&quot;
+}
+entries {
+  selected_number: &quot;6&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;7&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;8&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+
+[2015-05-29 17:13:33,774][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:33,775][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,775][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket),mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml
+[2015-05-29 17:13:33,775][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,775][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml).
+[2015-05-29 17:13:33,776][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813712|Timestamp:20150529171333|Transaction-Type:4200|Transaction-Id:0115052900000000001717|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300012973&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQZ33JMCptbow=&quot; validationCode=&quot;358858&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;3&quot; totalAmount=&quot;300.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;10&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;):95e82e37fc72516b014e821ff994e945
+[2015-05-29 17:13:33,776][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=940) succesfully.
+[2015-05-29 17:13:33,776][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=940): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300012973&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQZ33JMCptbow=&quot; validationCode=&quot;358858&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;3&quot; totalAmount=&quot;300.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;10&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:33,776][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,810][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:33,811][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:33,811][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@65f5db66) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:33,811][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:33,811][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,811][Test worker][INFO ][BaseTransactionalIntegrationTest] | Magic100SaleIntegrationTest.testSell_1st_Win_TaxWhenWinnerAnalysis                                                     |
+[2015-05-29 17:13:33,811][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,815][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,816][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml).
+[2015-05-29 17:13:33,816][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813815|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=-1719798389), get digest:a6c843c57383eba85852d27d91506a3d
+[2015-05-29 17:13:33,816][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:33,816][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:33,816][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171333).
+[2015-05-29 17:13:33,816][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:33,816][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890813815).
+[2015-05-29 17:13:33,816][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:33,816][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:33,816][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=a6c843c57383eba85852d27d91506a3d).
+[2015-05-29 17:13:33,816][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=18).
+[2015-05-29 17:13:33,816][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:33,816][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:33,818][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnuO2taDRjXWCxHHHe4Qt36fAfFB33rSVDACrbWnPg/DemXvJASO7iCLuAO4gyCEnDo0YmXYatjtvx/4vawF5fmKvcy6y3OGpne4KYTTRzaz+rF0MDrXB++dOTvd5Fn6AkBiVVDSSby3fO4ETpZWFpBI2KUCNpMdGMU5l6EM+5IolpRDkWHrNZPUabJ+SyUo2qmTSgiOa5rwtdKi3DsJ+KQz7CwuaOvv+AitkgcNKdy64=.
+[2015-05-29 17:13:33,818][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813815|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:33,818][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:33,818][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813815|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=-1719798389), get digest:a6c843c57383eba85852d27d91506a3d
+[2015-05-29 17:13:33,818][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,818][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml
+[2015-05-29 17:13:33,818][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,828][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_1.5.0).
+[2015-05-29 17:13:33,829][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_).
+[2015-05-29 17:13:33,829][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(18_200_), found controller(com.mpos.lottery.te.gameimpl.magic100.Magic100Controller@7081c100) and method(public void com.mpos.lottery.te.gameimpl.magic100.Magic100Controller.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:33,837][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:33,837][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745819300013074
+[2015-05-29 17:13:33,861][Test worker][DEBUG][DefaultLuckyNumberService] Use lucky number from REQUEUED RANGE(id=2) instead of main cycle.
+[2015-05-29 17:13:33,862][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:33,878][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:33,878][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.PayoutBalanceStrategy@57df81d2
+[2015-05-29 17:13:33,878][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:33,889][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=200]
+[2015-05-29 17:13:33,889][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:33,889][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999700.0, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=200]
+[2015-05-29 17:13:33,898][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.18]: transaction {
+  id: &quot;0115052900000000001722&quot;
+  dev_id: &quot;111&quot;
+  operator_id: &quot;OPERATOR-111&quot;
+  merchant_id: &quot;111&quot;
+  create_time: 1432890813000
+  trans_type: 200
+  game_id: &quot;LK-1&quot;
+  game_type: 18
+  total_amount: &quot;300.0&quot;
+}
+multi_draw: 1
+total_amount: &quot;300.0&quot;
+serial_no: &quot;y013eOifYgIYr8cogzQpk1X75y/aq3FU&quot;
+game_instance {
+  id: &quot;GII-111&quot;
+}
+entries {
+  selected_number: &quot;6&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;7&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;8&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+
+[2015-05-29 17:13:33,899][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:33,899][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,899][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket),mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml
+[2015-05-29 17:13:33,899][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,900][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml).
+[2015-05-29 17:13:33,900][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813815|Timestamp:20150529171333|Transaction-Type:4200|Transaction-Id:0115052900000000001722|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300013074&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQUgqzd6ujnl4=&quot; validationCode=&quot;320539&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;3&quot; totalAmount=&quot;300.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;):d6274c187fad6322dce13c3a2f778fa9
+[2015-05-29 17:13:33,901][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=928) succesfully.
+[2015-05-29 17:13:33,901][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=928): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300013074&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQUgqzd6ujnl4=&quot; validationCode=&quot;320539&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;3&quot; totalAmount=&quot;300.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:33,901][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:33,939][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:33,939][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:33,940][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@58176dae) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:33,940][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:33,940][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,940][Test worker][INFO ][BaseTransactionalIntegrationTest] | Magic100SaleIntegrationTest.testSell_Win_NoGameDrawProvidedByClient                                                    |
+[2015-05-29 17:13:33,940][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:33,942][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,942][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml).
+[2015-05-29 17:13:33,943][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813942|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=-903048903), get digest:2ddfddb45970e1432cf0adec5abef15b
+[2015-05-29 17:13:33,943][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:33,943][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:33,943][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171333).
+[2015-05-29 17:13:33,943][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:33,943][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890813942).
+[2015-05-29 17:13:33,943][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:33,943][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:33,943][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=2ddfddb45970e1432cf0adec5abef15b).
+[2015-05-29 17:13:33,943][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=18).
+[2015-05-29 17:13:33,943][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:33,943][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:33,945][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnuO2taDRjXWCxHHHe4Qt36fAfFB33rSVDDCzw0nS1F/0jCouaRJBT/tuPHNi6WaRruEAzb5lGlqe3cfgKehOP2fctQRVq3Puu9zHW2GBuldHOqPPY8zPn/L+AMK4/Lr6hPzIjY5j3fwqhsBTOp7AazWonEY3DMN8rd4Lx6w6JY6XAcqAivfPy60HKpdhbQDwV.
+[2015-05-29 17:13:33,945][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813942|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:33,945][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:33,945][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813942|Timestamp:20150529171333|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=-903048903), get digest:2ddfddb45970e1432cf0adec5abef15b
+[2015-05-29 17:13:33,945][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,946][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml
+[2015-05-29 17:13:33,946][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:33,958][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_1.5.0).
+[2015-05-29 17:13:33,958][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_).
+[2015-05-29 17:13:33,958][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(18_200_), found controller(com.mpos.lottery.te.gameimpl.magic100.Magic100Controller@7081c100) and method(public void com.mpos.lottery.te.gameimpl.magic100.Magic100Controller.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:33,959][Test worker][DEBUG][Magic100SaleService] No game draw provided by client, the service side will randomly pick a active game instance of Magic100.
+[2015-05-29 17:13:33,966][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:33,966][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745819300013178
+[2015-05-29 17:13:33,977][Test worker][DEBUG][DefaultLuckyNumberService] Use lucky number from REQUEUED RANGE(id=2) instead of main cycle.
+[2015-05-29 17:13:33,978][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:33,992][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:33,992][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.PayoutBalanceStrategy@57df81d2
+[2015-05-29 17:13:33,992][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:34,005][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=200]
+[2015-05-29 17:13:34,005][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:34,005][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999700.0, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=200]
+[2015-05-29 17:13:34,014][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.18]: transaction {
+  id: &quot;0115052900000000001728&quot;
+  dev_id: &quot;111&quot;
+  operator_id: &quot;OPERATOR-111&quot;
+  merchant_id: &quot;111&quot;
+  create_time: 1432890813000
+  trans_type: 200
+  game_id: &quot;LK-1&quot;
+  game_type: 18
+  total_amount: &quot;300.0&quot;
+}
+multi_draw: 1
+total_amount: &quot;300.0&quot;
+serial_no: &quot;y013eOifYgIYr8cogzQpk4J8J8JPas4Q&quot;
+game_instance {
+  id: &quot;GII-111&quot;
+}
+entries {
+  selected_number: &quot;6&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;7&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;8&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+
+[2015-05-29 17:13:34,014][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:34,014][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:34,014][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket),mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml
+[2015-05-29 17:13:34,015][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:34,015][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml).
+[2015-05-29 17:13:34,015][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890813942|Timestamp:20150529171333|Transaction-Type:4200|Transaction-Id:0115052900000000001728|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300013178&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQZWq/XIyAmio=&quot; validationCode=&quot;812483&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;3&quot; totalAmount=&quot;300.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;):aee728904600c085d6635ca60b751720
+[2015-05-29 17:13:34,016][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=928) succesfully.
+[2015-05-29 17:13:34,016][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=928): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300013178&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQZWq/XIyAmio=&quot; validationCode=&quot;812483&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;3&quot; totalAmount=&quot;300.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:34,016][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:34,028][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:34,029][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:34,029][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@3adba5d6) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:34,029][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:34,029][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:34,029][Test worker][INFO ][BaseTransactionalIntegrationTest] | Magic100SaleIntegrationTest.testSell_1st_Win_TaxWhenPayout                                                             |
+[2015-05-29 17:13:34,029][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:34,034][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:34,034][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml).
+[2015-05-29 17:13:34,035][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890814034|Timestamp:20150529171334|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=-1562092040), get digest:1acc24220425468507e7b6a7ddadaf62
+[2015-05-29 17:13:34,035][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:34,035][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:34,035][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171334).
+[2015-05-29 17:13:34,035][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:34,035][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890814034).
+[2015-05-29 17:13:34,035][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:34,035][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:34,035][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=1acc24220425468507e7b6a7ddadaf62).
+[2015-05-29 17:13:34,035][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=18).
+[2015-05-29 17:13:34,035][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:34,035][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:34,037][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnuO2taDRjXWCxHHHe4Qt36fAfFB33rSVDACrbWnPg/DemXvJASO7iCLuAO4gyCEnDo0YmXYatjtvx/4vawF5fmKvcy6y3OGpne4KYTTRzaz+rF0MDrXB++dOTvd5Fn6AkBiVVDSSby3fO4ETpZWFpBI2KUCNpMdGMU5l6EM+5IolpRDkWHrNZPUabJ+SyUo2qmTSgiOa5rwtdKi3DsJ+KQz7CwuaOvv+AitkgcNKdy64=.
+[2015-05-29 17:13:34,037][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890814034|Timestamp:20150529171334|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:34,037][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:34,037][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890814034|Timestamp:20150529171334|Transaction-Type:200|Transaction-Id:|Response-Code:|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket multipleDraws=&quot;1&quot; totalAmount=&quot;300.0&quot; PIN=&quot;!!!!&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;PLAY&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; totalBets=&quot;3&quot;/&gt;&lt;User mobile=&quot;138000138000&quot;/&gt;&lt;/Ticket&gt;,hash=-1562092040), get digest:1acc24220425468507e7b6a7ddadaf62
+[2015-05-29 17:13:34,038][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:34,038][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/magic100/SellTicket_Req.xml
+[2015-05-29 17:13:34,038][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Req.xml) by key(18.transtype.200).
+[2015-05-29 17:13:34,047][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_1.5.0).
+[2015-05-29 17:13:34,048][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(18_200_).
+[2015-05-29 17:13:34,048][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(18_200_), found controller(com.mpos.lottery.te.gameimpl.magic100.Magic100Controller@7081c100) and method(public void com.mpos.lottery.te.gameimpl.magic100.Magic100Controller.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:34,055][Test worker][INFO ][AbstractGameInstanceService] No channel game instance time definiton found, ignore it.
+[2015-05-29 17:13:34,055][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745819300013267
+[2015-05-29 17:13:34,070][Test worker][DEBUG][DefaultLuckyNumberService] Use lucky number from REQUEUED RANGE(id=2) instead of main cycle.
+[2015-05-29 17:13:34,071][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:34,079][Test worker][DEBUG][DefaultTaxService] Calculate tax for amount:1000 based on threshold(com.mpos.lottery.te.gamespec.prize.TaxThreshold@6017f66e[id=WTT-1,taxPolicyId=TP-1,taxDateRange=com.mpos.lottery.te.gamespec.prize.TaxDateRange@393d3b7[id=TDR-1,beginDate=2009-03-20 21:00:00.0,endDate=2099-03-20 21:00:00.0],minAmount=1000,maxAmount=9999999999,ruleType=1,taxAmount=0.2,taxBase=1])...tax:166.67
+[2015-05-29 17:13:34,079][Test worker][DEBUG][Magic100SaleService] the tax amount of entry(BaseEntry [ticketSerialNo=y013eOifYgIYr8cogzQpk9G+mm03XbUv, selectNumber=8, betOption=1, totalBets=1, entryAmount=100]) is 166.67
+[2015-05-29 17:13:34,096][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:34,096][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.PayoutBalanceStrategy@57df81d2
+[2015-05-29 17:13:34,096][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1833.33, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:34,107][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1833.33, cashoutBalance=0, commisionBalance=166.666]
+[2015-05-29 17:13:34,107][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:34,107][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999700.0, payoutCreditLevel=1833.33, cashoutBalance=0, commisionBalance=166.666]
+[2015-05-29 17:13:34,116][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.18]: transaction {
+  id: &quot;0115052900000000001734&quot;
+  dev_id: &quot;111&quot;
+  operator_id: &quot;OPERATOR-111&quot;
+  merchant_id: &quot;111&quot;
+  create_time: 1432890814000
+  trans_type: 200
+  game_id: &quot;LK-1&quot;
+  game_type: 18
+  total_amount: &quot;300.0&quot;
+}
+multi_draw: 1
+total_amount: &quot;300.0&quot;
+serial_no: &quot;y013eOifYgIYr8cogzQpk9G+mm03XbUv&quot;
+game_instance {
+  id: &quot;GII-111&quot;
+}
+entries {
+  selected_number: &quot;6&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;7&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+entries {
+  selected_number: &quot;8&quot;
+  bet_option: 1
+  total_bets: 1
+  entry_amount: &quot;100&quot;
+  input_channel: &quot;0&quot;
+}
+
+[2015-05-29 17:13:34,117][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:34,117][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:34,117][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket),mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml
+[2015-05-29 17:13:34,117][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+[2015-05-29 17:13:34,118][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket, mappingFile=xml-mapping/game/magic100/SellTicket_Res.xml).
+[2015-05-29 17:13:34,118][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890814034|Timestamp:20150529171334|Transaction-Type:4200|Transaction-Id:0115052900000000001734|Response-Code:200|&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300013267&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQptK588+AFQg=&quot; validationCode=&quot;979788&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;3&quot; totalAmount=&quot;300.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;166.67&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;):b9267e7ba1c2709965e3b9b66d0ecf19
+[2015-05-29 17:13:34,118][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=940) succesfully.
+[2015-05-29 17:13:34,119][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=940): &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Ticket serialNo=&quot;01111745819300013267&quot; barcode=&quot;18cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xas1YeK2m7FOQptK588+AFQg=&quot; validationCode=&quot;979788&quot; type=&quot;1&quot; multipleDraws=&quot;1&quot; lastDrawNo=&quot;001&quot; totalBets=&quot;3&quot; totalAmount=&quot;300.00&quot; isWinning=&quot;1&quot;&gt;&lt;GameDraw number=&quot;001&quot; gameId=&quot;LK-1&quot;/&gt;&lt;Entry selectedNumber=&quot;6&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;7&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;0&quot; prizeAmount=&quot;0&quot; taxAmount=&quot;0&quot; entryAmount=&quot;100&quot;/&gt;&lt;Entry selectedNumber=&quot;8&quot; betOption=&quot;1&quot; inputChannel=&quot;0&quot; isWinning=&quot;1&quot; prizeAmount=&quot;1000&quot; taxAmount=&quot;166.67&quot; entryAmount=&quot;100&quot;/&gt;&lt;/Ticket&gt;
+[2015-05-29 17:13:34,119][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/magic100/SellTicket_Res.xml) by key(18.transtype.4200).
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>Generated by 
+<a href="http://www.gradle.org">Gradle 2.2.1</a> at 2015-5-29 17:14:47</p>
+</div>
+</div>
+</body>

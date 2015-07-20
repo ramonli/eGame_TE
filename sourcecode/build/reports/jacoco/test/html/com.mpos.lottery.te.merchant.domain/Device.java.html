@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Device.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.merchant.domain</a> &gt; <span class="el_source">Device.java</span></div><h1>Device.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.merchant.domain;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity(name = &quot;DEVICES&quot;)
+<span class="fc" id="L11">public class Device implements java.io.Serializable {</span>
+    public static final int STATUS_ACTIVE = 0;
+    public static final int STATUS_BLOCKED = 1;
+    public static final int STATUS_PAYOUT_DENIED = 2;
+
+    @Id
+    @Column(name = &quot;DEV_ID&quot;)
+    private long id;
+
+    @Column(name = &quot;DPY_ID&quot;)
+    private String departmentId;
+
+    @Column(name = &quot;DT_ID&quot;)
+    private String type;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = &quot;MERCHANT_ID&quot;, nullable = false)
+    private Merchant merchant;
+
+    @Column(name = &quot;SERIAL_NO&quot;)
+    private String serialNo;
+
+    @Column(name = &quot;HARDWARE_ID&quot;)
+    private String hardwareId;
+
+    @Column(name = &quot;LOGIC_STATUS&quot;)
+    private int status;
+
+    public long getId() {
+<span class="nc" id="L40">        return id;</span>
+    }
+
+    public void setId(long id) {
+<span class="nc" id="L44">        this.id = id;</span>
+<span class="nc" id="L45">    }</span>
+
+    public String getDepartmentId() {
+<span class="nc" id="L48">        return departmentId;</span>
+    }
+
+    public void setDepartmentId(String departmentId) {
+<span class="nc" id="L52">        this.departmentId = departmentId;</span>
+<span class="nc" id="L53">    }</span>
+
+    public String getType() {
+<span class="nc" id="L56">        return type;</span>
+    }
+
+    public void setType(String type) {
+<span class="nc" id="L60">        this.type = type;</span>
+<span class="nc" id="L61">    }</span>
+
+    public Merchant getMerchant() {
+<span class="fc" id="L64">        return merchant;</span>
+    }
+
+    public void setMerchant(Merchant merchant) {
+<span class="nc" id="L68">        this.merchant = merchant;</span>
+<span class="nc" id="L69">    }</span>
+
+    public String getSerialNo() {
+<span class="nc" id="L72">        return serialNo;</span>
+    }
+
+    public void setSerialNo(String serialNo) {
+<span class="nc" id="L76">        this.serialNo = serialNo;</span>
+<span class="nc" id="L77">    }</span>
+
+    public String getHardwareId() {
+<span class="nc" id="L80">        return hardwareId;</span>
+    }
+
+    public void setHardwareId(String hardwareId) {
+<span class="nc" id="L84">        this.hardwareId = hardwareId;</span>
+<span class="nc" id="L85">    }</span>
+
+    public int getStatus() {
+<span class="fc" id="L88">        return status;</span>
+    }
+
+    public void setStatus(int status) {
+<span class="nc" id="L92">        this.status = status;</span>
+<span class="nc" id="L93">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

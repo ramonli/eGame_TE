@@ -1,0 +1,924 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.merchant.CreditTransferIntegrationTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:50" hostname="Ramon-PC" time="0.642">
+  <properties/>
+  <testcase name="testTransferCommissionCredit_Operator" classname="com.mpos.lottery.te.merchant.CreditTransferIntegrationTest" time="0.11"/>
+  <testcase name="testTransferSaleCredit_Operator" classname="com.mpos.lottery.te.merchant.CreditTransferIntegrationTest" time="0.083"/>
+  <testcase name="testTransferPayoutCredit_Operator" classname="com.mpos.lottery.te.merchant.CreditTransferIntegrationTest" time="0.066"/>
+  <testcase name="testTransferCashoutCredit_Operator_UseParent" classname="com.mpos.lottery.te.merchant.CreditTransferIntegrationTest" time="0.056"/>
+  <testcase name="testTransferPayoutCredit_Operator_UseParent" classname="com.mpos.lottery.te.merchant.CreditTransferIntegrationTest" time="0.089"/>
+  <testcase name="testTransferSaleCredit_Operator_UseParent" classname="com.mpos.lottery.te.merchant.CreditTransferIntegrationTest" time="0.081"/>
+  <testcase name="testTransferCommissionCredit_Operator_UseParent" classname="com.mpos.lottery.te.merchant.CreditTransferIntegrationTest" time="0.052"/>
+  <testcase name="testTransferPayoutCredit_Operator_ExceedsLimit" classname="com.mpos.lottery.te.merchant.CreditTransferIntegrationTest" time="0.049"/>
+  <testcase name="testTransferCashoutCredit_Operator" classname="com.mpos.lottery.te.merchant.CreditTransferIntegrationTest" time="0.052"/>
+  <system-out><![CDATA[[2015-05-29 17:13:50,994][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:50,994][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:50,994][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@19968587) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:50,995][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:50,995][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:50,995][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditTransferIntegrationTest.testTransferCommissionCredit_Operator                                                    |
+[2015-05-29 17:13:50,995][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,008][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,018][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.merchant.web.CreditTransferDto, mappingFile=xml-mapping/CreditTransfer_Req.xml).
+[2015-05-29 17:13:51,019][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831008|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="3" amount="500"/>,hash=2003792618), get digest:5cffada5846d6ed085b4802c6eb7599c
+[2015-05-29 17:13:51,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=116).
+[2015-05-29 17:13:51,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:51,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171351).
+[2015-05-29 17:13:51,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:51,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890831008).
+[2015-05-29 17:13:51,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:51,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:51,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=5cffada5846d6ed085b4802c6eb7599c).
+[2015-05-29 17:13:51,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:13:51,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:51,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:51,022][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6jI0L4oIzAEMqe8dW26na21aa7l/DnYGq8bZRRkB06JgU5/TnyrZTOdC6oRNKAEruaE9CNHiEKOUi68bC2ifMqYBvdT5GJTz2D1nD1zh192sAlBYcIWAsPPERGNlmKgbrh2Q7HsmfvLosCMSJKy1BYRmLCesma0A8g==.
+[2015-05-29 17:13:51,022][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831008|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:51,022][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="3" amount="500"/>
+[2015-05-29 17:13:51,023][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831008|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="3" amount="500"/>,hash=2003792618), get digest:5cffada5846d6ed085b4802c6eb7599c
+[2015-05-29 17:13:51,023][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,023][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/CreditTransfer_Req.xml
+[2015-05-29 17:13:51,023][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,043][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_1.5.0).
+[2015-05-29 17:13:51,043][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_).
+[2015-05-29 17:13:51,043][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_116_), found controller(com.mpos.lottery.te.merchant.MerchantController@720798ee) and method(public void com.mpos.lottery.te.merchant.MerchantController.transferCredit(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:51,073][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,073][Test worker][DEBUG][DefaultCreditService] The new commission credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=-500] is -500
+[2015-05-29 17:13:51,080][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-112, loginName=OPERATOR-LOGIN-2, creditType=1, saleCreditLevel=2000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:2000,payoutCreditLevel:2000
+[2015-05-29 17:13:51,080][Test worker][DEBUG][DefaultCreditService] The new commission credit level of Operator [id=OPERATOR-112, loginName=OPERATOR-LOGIN-2, creditType=1, saleCreditLevel=2000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=500] is 500
+[2015-05-29 17:13:51,087][Test worker][ERROR][TEPortServlet] Credit transfer login name(OPERATOR-LOGIN insufficient balance).-500.0
+com.mpos.lottery.te.config.exception.ApplicationException: Credit transfer login name(OPERATOR-LOGIN insufficient balance).-500.0
+	at com.mpos.lottery.te.merchant.service.impl.DefaultCreditService.assembleCreditBalance(DefaultCreditService.java:599)
+	at com.mpos.lottery.te.merchant.service.impl.DefaultCreditService.transferCredit(DefaultCreditService.java:225)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy59.transferCredit(Unknown Source)
+	at com.mpos.lottery.te.merchant.MerchantController.transferCredit(MerchantController.java:43)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.merchant.CreditTransferIntegrationTest.testTransferCommissionCredit_Operator(CreditTransferIntegrationTest.java:276)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:51,088][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831008|Timestamp:20150529171351|Transaction-Type:4116|Transaction-Id:0115052900000000002308|Response-Code:372|):28513b830b3e23f25f39fd4a41b3fff5
+[2015-05-29 17:13:51,088][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=372,length=0): 
+[2015-05-29 17:13:51,096][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:51,097][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:51,097][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@12e7dec2) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:51,097][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,097][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,098][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditTransferIntegrationTest.testTransferSaleCredit_Operator                                                          |
+[2015-05-29 17:13:51,098][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,104][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,104][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.merchant.web.CreditTransferDto, mappingFile=xml-mapping/CreditTransfer_Req.xml).
+[2015-05-29 17:13:51,105][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831103|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="1" amount="500"/>,hash=-2107068764), get digest:4e2486b66c166106831a77011b419798
+[2015-05-29 17:13:51,105][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=116).
+[2015-05-29 17:13:51,105][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:51,105][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171351).
+[2015-05-29 17:13:51,105][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:51,105][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890831103).
+[2015-05-29 17:13:51,105][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:51,105][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:51,105][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=4e2486b66c166106831a77011b419798).
+[2015-05-29 17:13:51,105][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:13:51,105][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:51,105][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:51,106][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6jI0L4oIzAEMqe8dW26na21aa7l/DnYGq8bZRRkB06JgU5/TnyrZTOdC6oRNKAEruaE9CNHiEKOUi68bC2ifMqYBvdT5GJTz2D1nD1zh192sAlBYcIWAsPPERGNlmKgbrl+Gn2aAxgnNt95rYs7lGgeHrsfqAQxd0w==.
+[2015-05-29 17:13:51,107][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831103|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:51,107][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="1" amount="500"/>
+[2015-05-29 17:13:51,107][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831103|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="1" amount="500"/>,hash=-2107068764), get digest:4e2486b66c166106831a77011b419798
+[2015-05-29 17:13:51,107][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,107][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/CreditTransfer_Req.xml
+[2015-05-29 17:13:51,107][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,124][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_1.5.0).
+[2015-05-29 17:13:51,124][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_).
+[2015-05-29 17:13:51,124][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_116_), found controller(com.mpos.lottery.te.merchant.MerchantController@720798ee) and method(public void com.mpos.lottery.te.merchant.MerchantController.transferCredit(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:51,144][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,144][Test worker][DEBUG][DefaultCreditService] The new sale credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999500, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is 199999500
+[2015-05-29 17:13:51,147][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-112, loginName=OPERATOR-LOGIN-2, creditType=1, saleCreditLevel=2000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:2000,payoutCreditLevel:2000
+[2015-05-29 17:13:51,147][Test worker][DEBUG][DefaultCreditService] The new sale credit level of Operator [id=OPERATOR-112, loginName=OPERATOR-LOGIN-2, creditType=1, saleCreditLevel=2500, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0] is 2500
+[2015-05-29 17:13:51,157][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(TRANSFER_CREDIT)
+[2015-05-29 17:13:51,157][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Res.xml) by key(transtype.4116).
+[2015-05-29 17:13:51,157][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.merchant.web.CreditTransferDto),mappingFile=xml-mapping/CreditTransfer_Res.xml
+[2015-05-29 17:13:51,157][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Res.xml) by key(transtype.4116).
+[2015-05-29 17:13:51,169][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.merchant.web.CreditTransferDto, mappingFile=xml-mapping/CreditTransfer_Res.xml).
+[2015-05-29 17:13:51,169][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831103|Timestamp:20150529171351|Transaction-Type:4116|Transaction-Id:0115052900000000002310|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Credit creditType="1" amount="500" creditBalanceOfFromOperator="199999500" creditBalanceOfToOperator="2500"/>):72938e7a332f98dde59fecd93e24f07b
+[2015-05-29 17:13:51,170][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=204) succesfully.
+[2015-05-29 17:13:51,170][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=204): <?xml version="1.0" encoding="UTF-8"?>
+<Credit creditType="1" amount="500" creditBalanceOfFromOperator="199999500" creditBalanceOfToOperator="2500"/>
+[2015-05-29 17:13:51,170][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Res.xml) by key(transtype.4116).
+[2015-05-29 17:13:51,184][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:51,184][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:51,184][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@1b1cd38d) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:51,185][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,185][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,185][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditTransferIntegrationTest.testTransferPayoutCredit_Operator                                                        |
+[2015-05-29 17:13:51,185][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,196][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,196][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.merchant.web.CreditTransferDto, mappingFile=xml-mapping/CreditTransfer_Req.xml).
+[2015-05-29 17:13:51,197][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831196|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="2" amount="500"/>,hash=-269452353), get digest:99327245400c7304a909f8e63214d3f3
+[2015-05-29 17:13:51,197][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=116).
+[2015-05-29 17:13:51,197][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:51,197][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171351).
+[2015-05-29 17:13:51,197][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:51,197][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890831196).
+[2015-05-29 17:13:51,197][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:51,197][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:51,197][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=99327245400c7304a909f8e63214d3f3).
+[2015-05-29 17:13:51,197][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:13:51,197][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:51,197][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:51,198][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6jI0L4oIzAEMqe8dW26na21aa7l/DnYGq8bZRRkB06JgU5/TnyrZTOdC6oRNKAEruaE9CNHiEKOUi68bC2ifMqYBvdT5GJTz2D1nD1zh192sAlBYcIWAsPPERGNlmKgbrpg3TIB59e3Nw3iZGggse3On7wcdABSriw==.
+[2015-05-29 17:13:51,199][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831196|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:51,199][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="2" amount="500"/>
+[2015-05-29 17:13:51,199][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831196|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="2" amount="500"/>,hash=-269452353), get digest:99327245400c7304a909f8e63214d3f3
+[2015-05-29 17:13:51,199][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,199][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/CreditTransfer_Req.xml
+[2015-05-29 17:13:51,199][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,208][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_1.5.0).
+[2015-05-29 17:13:51,208][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_).
+[2015-05-29 17:13:51,208][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_116_), found controller(com.mpos.lottery.te.merchant.MerchantController@720798ee) and method(public void com.mpos.lottery.te.merchant.MerchantController.transferCredit(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:51,223][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,223][Test worker][DEBUG][DefaultCreditService] The new payout credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=500, cashoutBalance=0, commisionBalance=0] is 500
+[2015-05-29 17:13:51,225][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-112, loginName=OPERATOR-LOGIN-2, creditType=1, saleCreditLevel=2000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:2000,payoutCreditLevel:2000
+[2015-05-29 17:13:51,225][Test worker][DEBUG][DefaultCreditService] The new payout credit level of Operator [id=OPERATOR-112, loginName=OPERATOR-LOGIN-2, creditType=1, saleCreditLevel=2000, payoutCreditLevel=2500, cashoutBalance=0, commisionBalance=0] is 2500
+[2015-05-29 17:13:51,234][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(TRANSFER_CREDIT)
+[2015-05-29 17:13:51,235][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Res.xml) by key(transtype.4116).
+[2015-05-29 17:13:51,235][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.merchant.web.CreditTransferDto),mappingFile=xml-mapping/CreditTransfer_Res.xml
+[2015-05-29 17:13:51,235][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Res.xml) by key(transtype.4116).
+[2015-05-29 17:13:51,235][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.merchant.web.CreditTransferDto, mappingFile=xml-mapping/CreditTransfer_Res.xml).
+[2015-05-29 17:13:51,235][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831196|Timestamp:20150529171351|Transaction-Type:4116|Transaction-Id:0115052900000000002312|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Credit creditType="2" amount="500" creditBalanceOfFromOperator="500" creditBalanceOfToOperator="2500"/>):e07ba260f915aa077897305027a06cda
+[2015-05-29 17:13:51,236][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=192) succesfully.
+[2015-05-29 17:13:51,236][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=192): <?xml version="1.0" encoding="UTF-8"?>
+<Credit creditType="2" amount="500" creditBalanceOfFromOperator="500" creditBalanceOfToOperator="2500"/>
+[2015-05-29 17:13:51,236][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Res.xml) by key(transtype.4116).
+[2015-05-29 17:13:51,245][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:51,245][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:51,246][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@5848cce5) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:51,246][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,246][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,246][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditTransferIntegrationTest.testTransferCashoutCredit_Operator_UseParent                                             |
+[2015-05-29 17:13:51,246][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,252][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,253][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.merchant.web.CreditTransferDto, mappingFile=xml-mapping/CreditTransfer_Req.xml).
+[2015-05-29 17:13:51,254][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831252|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="4" amount="500"/>,hash=1689816578), get digest:e881a893676a7cb2df6814e21f4d8e0a
+[2015-05-29 17:13:51,254][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=116).
+[2015-05-29 17:13:51,254][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:51,254][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171351).
+[2015-05-29 17:13:51,254][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:51,254][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890831252).
+[2015-05-29 17:13:51,254][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:51,254][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:51,254][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=e881a893676a7cb2df6814e21f4d8e0a).
+[2015-05-29 17:13:51,254][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:13:51,254][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:51,254][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:51,256][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6jI0L4oIzAEMqe8dW26na21aa7l/DnYGq8bZRRkB06JgU5/TnyrZTOdC6oRNKAEruaE9CNHiEKOUi68bC2ifMqYBvdT5GJTz2D1nD1zh192sAlBYcIWAsPPERGNlmKgbrjRjPl7QS0wF2UsfHN7NZ001PSG82GZ+bQ==.
+[2015-05-29 17:13:51,256][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831252|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:51,256][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="4" amount="500"/>
+[2015-05-29 17:13:51,256][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831252|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="4" amount="500"/>,hash=1689816578), get digest:e881a893676a7cb2df6814e21f4d8e0a
+[2015-05-29 17:13:51,256][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,256][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/CreditTransfer_Req.xml
+[2015-05-29 17:13:51,256][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,264][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_1.5.0).
+[2015-05-29 17:13:51,264][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_).
+[2015-05-29 17:13:51,264][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_116_), found controller(com.mpos.lottery.te.merchant.MerchantController@720798ee) and method(public void com.mpos.lottery.te.merchant.MerchantController.transferCredit(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:51,277][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant
+[2015-05-29 17:13:51,282][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Merchant [id=111, name=M-111, saleCreditLevel=100000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:100000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,282][Test worker][DEBUG][DefaultCreditService] The new cash out credit level of merchantMerchant [id=111, name=M-111, saleCreditLevel=100000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=-500, commisionBalance=0] is -500
+[2015-05-29 17:13:51,282][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type of Operator [id=OPERATOR-112, loginName=OPERATOR-LOGIN-2, creditType=4, saleCreditLevel=2000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant
+[2015-05-29 17:13:51,288][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Merchant [id=112, name=M-112, saleCreditLevel=110000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:110000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,288][Test worker][DEBUG][DefaultCreditService] The new cash out credit level of merchantMerchant [id=112, name=M-112, saleCreditLevel=110000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=500, commisionBalance=0] is 500
+[2015-05-29 17:13:51,292][Test worker][ERROR][TEPortServlet] Credit transfer login name(OPERATOR-LOGIN insufficient balance).-500.0
+com.mpos.lottery.te.config.exception.ApplicationException: Credit transfer login name(OPERATOR-LOGIN insufficient balance).-500.0
+	at com.mpos.lottery.te.merchant.service.impl.DefaultCreditService.assembleCreditBalance(DefaultCreditService.java:599)
+	at com.mpos.lottery.te.merchant.service.impl.DefaultCreditService.transferCredit(DefaultCreditService.java:225)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy59.transferCredit(Unknown Source)
+	at com.mpos.lottery.te.merchant.MerchantController.transferCredit(MerchantController.java:43)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.merchant.CreditTransferIntegrationTest.testTransferCashoutCredit_Operator_UseParent(CreditTransferIntegrationTest.java:381)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:51,294][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831252|Timestamp:20150529171351|Transaction-Type:4116|Transaction-Id:0115052900000000002314|Response-Code:372|):6b1e62b86c6a8bd19eaaaf02bd211d44
+[2015-05-29 17:13:51,294][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=372,length=0): 
+[2015-05-29 17:13:51,304][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:51,304][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:51,304][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@110f94a6) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:51,305][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,305][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,305][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditTransferIntegrationTest.testTransferPayoutCredit_Operator_UseParent                                              |
+[2015-05-29 17:13:51,305][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,311][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,311][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.merchant.web.CreditTransferDto, mappingFile=xml-mapping/CreditTransfer_Req.xml).
+[2015-05-29 17:13:51,312][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831311|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="2" amount="500"/>,hash=-1256398524), get digest:d2238b4d0e8ca9fd16dfb110790da124
+[2015-05-29 17:13:51,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=116).
+[2015-05-29 17:13:51,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:51,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171351).
+[2015-05-29 17:13:51,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:51,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890831311).
+[2015-05-29 17:13:51,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:51,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:51,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=d2238b4d0e8ca9fd16dfb110790da124).
+[2015-05-29 17:13:51,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:13:51,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:51,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:51,315][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6jI0L4oIzAEMqe8dW26na21aa7l/DnYGq8bZRRkB06JgU5/TnyrZTOdC6oRNKAEruaE9CNHiEKOUi68bC2ifMqYBvdT5GJTz2D1nD1zh192sAlBYcIWAsPPERGNlmKgbrpg3TIB59e3Nw3iZGggse3On7wcdABSriw==.
+[2015-05-29 17:13:51,315][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831311|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:51,315][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="2" amount="500"/>
+[2015-05-29 17:13:51,316][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831311|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="2" amount="500"/>,hash=-1256398524), get digest:d2238b4d0e8ca9fd16dfb110790da124
+[2015-05-29 17:13:51,316][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,316][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/CreditTransfer_Req.xml
+[2015-05-29 17:13:51,316][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,327][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_1.5.0).
+[2015-05-29 17:13:51,327][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_).
+[2015-05-29 17:13:51,327][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_116_), found controller(com.mpos.lottery.te.merchant.MerchantController@720798ee) and method(public void com.mpos.lottery.te.merchant.MerchantController.transferCredit(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:51,348][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant
+[2015-05-29 17:13:51,351][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Merchant [id=111, name=M-111, saleCreditLevel=100000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:100000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,352][Test worker][DEBUG][DefaultCreditService] The new payout credit level of merchantMerchant [id=111, name=M-111, saleCreditLevel=100000000, payoutCreditLevel=500, creditType=1, cashoutBalance=0, commisionBalance=0] is 500
+[2015-05-29 17:13:51,352][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type of Operator [id=OPERATOR-112, loginName=OPERATOR-LOGIN-2, creditType=4, saleCreditLevel=2000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant
+[2015-05-29 17:13:51,358][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Merchant [id=112, name=M-112, saleCreditLevel=110000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:110000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,358][Test worker][DEBUG][DefaultCreditService] The new payout credit level of merchantMerchant [id=112, name=M-112, saleCreditLevel=110000000, payoutCreditLevel=1500, creditType=1, cashoutBalance=0, commisionBalance=0] is 1500
+[2015-05-29 17:13:51,379][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(TRANSFER_CREDIT)
+[2015-05-29 17:13:51,379][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Res.xml) by key(transtype.4116).
+[2015-05-29 17:13:51,379][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.merchant.web.CreditTransferDto),mappingFile=xml-mapping/CreditTransfer_Res.xml
+[2015-05-29 17:13:51,379][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Res.xml) by key(transtype.4116).
+[2015-05-29 17:13:51,380][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.merchant.web.CreditTransferDto, mappingFile=xml-mapping/CreditTransfer_Res.xml).
+[2015-05-29 17:13:51,380][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831311|Timestamp:20150529171351|Transaction-Type:4116|Transaction-Id:0115052900000000002316|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Credit creditType="2" amount="500" creditBalanceOfFromOperator="500" creditBalanceOfToOperator="1500"/>):37d757350b21cf6e72091dcf127f7a25
+[2015-05-29 17:13:51,380][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=192) succesfully.
+[2015-05-29 17:13:51,381][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=192): <?xml version="1.0" encoding="UTF-8"?>
+<Credit creditType="2" amount="500" creditBalanceOfFromOperator="500" creditBalanceOfToOperator="1500"/>
+[2015-05-29 17:13:51,381][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Res.xml) by key(transtype.4116).
+[2015-05-29 17:13:51,394][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:51,394][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:51,394][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@54c1f582) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:51,395][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,395][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,395][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditTransferIntegrationTest.testTransferSaleCredit_Operator_UseParent                                                |
+[2015-05-29 17:13:51,395][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,402][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,403][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.merchant.web.CreditTransferDto, mappingFile=xml-mapping/CreditTransfer_Req.xml).
+[2015-05-29 17:13:51,403][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831401|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="1" amount="500"/>,hash=175443173), get digest:610b17c4c6a7ac071c8773685aa92d0c
+[2015-05-29 17:13:51,403][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=116).
+[2015-05-29 17:13:51,403][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:51,403][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171351).
+[2015-05-29 17:13:51,404][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:51,404][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890831401).
+[2015-05-29 17:13:51,404][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:51,404][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:51,404][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=610b17c4c6a7ac071c8773685aa92d0c).
+[2015-05-29 17:13:51,404][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:13:51,404][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:51,404][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:51,405][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6jI0L4oIzAEMqe8dW26na21aa7l/DnYGq8bZRRkB06JgU5/TnyrZTOdC6oRNKAEruaE9CNHiEKOUi68bC2ifMqYBvdT5GJTz2D1nD1zh192sAlBYcIWAsPPERGNlmKgbrl+Gn2aAxgnNt95rYs7lGgeHrsfqAQxd0w==.
+[2015-05-29 17:13:51,405][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831401|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:51,406][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="1" amount="500"/>
+[2015-05-29 17:13:51,406][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831401|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="1" amount="500"/>,hash=175443173), get digest:610b17c4c6a7ac071c8773685aa92d0c
+[2015-05-29 17:13:51,406][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,406][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/CreditTransfer_Req.xml
+[2015-05-29 17:13:51,406][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,419][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_1.5.0).
+[2015-05-29 17:13:51,419][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_).
+[2015-05-29 17:13:51,419][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_116_), found controller(com.mpos.lottery.te.merchant.MerchantController@720798ee) and method(public void com.mpos.lottery.te.merchant.MerchantController.transferCredit(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:51,435][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant
+[2015-05-29 17:13:51,438][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Merchant [id=111, name=M-111, saleCreditLevel=100000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:100000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,438][Test worker][DEBUG][DefaultCreditService] The new sale credit level of merchantMerchant [id=111, name=M-111, saleCreditLevel=99999500, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is 99999500
+[2015-05-29 17:13:51,438][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type of Operator [id=OPERATOR-112, loginName=OPERATOR-LOGIN-2, creditType=4, saleCreditLevel=2000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant
+[2015-05-29 17:13:51,443][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Merchant [id=112, name=M-112, saleCreditLevel=110000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:110000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,443][Test worker][DEBUG][DefaultCreditService] The new sale credit level of merchantMerchant [id=112, name=M-112, saleCreditLevel=110000500, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is 110000500
+[2015-05-29 17:13:51,463][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(TRANSFER_CREDIT)
+[2015-05-29 17:13:51,463][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Res.xml) by key(transtype.4116).
+[2015-05-29 17:13:51,463][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.merchant.web.CreditTransferDto),mappingFile=xml-mapping/CreditTransfer_Res.xml
+[2015-05-29 17:13:51,463][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Res.xml) by key(transtype.4116).
+[2015-05-29 17:13:51,463][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.merchant.web.CreditTransferDto, mappingFile=xml-mapping/CreditTransfer_Res.xml).
+[2015-05-29 17:13:51,464][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831401|Timestamp:20150529171351|Transaction-Type:4116|Transaction-Id:0115052900000000002318|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Credit creditType="1" amount="500" creditBalanceOfFromOperator="99999500" creditBalanceOfToOperator="110000500"/>):d4dce285561ccb3413eae6ab1dc650cc
+[2015-05-29 17:13:51,464][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=216) succesfully.
+[2015-05-29 17:13:51,464][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=216): <?xml version="1.0" encoding="UTF-8"?>
+<Credit creditType="1" amount="500" creditBalanceOfFromOperator="99999500" creditBalanceOfToOperator="110000500"/>
+[2015-05-29 17:13:51,464][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Res.xml) by key(transtype.4116).
+[2015-05-29 17:13:51,473][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:51,473][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:51,473][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@6748a0a2) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:51,473][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,474][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,474][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditTransferIntegrationTest.testTransferCommissionCredit_Operator_UseParent                                          |
+[2015-05-29 17:13:51,474][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,480][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,480][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.merchant.web.CreditTransferDto, mappingFile=xml-mapping/CreditTransfer_Req.xml).
+[2015-05-29 17:13:51,481][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831479|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="3" amount="500"/>,hash=-1986003768), get digest:9fb2c1f34a329a956d5e7f23ed40c483
+[2015-05-29 17:13:51,481][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=116).
+[2015-05-29 17:13:51,481][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:51,481][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171351).
+[2015-05-29 17:13:51,481][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:51,481][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890831479).
+[2015-05-29 17:13:51,481][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:51,481][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:51,481][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=9fb2c1f34a329a956d5e7f23ed40c483).
+[2015-05-29 17:13:51,481][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:13:51,481][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:51,481][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:51,483][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6jI0L4oIzAEMqe8dW26na21aa7l/DnYGq8bZRRkB06JgU5/TnyrZTOdC6oRNKAEruaE9CNHiEKOUi68bC2ifMqYBvdT5GJTz2D1nD1zh192sAlBYcIWAsPPERGNlmKgbrh2Q7HsmfvLosCMSJKy1BYRmLCesma0A8g==.
+[2015-05-29 17:13:51,483][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831479|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:51,484][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="3" amount="500"/>
+[2015-05-29 17:13:51,484][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831479|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="3" amount="500"/>,hash=-1986003768), get digest:9fb2c1f34a329a956d5e7f23ed40c483
+[2015-05-29 17:13:51,484][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,484][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/CreditTransfer_Req.xml
+[2015-05-29 17:13:51,484][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,495][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_1.5.0).
+[2015-05-29 17:13:51,495][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_).
+[2015-05-29 17:13:51,495][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_116_), found controller(com.mpos.lottery.te.merchant.MerchantController@720798ee) and method(public void com.mpos.lottery.te.merchant.MerchantController.transferCredit(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:51,508][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=4, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant
+[2015-05-29 17:13:51,510][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Merchant [id=111, name=M-111, saleCreditLevel=100000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:100000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,511][Test worker][DEBUG][DefaultCreditService] The new commission credit level of merchantMerchant [id=111, name=M-111, saleCreditLevel=100000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=-500] is -500
+[2015-05-29 17:13:51,511][Test worker][DEBUG][DefaultCreditService] Ignore credit level calculation, as the credit type of Operator [id=OPERATOR-112, loginName=OPERATOR-LOGIN-2, creditType=4, saleCreditLevel=2000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0] is USE PARENT... check its parent merchant
+[2015-05-29 17:13:51,515][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Merchant [id=112, name=M-112, saleCreditLevel=110000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:110000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,515][Test worker][DEBUG][DefaultCreditService] The new commission credit level of merchantMerchant [id=112, name=M-112, saleCreditLevel=110000000, payoutCreditLevel=1000, creditType=1, cashoutBalance=0, commisionBalance=500] is 500
+[2015-05-29 17:13:51,517][Test worker][ERROR][TEPortServlet] Credit transfer login name(OPERATOR-LOGIN insufficient balance).-500.0
+com.mpos.lottery.te.config.exception.ApplicationException: Credit transfer login name(OPERATOR-LOGIN insufficient balance).-500.0
+	at com.mpos.lottery.te.merchant.service.impl.DefaultCreditService.assembleCreditBalance(DefaultCreditService.java:599)
+	at com.mpos.lottery.te.merchant.service.impl.DefaultCreditService.transferCredit(DefaultCreditService.java:225)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy59.transferCredit(Unknown Source)
+	at com.mpos.lottery.te.merchant.MerchantController.transferCredit(MerchantController.java:43)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.merchant.CreditTransferIntegrationTest.testTransferCommissionCredit_Operator_UseParent(CreditTransferIntegrationTest.java:312)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:51,518][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831479|Timestamp:20150529171351|Transaction-Type:4116|Transaction-Id:0115052900000000002320|Response-Code:372|):8818212190a6193621ee54838b47e420
+[2015-05-29 17:13:51,518][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=372,length=0): 
+[2015-05-29 17:13:51,526][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:51,526][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:51,526][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@2196081a) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:51,527][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,527][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,527][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditTransferIntegrationTest.testTransferPayoutCredit_Operator_ExceedsLimit                                           |
+[2015-05-29 17:13:51,527][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,533][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,533][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.merchant.web.CreditTransferDto, mappingFile=xml-mapping/CreditTransfer_Req.xml).
+[2015-05-29 17:13:51,534][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831533|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="2" amount="1001"/>,hash=1004159975), get digest:8eeb25cef1995adbb1778188c900edd5
+[2015-05-29 17:13:51,534][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=116).
+[2015-05-29 17:13:51,534][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:51,534][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171351).
+[2015-05-29 17:13:51,534][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:51,534][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890831533).
+[2015-05-29 17:13:51,534][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:51,534][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:51,534][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=8eeb25cef1995adbb1778188c900edd5).
+[2015-05-29 17:13:51,534][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:13:51,534][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:51,534][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:51,536][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6jI0L4oIzAEMqe8dW26na21aa7l/DnYGq8bZRRkB06JgU5/TnyrZTOdC6oRNKAEruaE9CNHiEKOUi68bC2ifMqYBvdT5GJTz2D1nD1zh192sAlBYcIWAsPPERGNlmKgbrpg3TIB59e3N0skjN8Xu0SbOyPMc9iUGMg==.
+[2015-05-29 17:13:51,536][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831533|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:51,536][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="2" amount="1001"/>
+[2015-05-29 17:13:51,537][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831533|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="2" amount="1001"/>,hash=1004159975), get digest:8eeb25cef1995adbb1778188c900edd5
+[2015-05-29 17:13:51,537][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,537][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/CreditTransfer_Req.xml
+[2015-05-29 17:13:51,537][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,547][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_1.5.0).
+[2015-05-29 17:13:51,547][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_).
+[2015-05-29 17:13:51,547][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_116_), found controller(com.mpos.lottery.te.merchant.MerchantController@720798ee) and method(public void com.mpos.lottery.te.merchant.MerchantController.transferCredit(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:51,562][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=-999, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:-999
+[2015-05-29 17:13:51,562][Test worker][DEBUG][DefaultCreditService] The new payout credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=-2000, cashoutBalance=0, commisionBalance=0] is -2000
+[2015-05-29 17:13:51,564][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-112, loginName=OPERATOR-LOGIN-2, creditType=1, saleCreditLevel=2000, payoutCreditLevel=-999, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:2000,payoutCreditLevel:-999
+[2015-05-29 17:13:51,564][Test worker][DEBUG][DefaultCreditService] The new payout credit level of Operator [id=OPERATOR-112, loginName=OPERATOR-LOGIN-2, creditType=1, saleCreditLevel=2000, payoutCreditLevel=2, cashoutBalance=0, commisionBalance=0] is 2
+[2015-05-29 17:13:51,567][Test worker][ERROR][TEPortServlet] Credit transfer login name(OPERATOR-LOGIN insufficient balance).-2000.0
+com.mpos.lottery.te.config.exception.ApplicationException: Credit transfer login name(OPERATOR-LOGIN insufficient balance).-2000.0
+	at com.mpos.lottery.te.merchant.service.impl.DefaultCreditService.assembleCreditBalance(DefaultCreditService.java:599)
+	at com.mpos.lottery.te.merchant.service.impl.DefaultCreditService.transferCredit(DefaultCreditService.java:225)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy59.transferCredit(Unknown Source)
+	at com.mpos.lottery.te.merchant.MerchantController.transferCredit(MerchantController.java:43)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.merchant.CreditTransferIntegrationTest.testTransferPayoutCredit_Operator_ExceedsLimit(CreditTransferIntegrationTest.java:236)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:51,568][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831533|Timestamp:20150529171351|Transaction-Type:4116|Transaction-Id:0115052900000000002322|Response-Code:372|):f33b8f690400d434592c5d8fc5c635c3
+[2015-05-29 17:13:51,568][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=372,length=0): 
+[2015-05-29 17:13:51,575][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:51,576][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:51,576][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@274a64b6) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:51,576][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:51,577][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,577][Test worker][INFO ][BaseTransactionalIntegrationTest] | CreditTransferIntegrationTest.testTransferCashoutCredit_Operator                                                       |
+[2015-05-29 17:13:51,577][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:51,585][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,586][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.merchant.web.CreditTransferDto, mappingFile=xml-mapping/CreditTransfer_Req.xml).
+[2015-05-29 17:13:51,586][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831585|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="4" amount="500"/>,hash=-915852635), get digest:ce1bcc4ba33150896b43018b89e18664
+[2015-05-29 17:13:51,586][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=116).
+[2015-05-29 17:13:51,586][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:51,586][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171351).
+[2015-05-29 17:13:51,586][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:51,586][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890831585).
+[2015-05-29 17:13:51,586][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:51,586][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:51,586][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=ce1bcc4ba33150896b43018b89e18664).
+[2015-05-29 17:13:51,586][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:13:51,586][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:51,586][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:51,589][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6jI0L4oIzAEMqe8dW26na21aa7l/DnYGq8bZRRkB06JgU5/TnyrZTOdC6oRNKAEruaE9CNHiEKOUi68bC2ifMqYBvdT5GJTz2D1nD1zh192sAlBYcIWAsPPERGNlmKgbrjRjPl7QS0wF2UsfHN7NZ001PSG82GZ+bQ==.
+[2015-05-29 17:13:51,589][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831585|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:51,589][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="4" amount="500"/>
+[2015-05-29 17:13:51,590][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831585|Timestamp:20150529171351|Transaction-Type:116|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Credit fromOperatorLoginName="OPERATOR-LOGIN" toOperatorLoginName="OPERATOR-LOGIN-2" creditType="4" amount="500"/>,hash=-915852635), get digest:ce1bcc4ba33150896b43018b89e18664
+[2015-05-29 17:13:51,590][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,590][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/CreditTransfer_Req.xml
+[2015-05-29 17:13:51,590][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/CreditTransfer_Req.xml) by key(transtype.116).
+[2015-05-29 17:13:51,599][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_1.5.0).
+[2015-05-29 17:13:51,599][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_116_).
+[2015-05-29 17:13:51,599][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_116_), found controller(com.mpos.lottery.te.merchant.MerchantController@720798ee) and method(public void com.mpos.lottery.te.merchant.MerchantController.transferCredit(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:51,614][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:51,614][Test worker][DEBUG][DefaultCreditService] The new cashout credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=-500, commisionBalance=0] is -500
+[2015-05-29 17:13:51,616][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-112, loginName=OPERATOR-LOGIN-2, creditType=1, saleCreditLevel=2000, payoutCreditLevel=2000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:2000,payoutCreditLevel:2000
+[2015-05-29 17:13:51,616][Test worker][DEBUG][DefaultCreditService] The new cashout credit level of Operator [id=OPERATOR-112, loginName=OPERATOR-LOGIN-2, creditType=1, saleCreditLevel=2000, payoutCreditLevel=2000, cashoutBalance=500, commisionBalance=0] is 500
+[2015-05-29 17:13:51,619][Test worker][ERROR][TEPortServlet] Credit transfer login name(OPERATOR-LOGIN insufficient balance).-500.0
+com.mpos.lottery.te.config.exception.ApplicationException: Credit transfer login name(OPERATOR-LOGIN insufficient balance).-500.0
+	at com.mpos.lottery.te.merchant.service.impl.DefaultCreditService.assembleCreditBalance(DefaultCreditService.java:599)
+	at com.mpos.lottery.te.merchant.service.impl.DefaultCreditService.transferCredit(DefaultCreditService.java:225)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy59.transferCredit(Unknown Source)
+	at com.mpos.lottery.te.merchant.MerchantController.transferCredit(MerchantController.java:43)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.merchant.CreditTransferIntegrationTest.testTransferCashoutCredit_Operator(CreditTransferIntegrationTest.java:346)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:51,620][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890831585|Timestamp:20150529171351|Transaction-Type:4116|Transaction-Id:0115052900000000002324|Response-Code:372|):caec20f28e1dbe23cbc3abb0a348a6f8
+[2015-05-29 17:13:51,620][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=372,length=0): 
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

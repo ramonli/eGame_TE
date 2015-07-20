@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+	<class name="com.mpos.lottery.te.trans.domain.Transaction">
+		<map-to xml="Transaction" />
+
+		<field name="deviceId" type="long" required="true">
+			<bind-xml name="terminalId" node="attribute" />
+		</field>
+		<field name="traceMessageId" type="java.lang.String" required="true">
+			<bind-xml name="traceMessageId" node="attribute" />
+		</field>
+	</class>
+</mapping>

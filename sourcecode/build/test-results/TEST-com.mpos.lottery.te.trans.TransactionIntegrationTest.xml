@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.trans.TransactionIntegrationTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:14:05" hostname="Ramon-PC" time="0.114">
+  <properties/>
+  <testcase name="testEnquiry_airtime" classname="com.mpos.lottery.te.trans.TransactionIntegrationTest" time="0.057"/>
+  <testcase name="testEnquiry" classname="com.mpos.lottery.te.trans.TransactionIntegrationTest" time="0.057"/>
+  <system-out><![CDATA[[2015-05-29 17:14:05,826][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:14:05,826][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:14:05,826][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@29f6aeb9) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:14:05,827][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:14:05,827][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:05,827][Test worker][INFO ][BaseTransactionalIntegrationTest] | TransactionIntegrationTest.testEnquiry_airtime                                                                         |
+[2015-05-29 17:14:05,827][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:05,828][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/TransactionEnquiry_Req.xml) by key(transtype.310).
+[2015-05-29 17:14:05,828][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.trans.domain.Transaction, mappingFile=xml-mapping/TransactionEnquiry_Req.xml).
+[2015-05-29 17:14:05,829][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890845827|Timestamp:20150529171405|Transaction-Type:310|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Transaction terminalId="111" traceMessageId="aritime_msg_1"/>,hash=-1787230524), get digest:05d55ed1349314a8d97e127fd87ad3bc
+[2015-05-29 17:14:05,829][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=310).
+[2015-05-29 17:14:05,829][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:05,829][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171405).
+[2015-05-29 17:14:05,829][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:05,829][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890845827).
+[2015-05-29 17:14:05,829][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:14:05,829][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:14:05,829][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=05d55ed1349314a8d97e127fd87ad3bc).
+[2015-05-29 17:14:05,829][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=1000).
+[2015-05-29 17:14:05,829][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:14:05,829][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:14:05,831][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6jcIE4b0pl+ogrA4SMNVUFtCb0VnctvqFZ4g+Dv1D5Fz4ERoX4gVmzE4IWwWPJ06KMA8tuHoKzKy+HZ5CeaFWtc=.
+[2015-05-29 17:14:05,831][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890845827|Timestamp:20150529171405|Transaction-Type:310|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:05,831][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Transaction terminalId="111" traceMessageId="aritime_msg_1"/>
+[2015-05-29 17:14:05,832][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890845827|Timestamp:20150529171405|Transaction-Type:310|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Transaction terminalId="111" traceMessageId="aritime_msg_1"/>,hash=-1787230524), get digest:05d55ed1349314a8d97e127fd87ad3bc
+[2015-05-29 17:14:05,832][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/TransactionEnquiry_Req.xml) by key(transtype.310).
+[2015-05-29 17:14:05,832][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/TransactionEnquiry_Req.xml
+[2015-05-29 17:14:05,832][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/TransactionEnquiry_Req.xml) by key(transtype.310).
+[2015-05-29 17:14:05,844][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(1000_310_1.5.0).
+[2015-05-29 17:14:05,844][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(1000_310_).
+[2015-05-29 17:14:05,844][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_310_).
+[2015-05-29 17:14:05,844][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_310_), found controller(com.mpos.lottery.te.trans.TransactionController@53ddecd8) and method(public void com.mpos.lottery.te.trans.TransactionController.enquiry(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:05,848][Test worker][DEBUG][TransactionHandleFactory] Found TransactionHandleFactory(com.mpos.lottery.te.valueaddservice.airtime.support.AirtimeTransactionHandle@12429d21) for transaction handle 1000
+[2015-05-29 17:14:05,855][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(TRANSACTION_ENQUIRY)
+[2015-05-29 17:14:05,855][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vas/airtime/TransactionEnquiry_Res.xml) by key(1000.transtype.4310).
+[2015-05-29 17:14:05,855][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.trans.domain.Transaction),mappingFile=xml-mapping/vas/airtime/TransactionEnquiry_Res.xml
+[2015-05-29 17:14:05,855][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vas/airtime/TransactionEnquiry_Res.xml) by key(1000.transtype.4310).
+[2015-05-29 17:14:05,870][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.trans.domain.Transaction, mappingFile=xml-mapping/vas/airtime/TransactionEnquiry_Res.xml).
+[2015-05-29 17:14:05,870][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890845827|Timestamp:20150529171405|Transaction-Type:4310|Transaction-Id:0115052900000000002358|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Transaction id="TRANS-AIRTIME-1111" type="455" createTime="20150529171217" responseCode="200"><AirtimeTopup mobile="13128988419" amount="100" status="1"><Game id="AIRTIME-1"/></AirtimeTopup></Transaction>):516132320fb1509cd55dc3e95f54bbf8
+[2015-05-29 17:14:05,871][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=332) succesfully.
+[2015-05-29 17:14:05,871][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=332): <?xml version="1.0" encoding="UTF-8"?>
+<Transaction id="TRANS-AIRTIME-1111" type="455" createTime="20150529171217" responseCode="200"><AirtimeTopup mobile="13128988419" amount="100" status="1"><Game id="AIRTIME-1"/></AirtimeTopup></Transaction>
+[2015-05-29 17:14:05,871][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/vas/airtime/TransactionEnquiry_Res.xml) by key(1000.transtype.4310).
+[2015-05-29 17:14:05,879][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:14:05,879][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:14:05,880][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@353db862) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:14:05,880][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:14:05,880][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:05,880][Test worker][INFO ][BaseTransactionalIntegrationTest] | TransactionIntegrationTest.testEnquiry                                                                                 |
+[2015-05-29 17:14:05,880][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:14:05,880][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/TransactionEnquiry_Req.xml) by key(transtype.310).
+[2015-05-29 17:14:05,881][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.trans.domain.Transaction, mappingFile=xml-mapping/TransactionEnquiry_Req.xml).
+[2015-05-29 17:14:05,881][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890845880|Timestamp:20150529171405|Transaction-Type:310|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Transaction terminalId="111" traceMessageId="TMI-111"/>,hash=-2134747210), get digest:e2c41ed8744bd0795b7901f50de6e5a7
+[2015-05-29 17:14:05,881][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=310).
+[2015-05-29 17:14:05,881][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:14:05,881][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171405).
+[2015-05-29 17:14:05,882][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:14:05,882][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890845880).
+[2015-05-29 17:14:05,882][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:14:05,882][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:14:05,882][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=e2c41ed8744bd0795b7901f50de6e5a7).
+[2015-05-29 17:14:05,882][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=-1).
+[2015-05-29 17:14:05,882][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:14:05,882][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:14:05,883][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6jcIE4b0pl+ogrA4SMNVUFtCb0VnctvqFZ4g+Dv1D5Fz4ERoX4gVmzFejaWULHbGtBmZS4E23EeN.
+[2015-05-29 17:14:05,883][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890845880|Timestamp:20150529171405|Transaction-Type:310|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:14:05,884][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Transaction terminalId="111" traceMessageId="TMI-111"/>
+[2015-05-29 17:14:05,884][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890845880|Timestamp:20150529171405|Transaction-Type:310|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Transaction terminalId="111" traceMessageId="TMI-111"/>,hash=-2134747210), get digest:e2c41ed8744bd0795b7901f50de6e5a7
+[2015-05-29 17:14:05,884][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/TransactionEnquiry_Req.xml) by key(transtype.310).
+[2015-05-29 17:14:05,884][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/TransactionEnquiry_Req.xml
+[2015-05-29 17:14:05,884][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/TransactionEnquiry_Req.xml) by key(transtype.310).
+[2015-05-29 17:14:05,896][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_310_1.5.0).
+[2015-05-29 17:14:05,896][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(-1_310_).
+[2015-05-29 17:14:05,896][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(-1_310_), found controller(com.mpos.lottery.te.trans.TransactionController@53ddecd8) and method(public void com.mpos.lottery.te.trans.TransactionController.enquiry(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:14:05,901][Test worker][DEBUG][TransactionServiceImpl] Found TicketEnquiryService[com.mpos.lottery.te.gameimpl.lotto.sale.service.impl.LottoTicketServiceImpl@1b63da3b] for ticket enquiry.
+[2015-05-29 17:14:05,921][Test worker][DEBUG][CommonFacadeService] No need to publish AMQP message of transaction(TRANSACTION_ENQUIRY)
+[2015-05-29 17:14:05,921][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lotto/TransactionEnquiry_Res.xml) by key(1.transtype.4310).
+[2015-05-29 17:14:05,921][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.trans.domain.Transaction),mappingFile=xml-mapping/game/lotto/TransactionEnquiry_Res.xml
+[2015-05-29 17:14:05,921][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lotto/TransactionEnquiry_Res.xml) by key(1.transtype.4310).
+[2015-05-29 17:14:05,922][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.trans.domain.Transaction, mappingFile=xml-mapping/game/lotto/TransactionEnquiry_Res.xml).
+[2015-05-29 17:14:05,922][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890845880|Timestamp:20150529171405|Transaction-Type:4310|Transaction-Id:0115052900000000002359|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Transaction id="TRANS-111" type="200" createTime="20150529171214" responseCode="200"><Ticket barcode="01cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt/ITKo3ngns+4pjWl52Uuv1" validationCode="111111" multipleDraws="3" totalBets="3" totalAmount="7500.3" serialNo="S-123456" type="1" lastDrawNo="20090408" status="1"><GameDraw number="20090401" gameId="GAME-111"/><Entry selectedNumber="1,2,3,4,5,6" betOption="1" inputChannel="0" entryAmount="100" boostAmount="50"/><Entry selectedNumber="1,2,3,4,5,6,7" betOption="2" inputChannel="0" entryAmount="100"/><Entry selectedNumber="1,2,3,4,5" betOption="3" inputChannel="0" entryAmount="100"/></Ticket></Transaction>):11bfd3b911b6d14399f2d4208ab2cefd
+[2015-05-29 17:14:05,922][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=928) succesfully.
+[2015-05-29 17:14:05,923][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=928): <?xml version="1.0" encoding="UTF-8"?>
+<Transaction id="TRANS-111" type="200" createTime="20150529171214" responseCode="200"><Ticket barcode="01cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt/ITKo3ngns+4pjWl52Uuv1" validationCode="111111" multipleDraws="3" totalBets="3" totalAmount="7500.3" serialNo="S-123456" type="1" lastDrawNo="20090408" status="1"><GameDraw number="20090401" gameId="GAME-111"/><Entry selectedNumber="1,2,3,4,5,6" betOption="1" inputChannel="0" entryAmount="100" boostAmount="50"/><Entry selectedNumber="1,2,3,4,5,6,7" betOption="2" inputChannel="0" entryAmount="100"/><Entry selectedNumber="1,2,3,4,5" betOption="3" inputChannel="0" entryAmount="100"/></Ticket></Transaction>
+[2015-05-29 17:14:05,923][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lotto/TransactionEnquiry_Res.xml) by key(1.transtype.4310).
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

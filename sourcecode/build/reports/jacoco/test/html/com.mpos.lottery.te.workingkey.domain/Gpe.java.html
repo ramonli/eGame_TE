@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Gpe.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.workingkey.domain</a> &gt; <span class="el_source">Gpe.java</span></div><h1>Gpe.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.workingkey.domain;
+
+import com.mpos.lottery.te.common.dao.VersionEntity;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = &quot;GPE&quot;)
+<span class="fc" id="L12">public class Gpe extends VersionEntity {</span>
+    private static final long serialVersionUID = -6359142296385016348L;
+    public static final int TYPE_IGPE = BaseTicket.TICKET_FROM_POS;
+    // public static final int TYPE_HGPE = 2;
+    public static final int TYPE_WGPESMS = BaseTicket.TICKET_FROM_WGPESMS;
+    public static final int TYPE_SGPE = BaseTicket.TICKET_FROM_SGPE;
+    public static final int TYPE_MGPE = BaseTicket.TICKET_FROM_MGPE;
+    public static final int TYPE_WGPEPOS = BaseTicket.TICKET_FROM_WGPEPOS;
+    public static final int TYPE_TGPE = BaseTicket.TICKET_FROM_TGPE;
+
+    @Column(name = &quot;IP_SOURCE&quot;)
+    private String ipSource;
+
+    @Column(name = &quot;TYPE&quot;)
+    private int type;
+
+    @Column(name = &quot;DESCRIPTION&quot;)
+    private String desc;
+
+    public String getIpSource() {
+<span class="nc" id="L32">        return ipSource;</span>
+    }
+
+    public void setIpSource(String ipSource) {
+<span class="nc" id="L36">        this.ipSource = ipSource;</span>
+<span class="nc" id="L37">    }</span>
+
+    public int getType() {
+<span class="fc" id="L40">        return type;</span>
+    }
+
+    public void setType(int type) {
+<span class="fc" id="L44">        this.type = type;</span>
+<span class="fc" id="L45">    }</span>
+
+    public String getDesc() {
+<span class="nc" id="L48">        return desc;</span>
+    }
+
+    public void setDesc(String desc) {
+<span class="nc" id="L52">        this.desc = desc;</span>
+<span class="nc" id="L53">    }</span>
+
+    /**
+     * Simple return the type of GPE.
+     */
+    public int getTicketFrom() {
+        // int ticketFrom = -1;
+        // switch (this.type) {
+        // case TYPE_IGPE :
+        // ticketFrom = BaseTicket.TICKET_FROM_POS;
+        // break;
+        // case TYPE_SGPE :
+        // ticketFrom = BaseTicket.TICKET_FROM_SGPE;
+        // break;
+        // case TYPE_WGPESMS :
+        // ticketFrom = BaseTicket.TICKET_FROM_WGPESMS;
+        // break;
+        // case TYPE_MGPE :
+        // ticketFrom = BaseTicket.TICKET_FROM_MGPE;
+        // break;
+        // case TYPE_WGPEPOS :
+        // ticketFrom = BaseTicket.TICKET_FROM_WGPEPOS;
+        // break;
+        // default :
+        // throw new SystemException(&quot;Unsupport gpe type:&quot; + this.type);
+        // }
+        // return ticketFrom;
+<span class="fc" id="L80">        return this.type;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

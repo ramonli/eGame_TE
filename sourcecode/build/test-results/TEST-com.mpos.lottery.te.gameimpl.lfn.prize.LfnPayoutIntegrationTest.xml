@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.gameimpl.lfn.prize.LfnPayoutIntegrationTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:11" hostname="Ramon-PC" time="0.714">
+  <properties/>
+  <testcase name="testPayout_TaxOnWinnerAnalysis_Refund_SingleDraw_OK" classname="com.mpos.lottery.te.gameimpl.lfn.prize.LfnPayoutIntegrationTest" time="0.129"/>
+  <testcase name="testPayout_TaxOnPayout_BasedPerTicket_NewPrint_MultiDraw_LuckyDraw_OK" classname="com.mpos.lottery.te.gameimpl.lfn.prize.LfnPayoutIntegrationTest" time="0.194"/>
+  <testcase name="testPayout_TaxOnWinnerAnalysis_NewPrint_SingleDraw_OK" classname="com.mpos.lottery.te.gameimpl.lfn.prize.LfnPayoutIntegrationTest" time="0.132"/>
+  <testcase name="testPayout_TaxOnWinnerAnalysis_NewPrint_MultiDraw_OK" classname="com.mpos.lottery.te.gameimpl.lfn.prize.LfnPayoutIntegrationTest" time="0.151"/>
+  <testcase name="testPayout_TaxOnWinnerAnalysis_Refund_MultiDraw_OK" classname="com.mpos.lottery.te.gameimpl.lfn.prize.LfnPayoutIntegrationTest" time="0.107"/>
+  <system-out><![CDATA[[2015-05-29 17:13:11,708][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:11,709][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:11,709][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@15aeccfa) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:11,709][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:11,709][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:11,710][Test worker][INFO ][BaseTransactionalIntegrationTest] | LfnPayoutIntegrationTest.testPayout_TaxOnWinnerAnalysis_Refund_SingleDraw_OK                                           |
+[2015-05-29 17:13:11,710][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:11,722][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Req.xml) by key(15.transtype.302).
+[2015-05-29 17:13:11,722][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.lfn.sale.LfnTicket, mappingFile=xml-mapping/game/lfn/Payout_Req.xml).
+[2015-05-29 17:13:11,723][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890791721|Timestamp:20150529171311|Transaction-Type:302|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="S-123456" PIN="!!!!" inputChannel="0" validationCode="111111"/>,hash=-1707347272), get digest:4c170a1cc4b35ce8b88996dfb6de3217
+[2015-05-29 17:13:11,723][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=302).
+[2015-05-29 17:13:11,723][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:11,723][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171311).
+[2015-05-29 17:13:11,723][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:11,723][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890791721).
+[2015-05-29 17:13:11,723][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:11,723][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:11,723][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=4c170a1cc4b35ce8b88996dfb6de3217).
+[2015-05-29 17:13:11,723][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=15).
+[2015-05-29 17:13:11,723][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:11,723][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:11,725][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6ttFDFcpmi1MamgAomcAmY7ZtCcdDkhkRjtWjJyr8M54qqocann+KX7wRQCJ+AVoh//FhwE0rPzDh4N+kLsFhN615HbJEdNjFzRoentVKsAF4tqrfpt77Xc=.
+[2015-05-29 17:13:11,726][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890791721|Timestamp:20150529171311|Transaction-Type:302|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:11,726][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="S-123456" PIN="!!!!" inputChannel="0" validationCode="111111"/>
+[2015-05-29 17:13:11,726][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890791721|Timestamp:20150529171311|Transaction-Type:302|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="S-123456" PIN="!!!!" inputChannel="0" validationCode="111111"/>,hash=-1707347272), get digest:4c170a1cc4b35ce8b88996dfb6de3217
+[2015-05-29 17:13:11,726][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Req.xml) by key(15.transtype.302).
+[2015-05-29 17:13:11,726][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/lfn/Payout_Req.xml
+[2015-05-29 17:13:11,726][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Req.xml) by key(15.transtype.302).
+[2015-05-29 17:13:11,744][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_302_1.5.0).
+[2015-05-29 17:13:11,744][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_302_).
+[2015-05-29 17:13:11,744][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(15_302_), found controller(com.mpos.lottery.te.gameimpl.lfn.LfnController@444e8ac1) and method(public void com.mpos.lottery.te.gameimpl.lfn.LfnController.payout(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:11,762][Test worker][DEBUG][AbstractPrizeService] Handle winnings of lucky draw of ticket(serialNo:9pkxn/npytVqVbOF5fPlsg==), total 0 winning items found.
+[2015-05-29 17:13:11,770][Test worker][DEBUG][MerchantServiceImpl] Use the payout-limit setting(max=10000000,min=100) of Operator(Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]) to verify payout limit.
+[2015-05-29 17:13:11,770][Test worker][DEBUG][DefaultPayoutStrategyFactory] Usage payout strategy(com.mpos.lottery.te.gamespec.prize.support.payoutstrategy.RefundPayoutStrategy@71b3f9c) for payout mode:0
+[2015-05-29 17:13:11,777][Test worker][DEBUG][DefaultCreditService] Calculate commssion for (merchant=111 +operator=OPERATOR-111,gameId=LFN-1,commType=1,commRate=0.1) 
+[2015-05-29 17:13:11,789][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:11,789][Test worker][DEBUG][DefaultCreditService] The new payout credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=23200, cashoutBalance=0, commisionBalance=2220.000000] is 23200
+[2015-05-29 17:13:11,799][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.302] with routing key[TE.302.15]: id: "0115052900000000000491"
+dev_id: "111"
+operator_id: "OPERATOR-111"
+merchant_id: "111"
+create_time: 1432890791000
+trans_type: 302
+game_id: "LFN-1"
+game_type: 15
+total_amount: "22200"
+
+[2015-05-29 17:13:11,800][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:11,800][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Res.xml) by key(15.transtype.4302).
+[2015-05-29 17:13:11,800][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gamespec.prize.web.PrizeDto),mappingFile=xml-mapping/game/lfn/Payout_Res.xml
+[2015-05-29 17:13:11,800][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Res.xml) by key(15.transtype.4302).
+[2015-05-29 17:13:11,801][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gamespec.prize.web.PrizeDto, mappingFile=xml-mapping/game/lfn/Payout_Res.xml).
+[2015-05-29 17:13:11,801][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890791721|Timestamp:20150529171311|Transaction-Type:4302|Transaction-Id:0115052900000000000491|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Payout returnAmount="0" luckyAmount="0" prizeAmount="24400" taxAmount="2200" actualAmount="22200" mode="0"/>):506f8fd047ffab71193671672d56956e
+[2015-05-29 17:13:11,802][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=204) succesfully.
+[2015-05-29 17:13:11,802][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=204): <?xml version="1.0" encoding="UTF-8"?>
+<Payout returnAmount="0" luckyAmount="0" prizeAmount="24400" taxAmount="2200" actualAmount="22200" mode="0"/>
+[2015-05-29 17:13:11,802][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Res.xml) by key(15.transtype.4302).
+[2015-05-29 17:13:11,826][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:11,826][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:11,827][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@54e7709e) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:11,827][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:11,827][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:11,827][Test worker][INFO ][BaseTransactionalIntegrationTest] | LfnPayoutIntegrationTest.testPayout_TaxOnPayout_BasedPerTicket_NewPrint_MultiDraw_LuckyDraw_OK                         |
+[2015-05-29 17:13:11,827][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:11,838][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Req.xml) by key(15.transtype.302).
+[2015-05-29 17:13:11,838][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.lfn.sale.LfnTicket, mappingFile=xml-mapping/game/lfn/Payout_Req.xml).
+[2015-05-29 17:13:11,839][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890791838|Timestamp:20150529171311|Transaction-Type:302|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="S-123456" PIN="!!!!" inputChannel="0" validationCode="111111"/>,hash=556991839), get digest:799f6eb952f42431fa3504573c188516
+[2015-05-29 17:13:11,840][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=302).
+[2015-05-29 17:13:11,840][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:11,840][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171311).
+[2015-05-29 17:13:11,840][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:11,840][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890791838).
+[2015-05-29 17:13:11,840][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:11,840][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:11,840][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=799f6eb952f42431fa3504573c188516).
+[2015-05-29 17:13:11,840][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=15).
+[2015-05-29 17:13:11,840][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:11,841][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:11,843][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6ttFDFcpmi1MamgAomcAmY7ZtCcdDkhkRjtWjJyr8M54qqocann+KX7wRQCJ+AVoh//FhwE0rPzDh4N+kLsFhN615HbJEdNjFzRoentVKsAF4tqrfpt77Xc=.
+[2015-05-29 17:13:11,843][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890791838|Timestamp:20150529171311|Transaction-Type:302|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:11,843][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="S-123456" PIN="!!!!" inputChannel="0" validationCode="111111"/>
+[2015-05-29 17:13:11,844][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890791838|Timestamp:20150529171311|Transaction-Type:302|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="S-123456" PIN="!!!!" inputChannel="0" validationCode="111111"/>,hash=556991839), get digest:799f6eb952f42431fa3504573c188516
+[2015-05-29 17:13:11,844][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Req.xml) by key(15.transtype.302).
+[2015-05-29 17:13:11,844][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/lfn/Payout_Req.xml
+[2015-05-29 17:13:11,844][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Req.xml) by key(15.transtype.302).
+[2015-05-29 17:13:11,858][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_302_1.5.0).
+[2015-05-29 17:13:11,858][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_302_).
+[2015-05-29 17:13:11,858][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(15_302_), found controller(com.mpos.lottery.te.gameimpl.lfn.LfnController@444e8ac1) and method(public void com.mpos.lottery.te.gameimpl.lfn.LfnController.payout(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:11,879][Test worker][DEBUG][DefaultTaxService] Calculate tax for amount:24400 based on threshold(com.mpos.lottery.te.gamespec.prize.TaxThreshold@45a2976f[id=WTT-1,taxPolicyId=TP-1,taxDateRange=com.mpos.lottery.te.gamespec.prize.TaxDateRange@6331375c[id=TDR-1,beginDate=2009-03-20 21:00:00.0,endDate=2099-03-20 21:00:00.0],minAmount=1000,maxAmount=9999999999,ruleType=1,taxAmount=0.2,taxBase=1])...tax:4066.67
+[2015-05-29 17:13:11,882][Test worker][DEBUG][AbstractPrizeService] Handle winnings of lucky draw of ticket(serialNo:9pkxn/npytVqVbOF5fPlsg==), total 2 winning items found.
+[2015-05-29 17:13:11,901][Test worker][DEBUG][DefaultTaxService] Calculate tax for amount:2800000 based on threshold(com.mpos.lottery.te.gamespec.prize.TaxThreshold@45a2976f[id=WTT-1,taxPolicyId=TP-1,taxDateRange=com.mpos.lottery.te.gamespec.prize.TaxDateRange@6331375c[id=TDR-1,beginDate=2009-03-20 21:00:00.0,endDate=2099-03-20 21:00:00.0],minAmount=1000,maxAmount=9999999999,ruleType=1,taxAmount=0.2,taxBase=1])...tax:466666.67
+[2015-05-29 17:13:11,907][Test worker][DEBUG][MerchantServiceImpl] Use the payout-limit setting(max=10000000,min=100) of Operator(Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]) to verify payout limit.
+[2015-05-29 17:13:11,907][Test worker][DEBUG][DefaultPayoutStrategyFactory] Usage payout strategy(com.mpos.lottery.te.gamespec.prize.support.payoutstrategy.NewPrintPayoutStrategy@557acc4d) for payout mode:1
+[2015-05-29 17:13:11,908][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745519300005312
+[2015-05-29 17:13:11,935][Test worker][DEBUG][DefaultCreditService] Calculate commssion for (merchant=111 +operator=OPERATOR-111,gameId=LFN-1,commType=1,commRate=0.1) 
+[2015-05-29 17:13:11,974][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:11,974][Test worker][DEBUG][DefaultCreditService] The new payout credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=2354666.66, cashoutBalance=0, commisionBalance=235366.666000] is 2354666.66
+[2015-05-29 17:13:11,990][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.302] with routing key[TE.302.15]: id: "0115052900000000000494"
+dev_id: "111"
+operator_id: "OPERATOR-111"
+merchant_id: "111"
+create_time: 1432890791000
+trans_type: 302
+game_id: "LFN-1"
+game_type: 15
+total_amount: "2353666.66"
+
+[2015-05-29 17:13:11,990][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:11,991][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Res.xml) by key(15.transtype.4302).
+[2015-05-29 17:13:11,991][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gamespec.prize.web.PrizeDto),mappingFile=xml-mapping/game/lfn/Payout_Res.xml
+[2015-05-29 17:13:11,991][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Res.xml) by key(15.transtype.4302).
+[2015-05-29 17:13:11,992][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gamespec.prize.web.PrizeDto, mappingFile=xml-mapping/game/lfn/Payout_Res.xml).
+[2015-05-29 17:13:11,992][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890791838|Timestamp:20150529171311|Transaction-Type:4302|Transaction-Id:0115052900000000000494|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Payout luckyAmount="8000.00" prizeAmount="2824400" taxAmount="470733.34" actualAmount="2353666.66" mode="1"><Ticket multipleDraws="2" totalBets="1" totalAmount="1400" serialNo="01111745519300005312" type="1" lastDrawNo="11003" barcode="15cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xavGhw4lusfIqmznQFBbs2z8=" validationCode="687642"><GameDraw number="11002" gameId="LFN-1" drawDate="20150530171214"/><Entry selectedNumber="1,2,3,4,5" betOption="1" inputChannel="2" entryAmount="100"/><Entry selectedNumber="1,2,3,4,5,6" betOption="55" inputChannel="2" entryAmount="100"/></Ticket></Payout>):6496e9545632ba90c1fba59b8c9ef6c7
+[2015-05-29 17:13:11,993][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=856) succesfully.
+[2015-05-29 17:13:11,993][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=856): <?xml version="1.0" encoding="UTF-8"?>
+<Payout luckyAmount="8000.00" prizeAmount="2824400" taxAmount="470733.34" actualAmount="2353666.66" mode="1"><Ticket multipleDraws="2" totalBets="1" totalAmount="1400" serialNo="01111745519300005312" type="1" lastDrawNo="11003" barcode="15cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xavGhw4lusfIqmznQFBbs2z8=" validationCode="687642"><GameDraw number="11002" gameId="LFN-1" drawDate="20150530171214"/><Entry selectedNumber="1,2,3,4,5" betOption="1" inputChannel="2" entryAmount="100"/><Entry selectedNumber="1,2,3,4,5,6" betOption="55" inputChannel="2" entryAmount="100"/></Ticket></Payout>
+[2015-05-29 17:13:11,993][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Res.xml) by key(15.transtype.4302).
+[2015-05-29 17:13:12,019][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:12,019][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:12,019][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@bd1aef8) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:12,020][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:12,020][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:12,020][Test worker][INFO ][BaseTransactionalIntegrationTest] | LfnPayoutIntegrationTest.testPayout_TaxOnWinnerAnalysis_NewPrint_SingleDraw_OK                                         |
+[2015-05-29 17:13:12,020][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:12,038][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Req.xml) by key(15.transtype.302).
+[2015-05-29 17:13:12,039][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.lfn.sale.LfnTicket, mappingFile=xml-mapping/game/lfn/Payout_Req.xml).
+[2015-05-29 17:13:12,040][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890792038|Timestamp:20150529171312|Transaction-Type:302|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="S-123456" PIN="!!!!" inputChannel="0" validationCode="111111"/>,hash=1134228501), get digest:26b0c573df0de4f6c2549fe38a899ab1
+[2015-05-29 17:13:12,041][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=302).
+[2015-05-29 17:13:12,041][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:12,041][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171312).
+[2015-05-29 17:13:12,041][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:12,041][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890792038).
+[2015-05-29 17:13:12,041][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:12,041][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:12,041][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=26b0c573df0de4f6c2549fe38a899ab1).
+[2015-05-29 17:13:12,041][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=15).
+[2015-05-29 17:13:12,041][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:12,041][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:12,043][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6ttFDFcpmi1MamgAomcAmY7ZtCcdDkhkRjtWjJyr8M54qqocann+KX7wRQCJ+AVoh//FhwE0rPzDh4N+kLsFhN615HbJEdNjFzRoentVKsAF4tqrfpt77Xc=.
+[2015-05-29 17:13:12,043][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890792038|Timestamp:20150529171312|Transaction-Type:302|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:12,044][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="S-123456" PIN="!!!!" inputChannel="0" validationCode="111111"/>
+[2015-05-29 17:13:12,044][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890792038|Timestamp:20150529171312|Transaction-Type:302|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="S-123456" PIN="!!!!" inputChannel="0" validationCode="111111"/>,hash=1134228501), get digest:26b0c573df0de4f6c2549fe38a899ab1
+[2015-05-29 17:13:12,044][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Req.xml) by key(15.transtype.302).
+[2015-05-29 17:13:12,044][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/lfn/Payout_Req.xml
+[2015-05-29 17:13:12,044][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Req.xml) by key(15.transtype.302).
+[2015-05-29 17:13:12,066][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_302_1.5.0).
+[2015-05-29 17:13:12,066][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_302_).
+[2015-05-29 17:13:12,066][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(15_302_), found controller(com.mpos.lottery.te.gameimpl.lfn.LfnController@444e8ac1) and method(public void com.mpos.lottery.te.gameimpl.lfn.LfnController.payout(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:12,085][Test worker][DEBUG][AbstractPrizeService] Handle winnings of lucky draw of ticket(serialNo:9pkxn/npytVqVbOF5fPlsg==), total 0 winning items found.
+[2015-05-29 17:13:12,093][Test worker][DEBUG][MerchantServiceImpl] Use the payout-limit setting(max=10000000,min=100) of Operator(Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]) to verify payout limit.
+[2015-05-29 17:13:12,093][Test worker][DEBUG][DefaultPayoutStrategyFactory] Usage payout strategy(com.mpos.lottery.te.gamespec.prize.support.payoutstrategy.NewPrintPayoutStrategy@557acc4d) for payout mode:1
+[2015-05-29 17:13:12,098][Test worker][DEBUG][DefaultCreditService] Calculate commssion for (merchant=111 +operator=OPERATOR-111,gameId=LFN-1,commType=1,commRate=0.1) 
+[2015-05-29 17:13:12,112][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:12,112][Test worker][DEBUG][DefaultCreditService] The new payout credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=23200, cashoutBalance=0, commisionBalance=2220.000000] is 23200
+[2015-05-29 17:13:12,125][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.302] with routing key[TE.302.15]: id: "0115052900000000000505"
+dev_id: "111"
+operator_id: "OPERATOR-111"
+merchant_id: "111"
+create_time: 1432890792000
+trans_type: 302
+game_id: "LFN-1"
+game_type: 15
+total_amount: "22200"
+
+[2015-05-29 17:13:12,126][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:12,126][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Res.xml) by key(15.transtype.4302).
+[2015-05-29 17:13:12,126][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gamespec.prize.web.PrizeDto),mappingFile=xml-mapping/game/lfn/Payout_Res.xml
+[2015-05-29 17:13:12,126][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Res.xml) by key(15.transtype.4302).
+[2015-05-29 17:13:12,127][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gamespec.prize.web.PrizeDto, mappingFile=xml-mapping/game/lfn/Payout_Res.xml).
+[2015-05-29 17:13:12,127][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890792038|Timestamp:20150529171312|Transaction-Type:4302|Transaction-Id:0115052900000000000505|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Payout luckyAmount="0" prizeAmount="24400" taxAmount="2200" actualAmount="22200" mode="1"/>):369200c77d372e4555e2575446518c82
+[2015-05-29 17:13:12,128][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=184) succesfully.
+[2015-05-29 17:13:12,128][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=184): <?xml version="1.0" encoding="UTF-8"?>
+<Payout luckyAmount="0" prizeAmount="24400" taxAmount="2200" actualAmount="22200" mode="1"/>
+[2015-05-29 17:13:12,128][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Res.xml) by key(15.transtype.4302).
+[2015-05-29 17:13:12,151][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:12,152][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:12,152][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@70f6ce3f) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:12,152][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:12,153][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:12,153][Test worker][INFO ][BaseTransactionalIntegrationTest] | LfnPayoutIntegrationTest.testPayout_TaxOnWinnerAnalysis_NewPrint_MultiDraw_OK                                          |
+[2015-05-29 17:13:12,153][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:12,160][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Req.xml) by key(15.transtype.302).
+[2015-05-29 17:13:12,161][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.lfn.sale.LfnTicket, mappingFile=xml-mapping/game/lfn/Payout_Req.xml).
+[2015-05-29 17:13:12,161][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890792160|Timestamp:20150529171312|Transaction-Type:302|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="S-123456" PIN="!!!!" inputChannel="0" validationCode="111111"/>,hash=-665190485), get digest:66992219e074a170b85c4c92ba9ea661
+[2015-05-29 17:13:12,162][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=302).
+[2015-05-29 17:13:12,162][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:12,162][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171312).
+[2015-05-29 17:13:12,162][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:12,162][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890792160).
+[2015-05-29 17:13:12,162][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:12,162][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:12,162][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=66992219e074a170b85c4c92ba9ea661).
+[2015-05-29 17:13:12,162][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=15).
+[2015-05-29 17:13:12,162][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:12,162][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:12,164][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6ttFDFcpmi1MamgAomcAmY7ZtCcdDkhkRjtWjJyr8M54qqocann+KX7wRQCJ+AVoh//FhwE0rPzDh4N+kLsFhN615HbJEdNjFzRoentVKsAF4tqrfpt77Xc=.
+[2015-05-29 17:13:12,164][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890792160|Timestamp:20150529171312|Transaction-Type:302|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:12,164][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="S-123456" PIN="!!!!" inputChannel="0" validationCode="111111"/>
+[2015-05-29 17:13:12,165][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890792160|Timestamp:20150529171312|Transaction-Type:302|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="S-123456" PIN="!!!!" inputChannel="0" validationCode="111111"/>,hash=-665190485), get digest:66992219e074a170b85c4c92ba9ea661
+[2015-05-29 17:13:12,165][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Req.xml) by key(15.transtype.302).
+[2015-05-29 17:13:12,165][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/lfn/Payout_Req.xml
+[2015-05-29 17:13:12,165][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Req.xml) by key(15.transtype.302).
+[2015-05-29 17:13:12,185][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_302_1.5.0).
+[2015-05-29 17:13:12,185][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_302_).
+[2015-05-29 17:13:12,185][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(15_302_), found controller(com.mpos.lottery.te.gameimpl.lfn.LfnController@444e8ac1) and method(public void com.mpos.lottery.te.gameimpl.lfn.LfnController.payout(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:12,208][Test worker][DEBUG][AbstractPrizeService] Handle winnings of lucky draw of ticket(serialNo:9pkxn/npytVqVbOF5fPlsg==), total 0 winning items found.
+[2015-05-29 17:13:12,214][Test worker][DEBUG][MerchantServiceImpl] Use the payout-limit setting(max=10000000,min=100) of Operator(Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]) to verify payout limit.
+[2015-05-29 17:13:12,215][Test worker][DEBUG][DefaultPayoutStrategyFactory] Usage payout strategy(com.mpos.lottery.te.gamespec.prize.support.payoutstrategy.NewPrintPayoutStrategy@557acc4d) for payout mode:1
+[2015-05-29 17:13:12,215][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01111745519300005424
+[2015-05-29 17:13:12,242][Test worker][DEBUG][DefaultCreditService] Calculate commssion for (merchant=111 +operator=OPERATOR-111,gameId=LFN-1,commType=1,commRate=0.1) 
+[2015-05-29 17:13:12,260][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:12,261][Test worker][DEBUG][DefaultCreditService] The new payout credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=23200, cashoutBalance=0, commisionBalance=2220.000000] is 23200
+[2015-05-29 17:13:12,272][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.302] with routing key[TE.302.15]: id: "0115052900000000000508"
+dev_id: "111"
+operator_id: "OPERATOR-111"
+merchant_id: "111"
+create_time: 1432890792000
+trans_type: 302
+game_id: "LFN-1"
+game_type: 15
+total_amount: "22200"
+
+[2015-05-29 17:13:12,272][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:12,272][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Res.xml) by key(15.transtype.4302).
+[2015-05-29 17:13:12,272][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gamespec.prize.web.PrizeDto),mappingFile=xml-mapping/game/lfn/Payout_Res.xml
+[2015-05-29 17:13:12,272][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Res.xml) by key(15.transtype.4302).
+[2015-05-29 17:13:12,274][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gamespec.prize.web.PrizeDto, mappingFile=xml-mapping/game/lfn/Payout_Res.xml).
+[2015-05-29 17:13:12,274][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890792160|Timestamp:20150529171312|Transaction-Type:4302|Transaction-Id:0115052900000000000508|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Payout luckyAmount="0" prizeAmount="24400" taxAmount="2200" actualAmount="22200" mode="1"><Ticket multipleDraws="2" totalBets="1" totalAmount="1400" serialNo="01111745519300005424" type="1" lastDrawNo="11003" barcode="15cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xavGhw4lusfIqdU4TdSUqPCk=" validationCode="213382"><GameDraw number="11002" gameId="LFN-1" drawDate="20150530171214"/><Entry selectedNumber="1,2,3,4,5" betOption="1" inputChannel="2" entryAmount="100"/><Entry selectedNumber="1,2,3,4,5,6" betOption="55" inputChannel="2" entryAmount="100"/></Ticket></Payout>):052735e06002de821bf3a132a6735342
+[2015-05-29 17:13:12,275][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=832) succesfully.
+[2015-05-29 17:13:12,276][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=832): <?xml version="1.0" encoding="UTF-8"?>
+<Payout luckyAmount="0" prizeAmount="24400" taxAmount="2200" actualAmount="22200" mode="1"><Ticket multipleDraws="2" totalBets="1" totalAmount="1400" serialNo="01111745519300005424" type="1" lastDrawNo="11003" barcode="15cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt9Se2CWmp8xavGhw4lusfIqdU4TdSUqPCk=" validationCode="213382"><GameDraw number="11002" gameId="LFN-1" drawDate="20150530171214"/><Entry selectedNumber="1,2,3,4,5" betOption="1" inputChannel="2" entryAmount="100"/><Entry selectedNumber="1,2,3,4,5,6" betOption="55" inputChannel="2" entryAmount="100"/></Ticket></Payout>
+[2015-05-29 17:13:12,276][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Res.xml) by key(15.transtype.4302).
+[2015-05-29 17:13:12,301][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:12,302][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:12,302][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@67617e11) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:12,302][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:12,302][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:12,302][Test worker][INFO ][BaseTransactionalIntegrationTest] | LfnPayoutIntegrationTest.testPayout_TaxOnWinnerAnalysis_Refund_MultiDraw_OK                                            |
+[2015-05-29 17:13:12,302][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:12,311][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Req.xml) by key(15.transtype.302).
+[2015-05-29 17:13:12,312][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.lfn.sale.LfnTicket, mappingFile=xml-mapping/game/lfn/Payout_Req.xml).
+[2015-05-29 17:13:12,312][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890792311|Timestamp:20150529171312|Transaction-Type:302|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="S-123456" PIN="!!!!" inputChannel="0" validationCode="111111"/>,hash=1269921939), get digest:e4ebe5e3fe63501108383e5837febfce
+[2015-05-29 17:13:12,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=302).
+[2015-05-29 17:13:12,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:12,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171312).
+[2015-05-29 17:13:12,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:12,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890792311).
+[2015-05-29 17:13:12,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:12,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:12,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=e4ebe5e3fe63501108383e5837febfce).
+[2015-05-29 17:13:12,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=15).
+[2015-05-29 17:13:12,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:12,312][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:12,314][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6ttFDFcpmi1MamgAomcAmY7ZtCcdDkhkRjtWjJyr8M54qqocann+KX7wRQCJ+AVoh//FhwE0rPzDh4N+kLsFhN615HbJEdNjFzRoentVKsAF4tqrfpt77Xc=.
+[2015-05-29 17:13:12,314][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890792311|Timestamp:20150529171312|Transaction-Type:302|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:12,314][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="S-123456" PIN="!!!!" inputChannel="0" validationCode="111111"/>
+[2015-05-29 17:13:12,315][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890792311|Timestamp:20150529171312|Transaction-Type:302|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="S-123456" PIN="!!!!" inputChannel="0" validationCode="111111"/>,hash=1269921939), get digest:e4ebe5e3fe63501108383e5837febfce
+[2015-05-29 17:13:12,315][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Req.xml) by key(15.transtype.302).
+[2015-05-29 17:13:12,315][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/lfn/Payout_Req.xml
+[2015-05-29 17:13:12,315][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Req.xml) by key(15.transtype.302).
+[2015-05-29 17:13:12,329][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_302_1.5.0).
+[2015-05-29 17:13:12,330][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(15_302_).
+[2015-05-29 17:13:12,330][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(15_302_), found controller(com.mpos.lottery.te.gameimpl.lfn.LfnController@444e8ac1) and method(public void com.mpos.lottery.te.gameimpl.lfn.LfnController.payout(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:12,355][Test worker][DEBUG][AbstractPrizeService] Handle winnings of lucky draw of ticket(serialNo:9pkxn/npytVqVbOF5fPlsg==), total 0 winning items found.
+[2015-05-29 17:13:12,361][Test worker][DEBUG][MerchantServiceImpl] Use the payout-limit setting(max=10000000,min=100) of Operator(Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]) to verify payout limit.
+[2015-05-29 17:13:12,362][Test worker][DEBUG][DefaultPayoutStrategyFactory] Usage payout strategy(com.mpos.lottery.te.gamespec.prize.support.payoutstrategy.RefundPayoutStrategy@71b3f9c) for payout mode:0
+[2015-05-29 17:13:12,367][Test worker][DEBUG][DefaultCreditService] Calculate commssion for (merchant=111 +operator=OPERATOR-111,gameId=LFN-1,commType=1,commRate=0.1) 
+[2015-05-29 17:13:12,380][Test worker][DEBUG][DefaultCreditService] The current credit level(before transaction) of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0] is saleCreditLevel:200000000,payoutCreditLevel:1000
+[2015-05-29 17:13:12,380][Test worker][DEBUG][DefaultCreditService] The new payout credit level of Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=24600, cashoutBalance=0, commisionBalance=2360.000000] is 24600
+[2015-05-29 17:13:12,391][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.302] with routing key[TE.302.15]: id: "0115052900000000000516"
+dev_id: "111"
+operator_id: "OPERATOR-111"
+merchant_id: "111"
+create_time: 1432890792000
+trans_type: 302
+game_id: "LFN-1"
+game_type: 15
+total_amount: "23600"
+
+[2015-05-29 17:13:12,391][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:12,391][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Res.xml) by key(15.transtype.4302).
+[2015-05-29 17:13:12,392][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gamespec.prize.web.PrizeDto),mappingFile=xml-mapping/game/lfn/Payout_Res.xml
+[2015-05-29 17:13:12,392][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Res.xml) by key(15.transtype.4302).
+[2015-05-29 17:13:12,392][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gamespec.prize.web.PrizeDto, mappingFile=xml-mapping/game/lfn/Payout_Res.xml).
+[2015-05-29 17:13:12,392][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890792311|Timestamp:20150529171312|Transaction-Type:4302|Transaction-Id:0115052900000000000516|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Payout returnAmount="1400" luckyAmount="0" prizeAmount="24400" taxAmount="2200" actualAmount="23600" mode="0"/>):59e063e6a6ec088dfa8974c62330f22f
+[2015-05-29 17:13:12,393][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=204) succesfully.
+[2015-05-29 17:13:12,393][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=204): <?xml version="1.0" encoding="UTF-8"?>
+<Payout returnAmount="1400" luckyAmount="0" prizeAmount="24400" taxAmount="2200" actualAmount="23600" mode="0"/>
+[2015-05-29 17:13:12,393][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/lfn/Payout_Res.xml) by key(15.transtype.4302).
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

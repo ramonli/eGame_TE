@@ -1,0 +1,1443 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:42" hostname="Ramon-PC" time="0.782">
+  <properties/>
+  <testcase name="testSell_Multiple_Max_OK" classname="com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest" time="0.117"/>
+  <testcase name="testSell_UnmatchedTripleDoubleSetting" classname="com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest" time="0.044"/>
+  <testcase name="testSell_GameInstanceSuspendSale" classname="com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest" time="0.048"/>
+  <testcase name="testSell_NOTripleDoubleSetting" classname="com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest" time="0.046"/>
+  <testcase name="testSell_Multiple_Max_NoLimit" classname="com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest" time="0.068"/>
+  <testcase name="testSell_Multiple_Max_Fail" classname="com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest" time="0.042"/>
+  <testcase name="testSell_Multiple_ExceedAllowedMaxDraw_1" classname="com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest" time="0.051"/>
+  <testcase name="testSell_Multiple_ExceedAllowedMaxDraw_2" classname="com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest" time="0.049"/>
+  <testcase name="testSell_ROLL_OK" classname="com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest" time="0.036"/>
+  <testcase name="testSell_Single_OK" classname="com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest" time="0.085"/>
+  <testcase name="testSell_Single_NoValidationCode_OK" classname="com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest" time="0.083"/>
+  <testcase name="testSell_MultiDraw_OK" classname="com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest" time="0.107"/>
+  <system-out><![CDATA[[2015-05-29 17:13:42,859][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:42,859][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:42,859][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@19b0fd8) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:42,860][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:42,860][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:42,860][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:42,860][Test worker][INFO ][BaseTransactionalIntegrationTest] | UnionSaleIntegrationTest.testSell_Multiple_Max_OK                                                                      |
+[2015-05-29 17:13:42,860][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:42,863][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:42,877][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Req.xml).
+[2015-05-29 17:13:42,877][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890822863|Timestamp:20150529171342|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="63000" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11-2,7,8" betOption="2" inputChannel="0"/></Ticket>,hash=1509100423), get digest:5831efd3e758a85479abee9d4d0af45d
+[2015-05-29 17:13:42,877][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:42,877][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:42,877][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171342).
+[2015-05-29 17:13:42,877][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:42,877][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890822863).
+[2015-05-29 17:13:42,877][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:42,877][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:42,877][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=5831efd3e758a85479abee9d4d0af45d).
+[2015-05-29 17:13:42,878][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=8).
+[2015-05-29 17:13:42,878][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:42,878][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:42,879][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnk1cWMGuWQRg5vnSISybJD0uCpYT8Pt9qFilKkLngqUaElJEcW2eyaLfUUkCzUHBesvMS+7V/fXVWLxgZg6cCzfHipAyphSTpRnwNKKbbdP096FHrfHQA4+o1Xkr2j0MOcOVEUa//Fz7z+oA9tHsYJTH3Ee4NABA92WzbvuEghyq7CMDUHNHVizLg1nVyyOVxxisnu8aVuJCtvZpYmODMPW3N8Kj3eV8X6HyEX30tKXU=.
+[2015-05-29 17:13:42,879][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890822863|Timestamp:20150529171342|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:42,880][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="63000" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11-2,7,8" betOption="2" inputChannel="0"/></Ticket>
+[2015-05-29 17:13:42,880][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890822863|Timestamp:20150529171342|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="63000" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11-2,7,8" betOption="2" inputChannel="0"/></Ticket>,hash=1509100423), get digest:5831efd3e758a85479abee9d4d0af45d
+[2015-05-29 17:13:42,880][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:42,880][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/union/SellTicket_Req.xml
+[2015-05-29 17:13:42,880][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:42,891][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_1.5.0).
+[2015-05-29 17:13:42,891][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_).
+[2015-05-29 17:13:42,892][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(8_200_), found controller(com.mpos.lottery.te.gameimpl.union.UnionController@f81b221) and method(public void com.mpos.lottery.te.gameimpl.union.UnionController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:42,906][Test worker][DEBUG][AbstractGameInstanceService] Use channel game instance time definition(IGPE-1).
+[2015-05-29 17:13:42,906][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745819300017591
+[2015-05-29 17:13:42,917][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:42,917][Test worker][DEBUG][UnionSelectedNumberValidatorFactory] Found ticket validator(com.mpos.lottery.te.gameimpl.union.sale.support.UnionMultipleSelectedNumberValidator@6de37185) for bet option:2
+[2015-05-29 17:13:42,929][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:42,929][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:42,929][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199937000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:42,938][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.8]: transaction {
+  id: "0115052900000000002049"
+  dev_id: "111"
+  operator_id: "OPERATOR-111"
+  merchant_id: "111"
+  create_time: 1432890822000
+  trans_type: 200
+  game_id: "GAME-UNION-111"
+  game_type: 8
+  total_amount: "63000"
+}
+multi_draw: 1
+total_amount: "63000"
+serial_no: "aHhDkgTyIu5KJp+fo6FS8ursxntxhwWd"
+game_instance {
+  id: "GII-113"
+}
+entries {
+  selected_number: "1,2,3,4,5,6,7,8,9,11-2,7,8"
+  bet_option: 2
+  total_bets: 630
+  entry_amount: "63000"
+  input_channel: "0"
+}
+
+[2015-05-29 17:13:42,938][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:42,938][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Res.xml) by key(8.transtype.4200).
+[2015-05-29 17:13:42,938][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.union.sale.UnionTicket),mappingFile=xml-mapping/game/union/SellTicket_Res.xml
+[2015-05-29 17:13:42,938][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Res.xml) by key(8.transtype.4200).
+[2015-05-29 17:13:42,953][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Res.xml).
+[2015-05-29 17:13:42,953][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890822863|Timestamp:20150529171342|Transaction-Type:4200|Transaction-Id:0115052900000000002049|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745819300017591" type="1" lastDrawNo="20090408" barcode="08cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKck5kS9M7H6VjUTmLnNo8pF8=" validationCode="466952" multipleDraws="1" totalBets="630" totalAmount="63000"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11-2,7,8" betOption="2" inputChannel="0" entryAmount="63000"/></Ticket>):1a2b3a1b9da625fa6571a83754a92a2b
+[2015-05-29 17:13:42,954][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=600) succesfully.
+[2015-05-29 17:13:42,954][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=600): <?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745819300017591" type="1" lastDrawNo="20090408" barcode="08cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKck5kS9M7H6VjUTmLnNo8pF8=" validationCode="466952" multipleDraws="1" totalBets="630" totalAmount="63000"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11-2,7,8" betOption="2" inputChannel="0" entryAmount="63000"/></Ticket>
+[2015-05-29 17:13:42,954][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Res.xml) by key(8.transtype.4200).
+[2015-05-29 17:13:42,971][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:42,971][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:42,971][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@195924ad) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:42,971][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:42,972][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:42,972][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:42,972][Test worker][INFO ][BaseTransactionalIntegrationTest] | UnionSaleIntegrationTest.testSell_UnmatchedTripleDoubleSetting                                                         |
+[2015-05-29 17:13:42,972][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:42,974][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:42,975][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Req.xml).
+[2015-05-29 17:13:42,975][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890822974|Timestamp:20150529171342|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="63000" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11-2,7,8" betOption="2" inputChannel="0"/></Ticket>,hash=-1823724602), get digest:f453e63f2ffcfffc1fb7a5b9b1deeb59
+[2015-05-29 17:13:42,976][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:42,976][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:42,976][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171342).
+[2015-05-29 17:13:42,976][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:42,976][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890822974).
+[2015-05-29 17:13:42,976][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:42,976][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:42,976][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=f453e63f2ffcfffc1fb7a5b9b1deeb59).
+[2015-05-29 17:13:42,976][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=8).
+[2015-05-29 17:13:42,976][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:42,976][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:42,977][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnk1cWMGuWQRg5vnSISybJD0uCpYT8Pt9qFilKkLngqUaElJEcW2eyaLfUUkCzUHBesvMS+7V/fXVWLxgZg6cCzfHipAyphSTpRnwNKKbbdP096FHrfHQA4+o1Xkr2j0MOcOVEUa//Fz7z+oA9tHsYJTH3Ee4NABA92WzbvuEghyq7CMDUHNHVizLg1nVyyOVxxisnu8aVuJCtvZpYmODMPW3N8Kj3eV8X6HyEX30tKXU=.
+[2015-05-29 17:13:42,978][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890822974|Timestamp:20150529171342|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:42,978][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="63000" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11-2,7,8" betOption="2" inputChannel="0"/></Ticket>
+[2015-05-29 17:13:42,978][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890822974|Timestamp:20150529171342|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="63000" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11-2,7,8" betOption="2" inputChannel="0"/></Ticket>,hash=-1823724602), get digest:f453e63f2ffcfffc1fb7a5b9b1deeb59
+[2015-05-29 17:13:42,978][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:42,978][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/union/SellTicket_Req.xml
+[2015-05-29 17:13:42,978][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:42,992][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_1.5.0).
+[2015-05-29 17:13:42,992][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_).
+[2015-05-29 17:13:42,992][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(8_200_), found controller(com.mpos.lottery.te.gameimpl.union.UnionController@f81b221) and method(public void com.mpos.lottery.te.gameimpl.union.UnionController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:43,000][Test worker][DEBUG][AbstractGameInstanceService] Use channel game instance time definition(IGPE-1).
+[2015-05-29 17:13:43,000][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745819300017614
+[2015-05-29 17:13:43,007][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:43,007][Test worker][DEBUG][UnionSelectedNumberValidatorFactory] Found ticket validator(com.mpos.lottery.te.gameimpl.union.sale.support.UnionMultipleSelectedNumberValidator@636c8cd7) for bet option:2
+[2015-05-29 17:13:43,008][Test worker][ERROR][TEPortServlet] The count of DOUBLE part of selected number(1,2,3,4,5,6,7,8,9,11-2,7,8) must between 2 and 2, if count of TRIPLE is 10
+com.mpos.lottery.te.config.exception.ApplicationException: The count of DOUBLE part of selected number(1,2,3,4,5,6,7,8,9,11-2,7,8) must between 2 and 2, if count of TRIPLE is 10
+	at com.mpos.lottery.te.gameimpl.union.sale.support.UnionMultipleSelectedNumberValidator.customValidateAfter(UnionMultipleSelectedNumberValidator.java:31)
+	at com.mpos.lottery.te.gamespec.sale.support.validator.AbstractSelectedNumberValidator.validate(AbstractSelectedNumberValidator.java:60)
+	at com.mpos.lottery.te.gamespec.sale.support.validator.DefaultTicketValidator.validate(DefaultTicketValidator.java:42)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.validateTicketRequest(AbstractTicketService.java:386)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.sell(AbstractTicketService.java:140)
+	at sun.reflect.GeneratedMethodAccessor130.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy58.sell(Unknown Source)
+	at com.mpos.lottery.te.gameimpl.union.UnionController.sell(UnionController.java:32)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest.testSell_UnmatchedTripleDoubleSetting(UnionSaleIntegrationTest.java:448)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:43,009][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890822974|Timestamp:20150529171342|Transaction-Type:4200|Transaction-Id:0115052900000000002052|Response-Code:305|):06c57e50fd1d2f04b3429a5bf9ec65a0
+[2015-05-29 17:13:43,009][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=305,length=0): 
+[2015-05-29 17:13:43,015][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:43,016][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:43,016][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@5bec7f18) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:43,016][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:43,016][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,016][Test worker][INFO ][BaseTransactionalIntegrationTest] | UnionSaleIntegrationTest.testSell_GameInstanceSuspendSale                                                              |
+[2015-05-29 17:13:43,016][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,018][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,018][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Req.xml).
+[2015-05-29 17:13:43,019][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823018|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="1600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>,hash=1210015364), get digest:13438b8ee171100d00aa20ccbb81446d
+[2015-05-29 17:13:43,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:43,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:43,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171343).
+[2015-05-29 17:13:43,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:43,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890823018).
+[2015-05-29 17:13:43,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:43,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:43,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=13438b8ee171100d00aa20ccbb81446d).
+[2015-05-29 17:13:43,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=8).
+[2015-05-29 17:13:43,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:43,019][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:43,021][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfncNCEmxnE1Ou0qcmJ+qutg9pDpTDScnIWI62pEFB0SGtKkhmSVtwRhObbaRtENvsKgd1vgEj9cakrUbLVxBSMJqciae7U9vnZ9gkPZ+TiqwdSqZt3Q2CcK5Tpzhe/Zfjrl953surZx81pp6iV9IdyhJyvIjV3HMgac/ebWKRzVcP44FSAnRHgSGMdYo6YjPl/9ShLytd5dNEovh0Ieu0fIo26JFl7zXiemQCd/9Khfav5+GkGikzTTQUYjHCgQfTvcg0sjhq22khXwGwZsECT/xphbQuQbhitT1lYyKNDcke0pjV/yGQ6smzhPkwgiAd1iSvwEPDkcCRIN0CC4mjcj8EFhDXSj+tlk=.
+[2015-05-29 17:13:43,022][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823018|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:43,022][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="1600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>
+[2015-05-29 17:13:43,022][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823018|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="1600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>,hash=1210015364), get digest:13438b8ee171100d00aa20ccbb81446d
+[2015-05-29 17:13:43,022][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,022][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/union/SellTicket_Req.xml
+[2015-05-29 17:13:43,022][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,035][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_1.5.0).
+[2015-05-29 17:13:43,035][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_).
+[2015-05-29 17:13:43,035][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(8_200_), found controller(com.mpos.lottery.te.gameimpl.union.UnionController@f81b221) and method(public void com.mpos.lottery.te.gameimpl.union.UnionController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:43,049][Test worker][DEBUG][BaseJpaDao] Query future game instance(class com.mpos.lottery.te.gameimpl.union.game.UnionGameInstance) by(number=20090408,gameId=GAME-UNION-111, multipleDraws=2, state=1||2):1
+[2015-05-29 17:13:43,053][Test worker][DEBUG][AbstractGameInstanceService] Use channel game instance time definition(IGPE-1).
+[2015-05-29 17:13:43,053][Test worker][ERROR][AbstractGameInstanceService] The game instance(number=20090408,game.type=8,status=2,startSellintTime=2015-05-28 17:12:15.0,stopSellTime=Sat May 30 17:11:15 CST 2015,suspendSale=true) doesn't accept sale.
+[2015-05-29 17:13:43,054][Test worker][ERROR][TEPortServlet] Game instance has suspended sale.
+com.mpos.lottery.te.config.exception.ApplicationException: Game instance has suspended sale.
+	at com.mpos.lottery.te.gamespec.game.service.impl.AbstractGameInstanceService.allowSale(AbstractGameInstanceService.java:242)
+	at com.mpos.lottery.te.gamespec.game.service.impl.AbstractGameInstanceService.doEnquiryMultiDraw(AbstractGameInstanceService.java:182)
+	at com.mpos.lottery.te.gamespec.game.service.impl.AbstractGameInstanceService.enquirySaleReady(AbstractGameInstanceService.java:98)
+	at sun.reflect.GeneratedMethodAccessor131.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy54.enquirySaleReady(Unknown Source)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.lookupSaleReadyGameInstance(AbstractTicketService.java:348)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.sell(AbstractTicketService.java:123)
+	at sun.reflect.GeneratedMethodAccessor130.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy58.sell(Unknown Source)
+	at com.mpos.lottery.te.gameimpl.union.UnionController.sell(UnionController.java:32)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest.testSell_GameInstanceSuspendSale(UnionSaleIntegrationTest.java:464)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:43,055][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823018|Timestamp:20150529171343|Transaction-Type:4200|Transaction-Id:0115052900000000002053|Response-Code:310|):5f7a54a8951863c1d18d3b7a6bdf9c67
+[2015-05-29 17:13:43,055][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=310,length=0): 
+[2015-05-29 17:13:43,065][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:43,065][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:43,065][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@1569e215) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:43,066][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:43,066][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:43,066][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,066][Test worker][INFO ][BaseTransactionalIntegrationTest] | UnionSaleIntegrationTest.testSell_NOTripleDoubleSetting                                                                |
+[2015-05-29 17:13:43,066][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,069][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,070][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Req.xml).
+[2015-05-29 17:13:43,070][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823069|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="63000" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11-2,7,8" betOption="2" inputChannel="0"/></Ticket>,hash=1107399627), get digest:86b4a540112152aff8b6e5a476e5c52a
+[2015-05-29 17:13:43,070][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:43,070][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:43,070][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171343).
+[2015-05-29 17:13:43,070][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:43,070][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890823069).
+[2015-05-29 17:13:43,070][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:43,070][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:43,070][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=86b4a540112152aff8b6e5a476e5c52a).
+[2015-05-29 17:13:43,070][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=8).
+[2015-05-29 17:13:43,070][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:43,070][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:43,072][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnk1cWMGuWQRg5vnSISybJD0uCpYT8Pt9qFilKkLngqUaElJEcW2eyaLfUUkCzUHBesvMS+7V/fXVWLxgZg6cCzfHipAyphSTpRnwNKKbbdP096FHrfHQA4+o1Xkr2j0MOcOVEUa//Fz7z+oA9tHsYJTH3Ee4NABA92WzbvuEghyq7CMDUHNHVizLg1nVyyOVxxisnu8aVuJCtvZpYmODMPW3N8Kj3eV8X6HyEX30tKXU=.
+[2015-05-29 17:13:43,072][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823069|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:43,072][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="63000" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11-2,7,8" betOption="2" inputChannel="0"/></Ticket>
+[2015-05-29 17:13:43,072][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823069|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="63000" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11-2,7,8" betOption="2" inputChannel="0"/></Ticket>,hash=1107399627), get digest:86b4a540112152aff8b6e5a476e5c52a
+[2015-05-29 17:13:43,072][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,072][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/union/SellTicket_Req.xml
+[2015-05-29 17:13:43,072][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,084][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_1.5.0).
+[2015-05-29 17:13:43,084][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_).
+[2015-05-29 17:13:43,084][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(8_200_), found controller(com.mpos.lottery.te.gameimpl.union.UnionController@f81b221) and method(public void com.mpos.lottery.te.gameimpl.union.UnionController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:43,091][Test worker][DEBUG][AbstractGameInstanceService] Use channel game instance time definition(IGPE-1).
+[2015-05-29 17:13:43,091][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745819300017780
+[2015-05-29 17:13:43,099][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:43,099][Test worker][DEBUG][UnionSelectedNumberValidatorFactory] Found ticket validator(com.mpos.lottery.te.gameimpl.union.sale.support.UnionMultipleSelectedNumberValidator@63075914) for bet option:2
+[2015-05-29 17:13:43,099][Test worker][ERROR][TEPortServlet] No any Triple&Double setting found of give triple(10)
+com.mpos.lottery.te.config.exception.SystemException: No any Triple&Double setting found of give triple(10)
+	at com.mpos.lottery.te.gameimpl.union.sale.support.UnionMultipleSelectedNumberValidator.customValidateAfter(UnionMultipleSelectedNumberValidator.java:27)
+	at com.mpos.lottery.te.gamespec.sale.support.validator.AbstractSelectedNumberValidator.validate(AbstractSelectedNumberValidator.java:60)
+	at com.mpos.lottery.te.gamespec.sale.support.validator.DefaultTicketValidator.validate(DefaultTicketValidator.java:42)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.validateTicketRequest(AbstractTicketService.java:386)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.sell(AbstractTicketService.java:140)
+	at sun.reflect.GeneratedMethodAccessor130.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy58.sell(Unknown Source)
+	at com.mpos.lottery.te.gameimpl.union.UnionController.sell(UnionController.java:32)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest.testSell_NOTripleDoubleSetting(UnionSaleIntegrationTest.java:425)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:43,103][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823069|Timestamp:20150529171343|Transaction-Type:4200|Transaction-Id:0115052900000000002054|Response-Code:500|):f26d694957ac467ac4fafae9750afec4
+[2015-05-29 17:13:43,103][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=500,length=0): 
+[2015-05-29 17:13:43,110][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:43,110][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:43,110][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@36decacc) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:43,111][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:43,111][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:43,111][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,111][Test worker][INFO ][BaseTransactionalIntegrationTest] | UnionSaleIntegrationTest.testSell_Multiple_Max_NoLimit                                                                 |
+[2015-05-29 17:13:43,111][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,112][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,113][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Req.xml).
+[2015-05-29 17:13:43,114][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823112|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="138600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11,12-2,7,8" betOption="2" inputChannel="0"/></Ticket>,hash=249583826), get digest:62cca254aeb6f9a242dec3ff1647f2ab
+[2015-05-29 17:13:43,114][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:43,114][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:43,114][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171343).
+[2015-05-29 17:13:43,114][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:43,114][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890823112).
+[2015-05-29 17:13:43,114][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:43,114][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:43,114][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=62cca254aeb6f9a242dec3ff1647f2ab).
+[2015-05-29 17:13:43,114][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=8).
+[2015-05-29 17:13:43,114][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:43,114][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:43,115][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnwXyabognesW9egmNR7BpdUSTUC/9v/8XaXRj3lWh08++sbyYOSbEpSo5QxUvpk2VxtzLfFmtwy4CtnIA85MESaf05tS/rOb53NQDoWT0proL766UXdzDEe2kkjddnOvjDRY2ff7cvZXXHhiMElCVCe0ymhLugNxWBGllRAanXKZY5XI9lmlkysUyk+FulCDcqliy3CrnacNji24doz+gAKri7fHafrUxerRyNQhy7Go=.
+[2015-05-29 17:13:43,116][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823112|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:43,116][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="138600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11,12-2,7,8" betOption="2" inputChannel="0"/></Ticket>
+[2015-05-29 17:13:43,116][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823112|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="138600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11,12-2,7,8" betOption="2" inputChannel="0"/></Ticket>,hash=249583826), get digest:62cca254aeb6f9a242dec3ff1647f2ab
+[2015-05-29 17:13:43,116][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,116][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/union/SellTicket_Req.xml
+[2015-05-29 17:13:43,116][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,129][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_1.5.0).
+[2015-05-29 17:13:43,129][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_).
+[2015-05-29 17:13:43,129][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(8_200_), found controller(com.mpos.lottery.te.gameimpl.union.UnionController@f81b221) and method(public void com.mpos.lottery.te.gameimpl.union.UnionController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:43,136][Test worker][DEBUG][AbstractGameInstanceService] Use channel game instance time definition(IGPE-1).
+[2015-05-29 17:13:43,136][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745819300017816
+[2015-05-29 17:13:43,144][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:43,144][Test worker][DEBUG][UnionSelectedNumberValidatorFactory] Found ticket validator(com.mpos.lottery.te.gameimpl.union.sale.support.UnionMultipleSelectedNumberValidator@5e80155e) for bet option:2
+[2015-05-29 17:13:43,155][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:43,155][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:43,155][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199861400, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:43,165][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.8]: transaction {
+  id: "0115052900000000002055"
+  dev_id: "111"
+  operator_id: "OPERATOR-111"
+  merchant_id: "111"
+  create_time: 1432890823000
+  trans_type: 200
+  game_id: "GAME-UNION-111"
+  game_type: 8
+  total_amount: "138600"
+}
+multi_draw: 1
+total_amount: "138600"
+serial_no: "aHhDkgTyIu5KJp+fo6FS8odlmWOG1PHz"
+game_instance {
+  id: "GII-113"
+}
+entries {
+  selected_number: "1,2,3,4,5,6,7,8,9,11,12-2,7,8"
+  bet_option: 2
+  total_bets: 1386
+  entry_amount: "138600"
+  input_channel: "0"
+}
+
+[2015-05-29 17:13:43,165][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:43,165][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Res.xml) by key(8.transtype.4200).
+[2015-05-29 17:13:43,166][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.union.sale.UnionTicket),mappingFile=xml-mapping/game/union/SellTicket_Res.xml
+[2015-05-29 17:13:43,166][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Res.xml) by key(8.transtype.4200).
+[2015-05-29 17:13:43,166][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Res.xml).
+[2015-05-29 17:13:43,166][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823112|Timestamp:20150529171343|Transaction-Type:4200|Transaction-Id:0115052900000000002055|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745819300017816" type="1" lastDrawNo="20090408" barcode="08cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKck5kS9M7H6VjO8/tkXLGTkI=" validationCode="530339" multipleDraws="1" totalBets="1386" totalAmount="138600"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11,12-2,7,8" betOption="2" inputChannel="0" entryAmount="138600"/></Ticket>):90bdad67675b71ac63cdf01000ec5a74
+[2015-05-29 17:13:43,167][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=608) succesfully.
+[2015-05-29 17:13:43,167][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=608): <?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745819300017816" type="1" lastDrawNo="20090408" barcode="08cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKck5kS9M7H6VjO8/tkXLGTkI=" validationCode="530339" multipleDraws="1" totalBets="1386" totalAmount="138600"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11,12-2,7,8" betOption="2" inputChannel="0" entryAmount="138600"/></Ticket>
+[2015-05-29 17:13:43,167][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Res.xml) by key(8.transtype.4200).
+[2015-05-29 17:13:43,178][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:43,178][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:43,178][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@3381088e) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:43,178][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:43,180][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:43,180][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,180][Test worker][INFO ][BaseTransactionalIntegrationTest] | UnionSaleIntegrationTest.testSell_Multiple_Max_Fail                                                                    |
+[2015-05-29 17:13:43,180][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,180][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,181][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Req.xml).
+[2015-05-29 17:13:43,181][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823180|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="199" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11,12-2,8,7" betOption="2" inputChannel="0"/></Ticket>,hash=1267927234), get digest:a718267f3fbc976c1b70cefad37a8c9d
+[2015-05-29 17:13:43,181][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:43,181][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:43,181][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171343).
+[2015-05-29 17:13:43,181][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:43,181][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890823180).
+[2015-05-29 17:13:43,181][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:43,181][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:43,181][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=a718267f3fbc976c1b70cefad37a8c9d).
+[2015-05-29 17:13:43,181][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=8).
+[2015-05-29 17:13:43,181][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:43,181][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:43,183][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnQX+wagGqYAB65Ib/iTbedTkIY5iEf5JtzMxURcEwvjI7lH0ylKdZQezjEP50Vf3GT2fLw6UokW8mpa1obCMLajRJbDUHuy6QM4KPFH0+HGBs4Pfh8t6vCkWpYhfNoqcsHPR9dXj1a3aD4lY68bgJPUmvQyF0ady3wgU6FM4ILGb+GujJg+a0X5jI9w+M/7OYESq/NlgMr6DbWu99GI6O9mpQBL7ka0s392m5oFPffds=.
+[2015-05-29 17:13:43,183][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823180|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:43,183][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="199" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11,12-2,8,7" betOption="2" inputChannel="0"/></Ticket>
+[2015-05-29 17:13:43,183][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823180|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="199" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5,6,7,8,9,11,12-2,8,7" betOption="2" inputChannel="0"/></Ticket>,hash=1267927234), get digest:a718267f3fbc976c1b70cefad37a8c9d
+[2015-05-29 17:13:43,183][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,183][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/union/SellTicket_Req.xml
+[2015-05-29 17:13:43,183][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,196][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_1.5.0).
+[2015-05-29 17:13:43,196][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_).
+[2015-05-29 17:13:43,196][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(8_200_), found controller(com.mpos.lottery.te.gameimpl.union.UnionController@f81b221) and method(public void com.mpos.lottery.te.gameimpl.union.UnionController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:43,203][Test worker][DEBUG][AbstractGameInstanceService] Use channel game instance time definition(IGPE-1).
+[2015-05-29 17:13:43,204][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745819300017937
+[2015-05-29 17:13:43,211][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:43,211][Test worker][DEBUG][UnionSelectedNumberValidatorFactory] Found ticket validator(com.mpos.lottery.te.gameimpl.union.sale.support.UnionMultipleSelectedNumberValidator@462bd95e) for bet option:2
+[2015-05-29 17:13:43,212][Test worker][ERROR][TEPortServlet] The total bets of selectd number:1,2,3,4,5,6,7,8,9,11,12-2,8,7 is 1386, it exceeds the max allowed bets: 10 of merchant(id=111).
+com.mpos.lottery.te.config.exception.ApplicationException: The total bets of selectd number:1,2,3,4,5,6,7,8,9,11,12-2,8,7 is 1386, it exceeds the max allowed bets: 10 of merchant(id=111).
+	at com.mpos.lottery.te.gamespec.sale.support.validator.DefaultTicketValidator.validateMaxAllowedEntryBets(DefaultTicketValidator.java:100)
+	at com.mpos.lottery.te.gamespec.sale.support.validator.DefaultTicketValidator.validate(DefaultTicketValidator.java:48)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.validateTicketRequest(AbstractTicketService.java:386)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.sell(AbstractTicketService.java:140)
+	at sun.reflect.GeneratedMethodAccessor130.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy58.sell(Unknown Source)
+	at com.mpos.lottery.te.gameimpl.union.UnionController.sell(UnionController.java:32)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest.testSell_Multiple_Max_Fail(UnionSaleIntegrationTest.java:312)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:43,213][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823180|Timestamp:20150529171343|Transaction-Type:4200|Transaction-Id:0115052900000000002058|Response-Code:348|):08462811f44b2c6ef3d0d899381e2ab9
+[2015-05-29 17:13:43,213][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=348,length=0): 
+[2015-05-29 17:13:43,220][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:43,221][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:43,221][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@33072099) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:43,221][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:43,221][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,221][Test worker][INFO ][BaseTransactionalIntegrationTest] | UnionSaleIntegrationTest.testSell_Multiple_ExceedAllowedMaxDraw_1                                                      |
+[2015-05-29 17:13:43,221][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,223][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,223][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Req.xml).
+[2015-05-29 17:13:43,224][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823223|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="1600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>,hash=1287192864), get digest:13f8e3247c3cd94008f7cb320650d784
+[2015-05-29 17:13:43,224][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:43,224][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:43,224][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171343).
+[2015-05-29 17:13:43,224][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:43,224][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890823223).
+[2015-05-29 17:13:43,224][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:43,224][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:43,224][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=13f8e3247c3cd94008f7cb320650d784).
+[2015-05-29 17:13:43,224][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=8).
+[2015-05-29 17:13:43,224][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:43,224][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:43,225][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfncNCEmxnE1Ou0qcmJ+qutg9pDpTDScnIWI62pEFB0SGtKkhmSVtwRhObbaRtENvsKgd1vgEj9cakrUbLVxBSMJqciae7U9vnZ9gkPZ+TiqwdSqZt3Q2CcK5Tpzhe/Zfjrl953surZx81pp6iV9IdyhJyvIjV3HMgac/ebWKRzVcP44FSAnRHgSGMdYo6YjPl/9ShLytd5dNEovh0Ieu0fIo26JFl7zXiemQCd/9Khfav5+GkGikzTTQUYjHCgQfTvcg0sjhq22khXwGwZsECT/xphbQuQbhitT1lYyKNDcke0pjV/yGQ6smzhPkwgiAd1iSvwEPDkcCRIN0CC4mjcj8EFhDXSj+tlk=.
+[2015-05-29 17:13:43,225][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823223|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:43,226][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="1600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>
+[2015-05-29 17:13:43,226][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823223|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="1600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>,hash=1287192864), get digest:13f8e3247c3cd94008f7cb320650d784
+[2015-05-29 17:13:43,226][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,226][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/union/SellTicket_Req.xml
+[2015-05-29 17:13:43,226][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,238][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_1.5.0).
+[2015-05-29 17:13:43,238][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_).
+[2015-05-29 17:13:43,239][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(8_200_), found controller(com.mpos.lottery.te.gameimpl.union.UnionController@f81b221) and method(public void com.mpos.lottery.te.gameimpl.union.UnionController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:43,247][Test worker][DEBUG][BaseJpaDao] Query future game instance(class com.mpos.lottery.te.gameimpl.union.game.UnionGameInstance) by(number=20090408,gameId=GAME-UNION-111, multipleDraws=2, state=1||2):1
+[2015-05-29 17:13:43,253][Test worker][DEBUG][AbstractGameInstanceService] Use channel game instance time definition(IGPE-1).
+[2015-05-29 17:13:43,254][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745819300018016
+[2015-05-29 17:13:43,261][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 1, merchant limit to 3, the smaller 1 will be used.
+[2015-05-29 17:13:43,261][Test worker][ERROR][TEPortServlet] THe multiple draw[2] is not in range of allowed multiple-draws[1,1] of game(id=GAME-UNION-111)
+com.mpos.lottery.te.config.exception.ApplicationException: THe multiple draw[2] is not in range of allowed multiple-draws[1,1] of game(id=GAME-UNION-111)
+	at com.mpos.lottery.te.gamespec.sale.support.validator.DefaultTicketValidator.validateMaxAllowedMultipleDraw(DefaultTicketValidator.java:80)
+	at com.mpos.lottery.te.gamespec.sale.support.validator.DefaultTicketValidator.validate(DefaultTicketValidator.java:32)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.validateTicketRequest(AbstractTicketService.java:386)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.sell(AbstractTicketService.java:140)
+	at sun.reflect.GeneratedMethodAccessor130.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy58.sell(Unknown Source)
+	at com.mpos.lottery.te.gameimpl.union.UnionController.sell(UnionController.java:32)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest.testSell_Multiple_ExceedAllowedMaxDraw_1(UnionSaleIntegrationTest.java:331)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:43,262][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823223|Timestamp:20150529171343|Transaction-Type:4200|Transaction-Id:0115052900000000002059|Response-Code:280|):c3ee00622dce1048f58569f91b922f4c
+[2015-05-29 17:13:43,262][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=280,length=0): 
+[2015-05-29 17:13:43,273][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:43,274][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:43,274][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@69b09ef0) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:43,274][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:43,274][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,274][Test worker][INFO ][BaseTransactionalIntegrationTest] | UnionSaleIntegrationTest.testSell_Multiple_ExceedAllowedMaxDraw_2                                                      |
+[2015-05-29 17:13:43,274][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,275][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,276][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Req.xml).
+[2015-05-29 17:13:43,276][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823275|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="1600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>,hash=374007805), get digest:0634da5a9be66d0e46b761dd937afa88
+[2015-05-29 17:13:43,276][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:43,277][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:43,277][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171343).
+[2015-05-29 17:13:43,277][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:43,277][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890823275).
+[2015-05-29 17:13:43,277][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:43,277][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:43,277][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=0634da5a9be66d0e46b761dd937afa88).
+[2015-05-29 17:13:43,277][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=8).
+[2015-05-29 17:13:43,277][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:43,277][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:43,278][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfncNCEmxnE1Ou0qcmJ+qutg9pDpTDScnIWI62pEFB0SGtKkhmSVtwRhObbaRtENvsKgd1vgEj9cakrUbLVxBSMJqciae7U9vnZ9gkPZ+TiqwdSqZt3Q2CcK5Tpzhe/Zfjrl953surZx81pp6iV9IdyhJyvIjV3HMgac/ebWKRzVcP44FSAnRHgSGMdYo6YjPl/9ShLytd5dNEovh0Ieu0fIo26JFl7zXiemQCd/9Khfav5+GkGikzTTQUYjHCgQfTvcg0sjhq22khXwGwZsECT/xphbQuQbhitT1lYyKNDcke0pjV/yGQ6smzhPkwgiAd1iSvwEPDkcCRIN0CC4mjcj8EFhDXSj+tlk=.
+[2015-05-29 17:13:43,278][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823275|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:43,279][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="1600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>
+[2015-05-29 17:13:43,279][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823275|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="1600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>,hash=374007805), get digest:0634da5a9be66d0e46b761dd937afa88
+[2015-05-29 17:13:43,279][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,279][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/union/SellTicket_Req.xml
+[2015-05-29 17:13:43,279][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,291][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_1.5.0).
+[2015-05-29 17:13:43,291][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_).
+[2015-05-29 17:13:43,291][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(8_200_), found controller(com.mpos.lottery.te.gameimpl.union.UnionController@f81b221) and method(public void com.mpos.lottery.te.gameimpl.union.UnionController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:43,297][Test worker][DEBUG][BaseJpaDao] Query future game instance(class com.mpos.lottery.te.gameimpl.union.game.UnionGameInstance) by(number=20090408,gameId=GAME-UNION-111, multipleDraws=2, state=1||2):1
+[2015-05-29 17:13:43,302][Test worker][DEBUG][AbstractGameInstanceService] Use channel game instance time definition(IGPE-1).
+[2015-05-29 17:13:43,302][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745819300018153
+[2015-05-29 17:13:43,309][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 1, the smaller 1 will be used.
+[2015-05-29 17:13:43,310][Test worker][ERROR][TEPortServlet] THe multiple draw[2] is not in range of allowed multiple-draws[1,1] of game(id=GAME-UNION-111)
+com.mpos.lottery.te.config.exception.ApplicationException: THe multiple draw[2] is not in range of allowed multiple-draws[1,1] of game(id=GAME-UNION-111)
+	at com.mpos.lottery.te.gamespec.sale.support.validator.DefaultTicketValidator.validateMaxAllowedMultipleDraw(DefaultTicketValidator.java:80)
+	at com.mpos.lottery.te.gamespec.sale.support.validator.DefaultTicketValidator.validate(DefaultTicketValidator.java:32)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.validateTicketRequest(AbstractTicketService.java:386)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.sell(AbstractTicketService.java:140)
+	at sun.reflect.GeneratedMethodAccessor130.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy58.sell(Unknown Source)
+	at com.mpos.lottery.te.gameimpl.union.UnionController.sell(UnionController.java:32)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest.testSell_Multiple_ExceedAllowedMaxDraw_2(UnionSaleIntegrationTest.java:354)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:43,311][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823275|Timestamp:20150529171343|Transaction-Type:4200|Transaction-Id:0115052900000000002060|Response-Code:280|):f0a37d26b341e4e26289a1586b08692a
+[2015-05-29 17:13:43,311][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=280,length=0): 
+[2015-05-29 17:13:43,320][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:43,321][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:43,321][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@cbf4465) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:43,321][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:43,321][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,321][Test worker][INFO ][BaseTransactionalIntegrationTest] | UnionSaleIntegrationTest.testSell_ROLL_OK                                                                              |
+[2015-05-29 17:13:43,321][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,321][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,322][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Req.xml).
+[2015-05-29 17:13:43,322][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823321|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="3100" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5" betOption="4" inputChannel="0"/></Ticket>,hash=-252119427), get digest:680abf52bc3fdfa2ec282c00e6229ea1
+[2015-05-29 17:13:43,322][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:43,322][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:43,322][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171343).
+[2015-05-29 17:13:43,322][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:43,322][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890823321).
+[2015-05-29 17:13:43,322][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:43,322][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:43,322][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=680abf52bc3fdfa2ec282c00e6229ea1).
+[2015-05-29 17:13:43,322][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=8).
+[2015-05-29 17:13:43,323][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:43,323][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:43,324][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnjCqABYdyJsE3KQamMMqmroQs6UzuEHJSybS0L2O1NDMnhu3zNTHMYDEGtQ7+EKMNs9y0yfdzAGnDTKpSQhN1DcJH7NUDRz7/UrSKTaREs7tgjIlgB1Vb/qvs5pqjRLQMBrMmD31HBmf/07KzPs1aVN5qtsHXfPEdxIS7GegfkZEofyqzFDWxjIqP27ycfKfvn3BXgGq7E/c2wLGA/OY1kg==.
+[2015-05-29 17:13:43,324][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823321|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:43,324][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="3100" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5" betOption="4" inputChannel="0"/></Ticket>
+[2015-05-29 17:13:43,324][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823321|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="3100" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,4,5" betOption="4" inputChannel="0"/></Ticket>,hash=-252119427), get digest:680abf52bc3fdfa2ec282c00e6229ea1
+[2015-05-29 17:13:43,324][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,324][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/union/SellTicket_Req.xml
+[2015-05-29 17:13:43,324][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,336][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_1.5.0).
+[2015-05-29 17:13:43,336][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_).
+[2015-05-29 17:13:43,336][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(8_200_), found controller(com.mpos.lottery.te.gameimpl.union.UnionController@f81b221) and method(public void com.mpos.lottery.te.gameimpl.union.UnionController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:43,343][Test worker][DEBUG][AbstractGameInstanceService] Use channel game instance time definition(IGPE-1).
+[2015-05-29 17:13:43,343][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745819300018248
+[2015-05-29 17:13:43,350][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:43,351][Test worker][ERROR][TEPortServlet] Unsupported bet option:4
+com.mpos.lottery.te.config.exception.SystemException: Unsupported bet option:4
+	at com.mpos.lottery.te.gameimpl.union.sale.support.UnionSelectedNumberValidatorFactory.newSelectedNumberValidator(UnionSelectedNumberValidatorFactory.java:34)
+	at com.mpos.lottery.te.gamespec.sale.support.validator.DefaultTicketValidator.validate(DefaultTicketValidator.java:36)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.validateTicketRequest(AbstractTicketService.java:386)
+	at com.mpos.lottery.te.gamespec.sale.service.AbstractTicketService.sell(AbstractTicketService.java:140)
+	at sun.reflect.GeneratedMethodAccessor130.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy58.sell(Unknown Source)
+	at com.mpos.lottery.te.gameimpl.union.UnionController.sell(UnionController.java:32)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at com.mpos.lottery.common.router.RoutineRegistry.route(RoutineRegistry.java:57)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.routeRequest(CommonFacadeService.java:237)
+	at com.mpos.lottery.te.port.service.CommonFacadeService.facade(CommonFacadeService.java:96)
+	at sun.reflect.GeneratedMethodAccessor83.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:317)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:157)
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:98)
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:262)
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:95)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.interceptor.ExposeInvocationInterceptor.invoke(ExposeInvocationInterceptor.java:92)
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179)
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:207)
+	at com.sun.proxy.$Proxy85.facade(Unknown Source)
+	at com.mpos.lottery.te.port.TEPortServlet.doPost(TEPortServlet.java:121)
+	at com.mpos.lottery.te.test.integration.BaseServletIntegrationTest.doPost(BaseServletIntegrationTest.java:80)
+	at com.mpos.lottery.te.gameimpl.union.sale.UnionSaleIntegrationTest.testSell_ROLL_OK(UnionSaleIntegrationTest.java:289)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestMethodCallbacks.evaluate(RunBeforeTestMethodCallbacks.java:74)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestMethodCallbacks.evaluate(RunAfterTestMethodCallbacks.java:83)
+	at org.springframework.test.context.junit4.statements.SpringRepeat.evaluate(SpringRepeat.java:72)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:233)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.runChild(SpringJUnit4ClassRunner.java:87)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.springframework.test.context.junit4.statements.RunBeforeTestClassCallbacks.evaluate(RunBeforeTestClassCallbacks.java:61)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.springframework.test.context.junit4.statements.RunAfterTestClassCallbacks.evaluate(RunAfterTestClassCallbacks.java:71)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.springframework.test.context.junit4.SpringJUnit4ClassRunner.run(SpringJUnit4ClassRunner.java:176)
+	at org.junit.runners.Suite.runChild(Suite.java:127)
+	at org.junit.runners.Suite.runChild(Suite.java:26)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.GeneratedMethodAccessor8.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.GeneratedMethodAccessor7.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:606)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:615)
+	at java.lang.Thread.run(Thread.java:745)
+[2015-05-29 17:13:43,352][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823321|Timestamp:20150529171343|Transaction-Type:4200|Transaction-Id:0115052900000000002061|Response-Code:306|):5aabb22f11853cdbb586024864f0b927
+[2015-05-29 17:13:43,352][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=306,length=0): 
+[2015-05-29 17:13:43,358][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:43,358][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:43,358][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@60626bb5) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:43,358][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:43,359][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,359][Test worker][INFO ][BaseTransactionalIntegrationTest] | UnionSaleIntegrationTest.testSell_Single_OK                                                                            |
+[2015-05-29 17:13:43,359][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,361][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,362][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Req.xml).
+[2015-05-29 17:13:43,362][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823361|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="800" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>,hash=-1331031251), get digest:66df4e7050d436b74ca4a49c34778d27
+[2015-05-29 17:13:43,362][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:43,363][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:43,363][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171343).
+[2015-05-29 17:13:43,363][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:43,363][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890823361).
+[2015-05-29 17:13:43,363][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:43,363][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:43,363][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=66df4e7050d436b74ca4a49c34778d27).
+[2015-05-29 17:13:43,363][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=8).
+[2015-05-29 17:13:43,363][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:43,363][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:43,364][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfnfSvzUuvi5gIW+x7OzQghYnImZvTQ1xCUUG6+eUQPoWv7dGtkcUmbKplpcI3SAtQHMEUt6rVVkwSEIl8TZT7F/jIcpT2cbgXW95C0Kv7KkyEYq5s+mZ8p0LGlQMx74PpjZoEZlwPc6Zesz3CV9O+9LJAPFLIQ2bZdxrI5AQhtCfH0ditkwn5VRjBAwDnw7f1P4xNyERJ8h9O9uJhSk64MOy34ppDWz7FX7pzkJv3Ju6gbaOtYZ+bVEvzmzllH52H/Bp3ECMTZxx8zDJFp6zKZz2HKO/ihzTVXjfpmAHEIjHLOaJQtplLMn79VHeUm0yi/6SW+sKSqwDLeLm8IKNgZTn.
+[2015-05-29 17:13:43,364][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823361|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:43,364][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="800" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>
+[2015-05-29 17:13:43,365][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823361|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="1" totalAmount="800" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>,hash=-1331031251), get digest:66df4e7050d436b74ca4a49c34778d27
+[2015-05-29 17:13:43,365][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,365][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/union/SellTicket_Req.xml
+[2015-05-29 17:13:43,365][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,374][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_1.5.0).
+[2015-05-29 17:13:43,375][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_).
+[2015-05-29 17:13:43,375][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(8_200_), found controller(com.mpos.lottery.te.gameimpl.union.UnionController@f81b221) and method(public void com.mpos.lottery.te.gameimpl.union.UnionController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:43,382][Test worker][DEBUG][AbstractGameInstanceService] Use channel game instance time definition(IGPE-1).
+[2015-05-29 17:13:43,383][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745819300018340
+[2015-05-29 17:13:43,389][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:43,390][Test worker][DEBUG][UnionSelectedNumberValidatorFactory] Found ticket validator(com.mpos.lottery.te.gamespec.sale.support.validator.SingleSelectedNumberValidator@2a05a771) for bet option:1
+[2015-05-29 17:13:43,390][Test worker][DEBUG][UnionSelectedNumberValidatorFactory] Found ticket validator(com.mpos.lottery.te.gameimpl.union.sale.support.UnionMultipleSelectedNumberValidator@59340144) for bet option:2
+[2015-05-29 17:13:43,401][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:43,401][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:43,401][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199999200, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:43,413][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.8]: transaction {
+  id: "0115052900000000002062"
+  dev_id: "111"
+  operator_id: "OPERATOR-111"
+  merchant_id: "111"
+  create_time: 1432890823000
+  trans_type: 200
+  game_id: "GAME-UNION-111"
+  game_type: 8
+  total_amount: "800"
+}
+multi_draw: 1
+total_amount: "800"
+serial_no: "aHhDkgTyIu5KJp+fo6FS8u4zLgdLtQ67"
+game_instance {
+  id: "GII-113"
+}
+entries {
+  selected_number: "1,2,3,6,7,13-2,5"
+  bet_option: 1
+  total_bets: 1
+  entry_amount: "100"
+  input_channel: "1"
+}
+entries {
+  selected_number: "3,11,14,16,22,25,36-2,4"
+  bet_option: 2
+  total_bets: 7
+  entry_amount: "700"
+  input_channel: "1"
+}
+
+[2015-05-29 17:13:43,413][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:43,413][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Res.xml) by key(8.transtype.4200).
+[2015-05-29 17:13:43,413][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.union.sale.UnionTicket),mappingFile=xml-mapping/game/union/SellTicket_Res.xml
+[2015-05-29 17:13:43,413][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Res.xml) by key(8.transtype.4200).
+[2015-05-29 17:13:43,414][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Res.xml).
+[2015-05-29 17:13:43,414][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823361|Timestamp:20150529171343|Transaction-Type:4200|Transaction-Id:0115052900000000002062|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745819300018340" type="1" lastDrawNo="20090408" barcode="08cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKck5kS9M7H6VjZnz20bh/hZg=" validationCode="465327" multipleDraws="1" totalBets="8" totalAmount="800"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1" entryAmount="100"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1" entryAmount="700"/></Ticket>):e0b97c9db50971188b134f8ab0127ffa
+[2015-05-29 17:13:43,414][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=704) succesfully.
+[2015-05-29 17:13:43,415][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=704): <?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745819300018340" type="1" lastDrawNo="20090408" barcode="08cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKck5kS9M7H6VjZnz20bh/hZg=" validationCode="465327" multipleDraws="1" totalBets="8" totalAmount="800"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1" entryAmount="100"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1" entryAmount="700"/></Ticket>
+[2015-05-29 17:13:43,415][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Res.xml) by key(8.transtype.4200).
+[2015-05-29 17:13:43,443][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:43,443][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:43,444][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@333d3266) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:43,444][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:43,444][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,444][Test worker][INFO ][BaseTransactionalIntegrationTest] | UnionSaleIntegrationTest.testSell_Single_NoValidationCode_OK                                                           |
+[2015-05-29 17:13:43,444][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,445][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,446][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Req.xml).
+[2015-05-29 17:13:43,446][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823445|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="1600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>,hash=1608404834), get digest:f50d99a2d90c0503511b6fb004ef6156
+[2015-05-29 17:13:43,446][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:43,446][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:43,447][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171343).
+[2015-05-29 17:13:43,447][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:43,447][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890823445).
+[2015-05-29 17:13:43,447][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:43,447][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:43,447][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=f50d99a2d90c0503511b6fb004ef6156).
+[2015-05-29 17:13:43,447][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=8).
+[2015-05-29 17:13:43,447][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:43,447][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:43,448][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfncNCEmxnE1Ou0qcmJ+qutg9pDpTDScnIWI62pEFB0SGtKkhmSVtwRhObbaRtENvsKgd1vgEj9cakrUbLVxBSMJqciae7U9vnZ9gkPZ+TiqwdSqZt3Q2CcK5Tpzhe/Zfjrl953surZx81pp6iV9IdyhJyvIjV3HMgac/ebWKRzVcP44FSAnRHgSGMdYo6YjPl/9ShLytd5dNEovh0Ieu0fIo26JFl7zXiemQCd/9Khfav5+GkGikzTTQUYjHCgQfTvcg0sjhq22khXwGwZsECT/xphbQuQbhitT1lYyKNDcke0pjV/yGQ6smzhPkwgiAd1iSvwEPDkcCRIN0CC4mjcj8EFhDXSj+tlk=.
+[2015-05-29 17:13:43,448][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823445|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:43,448][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="1600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>
+[2015-05-29 17:13:43,448][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823445|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="1600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>,hash=1608404834), get digest:f50d99a2d90c0503511b6fb004ef6156
+[2015-05-29 17:13:43,448][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,448][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/union/SellTicket_Req.xml
+[2015-05-29 17:13:43,448][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,463][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_1.5.0).
+[2015-05-29 17:13:43,463][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_).
+[2015-05-29 17:13:43,463][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(8_200_), found controller(com.mpos.lottery.te.gameimpl.union.UnionController@f81b221) and method(public void com.mpos.lottery.te.gameimpl.union.UnionController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:43,470][Test worker][DEBUG][BaseJpaDao] Query future game instance(class com.mpos.lottery.te.gameimpl.union.game.UnionGameInstance) by(number=20090408,gameId=GAME-UNION-111, multipleDraws=2, state=1||2):1
+[2015-05-29 17:13:43,475][Test worker][DEBUG][AbstractGameInstanceService] Use channel game instance time definition(IGPE-1).
+[2015-05-29 17:13:43,475][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745819300018426
+[2015-05-29 17:13:43,483][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:43,483][Test worker][DEBUG][UnionSelectedNumberValidatorFactory] Found ticket validator(com.mpos.lottery.te.gamespec.sale.support.validator.SingleSelectedNumberValidator@362d36d1) for bet option:1
+[2015-05-29 17:13:43,484][Test worker][DEBUG][UnionSelectedNumberValidatorFactory] Found ticket validator(com.mpos.lottery.te.gameimpl.union.sale.support.UnionMultipleSelectedNumberValidator@5269ef20) for bet option:2
+[2015-05-29 17:13:43,499][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:43,499][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:43,499][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199998400, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:43,509][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.8]: transaction {
+  id: "0115052900000000002066"
+  dev_id: "111"
+  operator_id: "OPERATOR-111"
+  merchant_id: "111"
+  create_time: 1432890823000
+  trans_type: 200
+  game_id: "GAME-UNION-111"
+  game_type: 8
+  total_amount: "1600"
+}
+multi_draw: 2
+total_amount: "1600"
+serial_no: "aHhDkgTyIu5KJp+fo6FS8mskC0O3+lYs"
+game_instance {
+  id: "GII-113"
+}
+entries {
+  selected_number: "1,2,3,6,7,13-2,5"
+  bet_option: 1
+  total_bets: 1
+  entry_amount: "100"
+  input_channel: "1"
+}
+entries {
+  selected_number: "3,11,14,16,22,25,36-2,4"
+  bet_option: 2
+  total_bets: 7
+  entry_amount: "700"
+  input_channel: "1"
+}
+
+[2015-05-29 17:13:43,509][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:43,509][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Res.xml) by key(8.transtype.4200).
+[2015-05-29 17:13:43,510][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.union.sale.UnionTicket),mappingFile=xml-mapping/game/union/SellTicket_Res.xml
+[2015-05-29 17:13:43,510][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Res.xml) by key(8.transtype.4200).
+[2015-05-29 17:13:43,510][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Res.xml).
+[2015-05-29 17:13:43,510][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823445|Timestamp:20150529171343|Transaction-Type:4200|Transaction-Id:0115052900000000002066|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745819300018426" type="1" lastDrawNo="20090416" barcode="08cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKck5kS9M7H6Vj3oMMp7hzAXk=" validationCode="FFFFFF" multipleDraws="2" totalBets="16" totalAmount="1600"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1" entryAmount="100"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1" entryAmount="700"/></Ticket>):d06c5907ad690106e1bbec07234f4e9d
+[2015-05-29 17:13:43,511][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=704) succesfully.
+[2015-05-29 17:13:43,511][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=704): <?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745819300018426" type="1" lastDrawNo="20090416" barcode="08cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKck5kS9M7H6Vj3oMMp7hzAXk=" validationCode="FFFFFF" multipleDraws="2" totalBets="16" totalAmount="1600"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1" entryAmount="100"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1" entryAmount="700"/></Ticket>
+[2015-05-29 17:13:43,512][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Res.xml) by key(8.transtype.4200).
+[2015-05-29 17:13:43,528][Test worker][DEBUG][TEPortServlet] Startup job scheduer(org.quartz.impl.StdScheduler@4d1e5820) successfully.
+[2015-05-29 17:13:43,528][Test worker][WARN ][TEPortServlet] can NOT find META file:F:\project\M.Lottery\TE\TRUNK_TE\sourcecode\build\classes\main\META-INF\MANIFEST.MF
+[2015-05-29 17:13:43,528][Test worker][DEBUG][TEPortServlet] Register MBean(com.mpos.lottery.te.common.jmx.TransactionTimeout@3f12bf77) with name(com.mpos.lottery.te:type=TransactionTimeoutMBean) successfully.
+[2015-05-29 17:13:43,528][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+[2015-05-29 17:13:43,529][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,529][Test worker][INFO ][BaseTransactionalIntegrationTest] | UnionSaleIntegrationTest.testSell_MultiDraw_OK                                                                         |
+[2015-05-29 17:13:43,529][Test worker][INFO ][BaseTransactionalIntegrationTest] +------------------------------------------------------------------------------------------------------------------------+
+[2015-05-29 17:13:43,532][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,532][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Req.xml).
+[2015-05-29 17:13:43,533][Test worker][DEBUG][BaseServletIntegrationTest] Do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823532|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="1600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>,hash=1797263297), get digest:2b124c92388ff308f2c50483f18b21ec
+[2015-05-29 17:13:43,533][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Transaction-Type, value=200).
+[2015-05-29 17:13:43,533][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Protocal-Version, value=1.5).
+[2015-05-29 17:13:43,533][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Timestamp, value=20150529171343).
+[2015-05-29 17:13:43,533][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPE-Id, value=GPE-111).
+[2015-05-29 17:13:43,533][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trace-Message-Id, value=1432890823532).
+[2015-05-29 17:13:43,533][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Operator-Id, value=OPERATOR-111).
+[2015-05-29 17:13:43,533][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Terminal-Id, value=111).
+[2015-05-29 17:13:43,533][Test worker][DEBUG][TEPortServlet] Got request header(name=X-MAC, value=2b124c92388ff308f2c50483f18b21ec).
+[2015-05-29 17:13:43,533][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Game-Type-Id, value=8).
+[2015-05-29 17:13:43,534][Test worker][DEBUG][TEPortServlet] Got request header(name=X-Trans-BatchNumber, value=20150529).
+[2015-05-29 17:13:43,534][Test worker][DEBUG][TEPortServlet] Got request header(name=X-GPS-Location, value=40.714353,-74.005973).
+[2015-05-29 17:13:43,535][Test worker][DEBUG][TEPortServlet] Got request from localhost, and the message body is:pq3FqO8HCcAnaobA+xpVnADmrnwj1vrK59BGhqvtskYFWTsa2cbe6vvj1C28m6E+ybhcq2GHfncNCEmxnE1Ou0qcmJ+qutg9pDpTDScnIWI62pEFB0SGtKkhmSVtwRhObbaRtENvsKgd1vgEj9cakrUbLVxBSMJqciae7U9vnZ9gkPZ+TiqwdSqZt3Q2CcK5Tpzhe/Zfjrl953surZx81pp6iV9IdyhJyvIjV3HMgac/ebWKRzVcP44FSAnRHgSGMdYo6YjPl/9ShLytd5dNEovh0Ieu0fIo26JFl7zXiemQCd/9Khfav5+GkGikzTTQUYjHCgQfTvcg0sjhq22khXwGwZsECT/xphbQuQbhitT1lYyKNDcke0pjV/yGQ6smzhPkwgiAd1iSvwEPDkcCRIN0CC4mjcj8EFhDXSj+tlk=.
+[2015-05-29 17:13:43,535][Test worker][DEBUG][ProtocolSerializer] Start to deserialize request context(Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823532|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|).
+[2015-05-29 17:13:43,535][Test worker][DEBUG][ProtocolSerializer] Finish decrypting cipher into original xml:<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="1600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>
+[2015-05-29 17:13:43,535][Test worker][DEBUG][ProtocolSerializer] Start to do MAC(key=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF) on (Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823532|Timestamp:20150529171343|Transaction-Type:200|Transaction-Id:|Response-Code:|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket multipleDraws="2" totalAmount="1600" PIN="123456"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1"/></Ticket>,hash=1797263297), get digest:2b124c92388ff308f2c50483f18b21ec
+[2015-05-29 17:13:43,536][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,536][Test worker][DEBUG][ProtocolSerializer] Start to deserialize model: model=null,mappingFile=xml-mapping/game/union/SellTicket_Req.xml
+[2015-05-29 17:13:43,536][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Req.xml) by key(8.transtype.200).
+[2015-05-29 17:13:43,546][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_1.5.0).
+[2015-05-29 17:13:43,546][Test worker][DEBUG][RoutineRegistry] Try to lookup handler by routine key(8_200_).
+[2015-05-29 17:13:43,546][Test worker][DEBUG][RoutineRegistry] Lookup controller by key(8_200_), found controller(com.mpos.lottery.te.gameimpl.union.UnionController@f81b221) and method(public void com.mpos.lottery.te.gameimpl.union.UnionController.sell(com.mpos.lottery.te.port.Context,com.mpos.lottery.te.port.Context) throws com.mpos.lottery.te.config.exception.ApplicationException).
+[2015-05-29 17:13:43,553][Test worker][DEBUG][BaseJpaDao] Query future game instance(class com.mpos.lottery.te.gameimpl.union.game.UnionGameInstance) by(number=20090408,gameId=GAME-UNION-111, multipleDraws=2, state=1||2):1
+[2015-05-29 17:13:43,559][Test worker][DEBUG][AbstractGameInstanceService] Use channel game instance time definition(IGPE-1).
+[2015-05-29 17:13:43,559][Test worker][DEBUG][UUIDServiceImpl] Assemble a new ticket serial number:01110745819300018568
+[2015-05-29 17:13:43,569][Test worker][DEBUG][DefaultTicketValidator] THe max allowed multi-draw of operation parameter is 10, merchant limit to 3, the smaller 3 will be used.
+[2015-05-29 17:13:43,570][Test worker][DEBUG][UnionSelectedNumberValidatorFactory] Found ticket validator(com.mpos.lottery.te.gamespec.sale.support.validator.SingleSelectedNumberValidator@31c8341b) for bet option:1
+[2015-05-29 17:13:43,570][Test worker][DEBUG][UnionSelectedNumberValidatorFactory] Found ticket validator(com.mpos.lottery.te.gameimpl.union.sale.support.UnionMultipleSelectedNumberValidator@4ed4f225) for bet option:2
+[2015-05-29 17:13:43,589][Test worker][DEBUG][DefaultBalanceService] Operator before transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=200000000, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:43,589][Test worker][DEBUG][DefaultBalanceService] Found balance strategy:com.mpos.lottery.te.merchant.service.balance.SaleBalanceStrategy@e1f8aba
+[2015-05-29 17:13:43,589][Test worker][DEBUG][DefaultBalanceService] Operator after transaction -  Operator [id=OPERATOR-111, loginName=OPERATOR-LOGIN, creditType=1, saleCreditLevel=199998400, payoutCreditLevel=1000, cashoutBalance=0, commisionBalance=0]
+[2015-05-29 17:13:43,598][Test worker][DEBUG][CommonFacadeService] Prepare to publish message to exchange[TE.200] with routing key[TE.200.8]: transaction {
+  id: "0115052900000000002071"
+  dev_id: "111"
+  operator_id: "OPERATOR-111"
+  merchant_id: "111"
+  create_time: 1432890823000
+  trans_type: 200
+  game_id: "GAME-UNION-111"
+  game_type: 8
+  total_amount: "1600"
+}
+multi_draw: 2
+total_amount: "1600"
+serial_no: "aHhDkgTyIu5KJp+fo6FS8uMbAYzLST7e"
+game_instance {
+  id: "GII-113"
+}
+entries {
+  selected_number: "1,2,3,6,7,13-2,5"
+  bet_option: 1
+  total_bets: 1
+  entry_amount: "100"
+  input_channel: "1"
+}
+entries {
+  selected_number: "3,11,14,16,22,25,36-2,4"
+  bet_option: 2
+  total_bets: 7
+  entry_amount: "700"
+  input_channel: "1"
+}
+
+[2015-05-29 17:13:43,599][Test worker][DEBUG][CommonFacadeService] Publish message successfully
+[2015-05-29 17:13:43,599][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Res.xml) by key(8.transtype.4200).
+[2015-05-29 17:13:43,599][Test worker][DEBUG][ProtocolSerializer] Start to serialize model(class com.mpos.lottery.te.gameimpl.union.sale.UnionTicket),mappingFile=xml-mapping/game/union/SellTicket_Res.xml
+[2015-05-29 17:13:43,599][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Res.xml) by key(8.transtype.4200).
+[2015-05-29 17:13:43,600][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.gameimpl.union.sale.UnionTicket, mappingFile=xml-mapping/game/union/SellTicket_Res.xml).
+[2015-05-29 17:13:43,600][Test worker][DEBUG][ProtocolSerializer] Finish mac(macKey=P2Bbo6+bSSR9O2Qc89f3b4oHTyE1V2gF,macString=Protocal-Version:1.5|GPE_Id:GPE-111|Terminal-Id:111|Operator-Id:OPERATOR-111|Trans-BatchNumber:20150529|TractMsg-Id:1432890823532|Timestamp:20150529171343|Transaction-Type:4200|Transaction-Id:0115052900000000002071|Response-Code:200|<?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745819300018568" type="1" lastDrawNo="20090416" barcode="08cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKck5kS9M7H6VjU2Yy9Pq0bfE=" validationCode="132767" multipleDraws="2" totalBets="16" totalAmount="1600"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1" entryAmount="100"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1" entryAmount="700"/></Ticket>):040ff89ad28af15e45617671637124a0
+[2015-05-29 17:13:43,601][Test worker][DEBUG][TEPortServlet] Write response to client(host1=localhost,sizeOfPack=704) succesfully.
+[2015-05-29 17:13:43,601][Test worker][DEBUG][BaseServletIntegrationTest] Got response(code=200,length=704): <?xml version="1.0" encoding="UTF-8"?>
+<Ticket serialNo="01110745819300018568" type="1" lastDrawNo="20090416" barcode="08cK/u9hwZY2Rogq4k24Oeg4G3HSlAl9EbjLdf+UJJlt8eRiXxElYKck5kS9M7H6VjU2Yy9Pq0bfE=" validationCode="132767" multipleDraws="2" totalBets="16" totalAmount="1600"><GameDraw number="20090408" gameId="GAME-UNION-111"/><Entry selectedNumber="1,2,3,6,7,13-2,5" betOption="1" inputChannel="1" entryAmount="100"/><Entry selectedNumber="3,11,14,16,22,25,36-2,4" betOption="2" inputChannel="1" entryAmount="700"/></Ticket>
+[2015-05-29 17:13:43,601][Test worker][DEBUG][MLotteryContext] find mapping file definition(xml-mapping/game/union/SellTicket_Res.xml) by key(8.transtype.4200).
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

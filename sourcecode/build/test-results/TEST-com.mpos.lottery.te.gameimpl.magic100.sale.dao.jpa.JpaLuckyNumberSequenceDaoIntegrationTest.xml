@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.gameimpl.magic100.sale.dao.jpa.JpaLuckyNumberSequenceDaoIntegrationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:32" hostname="Ramon-PC" time="0.012">
+  <properties/>
+  <testcase name="test" classname="com.mpos.lottery.te.gameimpl.magic100.sale.dao.jpa.JpaLuckyNumberSequenceDaoIntegrationTest" time="0.012"/>
+  <system-out><![CDATA[[2015-05-29 17:13:32,968][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

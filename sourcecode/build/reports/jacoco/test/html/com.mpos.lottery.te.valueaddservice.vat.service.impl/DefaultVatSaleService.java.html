@@ -1,0 +1,494 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DefaultVatSaleService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.valueaddservice.vat.service.impl</a> &gt; <span class="el_source">DefaultVatSaleService.java</span></div><h1>DefaultVatSaleService.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.valueaddservice.vat.service.impl;
+
+import com.mpos.lottery.te.common.dao.BaseJpaDao;
+import com.mpos.lottery.te.common.util.SimpleToolkit;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.MessageFormatException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gameimpl.magic100.sale.Magic100Ticket;
+import com.mpos.lottery.te.gameimpl.raffle.sale.RaffleTicket;
+import com.mpos.lottery.te.gamespec.game.BaseOperationParameter;
+import com.mpos.lottery.te.gamespec.game.Game;
+import com.mpos.lottery.te.gamespec.game.GameType;
+import com.mpos.lottery.te.gamespec.game.service.GameInstanceService;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.gamespec.sale.service.TicketService;
+import com.mpos.lottery.te.merchant.dao.MerchantDao;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.sequence.domain.TicketSerialSpec;
+import com.mpos.lottery.te.sequence.service.UUIDService;
+import com.mpos.lottery.te.trans.domain.Transaction;
+import com.mpos.lottery.te.trans.service.TransactionService;
+import com.mpos.lottery.te.valueaddservice.vat.OperatorBizType;
+import com.mpos.lottery.te.valueaddservice.vat.VAT;
+import com.mpos.lottery.te.valueaddservice.vat.Vat2Game;
+import com.mpos.lottery.te.valueaddservice.vat.Vat2Merchant;
+import com.mpos.lottery.te.valueaddservice.vat.VatCompany;
+import com.mpos.lottery.te.valueaddservice.vat.VatOperatorBalance;
+import com.mpos.lottery.te.valueaddservice.vat.VatSaleTransaction;
+import com.mpos.lottery.te.valueaddservice.vat.dao.OperatorBizTypeDao;
+import com.mpos.lottery.te.valueaddservice.vat.dao.Vat2GameDao;
+import com.mpos.lottery.te.valueaddservice.vat.dao.Vat2MerchantDao;
+import com.mpos.lottery.te.valueaddservice.vat.dao.VatCompanyDao;
+import com.mpos.lottery.te.valueaddservice.vat.dao.VatDao;
+import com.mpos.lottery.te.valueaddservice.vat.dao.VatOperatorBalanceDao;
+import com.mpos.lottery.te.valueaddservice.vat.dao.VatSaleTransactionDao;
+import com.mpos.lottery.te.valueaddservice.vat.service.VatSaleService;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+
+import javax.annotation.Resource;
+
+@Service(&quot;vatSaleService&quot;)
+<span class="fc" id="L47">public class DefaultVatSaleService implements VatSaleService {</span>
+<span class="fc" id="L48">    private static Log logger = LogFactory.getLog(DefaultVatSaleService.class);</span>
+    @Resource(name = &quot;transService&quot;)
+    private TransactionService transactionService;
+    @Resource(name = &quot;operatorBizTypeDao&quot;)
+    private OperatorBizTypeDao operatorBizTypeDao;
+    @Resource(name = &quot;vatDao&quot;)
+    private VatDao vatDao;
+    @Resource(name = &quot;vat2MerchantDao&quot;)
+    private Vat2MerchantDao vat2MerchantDao;
+    @Resource(name = &quot;vat2GameDao&quot;)
+    private Vat2GameDao vat2GameDao;
+    @Resource(name = &quot;raffleTicketService&quot;)
+    private TicketService raffleTicketService;
+    @Resource(name = &quot;magic100SaleService&quot;)
+    private TicketService magic100TicketService;
+    @Resource(name = &quot;raffleGameInstanceService&quot;)
+    private GameInstanceService raffleGameInstanceService;
+    @Resource(name = &quot;magic100GameInstanceService&quot;)
+    private GameInstanceService magic100GameInstanceService;
+    @Resource(name = &quot;baseJpaDao&quot;)
+    private BaseJpaDao baseJpaDao;
+    @Resource(name = &quot;uuidManager&quot;)
+    private UUIDService uuidService;
+    @Resource(name = &quot;merchantDao&quot;)
+    private MerchantDao merchantDao;
+    @Resource(name = &quot;vatCompanyDao&quot;)
+    private VatCompanyDao vatCompanyDao;
+    @Resource(name = &quot;vatOperatorBalanceDao&quot;)
+    private VatOperatorBalanceDao vatOperatorBalanceDao;
+    @Resource(name = &quot;vatSaleTransactionDao&quot;)
+    private VatSaleTransactionDao vatSaleTransactionDao;
+
+    @Override
+    public VatSaleTransaction sell(Context&lt;?&gt; respCtx, VatSaleTransaction clientSale) throws ApplicationException {
+<span class="fc" id="L82">        VatSaleTransaction vatClientTrans = (VatSaleTransaction) clientSale;</span>
+        // lookup VAT
+<span class="fc" id="L84">        VAT vat = this.getVatDao().findByCode(vatClientTrans.getVatCode());</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (vat == null) {</span>
+<span class="nc" id="L86">            throw new ApplicationException(SystemException.CODE_VAT_NOFOUND, &quot;No valid VAT found by code(&quot;</span>
+                    + vatClientTrans.getVatCode() + &quot;)&quot;);
+        }
+
+        // verify whether VAT has been allocated to merchant
+<span class="fc" id="L91">        Vat2Merchant vat2Merchant = this.getVat2MerchantDao().findByVatAndMerchant(vat.getId(),</span>
+                respCtx.getTransaction().getMerchantId());
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">        if (vat2Merchant == null) {</span>
+<span class="nc" id="L94">            throw new ApplicationException(SystemException.CODE_VAT_NOT_ALLOCATED_TO_MERCHANT, &quot;VAT(id=&quot; + vat.getId()</span>
+                    + &quot;) hasn't been allocated to merchant(id=&quot; + respCtx.getTransaction().getMerchantId() + &quot;) yet.&quot;);
+        }
+
+        // determine the business type of operator first
+<span class="fc" id="L99">        OperatorBizType operatorBizType = this.getOperatorBizTypeDao().findByOperator(</span>
+                respCtx.getTransaction().getOperatorId());
+<span class="pc bpc" id="L101" title="1 of 2 branches missed.">        if (operatorBizType == null) {</span>
+<span class="nc" id="L102">            throw new SystemException(&quot;No operator BizType definition found by operatorId=&quot;</span>
+                    + respCtx.getTransaction().getOperatorId());
+        }
+        // lookup Game allocated to given VAT
+<span class="fc" id="L106">        Vat2Game vat2Game = this.getVat2GameDao().findByVatAndBizType(vat.getId(), operatorBizType.getBusinessType());</span>
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">        if (vat2Game == null) {</span>
+<span class="nc" id="L108">            throw new ApplicationException(SystemException.CODE_VAT_NOT_GAME_ALLOCATED,</span>
+                    &quot;No Game has been allocated to Vat(id=&quot; + vat.getId() + &quot;) yet.&quot;);
+        }
+<span class="fc" id="L111">        vatClientTrans.setVatRate(vat2Game.getRate());</span>
+
+        // prepare VAT sale transaction
+<span class="fc" id="L114">        vatClientTrans.mergeTransaction(respCtx.getTransaction());</span>
+<span class="fc" id="L115">        vatClientTrans.setVatRefNo(this.getUuidService().getReferenceNo(TicketSerialSpec.ONLINE_MODE));</span>
+<span class="fc" id="L116">        vatClientTrans.setVatId(vat.getId());</span>
+<span class="fc" id="L117">        vatClientTrans.setBusinessType(operatorBizType.getBusinessType());</span>
+
+<span class="fc" id="L119">        BaseTicket soldTicket = null;</span>
+        // B2B business mode
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        if (OperatorBizType.BIZ_B2B.equalsIgnoreCase(operatorBizType.getBusinessType())) {</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">            if (vatClientTrans.getBuyerTaxNo() == null) {</span>
+<span class="nc" id="L123">                throw new MessageFormatException(&quot;For B2B operator, the buyerTaxNo must be provided.&quot;);</span>
+            }
+<span class="fc" id="L125">            soldTicket = this.doSale(respCtx, vat, vat2Game, vatClientTrans);</span>
+
+            // lookup seller and buyer company information
+<span class="fc" id="L128">            VatCompany seller = this.getVatCompanyDao().findByMerchant(respCtx.getTransaction().getMerchantId());</span>
+<span class="fc" id="L129">            VatCompany buyer = this.getVatCompanyDao().findByTaxNo(vatClientTrans.getBuyerTaxNo());</span>
+<span class="pc bpc" id="L130" title="1 of 2 branches missed.">            if (buyer == null) {</span>
+<span class="nc" id="L131">                throw new ApplicationException(SystemException.CODE_NO_MERCHANT, &quot;No merchant found by taxNo=&quot;</span>
+                        + vatClientTrans.getBuyerTaxNo());
+            }
+            // assemble vat sale transaction
+<span class="fc" id="L135">            vatClientTrans.setBuyerCompanyId(buyer.getId());</span>
+<span class="fc" id="L136">            vatClientTrans.setSellerCompanyId(seller.getId());</span>
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">        } else if (OperatorBizType.BIZ_B2C.equalsIgnoreCase(operatorBizType.getBusinessType())) {</span>
+            // B2C business mode
+<span class="fc" id="L139">            soldTicket = this.doSale(respCtx, vat, vat2Game, vatClientTrans);</span>
+        } else {
+<span class="nc" id="L141">            throw new SystemException(&quot;Unsupported business type:&quot; + operatorBizType.getBusinessType());</span>
+        }
+
+        // assemble vat sale transaction after sale
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        if (soldTicket != null) { // maybe no ticket will be sold</span>
+<span class="fc" id="L146">            vatClientTrans.setTicket(soldTicket);</span>
+<span class="pc bpc" id="L147" title="1 of 2 branches missed.">            if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L148">                logger.debug(&quot;Operator(id=&quot; + operatorBizType.getOperatorId() + &quot;) is in &quot;</span>
+                        + (operatorBizType.getBizTypeString()) + &quot;, has bought ticket(serialNO=&quot;
+                        + soldTicket.getRawSerialNo() + &quot;) of game Type: &quot;
+                        + GameType.fromType(vat2Game.getGame().getType()));
+            }
+
+<span class="fc" id="L154">            vatClientTrans.setSaleTotalAmount(soldTicket.getTotalAmount());</span>
+<span class="fc" id="L155">            vatClientTrans.setGameInstanceId(soldTicket.getGameInstance().getId());</span>
+<span class="fc" id="L156">            vatClientTrans.setTicketSerialNo(soldTicket.getSerialNo());</span>
+
+        }
+<span class="fc" id="L159">        this.getBaseJpaDao().insert(vatClientTrans);</span>
+
+        // update Vat balance...retailer has to pass those VAT amount to
+        // government
+<span class="fc" id="L163">        VatOperatorBalance operatorBalance = this.getVatOperatorBalanceDao().findByOperatorIdForUpdate(</span>
+                respCtx.getTransaction().getOperatorId());
+<span class="fc" id="L165">        operatorBalance.setSaleBalance(operatorBalance.getSaleBalance().add(vatClientTrans.getVatTotalAmount()));</span>
+<span class="fc" id="L166">        this.getBaseJpaDao().update(operatorBalance);</span>
+
+<span class="fc" id="L168">        return vatClientTrans;</span>
+    }
+
+    @Override
+    public void refundVat(Context&lt;?&gt; respCtx, VatSaleTransaction vatTrans) throws ApplicationException {
+        // look up VAT sale transaction first
+<span class="fc" id="L174">        VatSaleTransaction hostVatTrans = this.getVatSaleTransactionDao().findByRefNo(vatTrans.getVatRefNo());</span>
+<span class="pc bpc" id="L175" title="1 of 2 branches missed.">        if (hostVatTrans == null) {</span>
+<span class="nc" id="L176">            throw new ApplicationException(SystemException.CODE_NO_TRANSACTION,</span>
+                    &quot;No VAT sale transaction found by refNo(&quot; + vatTrans.getVatRefNo() + &quot;).&quot;);
+        }
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        if (VatSaleTransaction.STATUS_VALID != hostVatTrans.getStatus()) {</span>
+<span class="nc" id="L180">            throw new ApplicationException(SystemException.CODE_4D_ENTRY_AMOUNT_ERROR,</span>
+                    &quot;can Only refund VALID VAT sale transaction, however the status of vat transaction(refNo=&quot;
+                            + vatTrans.getVatRefNo() + &quot;) is &quot; + hostVatTrans.getStatus());
+        }
+        // call cancelByTransaction to avoid duplicated code.
+<span class="fc" id="L185">        Transaction targetTrans = this.getBaseJpaDao().findById(Transaction.class, hostVatTrans.getTransactionId());</span>
+<span class="pc bpc" id="L186" title="1 of 2 branches missed.">        if (targetTrans == null) {</span>
+<span class="nc" id="L187">            throw new ApplicationException(SystemException.CODE_NO_TRANSACTION, &quot;No transaction found by id(&quot;</span>
+                    + hostVatTrans.getTransactionId() + &quot;).&quot;);
+        }
+<span class="fc" id="L190">        this.getTransactionService().reverseOrCancel(respCtx, targetTrans);</span>
+<span class="fc" id="L191">    }</span>
+
+    // --------------------------------------------------------------------
+    // HELPER METHODS
+    // --------------------------------------------------------------------
+
+    /**
+     * Buy a ticket based on supplied VAT. No matter B2B or B2C, both can join either Raffle or Magic100 game.
+     * 
+     * @param respCtx
+     *            The context of VAT sale.
+     * @param vat
+     *            The associated VAT.
+     * @param vat2Game
+     *            The association between VAT and game. It determines which game the VAT can join.
+     * @param vatSaleTransaction
+     *            THe VAT sale transaction which represents the VAT sale.
+     * @return THe RAFFLE or MAGIC100 ticket, it depends on which game VAT has joined, or null if no need to buy a
+     *         ticket.
+     */
+    protected BaseTicket doSale(Context respCtx, VAT vat, Vat2Game vat2Game, VatSaleTransaction vatSaleTransaction)
+            throws ApplicationException {
+<span class="fc" id="L213">        BaseTicket soldTicket = null;</span>
+<span class="fc" id="L214">        Game game = this.getBaseJpaDao().findById(Game.class, vat2Game.getGameId());</span>
+<span class="fc" id="L215">        vat2Game.setGame(game);</span>
+<span class="fc" id="L216">        vatSaleTransaction.setGameType(game.getType());</span>
+
+        /**
+         * We have to use game type+protocolVersion to locate the XML mapping file. as the response of vat sale may
+         * return either Raffle or Magic100 ticket, that says the response maybe have to be serialized by different XML
+         * mapping files(B2B raffle, or B2C magic100)
+         */
+<span class="fc" id="L223">        respCtx.getTransaction().setGameId(game.getId());</span>
+<span class="fc" id="L224">        respCtx.setGameTypeId(vatSaleTransaction.getGameType() + &quot;&quot;);</span>
+        // set the version to locate ReversalOrCancelStrategy if got cancel
+        // request
+<span class="fc" id="L227">        respCtx.getTransaction().setVersion(vatSaleTransaction.getGameType() * -1);</span>
+        // set this protocol to diff from original raffle/magic100 sale response
+        // mapping file.
+<span class="fc" id="L230">        respCtx.setProtocalVersion(respCtx.getTransaction().getVersion() + &quot;&quot;);</span>
+
+        // check the minimal threshold amount
+<span class="fc bfc" id="L233" title="All 2 branches covered.">        if (vatSaleTransaction.getVatTotalAmount().compareTo(vat2Game.getMinThresholdAmount()) &lt; 0) {</span>
+<span class="pc bpc" id="L234" title="1 of 2 branches missed.">            if (logger.isInfoEnabled()) {</span>
+<span class="fc" id="L235">                logger.info(&quot;THe vat amount(&quot; + vatSaleTransaction.getVatTotalAmount()</span>
+                        + &quot;) is under minial threshold amount of sale: &quot; + vat2Game.getMinThresholdAmount());
+            }
+<span class="fc" id="L238">            return null;</span>
+        }
+
+<span class="fc bfc" id="L241" title="All 2 branches covered.">        if (GameType.RAFFLE.getType() == game.getType()) {</span>
+<span class="fc" id="L242">            soldTicket = this.sellRaffle(respCtx, vat, vat2Game, vatSaleTransaction);</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">        } else if (GameType.LUCKYNUMBER.getType() == game.getType()) {</span>
+<span class="fc" id="L244">            soldTicket = this.sellMagic100(respCtx, vat, vat2Game, vatSaleTransaction);</span>
+        } else {
+<span class="nc" id="L246">            throw new ApplicationException(SystemException.CODE_UNSUPPORTED_GAME_TYPE,</span>
+                    &quot;Unsupported game type in VAT business:&quot; + game.getType());
+        }
+
+<span class="fc bfc" id="L250" title="All 2 branches covered.">        if (soldTicket != null) {</span>
+<span class="fc" id="L251">            soldTicket.getGameInstance().setGameType(vatSaleTransaction.getGameType());</span>
+        }
+<span class="fc" id="L253">        return soldTicket;</span>
+    }
+
+    protected BaseTicket sellRaffle(Context respCtx, VAT vat, Vat2Game vat2Game, VatSaleTransaction vatSaleTransaction)
+            throws ApplicationException {
+<span class="fc" id="L258">        GameType gameType = GameType.RAFFLE;</span>
+
+<span class="fc" id="L260">        RaffleTicket raffleClientTicket = RaffleTicket.defaultTicket();</span>
+        // determine total amount first...no matter what is the VAT amount, only
+        // a single raffle ticket will be sold.
+<span class="fc" id="L263">        BigDecimal baseAmount = this.lookupOperationParameter(vat2Game.getGameId(), gameType).getBaseAmount();</span>
+<span class="fc" id="L264">        raffleClientTicket.setTotalAmount(baseAmount);</span>
+        // lookup active game instance
+<span class="fc" id="L266">        raffleClientTicket.setGameInstance(this.getRaffleGameInstanceService()</span>
+                .enquirySaleReady(respCtx, vat2Game.getGameId()).get(0));
+<span class="fc" id="L268">        this.getRaffleTicketService().sell(respCtx, raffleClientTicket);</span>
+
+<span class="fc" id="L270">        vatSaleTransaction.setVatRateTotalAmount(raffleClientTicket.getTotalAmount());</span>
+<span class="fc" id="L271">        return raffleClientTicket;</span>
+    }
+
+    protected BaseTicket sellMagic100(Context respCtx, VAT vat, Vat2Game vat2Game, VatSaleTransaction vatSaleTrans)
+            throws ApplicationException {
+<span class="fc" id="L276">        GameType gameType = GameType.LUCKYNUMBER; // magic100</span>
+<span class="fc" id="L277">        Magic100Ticket magicClientTicket = Magic100Ticket.defaultTicket();</span>
+
+        // determine total amount
+<span class="fc" id="L280">        BigDecimal baseAmount = this.lookupOperationParameter(vat2Game.getGameId(), gameType).getBaseAmount();</span>
+<span class="fc" id="L281">        int totalBets = this.determineB2CTotalBets(respCtx, vat, vatSaleTrans, baseAmount);</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">        if (totalBets == 0) {</span>
+<span class="fc" id="L283">            return null;</span>
+        }
+
+<span class="fc" id="L286">        magicClientTicket.setTotalAmount(SimpleToolkit.mathMultiple(baseAmount, new BigDecimal(totalBets)));</span>
+<span class="fc" id="L287">        magicClientTicket.getEntries().get(0).setTotalBets(totalBets);</span>
+
+        // determine game instance
+<span class="fc" id="L290">        magicClientTicket.setGameInstance(this.getMagic100GameInstanceService()</span>
+                .enquirySaleReady(respCtx, vat2Game.getGameId()).get(0));
+
+<span class="fc" id="L293">        this.getMagic100TicketService().sell(respCtx, magicClientTicket);</span>
+
+<span class="fc" id="L295">        vatSaleTrans.setVatRateTotalAmount(SimpleToolkit.mathMultiple(vatSaleTrans.getVatTotalAmount(),</span>
+                vat2Game.getRate()));
+<span class="fc" id="L297">        return magicClientTicket;</span>
+    }
+
+    /**
+     * Determine the total bets of B2C game(magic100). The general formula of calculating total bets is as below:
+     * 
+     * &lt;pre&gt;
+     * double roughBets = (vat.totalAmount * vat.rate) / baseAmount
+     * &lt;/pre&gt;
+     * 
+     * For example, we have a case
+     * 
+     * &lt;pre&gt;
+     * vat.totalAmount = $940
+     * vat.rate = 10%
+     * baseAmount = $100
+     * &lt;/pre&gt;
+     * 
+     * in this case, the roughBets is &lt;code&gt; (940 * 0.1) / 100 = 0.94&lt;/code&gt;
+     * 
+     * &lt;h1&gt;If Round Up&lt;/h1&gt; the total bets will be
+     * 
+     * &lt;pre&gt;
+     * int(roughBets) + 1
+     * &lt;/pre&gt;
+     * 
+     * and the totalBets in our example will be &lt;code&gt; int(0.94) + 1 = 1 &lt;/code&gt;
+     * 
+     * &lt;h1&gt;If Round Down&lt;/h1&gt; the total bets will be
+     * 
+     * &lt;pre&gt;
+     * int(roughBets)
+     * &lt;/pre&gt;
+     * 
+     * and the totalBets in our example will be &lt;code&gt; int(0.94)= 0 &lt;/code&gt;
+     * 
+     * @param respCtx
+     *            The vat sale context which represents the response
+     * @param vat
+     *            The VAT definition.
+     * @param vatTrans
+     *            The VAT sale transaction.
+     * @param baseAmount
+     *            The baseAmount of B2C game.
+     * @return how many bets can be bought by player.
+     * @throws ApplicationException
+     *             if any business exception encountered.
+     */
+    protected int determineB2CTotalBets(Context respCtx, VAT vat, VatSaleTransaction vatTrans, BigDecimal baseAmount)
+            throws ApplicationException {
+<span class="fc" id="L347">        BigDecimal roughBets = vatTrans.getVatTotalAmount().multiply(vatTrans.getVatRate()).divide(baseAmount);</span>
+
+<span class="fc" id="L349">        int totalBets = 0;</span>
+<span class="fc bfc" id="L350" title="All 2 branches covered.">        if (VAT.ROUND_UP == vat.getRoundUpDown()) {</span>
+<span class="fc" id="L351">            totalBets = ((int) roughBets.doubleValue()) + 1;</span>
+        } else {
+<span class="fc" id="L353">            totalBets = (int) roughBets.doubleValue();</span>
+        }
+<span class="fc bfc" id="L355" title="All 2 branches covered.">        if (totalBets == 0) {</span>
+<span class="pc bpc" id="L356" title="1 of 2 branches missed.">            logger.info(&quot;Vat( totalAmount=&quot; + vatTrans.getVatTotalAmount() + &quot;, rate=&quot; + vatTrans.getVatRate()</span>
+                    + &quot;,mode:&quot; + (VAT.ROUND_UP == vat.getRoundUpDown() ? &quot;RoundUp&quot; : &quot;RoundDown&quot;)
+                    + &quot;) for wager(roughBets=&quot; + roughBets + &quot;) isn't enough for a single ticket.&quot;);
+        }
+<span class="fc" id="L360">        return totalBets;</span>
+    }
+
+    protected BaseOperationParameter lookupOperationParameter(String gameId, GameType gameType) {
+<span class="fc" id="L364">        Game game = this.getBaseJpaDao().findById(Game.class, gameId, false);</span>
+<span class="fc" id="L365">        return this.getBaseJpaDao().findById(gameType.getOperationParametersType(), game.getOperatorParameterId(),</span>
+                false);
+    }
+
+    // --------------------------------------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // --------------------------------------------------------------------
+
+    public VatDao getVatDao() {
+<span class="fc" id="L374">        return vatDao;</span>
+    }
+
+    public OperatorBizTypeDao getOperatorBizTypeDao() {
+<span class="fc" id="L378">        return operatorBizTypeDao;</span>
+    }
+
+    public void setOperatorBizTypeDao(OperatorBizTypeDao operatorBizTypeDao) {
+<span class="nc" id="L382">        this.operatorBizTypeDao = operatorBizTypeDao;</span>
+<span class="nc" id="L383">    }</span>
+
+    public void setVatDao(VatDao vatDao) {
+<span class="nc" id="L386">        this.vatDao = vatDao;</span>
+<span class="nc" id="L387">    }</span>
+
+    public Vat2MerchantDao getVat2MerchantDao() {
+<span class="fc" id="L390">        return vat2MerchantDao;</span>
+    }
+
+    public void setVat2MerchantDao(Vat2MerchantDao vat2MerchantDao) {
+<span class="nc" id="L394">        this.vat2MerchantDao = vat2MerchantDao;</span>
+<span class="nc" id="L395">    }</span>
+
+    public Vat2GameDao getVat2GameDao() {
+<span class="fc" id="L398">        return vat2GameDao;</span>
+    }
+
+    public void setVat2GameDao(Vat2GameDao vat2GameDao) {
+<span class="nc" id="L402">        this.vat2GameDao = vat2GameDao;</span>
+<span class="nc" id="L403">    }</span>
+
+    public TicketService getRaffleTicketService() {
+<span class="fc" id="L406">        return raffleTicketService;</span>
+    }
+
+    public void setRaffleTicketService(TicketService raffleTicketService) {
+<span class="nc" id="L410">        this.raffleTicketService = raffleTicketService;</span>
+<span class="nc" id="L411">    }</span>
+
+    public TicketService getMagic100TicketService() {
+<span class="fc" id="L414">        return magic100TicketService;</span>
+    }
+
+    public void setMagic100TicketService(TicketService magic100TicketService) {
+<span class="nc" id="L418">        this.magic100TicketService = magic100TicketService;</span>
+<span class="nc" id="L419">    }</span>
+
+    public BaseJpaDao getBaseJpaDao() {
+<span class="fc" id="L422">        return baseJpaDao;</span>
+    }
+
+    public void setBaseJpaDao(BaseJpaDao baseJpaDao) {
+<span class="nc" id="L426">        this.baseJpaDao = baseJpaDao;</span>
+<span class="nc" id="L427">    }</span>
+
+    public GameInstanceService getRaffleGameInstanceService() {
+<span class="fc" id="L430">        return raffleGameInstanceService;</span>
+    }
+
+    public void setRaffleGameInstanceService(GameInstanceService raffleGameInstanceService) {
+<span class="nc" id="L434">        this.raffleGameInstanceService = raffleGameInstanceService;</span>
+<span class="nc" id="L435">    }</span>
+
+    public GameInstanceService getMagic100GameInstanceService() {
+<span class="fc" id="L438">        return magic100GameInstanceService;</span>
+    }
+
+    public void setMagic100GameInstanceService(GameInstanceService magic100GameInstanceService) {
+<span class="nc" id="L442">        this.magic100GameInstanceService = magic100GameInstanceService;</span>
+<span class="nc" id="L443">    }</span>
+
+    public UUIDService getUuidService() {
+<span class="fc" id="L446">        return uuidService;</span>
+    }
+
+    public void setUuidService(UUIDService uuidService) {
+<span class="nc" id="L450">        this.uuidService = uuidService;</span>
+<span class="nc" id="L451">    }</span>
+
+    public MerchantDao getMerchantDao() {
+<span class="nc" id="L454">        return merchantDao;</span>
+    }
+
+    public void setMerchantDao(MerchantDao merchantDao) {
+<span class="nc" id="L458">        this.merchantDao = merchantDao;</span>
+<span class="nc" id="L459">    }</span>
+
+    public VatCompanyDao getVatCompanyDao() {
+<span class="fc" id="L462">        return vatCompanyDao;</span>
+    }
+
+    public void setVatCompanyDao(VatCompanyDao vatCompanyDao) {
+<span class="nc" id="L466">        this.vatCompanyDao = vatCompanyDao;</span>
+<span class="nc" id="L467">    }</span>
+
+    public VatOperatorBalanceDao getVatOperatorBalanceDao() {
+<span class="fc" id="L470">        return vatOperatorBalanceDao;</span>
+    }
+
+    public void setVatOperatorBalanceDao(VatOperatorBalanceDao vatOperatorBalanceDao) {
+<span class="nc" id="L474">        this.vatOperatorBalanceDao = vatOperatorBalanceDao;</span>
+<span class="nc" id="L475">    }</span>
+
+    public TransactionService getTransactionService() {
+<span class="fc" id="L478">        return transactionService;</span>
+    }
+
+    public void setTransactionService(TransactionService transactionService) {
+<span class="nc" id="L482">        this.transactionService = transactionService;</span>
+<span class="nc" id="L483">    }</span>
+
+    public VatSaleTransactionDao getVatSaleTransactionDao() {
+<span class="fc" id="L486">        return vatSaleTransactionDao;</span>
+    }
+
+    public void setVatSaleTransactionDao(VatSaleTransactionDao vatSaleTransactionDao) {
+<span class="nc" id="L490">        this.vatSaleTransactionDao = vatSaleTransactionDao;</span>
+<span class="nc" id="L491">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

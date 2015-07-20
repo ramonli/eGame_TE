@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PlayerController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.thirdpartyservice.playeraccount</a> &gt; <span class="el_source">PlayerController.java</span></div><h1>PlayerController.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.thirdpartyservice.playeraccount;
+
+import com.google.gson.Gson;
+
+import com.mpos.lottery.common.router.RequestMap;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.thirdpartyservice.playeraccount.service.CashoutService;
+import com.mpos.lottery.te.thirdpartyservice.playeraccount.service.PlayerTopupService;
+import com.mpos.lottery.te.thirdpartyservice.playeraccount.web.CashoutRequest;
+import com.mpos.lottery.te.thirdpartyservice.playeraccount.web.CashoutResponse;
+import com.mpos.lottery.te.thirdpartyservice.playeraccount.web.PlayerTopupDto;
+import com.mpos.lottery.te.trans.domain.TransactionMessage;
+
+import org.springframework.stereotype.Controller;
+
+import javax.annotation.Resource;
+
+@Controller
+<span class="fc" id="L20">public class PlayerController {</span>
+    @Resource(name = &quot;cashoutService&quot;)
+    private CashoutService cashoutService;
+    @Resource(name = &quot;playerTopupService&quot;)
+    private PlayerTopupService topupService;
+
+    @RequestMap(&quot;{transType:445}&quot;)
+    public void cashout(Context request, Context response) throws ApplicationException {
+<span class="fc" id="L28">        CashoutRequest dto = (CashoutRequest) request.getModel();</span>
+<span class="fc" id="L29">        CashoutResponse respDto = this.getCashoutService().cashout(response, dto);</span>
+<span class="fc" id="L30">        response.setModel(respDto);</span>
+<span class="fc" id="L31">    }</span>
+
+    /**
+     * Topup player's account.
+     */
+    @RequestMap(&quot;{transType:446}&quot;)
+    public void topup(Context request, Context response) throws ApplicationException {
+<span class="fc" id="L38">        PlayerTopupDto dto = (PlayerTopupDto) request.getModel();</span>
+<span class="fc" id="L39">        this.getTopupService().topup(response, dto);</span>
+
+        // write transaction message for reversal.
+<span class="fc" id="L42">        TransactionMessage transMsg = new TransactionMessage();</span>
+<span class="fc" id="L43">        transMsg.setTransactionId(response.getTransaction().getId());</span>
+<span class="fc" id="L44">        transMsg.setRequestMsg(new Gson().toJson(dto));</span>
+<span class="fc" id="L45">        response.getTransaction().setTransMessage(transMsg);</span>
+<span class="fc" id="L46">    }</span>
+
+    // -----------------------------------------------------------------
+    // HELPER METHODS
+    // -----------------------------------------------------------------
+
+    // -----------------------------------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // -----------------------------------------------------------------
+
+    public CashoutService getCashoutService() {
+<span class="fc" id="L57">        return cashoutService;</span>
+    }
+
+    public void setCashoutService(CashoutService cashoutService) {
+<span class="nc" id="L61">        this.cashoutService = cashoutService;</span>
+<span class="nc" id="L62">    }</span>
+
+    public PlayerTopupService getTopupService() {
+<span class="fc" id="L65">        return topupService;</span>
+    }
+
+    public void setTopupService(PlayerTopupService topupService) {
+<span class="nc" id="L69">        this.topupService = topupService;</span>
+<span class="nc" id="L70">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

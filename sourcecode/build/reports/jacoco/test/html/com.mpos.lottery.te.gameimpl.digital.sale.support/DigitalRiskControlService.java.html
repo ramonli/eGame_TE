@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DigitalRiskControlService.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.digital.sale.support</a> &gt; <span class="el_source">DigitalRiskControlService.java</span></div><h1>DigitalRiskControlService.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.digital.sale.support;
+
+import com.mpos.lottery.te.common.util.SimpleToolkit;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gameimpl.digital.game.DigitalFunType;
+import com.mpos.lottery.te.gameimpl.digital.game.DigitalGameInstance;
+import com.mpos.lottery.te.gameimpl.digital.sale.DigitalEntry;
+import com.mpos.lottery.te.gamespec.game.BaseGameInstance;
+import com.mpos.lottery.te.gamespec.sale.BaseEntry;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.gamespec.sale.service.AbstractRiskControlService;
+import com.mpos.lottery.te.gamespec.sale.support.ChanceOdds;
+import com.mpos.lottery.te.gamespec.sale.support.ChanceOfEntry;
+import com.mpos.lottery.te.gamespec.sale.support.validator.SelectedNumber;
+import com.mpos.lottery.te.port.Context;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+<span class="fc" id="L33">public class DigitalRiskControlService extends AbstractRiskControlService {</span>
+    private static final String KEY_ALGORIGHM_TYPE = &quot;DIGITAL.ALGORITHM_TYPE&quot;;
+    private static final int TYPE_FIRST = 1;
+    private static final int TYPE_LAST = 2;
+    private static final int TYPE_MIXTURE = 3;
+
+<span class="fc" id="L39">    private Log logger = LogFactory.getLog(DigitalRiskControlService.class);</span>
+    /**
+     * For typeA, digital game will support multiple winner analysis, that says a ticket may join multiple winner
+     * analysis. For this type, K equals with N, so player can only buy, for example 4D, and can win only 'Frist4D' and
+     * 'First Mixture'
+     */
+    public static final String ALGORITHM_TYPE_A = &quot;7&quot;;
+    /**
+     * For typeB, K equals with N, so player can only buy. for example 4D, ticket, and this ticket may win(here we
+     * assume K=4, N=4),
+     * &lt;ul&gt;
+     * &lt;li&gt;First 4D&lt;/li&gt;
+     * &lt;li&gt;First 3D&lt;/li&gt;
+     * &lt;li&gt;Last 3D&lt;/li&gt;
+     * &lt;li&gt;First 2D&lt;/li&gt;
+     * &lt;li&gt;Last 2D&lt;/li&gt;
+     * &lt;li&gt;First 1D&lt;/li&gt;
+     * &lt;li&gt;Last 1D&lt;/li&gt;
+     * &lt;/ul&gt;
+     */
+    public static final String ALGORITHM_TYPE_B = &quot;20&quot;;
+    /**
+     * For typeC, K doesn't equals with N, so player can buy, for example 4D, 3D, 2D, 1D, ODD/EVEN and SUM. For a given
+     * bet option, the prize levels it can win are as below(here we assume K=2, N=4),
+     * &lt;table border=&quot;1&quot;&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;bet option&lt;/td&gt;
+     * &lt;td&gt;prize level&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td rowspan=&quot;2&quot;&gt;4D&lt;/td&gt;
+     * &lt;td&gt;First 4D&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;Mixture 4D&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td rowspan=&quot;3&quot;&gt;3D&lt;/td&gt;
+     * &lt;td&gt;First 3D&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;Last 3D&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;Mixture 3D&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td rowspan=&quot;3&quot;&gt;2D&lt;/td&gt;
+     * &lt;td&gt;First 2D&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;Last 2D&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;Mixture 2D&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;ODD&lt;/td&gt;
+     * &lt;td&gt;ODD&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;EVEN&lt;/td&gt;
+     * &lt;td&gt;EVEN&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;SUM&lt;/td&gt;
+     * &lt;td&gt;SUM&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;/table&gt;
+     */
+    public static final String ALGORITHM_TYPE_C = &quot;21&quot;;
+    /**
+     * Supports only XD, for example if K/N(N=6), then only 6D allowed.
+     */
+    public static final String ALGORITHM_TYPE_E = &quot;26&quot;;
+
+    @PersistenceContext(unitName = &quot;lottery_te&quot;)
+    private EntityManager entityManager;
+
+    @Override
+    protected List&lt;ChanceOdds&gt; determineOddsOfEntry(Context respCtx, BaseTicket ticket, BaseGameInstance gameInstance,
+            BaseEntry entry) throws ApplicationException {
+<span class="fc" id="L121">        String prizeLogicId = ((DigitalGameInstance) gameInstance).getPrizeLogicId();</span>
+
+<span class="fc" id="L123">        String algorithmType = this.determinePrizeAlgorithmType(prizeLogicId);</span>
+        // cache the 'algorithmType' for later use
+<span class="fc" id="L125">        respCtx.setProperty(KEY_ALGORIGHM_TYPE, algorithmType);</span>
+<span class="fc" id="L126">        List&lt;ChanceOdds&gt; chanceOdds = null;</span>
+<span class="fc bfc" id="L127" title="All 4 branches covered.">        if (ALGORITHM_TYPE_A.equals(algorithmType) || ALGORITHM_TYPE_B.endsWith(algorithmType)) {</span>
+<span class="fc" id="L128">            chanceOdds = this.determineOdds(prizeLogicId, entry, false);</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">        } else if (ALGORITHM_TYPE_C.equals(algorithmType)) {</span>
+<span class="fc bfc" id="L130" title="All 2 branches covered.">            if (DigitalEntry.DIGITAL_BETOPTION_SUM != entry.getBetOption()) {</span>
+                // lookup odd of XD and odd/even bet option
+<span class="fc" id="L132">                chanceOdds = this.determineOdds(prizeLogicId, entry, true);</span>
+            } else {
+                // lookup odd if SUM bet option.
+<span class="fc" id="L135">                chanceOdds = this.determineOddsOfSum(prizeLogicId, gameInstance.getGame().getFunTypeId(), entry);</span>
+            }
+<span class="pc bpc" id="L137" title="1 of 2 branches missed.">        } else if (ALGORITHM_TYPE_E.equals(algorithmType)) {</span>
+<span class="fc" id="L138">            chanceOdds = this.determineOddsTypeE(prizeLogicId, entry);</span>
+        } else {
+<span class="nc" id="L140">            throw new SystemException(&quot;Unsupportted prize algorithm type:&quot; + algorithmType);</span>
+        }
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">        if (chanceOdds == null) {</span>
+<span class="nc" id="L143">            throw new SystemException(&quot;No valid odds found for entry(&quot; + entry + &quot;)&quot;);</span>
+        }
+<span class="fc" id="L145">        return chanceOdds;</span>
+    }
+
+    @Override
+    protected BigDecimal determineFinalLossAmountOfPrizeLevel(BigDecimal finalLimit, List&lt;ChanceOdds&gt; chanceOdds,
+            BaseGameInstance gameInstance) {
+<span class="fc" id="L151">        BigDecimal result = SimpleToolkit.mathDivide(finalLimit, new BigDecimal(chanceOdds.size() + &quot;&quot;));</span>
+<span class="pc bpc" id="L152" title="1 of 2 branches missed.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L153">            logger.debug(&quot;There total &quot; + chanceOdds.size()</span>
+                    + &quot; possible prize levels found, determine the final loss amount of prize level as &quot; + result + &quot;=&quot;
+                    + finalLimit + &quot;/&quot; + chanceOdds.size());
+        }
+<span class="fc" id="L157">        return result;</span>
+    }
+
+    @Override
+    protected String determineBettingNumberOfPrizeLevel(Context respCtx, BaseEntry entry, ChanceOdds chanceOdd,
+            ChanceOfEntry chance) throws ApplicationException {
+<span class="fc" id="L163">        DigitalEntry digitEntry = (DigitalEntry) entry;</span>
+<span class="fc bfc" id="L164" title="All 2 branches covered.">        if (digitEntry.isXD()) {</span>
+<span class="fc" id="L165">            String algorithmType = (String) respCtx.getProperty(KEY_ALGORIGHM_TYPE);</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">            if (ALGORITHM_TYPE_E.equalsIgnoreCase(algorithmType)) {</span>
+                // for type E, the prize level type is a single digital number.
+<span class="fc" id="L168">                chanceOdd.setBettingNumber(entry.getSelectNumber());</span>
+            } else {
+                /**
+                 * refer to {@link com.mpos.lottery.te.gamespec.sale.support.ChanceOdds#prizeLevelType}. This service
+                 * will generate a risk control log for each possible winning prize level, for example 'first4D', 'last
+                 * 3D' etc.
+                 */
+                // it should be a 2 digital number
+<span class="fc" id="L176">                String prizeLevelType = chanceOdd.getPrizelLevelType();</span>
+<span class="fc" id="L177">                int countOfNumbers = Integer.parseInt(prizeLevelType.substring(0, 1));</span>
+<span class="fc" id="L178">                int typeOfNumbers = Integer.parseInt(prizeLevelType.substring(1));</span>
+
+<span class="fc" id="L180">                int[] numbers = SimpleToolkit.string2IntArray(entry.getSelectNumber(), SelectedNumber.DELEMETER_NUMBER,</span>
+                        false);
+<span class="fc bfc" id="L182" title="All 2 branches covered.">                if (TYPE_FIRST == typeOfNumbers) {</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">                    if (ALGORITHM_TYPE_A.equals(algorithmType)) {</span>
+<span class="fc" id="L184">                        chanceOdd.setBettingNumber(entry.getSelectNumber());</span>
+                    } else {
+<span class="fc" id="L186">                        chanceOdd.setBettingNumber(SimpleToolkit.join(numbers, 0, countOfNumbers,</span>
+                                SelectedNumber.DELEMETER_NUMBER));
+                    }
+<span class="fc bfc" id="L189" title="All 2 branches covered.">                } else if (TYPE_LAST == typeOfNumbers) {</span>
+<span class="pc bpc" id="L190" title="1 of 2 branches missed.">                    if (ALGORITHM_TYPE_A.equals(algorithmType)) {</span>
+<span class="nc" id="L191">                        chanceOdd.setBettingNumber(entry.getSelectNumber());</span>
+                    } else {
+<span class="fc" id="L193">                        chanceOdd.setBettingNumber(SimpleToolkit.join(numbers, numbers.length - countOfNumbers,</span>
+                                countOfNumbers, SelectedNumber.DELEMETER_NUMBER));
+                    }
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">                } else if (TYPE_MIXTURE == typeOfNumbers) {</span>
+                    /**
+                     * if mixture, that means if winning number is '2,6,4,3', then any combination of '2,6,4,3' will be
+                     * winning, we must trace this by sorting them.
+                     * &lt;p/&gt;
+                     * For example, no matter '2,6,4,3', '2,3,6,4' or '6,4,3,2', we will trace it by
+                     * &lt;code&gt;RiskControlLog&lt;/code&gt;:
+                     * &lt;ul&gt;
+                     * &lt;li&gt;selecteNumber - '2,3,4,6' (sort the numbers)&lt;/li&gt;
+                     * &lt;li&gt;prizeLevelType - 33(Mixture 3D for example)&lt;/li&gt;
+                     * &lt;/ul&gt;
+                     */
+<span class="fc" id="L208">                    Arrays.sort(numbers);</span>
+<span class="fc" id="L209">                    chanceOdd.setBettingNumber(SimpleToolkit.join(numbers, 0, numbers.length,</span>
+                            SelectedNumber.DELEMETER_NUMBER));
+                } else {
+<span class="nc" id="L212">                    throw new SystemException(&quot;Unsupported prize level type:&quot; + typeOfNumbers);</span>
+                }
+            }
+<span class="fc" id="L215">        } else {</span>
+<span class="fc" id="L216">            chanceOdd.setBettingNumber(entry.getSelectNumber());</span>
+        }
+<span class="fc" id="L218">        return chanceOdd.getBettingNumber();</span>
+    }
+
+    private String determinePrizeAlgorithmType(String prizeLogicId) {
+<span class="fc" id="L222">        String sql = &quot;select p.algorithm_id from prize_logic p where p.PRIZE_LOGIC_ID=:prizeLogicId&quot;;</span>
+<span class="fc" id="L223">        Query query = this.getEntityManager().createNativeQuery(sql);</span>
+<span class="fc" id="L224">        query.setParameter(&quot;prizeLogicId&quot;, prizeLogicId);</span>
+<span class="fc" id="L225">        return (String) query.getSingleResult();</span>
+    }
+
+    /**
+     * Determine the odds of a entry if its bet option is XD, ODD or EVEN.
+     */
+    private List&lt;ChanceOdds&gt; determineOdds(String prizeLogicId, BaseEntry entry, boolean withBetOption) {
+<span class="fc" id="L232">        String sql = &quot;SELECT parameter_name,parameter_value FROM (SELECT pp.prize_logic_id, pp.parameter_name, &quot;</span>
+                + &quot;pp.parameter_value, DECODE(pp.parameter_name, -1, -1, -2, -2, SUBSTR(pp.parameter_name, 0, &quot;
+                + &quot;LENGTH(pp.parameter_name) - 1)) te_betoption, pp.bet_option FROM prize_parameters pp where &quot;
+                + &quot;pp.IS_ENABLE=1) pp_new WHERE &quot;;
+<span class="fc bfc" id="L236" title="All 2 branches covered.">        if (withBetOption) {</span>
+<span class="fc" id="L237">            sql += &quot;te_betoption=:teBetOption AND &quot;;</span>
+        }
+<span class="fc" id="L239">        sql += &quot;prize_logic_id=:prizeLogicId ORDER BY bet_option&quot;;</span>
+<span class="fc" id="L240">        Map&lt;String, Object&gt; param = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L241">        param.put(&quot;prizeLogicId&quot;, prizeLogicId);</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">        if (withBetOption) {</span>
+<span class="fc" id="L243">            param.put(&quot;teBetOption&quot;, entry.getBetOption());</span>
+        }
+
+<span class="fc" id="L246">        return this.assembleOdds(entry, sql, param);</span>
+    }
+
+    private List&lt;ChanceOdds&gt; determineOddsTypeE(String prizeLogicId, BaseEntry entry) {
+<span class="fc" id="L250">        String sql = &quot;SELECT parameter_name,parameter_value FROM (SELECT pp.prize_logic_id, pp.parameter_name, &quot;</span>
+                + &quot;pp.parameter_value, DECODE(pp.parameter_name, -1, -1, -2, -2, pp.parameter_name) te_betoption, &quot;
+                + &quot;pp.bet_option FROM prize_parameters pp WHERE pp.prize_logic_id=:prizeLogicId AND pp.IS_ENABLE= 1) &quot;
+                + &quot;pp_new&quot;;
+<span class="fc" id="L254">        Map&lt;String, Object&gt; param = new HashMap&lt;String, Object&gt;();</span>
+<span class="fc" id="L255">        param.put(&quot;prizeLogicId&quot;, prizeLogicId);</span>
+<span class="fc" id="L256">        return this.assembleOdds(entry, sql, param);</span>
+    }
+
+    protected List&lt;ChanceOdds&gt; assembleOdds(BaseEntry entry, String sql, Map&lt;String, Object&gt; param) {
+<span class="fc" id="L260">        Query query = this.getEntityManager().createNativeQuery(sql);</span>
+<span class="fc" id="L261">        Iterator&lt;String&gt; keyIte = param.keySet().iterator();</span>
+<span class="fc bfc" id="L262" title="All 2 branches covered.">        while (keyIte.hasNext()) {</span>
+<span class="fc" id="L263">            String key = keyIte.next();</span>
+<span class="fc" id="L264">            query.setParameter(key, param.get(key));</span>
+<span class="fc" id="L265">        }</span>
+
+<span class="fc" id="L267">        List resultList = query.getResultList();</span>
+
+<span class="fc" id="L269">        List&lt;ChanceOdds&gt; chanceOdds = new LinkedList&lt;ChanceOdds&gt;();</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">        for (int i = 0; i &lt; resultList.size(); i++) {</span>
+<span class="fc" id="L271">            ChanceOdds odds = new ChanceOdds();</span>
+<span class="fc" id="L272">            Object[] row = (Object[]) resultList.get(i);</span>
+<span class="fc" id="L273">            odds.setPrizelLevelType((String) row[0]);</span>
+<span class="fc" id="L274">            odds.setOdds(new BigDecimal((String) row[1]));</span>
+<span class="fc" id="L275">            chanceOdds.add(odds);</span>
+        }
+<span class="fc" id="L277">        return chanceOdds;</span>
+    }
+
+    protected List&lt;ChanceOdds&gt; determineOddsOfSum(String prizeLogicId, String funTypeId, BaseEntry entry) {
+        // lookup the XY/KN
+<span class="fc" id="L282">        DigitalFunType funType = this.getEntityManager().find(DigitalFunType.class, funTypeId);</span>
+<span class="fc" id="L283">        int actualSum = this.determineActualSum(funType.getN(), funType.getX(), funType.getY(),</span>
+                Integer.parseInt(entry.getSelectNumber()));
+
+<span class="fc" id="L286">        String sql = &quot;select a.odds from(SELECT pl.prize_logic_name prize_name, pp.parameter_name, &quot;</span>
+                + &quot;SUBSTR(pp.parameter_name, 1, DECODE(instr(pp.parameter_name, 'or', 1, 1), 0, LENGTH(pp.parameter_name), &quot;
+                + &quot;instr(pp.parameter_name, 'or') - 2)) prize_level, pp.parameter_value odds, pp.bet_option, &quot;
+                + &quot;-3 digit FROM prize_logic pl, prize_parameters pp WHERE pp.IS_ENABLE=1 and pp.prize_logic_id = pl.prize_logic_id AND &quot;
+                + &quot;pl.prize_logic_id=(SELECT p.sum_prize_logic_id FROM prize_logic p WHERE p.prize_logic_id=:prizeLogicId)) &quot;
+                + &quot;a where a.prize_level=:prizeLevel&quot;;
+<span class="fc" id="L292">        Query query = this.getEntityManager().createNativeQuery(sql);</span>
+<span class="fc" id="L293">        query.setParameter(&quot;prizeLogicId&quot;, prizeLogicId);</span>
+<span class="fc" id="L294">        query.setParameter(&quot;prizeLevel&quot;, actualSum + &quot;&quot;);</span>
+<span class="fc" id="L295">        List&lt;ChanceOdds&gt; chanceOdds = new LinkedList&lt;ChanceOdds&gt;();</span>
+<span class="fc" id="L296">        ChanceOdds odds = new ChanceOdds();</span>
+<span class="fc" id="L297">        odds.setBettingNumber(entry.getSelectNumber());</span>
+        // simply as the bet option, as it can win only a single SUM prize level
+<span class="fc" id="L299">        odds.setPrizelLevelType(entry.getBetOption() + &quot;&quot;);</span>
+<span class="fc" id="L300">        odds.setOdds(new BigDecimal((String) query.getSingleResult()));</span>
+<span class="fc" id="L301">        chanceOdds.add(odds);</span>
+<span class="fc" id="L302">        return chanceOdds;</span>
+    }
+
+    /**
+     * For SUM bet option, the prize level definition may like below(Lets say it is 3D, and each ball ranges from 0 to
+     * 9, so the min sum is 0 and max sum is 27):
+     * &lt;table border=&quot;1&quot;&gt;
+     * &lt;tr&gt;
+     * &lt;th&gt;Sum&lt;/th&gt;
+     * &lt;th&gt;Odds&lt;/th&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;0 or 36&lt;/td&gt;
+     * &lt;td&gt;100&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;1 or 35&lt;/td&gt;
+     * &lt;td&gt;90&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;2 or 34&lt;/td&gt;
+     * &lt;td&gt;80&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td colspan=&quot;2&quot;&gt;...&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;tr&gt;
+     * &lt;td&gt;18&lt;/td&gt;
+     * &lt;td&gt;50&lt;/td&gt;
+     * &lt;/tr&gt;
+     * &lt;/table&gt;
+     * 
+     * So this method has to convert the selected number into a value which is less than middle number. In this case,
+     * the middle number is (0+36)/2=18, then if the selected number is 35, it will be converted into 1, and more.
+     * &lt;ul&gt;
+     * &lt;li&gt;1 -&gt; 1&lt;/li&gt;
+     * &lt;li&gt;35 -&gt; 1&lt;/li&gt;
+     * &lt;li&gt;2 -&gt; 2&lt;/li&gt;
+     * &lt;li&gt;34 -&gt; 2&lt;/li&gt;
+     * &lt;li&gt;...&lt;/li&gt;
+     * &lt;li&gt;18 -&gt; 18&lt;/li&gt;
+     * &lt;/ul&gt;
+     * 
+     * No choice, M.Lottery saves the prize definition in that way, TE has to make such cumbersome work to suit it.
+     * 
+     * @param numberOfBall
+     *            How many balls are supported by this digital game.
+     * @param minNumberOfBall
+     *            The minimum number of a ball.
+     * @param maxNumberOfBall
+     *            The maximum number of a ball.
+     * @param selectedSum
+     *            The sum selected by player.
+     * @return The actual sum converted from player chose sum.
+     */
+    protected int determineActualSum(int numberOfBall, int minNumberOfBall, int maxNumberOfBall, int selectedSum) {
+        // determine the middle number
+<span class="fc" id="L359">        int middleSum = numberOfBall * (minNumberOfBall + maxNumberOfBall) / 2;</span>
+<span class="fc" id="L360">        int actualSum = selectedSum;</span>
+<span class="pc bpc" id="L361" title="1 of 2 branches missed.">        if (actualSum &gt; middleSum) {</span>
+<span class="fc" id="L362">            actualSum = numberOfBall * (minNumberOfBall + maxNumberOfBall) - actualSum;</span>
+        }
+<span class="fc" id="L364">        return actualSum;</span>
+    }
+
+    public EntityManager getEntityManager() {
+<span class="fc" id="L368">        return entityManager;</span>
+    }
+
+    public void setEntityManager(EntityManager entityManager) {
+<span class="nc" id="L372">        this.entityManager = entityManager;</span>
+<span class="nc" id="L373">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

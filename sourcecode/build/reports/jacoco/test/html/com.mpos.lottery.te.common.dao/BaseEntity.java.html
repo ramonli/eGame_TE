@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BaseEntity.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.common.dao</a> &gt; <span class="el_source">BaseEntity.java</span></div><h1>BaseEntity.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.common.dao;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+/*
+ * All jpa entity should extends this class.
+ */
+@SuppressWarnings(&quot;serial&quot;)
+@MappedSuperclass
+<span class="fc" id="L17">public abstract class BaseEntity implements Serializable {</span>
+
+    @Id
+    @Column(name = &quot;ID&quot;)
+    // // create seqence TE_SEQ start with 1 increment by 1;
+    // @SequenceGenerator(name=&quot;TE_SEQ&quot;, sequenceName=&quot;TE_SEQ&quot;)
+    // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator=&quot;TE_SEQ&quot;)
+    private String id;
+
+<span class="fc" id="L26">    @Column(name = &quot;CREATE_TIME&quot;)</span>
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createTime = new Date();
+
+<span class="fc" id="L30">    @Column(name = &quot;UPDATE_TIME&quot;)</span>
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updateTime = createTime;
+
+    public String getId() {
+<span class="fc" id="L35">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="fc" id="L39">        this.id = id;</span>
+<span class="fc" id="L40">    }</span>
+
+    public Date getCreateTime() {
+<span class="fc" id="L43">        return createTime;</span>
+    }
+
+    public void setCreateTime(Date createTime) {
+<span class="fc" id="L47">        this.createTime = createTime;</span>
+<span class="fc" id="L48">    }</span>
+
+    public Date getUpdateTime() {
+<span class="fc" id="L51">        return updateTime;</span>
+    }
+
+    public void setUpdateTime(Date updateTime) {
+<span class="fc" id="L55">        this.updateTime = updateTime;</span>
+<span class="fc" id="L56">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

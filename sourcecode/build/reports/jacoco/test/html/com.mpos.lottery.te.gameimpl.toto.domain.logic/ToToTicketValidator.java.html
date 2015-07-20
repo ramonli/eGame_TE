@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ToToTicketValidator.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.toto.domain.logic</a> &gt; <span class="el_source">ToToTicketValidator.java</span></div><h1>ToToTicketValidator.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.toto.domain.logic;
+
+import com.mpos.lottery.te.common.util.SimpleToolkit;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gameimpl.toto.dao.ToToGameInstanceDao;
+import com.mpos.lottery.te.gameimpl.toto.dao.ToToTicketDao;
+import com.mpos.lottery.te.gameimpl.toto.domain.ToToEntry;
+import com.mpos.lottery.te.gameimpl.toto.domain.ToToTicket;
+import com.mpos.lottery.te.gamespec.game.Game;
+import com.mpos.lottery.te.gamespec.sale.BaseEntry;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.gamespec.sale.support.validator.DefaultTicketValidator;
+import com.mpos.lottery.te.gamespec.sale.support.validator.TicketValidator;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.trans.domain.Transaction;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * A total different TOTO implementation from {@link DefaultTicketValidator}.
+ * 
+ * @author Ramon
+ */
+<span class="fc" id="L27">public class ToToTicketValidator implements TicketValidator {</span>
+    private ToToTicketDao ticketDao;
+    private ToToGameInstanceDao gameInstanceDao;
+
+    @Override
+    public void validate(Context respCtx, BaseTicket clientTicket, Game game) throws ApplicationException {
+<span class="fc" id="L33">        this.validToToTicketParams((ToToTicket) clientTicket);</span>
+<span class="fc" id="L34">    }</span>
+
+    /**
+     * valid toto sell ticket params.
+     */
+    private void validToToTicketParams(ToToTicket ticket) throws ApplicationException {
+<span class="fc" id="L40">        Game&lt;?&gt; game = ticket.getGameInstance().getGame();</span>
+        // check if the operator can sell this game
+<span class="fc" id="L42">        Transaction trans = ticket.getTransaction();</span>
+<span class="fc" id="L43">        trans.setGameId(game.getId());</span>
+
+        // only single-draw allowed, and a ticket can carry only one entry
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        if (ticket.getMultipleDraws() != 1) {</span>
+<span class="nc" id="L47">            throw new ApplicationException(SystemException.CODE_WRONG_MESSAGEBODY,</span>
+                    &quot;Only single draw allowed for a TOTO game.&quot;);
+        }
+<span class="pc bpc" id="L50" title="1 of 2 branches missed.">        if (ticket.getEntries().size() != 1) {</span>
+<span class="nc" id="L51">            throw new ApplicationException(SystemException.CODE_WRONG_MESSAGEBODY,</span>
+                    &quot;Only single entry allowed of a TOTO ticket.&quot;);
+        }
+
+        // valid ticket params
+<span class="fc" id="L56">        validSelectedMatch(ticket);</span>
+
+<span class="fc" id="L58">    }</span>
+
+    /**
+     * valid select team is match DB value.
+     */
+    private void validSelectedMatch(ToToTicket ticket) throws ApplicationException {
+<span class="fc" id="L64">        ToToEntry totoEntry = (ToToEntry) ticket.getEntries().get(0);</span>
+
+        // get DB matchs count
+<span class="fc" id="L67">        int matchsCount = this.getGameInstanceDao().getMatchsCountByGameIdAndDrawNo(</span>
+                ticket.getGameInstance().getGameId(), ticket.getGameInstance().getNumber());
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">        if (matchsCount &lt;= 0) {</span>
+<span class="nc" id="L70">            throw new SystemException(SystemException.CODE_TOTO_NONE_MATCHS, &quot;have none matchs! Game Name=&quot;</span>
+                    + ticket.getGameInstance().getGame().getName());
+        }
+
+        // valid db matchs count equal to sell ticket transfer matchs details
+<span class="pc bpc" id="L75" title="2 of 4 branches missed.">        if (totoEntry == null || totoEntry.getSelectNumber().split(&quot;,&quot;).length != matchsCount) {</span>
+<span class="nc" id="L76">            throw new SystemException(SystemException.CODE_TOTO_NONE_MATCHS, &quot;Client matchs count(&quot;</span>
+                    + totoEntry.getSelectNumber().split(&quot;,&quot;).length + &quot;) not equal to DB Matchs Count(&quot; + matchsCount
+                    + &quot;)! Game Name =&quot; + ticket.getGameInstance().getGame().getName());
+        }
+
+        /**
+         * Get all matches bet option [order by match_seq asc], for example the 1st match only can buy 1(draw match) and
+         * 0(visiting team wins), and the 2nd match can buy 3(host team wins) and 1.
+         */
+<span class="fc" id="L85">        List&lt;String&gt; matchOptions = this.getTicketDao().getBetOptionType(ticket.getGameInstance().getGameId(),</span>
+                ticket.getGameInstance().getNumber());
+
+<span class="fc" id="L88">        String[] selectTeams = totoEntry.getSelectNumber().split(&quot;,&quot;);</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        for (int i = 0; i &lt; selectTeams.length; i++) {</span>
+            // valid select match'bet type
+<span class="fc bfc" id="L91" title="All 2 branches covered.">            if (!validMatchBetOption(selectTeams[i], matchOptions.get(i))) {</span>
+<span class="fc" id="L92">                throw new SystemException(SystemException.CODE_TOTO_SELECT_TEAM_IS_ERROR, &quot;Bet type of SelectTeam[&quot;</span>
+                        + selectTeams[i] + &quot;] is unmatched with allowed match bet bype[&quot; + matchOptions.get(i)
+                        + &quot;] of Game instance =&quot; + ticket.getGameInstance().getId());
+            }
+        }
+
+        // valid triple count and double count
+<span class="fc" id="L99">        validTripleAndDoubleSelectTeams(totoEntry.getSelectNumber(), ticket.getGameInstance().getGameId());</span>
+
+        // valid ticket amount
+<span class="fc" id="L102">        checkTicketAmount(ticket);</span>
+<span class="fc" id="L103">    }</span>
+
+    /**
+     * valid client select teams triple count and double count.
+     */
+    private void validTripleAndDoubleSelectTeams(String selectTeam, String gameId) throws ApplicationException {
+<span class="fc" id="L109">        Map&lt;Integer, Integer[]&gt; map = this.getTicketDao().getToToOperatorParameters(gameId);</span>
+<span class="pc bpc" id="L110" title="2 of 4 branches missed.">        if (map == null || map.size() &lt;= 0) {</span>
+<span class="nc" id="L111">            throw new SystemException(SystemException.CODE_TOTO_TRIPLE_INFO_IS_NULL,</span>
+                    &quot;Triple info is null in Server Side!&quot;);
+        }
+<span class="fc" id="L114">        String[] selectTeams = selectTeam.split(&quot;,&quot;);</span>
+<span class="fc" id="L115">        int tripleCount = 0;</span>
+<span class="fc" id="L116">        int doubleCount = 0;</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        for (String str : selectTeams) {</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">            if (str.split(&quot;\\|&quot;).length == 3) {</span>
+<span class="fc" id="L119">                tripleCount++;</span>
+            }
+<span class="fc bfc" id="L121" title="All 2 branches covered.">            if (str.split(&quot;\\|&quot;).length == 2) {</span>
+<span class="fc" id="L122">                doubleCount++;</span>
+            }
+        }
+<span class="fc" id="L125">        Integer[] doubleInfo = map.get(tripleCount);</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">        if (doubleInfo == null) {</span>
+<span class="nc" id="L127">            throw new SystemException(SystemException.CODE_TOTO_TRIPLE_INFO_ERROR,</span>
+                    &quot;No Triple info found for selected number(&quot; + selectTeam + &quot;)!&quot;);
+        }
+<span class="pc bpc" id="L130" title="1 of 4 branches missed.">        if (!(doubleCount &gt;= doubleInfo[0] &amp;&amp; doubleCount &lt;= doubleInfo[1])) {</span>
+<span class="fc" id="L131">            throw new SystemException(SystemException.CODE_TOTO_TRIPLE_INFO_ERROR, &quot;Selected number(&quot; + selectTeam</span>
+                    + &quot;) is unmatched with pre-defined triple constraints!&quot;);
+        }
+<span class="fc" id="L134">    }</span>
+
+    /**
+     * Valid selected team's bet type
+     * 
+     * @param clientBetType
+     *            The bet type picked by player, usually it will be 0|1|3, or 1 etc.
+     * @param dbBetType
+     *            the bet type defined by the backend which limit which bet type can be played of a given matched. It
+     *            has below options:
+     *            &lt;ul&gt;
+     *            &lt;li&gt;0 - 3 option[0/1/3]&lt;/li&gt;
+     *            &lt;li&gt;1 - 3 option handicap[0/1/3]&lt;/li&gt;
+     *            &lt;li&gt;2 - 2 option[0/1]&lt;/li&gt;
+     *            &lt;li&gt;3 - 2 option handicap[0/1]&lt;/li&gt;
+     *            &lt;li&gt;4 - Any value&lt;/li&gt;
+     *            &lt;/ul&gt;
+     */
+    private boolean validMatchBetOption(String clientBetType, String dbBetType) {
+<span class="pc bpc" id="L153" title="2 of 4 branches missed.">        if (dbBetType == null || &quot;&quot;.equals(dbBetType)) {</span>
+<span class="nc" id="L154">            return false;</span>
+        }
+<span class="fc" id="L156">        String[] clientBetTypes = clientBetType.split(&quot;\\|&quot;);</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">        for (String splitValue : clientBetTypes) {</span>
+<span class="pc bpc" id="L158" title="3 of 4 branches missed.">            if (&quot;0&quot;.equals(dbBetType) || &quot;1&quot;.equals(dbBetType)) {</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">                if (&quot;0,1,3&quot;.indexOf(splitValue) == -1) {</span>
+<span class="fc" id="L160">                    return false;</span>
+                }
+<span class="nc bnc" id="L162" title="All 4 branches missed.">            } else if (&quot;2&quot;.equals(dbBetType) || &quot;3&quot;.equals(dbBetType)) {</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">                if (&quot;0,1&quot;.indexOf(splitValue) == -1) {</span>
+<span class="nc" id="L164">                    return false;</span>
+                }
+            } else {
+<span class="nc" id="L167">                return true;</span>
+            }
+        }
+<span class="fc" id="L170">        return true;</span>
+    }
+
+    /**
+     * valid ticket amount.
+     */
+    private void checkTicketAmount(ToToTicket ticket) throws ApplicationException {
+        // get base amount for current game draw
+<span class="fc" id="L178">        BigDecimal baeseAmount = this.getGameInstanceDao().getBaseAmoutByGameIdAndDrawNo(</span>
+                ticket.getGameInstance().getGameId(), ticket.getGameInstance().getNumber());
+
+        // get selected matches in messages
+<span class="fc" id="L182">        List&lt;BaseEntry&gt; entries = ticket.getEntries();</span>
+<span class="fc" id="L183">        int totalBets = 0;</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">        for (BaseEntry entry : entries) {</span>
+<span class="fc" id="L185">            int entryBet = ((ToToEntry) entry).calTotalBet();</span>
+<span class="fc" id="L186">            entry.setTotalBets(entryBet);</span>
+<span class="fc" id="L187">            entry.setEntryAmount(SimpleToolkit.mathMultiple(baeseAmount, new BigDecimal(entryBet)));</span>
+<span class="fc" id="L188">            totalBets += entryBet;</span>
+
+<span class="fc" id="L190">        }</span>
+        // valid total amount is OK
+<span class="pc bpc" id="L192" title="1 of 2 branches missed.">        if (ticket.getTotalAmount().compareTo(baeseAmount.multiply(new BigDecimal(totalBets))) != 0) {</span>
+<span class="nc" id="L193">            throw new ApplicationException(SystemException.CODE_UNMATCHED_SALEAMOUNT, &quot;The total amount(&quot;</span>
+                    + ticket.getTotalAmount() + &quot;) of client ticket is &quot;
+                    + &quot;unmatched with the server side(totalAmount=&quot; + baeseAmount.multiply(new BigDecimal(totalBets))
+                    + &quot;,totalBets=&quot; + totalBets + &quot;)&quot;);
+        }
+<span class="fc" id="L198">    }</span>
+
+    public ToToTicketDao getTicketDao() {
+<span class="fc" id="L201">        return ticketDao;</span>
+    }
+
+    public void setTicketDao(ToToTicketDao ticketDao) {
+<span class="fc" id="L205">        this.ticketDao = ticketDao;</span>
+<span class="fc" id="L206">    }</span>
+
+    public ToToGameInstanceDao getGameInstanceDao() {
+<span class="fc" id="L209">        return gameInstanceDao;</span>
+    }
+
+    public void setGameInstanceDao(ToToGameInstanceDao gameInstanceDao) {
+<span class="fc" id="L213">        this.gameInstanceDao = gameInstanceDao;</span>
+<span class="fc" id="L214">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>BaseFunType.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.game</a> &gt; <span class="el_source">BaseFunType.java</span></div><h1>BaseFunType.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.game;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
+<span class="fc" id="L8">public class BaseFunType implements java.io.Serializable {</span>
+    private static final long serialVersionUID = -2639363860618705002L;
+    @Id
+    @Column(name = &quot;ID&quot;)
+    // // create seqence TE_SEQ start with 1 increment by 1;
+    // @SequenceGenerator(name=&quot;TE_SEQ&quot;, sequenceName=&quot;TE_SEQ&quot;)
+    // @GeneratedValue(strategy = GenerationType.SEQUENCE, generator=&quot;TE_SEQ&quot;)
+    private String id;
+
+    // the k part of K/N game, such as 6/49, k=6
+    @Column(name = &quot;KKK&quot;)
+    private int k;
+
+    // the n part of K/N game, such as 6/49, n=49
+    @Column(name = &quot;NNN&quot;)
+    private int n;
+
+    @Column(name = &quot;XXX&quot;)
+    private int x;
+
+    @Column(name = &quot;YYY&quot;)
+    private int y;
+
+    public int getK() {
+<span class="fc" id="L32">        return k;</span>
+    }
+
+    public void setK(int k) {
+<span class="nc" id="L36">        this.k = k;</span>
+<span class="nc" id="L37">    }</span>
+
+    public int getN() {
+<span class="fc" id="L40">        return n;</span>
+    }
+
+    public void setN(int n) {
+<span class="nc" id="L44">        this.n = n;</span>
+<span class="nc" id="L45">    }</span>
+
+    public int getX() {
+<span class="fc" id="L48">        return x;</span>
+    }
+
+    public void setX(int x) {
+<span class="nc" id="L52">        this.x = x;</span>
+<span class="nc" id="L53">    }</span>
+
+    public int getY() {
+<span class="fc" id="L56">        return y;</span>
+    }
+
+    public void setY(int y) {
+<span class="nc" id="L60">        this.y = y;</span>
+<span class="nc" id="L61">    }</span>
+
+    public String getId() {
+<span class="nc" id="L64">        return id;</span>
+    }
+
+    public void setId(String id) {
+<span class="nc" id="L68">        this.id = id;</span>
+<span class="nc" id="L69">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

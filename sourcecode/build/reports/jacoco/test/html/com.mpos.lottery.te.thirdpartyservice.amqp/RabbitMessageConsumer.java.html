@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>RabbitMessageConsumer.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.thirdpartyservice.amqp</a> &gt; <span class="el_source">RabbitMessageConsumer.java</span></div><h1>RabbitMessageConsumer.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.thirdpartyservice.amqp;
+
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.QueueingConsumer;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.IOException;
+
+public abstract class RabbitMessageConsumer implements MessageConsumer {
+<span class="nc" id="L14">    private Log logger = LogFactory.getLog(RabbitMessageConsumer.class);</span>
+    private String host;
+    // whether re-connect AMQP broker if connection is broken.
+<span class="nc" id="L17">    private boolean autoReconnect = false;</span>
+<span class="nc" id="L18">    private long reconnectInterval = 60 * 1000;</span>
+    private String username;
+    private String password;
+
+    public RabbitMessageConsumer(String host, boolean autoReconnect, String username, String password) {
+<span class="nc" id="L23">        super();</span>
+<span class="nc" id="L24">        this.host = host;</span>
+<span class="nc" id="L25">        this.autoReconnect = autoReconnect;</span>
+<span class="nc" id="L26">        this.username = username;</span>
+<span class="nc" id="L27">        this.password = password;</span>
+<span class="nc" id="L28">    }</span>
+
+    @Override
+    public void consume(final String exchangeName, final String queueName, final String[] routingKeys, final int qos)
+            throws IOException, InterruptedException {
+<span class="nc" id="L33">        this.consume(exchangeName, queueName, routingKeys, qos, true, true);</span>
+<span class="nc" id="L34">    }</span>
+
+    @Override
+    public void consume(final String exchangeName, final String queueName, final String[] routingKeys, final int qos,
+            boolean declareExchange, boolean declareQueue) throws IOException, InterruptedException {
+<span class="nc" id="L39">        ConnectionFactory factory = new ConnectionFactory();</span>
+<span class="nc" id="L40">        factory.setHost(this.getHost());</span>
+<span class="nc" id="L41">        factory.setUsername(this.getUsername());</span>
+<span class="nc" id="L42">        factory.setPassword(this.getPassword());</span>
+
+        while (true) {
+<span class="nc" id="L45">            Connection connection = null;</span>
+<span class="nc" id="L46">            Channel channel = null;</span>
+            try {
+<span class="nc" id="L48">                connection = factory.newConnection();</span>
+<span class="nc" id="L49">                channel = connection.createChannel();</span>
+
+<span class="nc bnc" id="L51" title="All 2 branches missed.">                if (declareExchange) {</span>
+<span class="nc" id="L52">                    channel.exchangeDeclare(exchangeName, &quot;topic&quot;, true);</span>
+                }
+<span class="nc bnc" id="L54" title="All 2 branches missed.">                if (declareQueue) {</span>
+                    // declare a durable, non-exclusive, non-autodelete queue.
+<span class="nc" id="L56">                    channel.queueDeclare(queueName, true, false, false, null);</span>
+                }
+<span class="nc bnc" id="L58" title="All 2 branches missed.">                for (String routingKey : routingKeys) {</span>
+<span class="nc" id="L59">                    channel.queueBind(queueName, exchangeName, routingKey);</span>
+                }
+                // distribute workload among all consumers, consumer will
+                // pre-fetch
+                // {qos}
+                // messages to local buffer.
+<span class="nc" id="L65">                channel.basicQos(qos);</span>
+
+<span class="nc" id="L67">                logger.debug(&quot; [*] Waiting for messages. To exit press CTRL+C&quot;);</span>
+
+<span class="nc" id="L69">                QueueingConsumer consumer = new QueueingConsumer(channel);</span>
+                // disable auto-ack. If enable auto-ack, RabbitMQ delivers a
+                // message to
+                // the customer it immediately removes it from memory.
+<span class="nc" id="L73">                boolean autoAck = false;</span>
+<span class="nc" id="L74">                channel.basicConsume(queueName, autoAck, consumer);</span>
+
+                while (true) {
+<span class="nc" id="L77">                    QueueingConsumer.Delivery delivery = consumer.nextDelivery();</span>
+                    try {
+<span class="nc" id="L79">                        RabbitMessageConsumer.this.consumeMessage(delivery);</span>
+<span class="nc" id="L80">                    } catch (Exception e) {</span>
+                        // the exception shouldn't affect the next message
+<span class="nc" id="L82">                        logger.info(&quot;[IGNORE]&quot; + e.getMessage());</span>
+<span class="nc" id="L83">                    }</span>
+                    /**
+                     * If no call to basicAck here, once consumer close connection, broker will move the unacked message
+                     * to redeliver queue.
+                     */
+<span class="nc" id="L88">                    channel.basicAck(delivery.getEnvelope().getDeliveryTag(), false);</span>
+<span class="nc" id="L89">                }</span>
+<span class="nc" id="L90">            } catch (Exception e) {</span>
+<span class="nc" id="L91">                logger.warn(e);</span>
+            }
+
+<span class="nc bnc" id="L94" title="All 2 branches missed.">            if (autoReconnect) {</span>
+<span class="nc" id="L95">                this.release(connection, channel);</span>
+<span class="nc" id="L96">                logger.info(&quot;[*] Will try to reconnect to remote host(&quot; + this.getHost() + &quot;) in &quot;</span>
+                        + this.reconnectInterval / 1000 + &quot; seconds.&quot;);
+<span class="nc" id="L98">                Thread.sleep(this.getReconnectInterval());</span>
+            } else {
+                break;
+            }
+<span class="nc" id="L102">        }</span>
+<span class="nc" id="L103">    }</span>
+
+    /**
+     * Subclass should implement this method to consume message.
+     */
+    protected abstract void consumeMessage(QueueingConsumer.Delivery delivery);
+
+    private void release(Connection conn, Channel channel) {
+        try {
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            if (conn != null) {</span>
+<span class="nc" id="L113">                conn.close();</span>
+            }
+<span class="nc bnc" id="L115" title="All 2 branches missed.">            if (channel != null) {</span>
+<span class="nc" id="L116">                channel.abort();</span>
+            }
+<span class="nc" id="L118">            conn = null;</span>
+<span class="nc" id="L119">            channel = null;</span>
+<span class="nc" id="L120">        } catch (Exception e) {</span>
+            // simply ignore this exception
+<span class="nc bnc" id="L122" title="All 2 branches missed.">            logger.warn(e.getCause() != null ? e.getCause() : e);</span>
+<span class="nc" id="L123">        }</span>
+<span class="nc" id="L124">    }</span>
+
+    public String getHost() {
+<span class="nc" id="L127">        return host;</span>
+    }
+
+    public long getReconnectInterval() {
+<span class="nc" id="L131">        return reconnectInterval;</span>
+    }
+
+    public void setReconnectInterval(long reconnectInterval) {
+<span class="nc" id="L135">        this.reconnectInterval = reconnectInterval;</span>
+<span class="nc" id="L136">    }</span>
+
+    public boolean isAutoReconnect() {
+<span class="nc" id="L139">        return autoReconnect;</span>
+    }
+
+    public String getUsername() {
+<span class="nc" id="L143">        return username;</span>
+    }
+
+    public String getPassword() {
+<span class="nc" id="L147">        return password;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

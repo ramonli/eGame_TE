@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>TopupMsisdnResult.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.valueaddservice.airtime.support.spi.coobill</a> &gt; <span class="el_source">TopupMsisdnResult.java</span></div><h1>TopupMsisdnResult.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.valueaddservice.airtime.support.spi.coobill;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlType;
+
+/**
+ * &lt;p&gt;
+ * Java class for topupMsisdnResult complex type.
+ * 
+ * &lt;p&gt;
+ * The following schema fragment specifies the expected content contained within this class.
+ * 
+ * &lt;pre&gt;
+ * &amp;lt;complexType name=&quot;topupMsisdnResult&quot;&gt;
+ *   &amp;lt;complexContent&gt;
+ *     &amp;lt;restriction base=&quot;{http://www.w3.org/2001/XMLSchema}anyType&quot;&gt;
+ *       &amp;lt;sequence&gt;
+ *         &amp;lt;element name=&quot;description&quot; type=&quot;{http://www.w3.org/2001/XMLSchema}string&quot; minOccurs=&quot;0&quot;/&gt;
+ *         &amp;lt;element name=&quot;status&quot; type=&quot;{http://www.w3.org/2001/XMLSchema}int&quot;/&gt;
+ *         &amp;lt;element name=&quot;transactionDate&quot; type=&quot;{http://www.w3.org/2001/XMLSchema}string&quot; minOccurs=&quot;0&quot;/&gt;
+ *         &amp;lt;element name=&quot;transactionId&quot; type=&quot;{http://www.w3.org/2001/XMLSchema}string&quot; minOccurs=&quot;0&quot;/&gt;
+ *       &amp;lt;/sequence&gt;
+ *     &amp;lt;/restriction&gt;
+ *   &amp;lt;/complexContent&gt;
+ * &amp;lt;/complexType&gt;
+ * &lt;/pre&gt;
+ * 
+ * 
+ */
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = &quot;topupMsisdnResult&quot;, propOrder = { &quot;description&quot;, &quot;status&quot;, &quot;transactionDate&quot;, &quot;transactionId&quot; })
+<span class="fc" id="L33">public class TopupMsisdnResult {</span>
+
+    protected String description;
+    protected int status;
+    protected String transactionDate;
+    protected String transactionId;
+
+    /**
+     * Gets the value of the description property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getDescription() {
+<span class="fc" id="L47">        return description;</span>
+    }
+
+    /**
+     * Sets the value of the description property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setDescription(String value) {
+<span class="nc" id="L58">        this.description = value;</span>
+<span class="nc" id="L59">    }</span>
+
+    /**
+     * Gets the value of the status property.
+     * 
+     */
+    public int getStatus() {
+<span class="fc" id="L66">        return status;</span>
+    }
+
+    /**
+     * Sets the value of the status property.
+     * 
+     */
+    public void setStatus(int value) {
+<span class="nc" id="L74">        this.status = value;</span>
+<span class="nc" id="L75">    }</span>
+
+    /**
+     * Gets the value of the transactionDate property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getTransactionDate() {
+<span class="nc" id="L84">        return transactionDate;</span>
+    }
+
+    /**
+     * Sets the value of the transactionDate property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setTransactionDate(String value) {
+<span class="nc" id="L95">        this.transactionDate = value;</span>
+<span class="nc" id="L96">    }</span>
+
+    /**
+     * Gets the value of the transactionId property.
+     * 
+     * @return possible object is {@link String }
+     * 
+     */
+    public String getTransactionId() {
+<span class="fc" id="L105">        return transactionId;</span>
+    }
+
+    /**
+     * Sets the value of the transactionId property.
+     * 
+     * @param value
+     *            allowed object is {@link String }
+     * 
+     */
+    public void setTransactionId(String value) {
+<span class="nc" id="L116">        this.transactionId = value;</span>
+<span class="nc" id="L117">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

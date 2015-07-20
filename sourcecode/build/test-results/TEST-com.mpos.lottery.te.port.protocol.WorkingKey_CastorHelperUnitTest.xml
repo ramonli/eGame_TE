@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mpos.lottery.te.port.protocol.WorkingKey_CastorHelperUnitTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:54" hostname="Ramon-PC" time="0.011">
+  <properties/>
+  <testcase name="testUnmarshal" classname="com.mpos.lottery.te.port.protocol.WorkingKey_CastorHelperUnitTest" time="0.011"/>
+  <system-out><![CDATA[[2015-05-29 17:13:54,600][Test worker][DEBUG][CastorHelper] Finish marshaling input(typeclass com.mpos.lottery.te.workingkey.domain.WorkingKey, mappingFile=xml-mapping/GetWorkingKey_Res.xml).
+<?xml version="1.0" encoding="UTF-8"?>
+<WorkingKey><DataKey>W0JAOTVjMDgzMTU1YzZiYmEtMTI5OC00</DataKey><MACKey>XNhO+/p2lZgRhwMqIZvel9YRFaSvkz6e1L/ar9mf+4J0a5EzLCq3sehTUOJ</MACKey></WorkingKey>
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

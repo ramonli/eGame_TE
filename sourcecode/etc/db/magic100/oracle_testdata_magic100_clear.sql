@@ -1,0 +1,13 @@
+delete from GAME_TYPE where GAME_TYPE_ID=18;
+delete from GAME where GAME_TYPE_ID=18;
+delete from GAME_MERCHANT where ID like '%-LK-%';
+delete from MERCHANT_GAME_PROPERTIES where MRID like '%-LK-%';    
+delete from LK_OPERATION_PARAMETERS;
+delete from LK_TE_ENTRY;  
+delete from LK_TE_TICKET;  
+delete from LK_GAME_INSTANCE;
+delete from LK_PRIZE_PARAMETERS;
+delete from LK_PRIZE_STATUS;
+delete from TE_TRANSACTION where ID like '%-LUCKY8-%';
+delete from LK_REQUEUE_NUMBERS;
+delete from LK_REQUEUE_NUMBERS_ITEM;

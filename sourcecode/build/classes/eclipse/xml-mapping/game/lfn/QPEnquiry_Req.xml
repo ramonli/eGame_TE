@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE mapping PUBLIC "-//EXOLAB/Castor Mapping DTD Version 1.0//EN"
+                         "http://castor.org/mapping.dtd">
+<mapping>
+	<class name="com.mpos.lottery.te.gamespec.sale.web.QPEnquiryDto">
+		<map-to xml="QPGenerator" />
+
+		<field name="countOfNumbers" type="integer" required="true">
+			<bind-xml name="countOfQPNumbers" node="attribute" />
+		</field>
+		<field name="countOfEntries" type="integer" required="true">
+			<bind-xml name="countOfQP" node="attribute" />
+		</field>
+		<field name="gameInstance"
+			type="com.mpos.lottery.te.gameimpl.lfn.game.LfnGameInstance"
+			required="true">
+			<bind-xml name="GameDraw" />
+		</field>
+		<field name="entries"
+			type="com.mpos.lottery.te.gamespec.sale.BaseEntry"
+			collection="collection" required="true">
+			<bind-xml name="Entry" />
+		</field>
+	</class>
+
+	<class name="com.mpos.lottery.te.gameimpl.lfn.game.LfnGameInstance">
+		<field name="number" type="java.lang.String" required="true">
+			<bind-xml name="number" node="attribute" />
+		</field>
+		<field name="gameId" type="java.lang.String" required="true">
+			<bind-xml name="gameId" node="attribute" />
+		</field>
+	</class>
+
+	<class name="com.mpos.lottery.te.gamespec.sale.BaseEntry">
+		<field name="selectNumber" type="java.lang.String" required="false">
+			<bind-xml name="selectedNumber" node="attribute" />
+		</field>
+	</class>
+</mapping>

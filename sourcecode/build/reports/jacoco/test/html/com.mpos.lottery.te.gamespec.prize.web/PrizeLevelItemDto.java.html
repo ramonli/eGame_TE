@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PrizeLevelItemDto.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.prize.web</a> &gt; <span class="el_source">PrizeLevelItemDto.java</span></div><h1>PrizeLevelItemDto.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.prize.web;
+
+import com.mpos.lottery.te.common.util.SimpleToolkit;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.gamespec.prize.support.AmountCalculator;
+
+import java.math.BigDecimal;
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * The CASH prize information of a given ticket in a single game instance.
+ * 
+ * @author Ramon Li
+ */
+<span class="fc" id="L16">public class PrizeLevelItemDto implements java.io.Serializable, AmountCalculator {</span>
+    private static final long serialVersionUID = 8487594818103123875L;
+    /**
+     * The cash prize amount(before tax).
+     */
+<span class="fc" id="L21">    private BigDecimal prizeAmount = new BigDecimal(&quot;0&quot;);</span>
+    /**
+     * The cash tax amount of prize.
+     */
+<span class="fc" id="L25">    private BigDecimal taxAmount = new BigDecimal(&quot;0&quot;);</span>
+    /**
+     * cash actualAmount := prizeAmount - taxAmount
+     */
+<span class="fc" id="L29">    private BigDecimal actualAmount = new BigDecimal(&quot;0&quot;);</span>
+    /**
+     * The total prize amount of object, just for reference.
+     */
+<span class="fc" id="L33">    private BigDecimal objectPrizeAmount = new BigDecimal(&quot;0&quot;);</span>
+    /**
+     * The total tax amount of object, just for reference
+     */
+<span class="fc" id="L37">    private BigDecimal objectTaxAmount = new BigDecimal(&quot;0&quot;);</span>
+    /**
+     * How many prize level is won?
+     */
+    private int numberOfPrizeLevel;
+    private String prizeLevel;
+<span class="fc" id="L43">    private List&lt;PrizeLevelObjectItemDto&gt; prizeLevelObjectItems = new LinkedList&lt;PrizeLevelObjectItemDto&gt;();</span>
+
+    @Override
+    public void calculate() throws ApplicationException {
+        // reset amount which needs to be re-calculated first
+<span class="nc" id="L48">        this.objectPrizeAmount = new BigDecimal(&quot;0&quot;);</span>
+<span class="nc" id="L49">        this.objectTaxAmount = new BigDecimal(&quot;0&quot;);</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        for (PrizeLevelObjectItemDto objectItem : this.prizeLevelObjectItems) {</span>
+<span class="nc" id="L51">            this.objectPrizeAmount = this.objectPrizeAmount.add(SimpleToolkit.mathMultiple(</span>
+                    SimpleToolkit.mathMultiple(objectItem.getPrice(), new BigDecimal(objectItem.getNumberOfObject()
+                            + &quot;&quot;)), new BigDecimal(this.numberOfPrizeLevel + &quot;&quot;)));
+<span class="nc" id="L54">            this.objectTaxAmount = this.objectTaxAmount.add(SimpleToolkit.mathMultiple(</span>
+                    SimpleToolkit.mathMultiple(objectItem.getTaxAmount(), new BigDecimal(objectItem.getNumberOfObject()
+                            + &quot;&quot;)), new BigDecimal(this.numberOfPrizeLevel + &quot;&quot;)));
+<span class="nc" id="L57">        }</span>
+<span class="nc" id="L58">    }</span>
+
+    public BigDecimal getPrizeAmount() {
+<span class="fc" id="L61">        return prizeAmount;</span>
+    }
+
+    public void setPrizeAmount(BigDecimal prizeAmount) {
+<span class="fc" id="L65">        this.prizeAmount = prizeAmount;</span>
+<span class="fc" id="L66">    }</span>
+
+    public BigDecimal getTaxAmount() {
+<span class="fc" id="L69">        return taxAmount;</span>
+    }
+
+    public void setTaxAmount(BigDecimal taxAmount) {
+<span class="fc" id="L73">        this.taxAmount = taxAmount;</span>
+<span class="fc" id="L74">    }</span>
+
+    public BigDecimal getActualAmount() {
+<span class="fc" id="L77">        return actualAmount;</span>
+    }
+
+    public void setActualAmount(BigDecimal actualAmount) {
+<span class="fc" id="L81">        this.actualAmount = actualAmount;</span>
+<span class="fc" id="L82">    }</span>
+
+    public int getNumberOfPrizeLevel() {
+<span class="fc" id="L85">        return numberOfPrizeLevel;</span>
+    }
+
+    public void setNumberOfPrizeLevel(int numberOfPrizeLevel) {
+<span class="fc" id="L89">        this.numberOfPrizeLevel = numberOfPrizeLevel;</span>
+<span class="fc" id="L90">    }</span>
+
+    public String getPrizeLevel() {
+<span class="fc" id="L93">        return prizeLevel;</span>
+    }
+
+    public void setPrizeLevel(String prizeLevel) {
+<span class="fc" id="L97">        this.prizeLevel = prizeLevel;</span>
+<span class="fc" id="L98">    }</span>
+
+    public BigDecimal getObjectPrizeAmount() {
+<span class="nc" id="L101">        return objectPrizeAmount;</span>
+    }
+
+    public void setObjectPrizeAmount(BigDecimal objectPrizeAmount) {
+<span class="nc" id="L105">        this.objectPrizeAmount = objectPrizeAmount;</span>
+<span class="nc" id="L106">    }</span>
+
+    public BigDecimal getObjectTaxAmount() {
+<span class="nc" id="L109">        return objectTaxAmount;</span>
+    }
+
+    public void setObjectTaxAmount(BigDecimal objectTaxAmount) {
+<span class="nc" id="L113">        this.objectTaxAmount = objectTaxAmount;</span>
+<span class="nc" id="L114">    }</span>
+
+    public List&lt;PrizeLevelObjectItemDto&gt; getPrizeLevelObjectItems() {
+<span class="fc" id="L117">        return prizeLevelObjectItems;</span>
+    }
+
+    public void setPrizeLevelObjectItems(List&lt;PrizeLevelObjectItemDto&gt; prizeLevelObjectItems) {
+<span class="nc" id="L121">        this.prizeLevelObjectItems = prizeLevelObjectItems;</span>
+<span class="nc" id="L122">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

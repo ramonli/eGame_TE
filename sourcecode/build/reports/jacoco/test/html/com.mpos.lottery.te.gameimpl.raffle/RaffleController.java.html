@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>RaffleController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.raffle</a> &gt; <span class="el_source">RaffleController.java</span></div><h1>RaffleController.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.raffle;
+
+import com.mpos.lottery.common.router.RequestMap;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gameimpl.raffle.game.RaffleGameInstance;
+import com.mpos.lottery.te.gameimpl.raffle.sale.RaffleTicket;
+import com.mpos.lottery.te.gamespec.game.Game;
+import com.mpos.lottery.te.gamespec.game.web.GameInstanceDto;
+import com.mpos.lottery.te.gamespec.prize.service.PrizeService;
+import com.mpos.lottery.te.gamespec.prize.web.PrizeDto;
+import com.mpos.lottery.te.gamespec.prize.web.PrizeItemDto;
+import com.mpos.lottery.te.gamespec.sale.BaseTicket;
+import com.mpos.lottery.te.gamespec.sale.service.CompositeTicketService;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.trans.service.TransactionService;
+
+import org.springframework.stereotype.Controller;
+
+import java.util.List;
+
+import javax.annotation.Resource;
+
+@Controller
+<span class="fc" id="L25">public class RaffleController {</span>
+    @Resource(name = &quot;raffleTicketService&quot;)
+    private CompositeTicketService ticketService;
+    @Resource(name = &quot;rafflePrizeService&quot;)
+    private PrizeService prizeService;
+    @Resource(name = &quot;transService&quot;)
+    private TransactionService transactionService;
+
+    @RequestMap(&quot;{transType:200,gameType:14}&quot;)
+    public void sell(Context request, Context response) throws ApplicationException {
+<span class="fc" id="L35">        RaffleTicket ticket = (RaffleTicket) request.getModel();</span>
+<span class="fc" id="L36">        ticket.setTransaction(request.getTransaction());</span>
+
+<span class="fc" id="L38">        List&lt;? extends BaseTicket&gt; tickets = this.getTicketService().sell(response, ticket);</span>
+
+        // update transaction
+<span class="fc" id="L41">        request.getTransaction().setGameId(ticket.getGameInstance().getGame().getId());</span>
+<span class="fc" id="L42">        request.getTransaction().setTotalAmount(ticket.getTotalAmount());</span>
+<span class="fc" id="L43">        request.getTransaction().setTicketSerialNo(ticket.getSerialNo());</span>
+
+<span class="fc" id="L45">        response.setModel(ticket);</span>
+<span class="fc" id="L46">    }</span>
+
+    @RequestMap(&quot;{transType:201,gameType:14}&quot;)
+    public void cancelByTicket(Context request, Context response) throws ApplicationException {
+<span class="fc" id="L50">        RaffleTicket ticket = (RaffleTicket) request.getModel();</span>
+        // boolean isCancelDecline = this.getTicketService().cancelByTicket(response, ticket);
+<span class="fc" id="L52">        boolean isCancelDecline = this.getTransactionService().reverseOrCancel(response, ticket);</span>
+
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if (isCancelDecline) {</span>
+<span class="fc" id="L55">            response.setResponseCode(SystemException.CODE_FAILTO_CANCEL);</span>
+        }
+<span class="fc" id="L57">    }</span>
+
+    @RequestMap(&quot;{transType:202,gameType:14}&quot;)
+    public void enquiryTicket(Context request, Context response) throws ApplicationException {
+<span class="fc" id="L61">        RaffleTicket ticket = (RaffleTicket) request.getModel();</span>
+<span class="fc" id="L62">        ticket = (RaffleTicket) this.getTicketService().enquiry(response, ticket, false);</span>
+
+<span class="fc" id="L64">        response.setModel(ticket);</span>
+<span class="fc" id="L65">    }</span>
+
+    @RequestMap(&quot;{transType:301,gameType:14}&quot;)
+    public void enquiryPrize(Context request, Context response) throws ApplicationException {
+<span class="fc" id="L69">        RaffleTicket ticket = (RaffleTicket) request.getModel();</span>
+<span class="fc" id="L70">        ticket.setTransaction(request.getTransaction());</span>
+<span class="fc" id="L71">        PrizeDto prize = this.getPrizeService().enquiry(response, ticket);</span>
+
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">        if (prize != null) {</span>
+            /**
+             * Refer to http://www.mail-archive.com/castor-user@exolab.org/msg00487.html, you can't define a super class
+             * in Castor mapping file and expect castor generate correct xml from a instance of sub-class.
+             */
+<span class="fc bfc" id="L78" title="All 2 branches covered.">            for (PrizeItemDto prizeItem : prize.getPrizeItems()) {</span>
+<span class="fc" id="L79">                prizeItem.setGameInstance(prizeItem.getGameInstance().genCastorBaseGameInstance());</span>
+<span class="fc" id="L80">            }</span>
+        }
+
+<span class="fc" id="L83">        request.getTransaction().setTicketSerialNo(ticket.getSerialNo());</span>
+<span class="fc" id="L84">        response.setModel(prize);</span>
+<span class="fc" id="L85">    }</span>
+
+    @RequestMap(&quot;{transType:302,gameType:14}&quot;)
+    public void payout(Context request, Context response) throws ApplicationException {
+<span class="fc" id="L89">        RaffleTicket ticket = (RaffleTicket) request.getModel();</span>
+<span class="fc" id="L90">        ticket.setTransaction(request.getTransaction());</span>
+<span class="fc" id="L91">        PrizeDto dto = this.getPrizeService().payout(response, ticket);</span>
+
+<span class="fc" id="L93">        response.setModel(dto);</span>
+<span class="fc" id="L94">        request.getTransaction().setTicketSerialNo(ticket.getSerialNo());</span>
+<span class="fc" id="L95">        request.getTransaction().setTotalAmount(dto.getActualAmount());</span>
+<span class="fc" id="L96">    }</span>
+
+    @RequestMap(&quot;{transType:205,gameType:14}&quot;)
+    public void confirmPayout(Context request, Context response) throws ApplicationException {
+<span class="fc" id="L100">        RaffleTicket ticket = (RaffleTicket) request.getModel();</span>
+<span class="fc" id="L101">        request.getTransaction().setTicketSerialNo(ticket.getSerialNo());</span>
+<span class="fc" id="L102">        this.prizeService.confirmPayout(response, ticket);</span>
+<span class="fc" id="L103">        request.getTransaction().setTicketSerialNo(ticket.getSerialNo());</span>
+<span class="fc" id="L104">    }</span>
+
+    // -----------------------------------------------------------------
+    // HELPER METHODS
+    // -----------------------------------------------------------------
+
+    /**
+     * Construct a &lt;code&gt;BaseGameInstance&lt;/code&gt; based on DTO.
+     */
+    protected RaffleGameInstance assembleGameInstance(GameInstanceDto dto) {
+<span class="nc" id="L114">        RaffleGameInstance gameInstance = new RaffleGameInstance();</span>
+<span class="nc" id="L115">        gameInstance.setNumber(dto.getNumber());</span>
+<span class="nc" id="L116">        Game game = new Game();</span>
+<span class="nc" id="L117">        game.setId(dto.getGameId());</span>
+<span class="nc" id="L118">        gameInstance.setGame(game);</span>
+<span class="nc" id="L119">        return gameInstance;</span>
+    }
+
+    // -----------------------------------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // -----------------------------------------------------------------
+
+    public CompositeTicketService getTicketService() {
+<span class="fc" id="L127">        return ticketService;</span>
+    }
+
+    public void setTicketService(CompositeTicketService ticketService) {
+<span class="nc" id="L131">        this.ticketService = ticketService;</span>
+<span class="nc" id="L132">    }</span>
+
+    public PrizeService getPrizeService() {
+<span class="fc" id="L135">        return prizeService;</span>
+    }
+
+    public void setPrizeService(PrizeService prizeService) {
+<span class="nc" id="L139">        this.prizeService = prizeService;</span>
+<span class="nc" id="L140">    }</span>
+
+    public TransactionService getTransactionService() {
+<span class="fc" id="L143">        return transactionService;</span>
+    }
+
+    public void setTransactionService(TransactionService transactionService) {
+<span class="nc" id="L147">        this.transactionService = transactionService;</span>
+<span class="nc" id="L148">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

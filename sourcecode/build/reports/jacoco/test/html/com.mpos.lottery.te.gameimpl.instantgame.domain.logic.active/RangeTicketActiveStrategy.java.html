@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>RangeTicketActiveStrategy.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gameimpl.instantgame.domain.logic.active</a> &gt; <span class="el_source">RangeTicketActiveStrategy.java</span></div><h1>RangeTicketActiveStrategy.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gameimpl.instantgame.domain.logic.active;
+
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.config.exception.SystemException;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.IgOperationParameter;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.InstantTicketSerialNo;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.dto.ActiveCriteria;
+import com.mpos.lottery.te.gameimpl.instantgame.domain.dto.ActiveResult;
+
+import org.json.simple.JSONObject;
+
+<span class="nc" id="L12">public class RangeTicketActiveStrategy extends AbstractCriteriaActiveStrategy {</span>
+
+    public ActiveResult active(ActiveCriteria criteria) throws ApplicationException {
+<span class="nc" id="L15">        String value = criteria.getValue();</span>
+<span class="nc" id="L16">        int index = value.indexOf(&quot;,&quot;);</span>
+<span class="nc bnc" id="L17" title="All 2 branches missed.">        if (index == -1) {</span>
+<span class="nc" id="L18">            throw new ApplicationException(SystemException.CODE_WRONGFORMAT_SERIALNO, &quot;Wrong criteria format for type &quot;</span>
+                    + criteria.getType() + &quot;: &quot; + criteria.getValue() + &quot;. The serial number must be seperated by ','.&quot;);
+        }
+<span class="nc" id="L21">        String beginSerial = value.substring(0, index);</span>
+<span class="nc" id="L22">        String endSerial = value.substring(index + 1);</span>
+
+<span class="nc" id="L24">        checkRange(criteria, beginSerial, endSerial);</span>
+
+<span class="nc" id="L26">        ActiveResult result = this.batchActive(beginSerial, endSerial, criteria.getTrans());</span>
+<span class="nc" id="L27">        JSONObject jsonObject = new JSONObject();</span>
+<span class="nc" id="L28">        jsonObject.put(criteria.getValue(), result.getErrorCode());</span>
+<span class="nc" id="L29">        result.setActiveResult(criteria.toJSONString(jsonObject));</span>
+<span class="nc" id="L30">        return result;</span>
+    }
+
+    protected void checkRange(ActiveCriteria criteria, String beginSerial, String endSerial)
+            throws ApplicationException {
+<span class="nc" id="L35">        InstantTicketSerialNo begin = new InstantTicketSerialNo(beginSerial);</span>
+<span class="nc" id="L36">        InstantTicketSerialNo end = new InstantTicketSerialNo(endSerial);</span>
+        // check if the begin/end serial number are in same book.
+<span class="nc bnc" id="L38" title="All 4 branches missed.">        if (!begin.getGGG().equals(end.getGGG()) || !begin.getBBB().equals(end.getBBB())) {</span>
+<span class="nc" id="L39">            throw new ApplicationException(SystemException.CODE_WRONGFORMAT_CRITERIA, &quot;Wrong criteria format for type &quot;</span>
+                    + criteria.getType() + &quot;: &quot; + criteria.getValue() + &quot;. Two serialNos must belong to same book.&quot;);
+        }
+        // check if the index of end ticket is greader than begin ticket.
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (begin.getLongIndex() &gt; end.getLongIndex()) {</span>
+<span class="nc" id="L44">            throw new ApplicationException(SystemException.CODE_WRONGFORMAT_CRITERIA, &quot;Wrong criteria format for type &quot;</span>
+                    + criteria.getType() + &quot;: &quot; + criteria.getValue()
+                    + &quot;. The end serialNo must be greater then begin serialNo.&quot;);
+        }
+        // check if the begin/end serial number are between MIN and MAX ticket
+        // serial number.
+<span class="nc" id="L50">        IgOperationParameter param = this.getIgOperationParameter(begin.getGGG());</span>
+<span class="nc bnc" id="L51" title="All 4 branches missed.">        if (begin.getLongIndex() &lt; param.getBeginTicketIndex() || end.getLongIndex() &gt; param.getEndTicketIndex()) {</span>
+<span class="nc" id="L52">            throw new ApplicationException(SystemException.CODE_WRONGFORMAT_CRITERIA,</span>
+                    &quot;The index of begin/end serial number(&quot; + beginSerial + &quot;/&quot; + endSerial + &quot;) should be between &quot;
+                            + param.getBeginTicketIndex() + &quot; and &quot; + param.getEndTicketIndex());
+        }
+<span class="nc" id="L56">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

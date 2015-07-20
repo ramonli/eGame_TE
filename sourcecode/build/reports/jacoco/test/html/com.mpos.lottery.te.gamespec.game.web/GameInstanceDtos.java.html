@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>GameInstanceDtos.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.gamespec.game.web</a> &gt; <span class="el_source">GameInstanceDtos.java</span></div><h1>GameInstanceDtos.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.gamespec.game.web;
+
+import java.util.LinkedList;
+import java.util.List;
+
+<span class="fc" id="L6">public class GameInstanceDtos implements java.io.Serializable {</span>
+    private static final long serialVersionUID = 7730544837915400132L;
+<span class="fc" id="L8">    private List&lt;GameDto&gt; gameDtos = new LinkedList&lt;GameDto&gt;();</span>
+
+    public List&lt;GameDto&gt; getGameDtos() {
+<span class="fc" id="L11">        return gameDtos;</span>
+    }
+
+    public void setGameDtos(List&lt;GameDto&gt; gameDtos) {
+<span class="nc" id="L15">        this.gameDtos = gameDtos;</span>
+<span class="nc" id="L16">    }</span>
+
+    public void add(GameDto gameDto) {
+<span class="fc" id="L19">        GameDto exist = null;</span>
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        for (GameDto g : this.gameDtos) {</span>
+<span class="nc bnc" id="L21" title="All 2 branches missed.">            if (g.getId().equals(gameDto.getId())) {</span>
+<span class="nc" id="L22">                exist = g;</span>
+<span class="nc" id="L23">                exist.getGameInstanceDtos().addAll(gameDto.getGameInstanceDtos());</span>
+            }
+<span class="nc" id="L25">        }</span>
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        if (exist == null) {</span>
+<span class="fc" id="L27">            this.getGameDtos().add(gameDto);</span>
+        }
+<span class="fc" id="L29">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>NumberDto.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.valueaddservice.vat.web</a> &gt; <span class="el_source">NumberDto.java</span></div><h1>NumberDto.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.valueaddservice.vat.web;
+
+import java.math.BigDecimal;
+
+<span class="fc" id="L5">public class NumberDto {</span>
+    private long sequence;
+
+    private long number;
+
+    private String luckyNumber;
+
+<span class="fc" id="L12">    private BigDecimal prizeAmount = new BigDecimal(&quot;0&quot;);</span>
+
+    public BigDecimal getPrizeAmount() {
+<span class="fc" id="L15">        return prizeAmount;</span>
+    }
+
+    public void setPrizeAmount(BigDecimal prizeAmount) {
+<span class="fc" id="L19">        this.prizeAmount = prizeAmount;</span>
+<span class="fc" id="L20">    }</span>
+
+    public String getLuckyNumber() {
+<span class="fc" id="L23">        return luckyNumber;</span>
+    }
+
+    public void setLuckyNumber(String luckyNumber) {
+<span class="fc" id="L27">        this.luckyNumber = luckyNumber;</span>
+<span class="fc" id="L28">    }</span>
+
+    public long getSequence() {
+<span class="fc" id="L31">        return sequence;</span>
+    }
+
+    public void setSequence(long sequence) {
+<span class="fc" id="L35">        this.sequence = sequence;</span>
+<span class="fc" id="L36">    }</span>
+
+    public long getNumber() {
+<span class="fc" id="L39">        return number;</span>
+    }
+
+    public void setNumber(long number) {
+<span class="fc" id="L43">        this.number = number;</span>
+<span class="fc" id="L44">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>

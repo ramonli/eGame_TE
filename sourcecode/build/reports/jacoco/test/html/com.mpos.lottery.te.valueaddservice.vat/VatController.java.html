@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>VatController.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sourcecode</a> &gt; <a href="index.html" class="el_package">com.mpos.lottery.te.valueaddservice.vat</a> &gt; <span class="el_source">VatController.java</span></div><h1>VatController.java</h1><pre class="source lang-java linenums">package com.mpos.lottery.te.valueaddservice.vat;
+
+import com.google.gson.Gson;
+
+import com.mpos.lottery.common.router.RequestMap;
+import com.mpos.lottery.te.config.exception.ApplicationException;
+import com.mpos.lottery.te.merchant.web.VatTransferDto;
+import com.mpos.lottery.te.port.Context;
+import com.mpos.lottery.te.trans.domain.TransactionMessage;
+import com.mpos.lottery.te.valueaddservice.vat.service.DownloadOfflineTicketService;
+import com.mpos.lottery.te.valueaddservice.vat.service.VatCreditService;
+import com.mpos.lottery.te.valueaddservice.vat.service.VatOfflineSaleService;
+import com.mpos.lottery.te.valueaddservice.vat.service.VatReprintTicketService;
+import com.mpos.lottery.te.valueaddservice.vat.service.VatSaleService;
+import com.mpos.lottery.te.valueaddservice.vat.web.OfflineTicketPackDto;
+import com.mpos.lottery.te.valueaddservice.vat.web.VatOfflineSaleUploadDto;
+import com.mpos.lottery.te.valueaddservice.vat.web.VatReprintTicketReqDto;
+
+import org.springframework.stereotype.Controller;
+
+import javax.annotation.Resource;
+
+@Controller
+<span class="fc" id="L24">public class VatController {</span>
+    @Resource(name = &quot;vatSaleService&quot;)
+    private VatSaleService vatSaleService;
+    @Resource(name = &quot;vatOfflineSaleService&quot;)
+    private VatOfflineSaleService vatOfflineSaleService;
+    @Resource(name = &quot;vatCreditService&quot;)
+    private VatCreditService vatCreditService;
+    @Resource(name = &quot;vatReprintTicketService&quot;)
+    private VatReprintTicketService vatReprintTicketService;
+    @Resource(name = &quot;downloadOfflineTicketService&quot;)
+    private DownloadOfflineTicketService downloadOfflineTicketService;
+
+    @RequestMap(&quot;{transType:200,gameType:-2}&quot;)
+    public void sell(Context request, Context response) throws ApplicationException {
+<span class="fc" id="L38">        VatSaleTransaction clientSale = (VatSaleTransaction) request.getModel();</span>
+
+        // the service will assemble client ticket.
+<span class="fc" id="L41">        this.getVatSaleService().sell(response, clientSale);</span>
+<span class="fc" id="L42">        response.setModel(clientSale);</span>
+<span class="fc" id="L43">    }</span>
+
+    @RequestMap(&quot;{transType:450}&quot;)
+    public void refund(Context request, Context response) throws ApplicationException {
+<span class="fc" id="L47">        VatSaleTransaction clientSale = (VatSaleTransaction) request.getModel();</span>
+
+        // the service will assemble client ticket.
+<span class="fc" id="L50">        this.getVatSaleService().refundVat(response, clientSale);</span>
+<span class="fc" id="L51">    }</span>
+
+    @RequestMap(&quot;{transType:451}&quot;)
+    public void uploadOfflineSale(Context request, Context response) throws ApplicationException {
+<span class="fc" id="L55">        VatOfflineSaleUploadDto clientSales = (VatOfflineSaleUploadDto) request.getModel();</span>
+
+<span class="fc" id="L57">        VatOfflineSaleUploadDto respDto = this.getVatOfflineSaleService().upload(response, clientSales);</span>
+<span class="fc" id="L58">        response.getTransaction().setTotalAmount(clientSales.calVatTotalAmount().subtract(respDto.calVatTotalAmount()));</span>
+<span class="fc" id="L59">        response.setModel(respDto);</span>
+<span class="fc" id="L60">    }</span>
+
+    @RequestMap(&quot;{transType:118}&quot;)
+    public void vatTransfer(Context request, Context response) throws ApplicationException {
+<span class="nc" id="L64">        VatTransferDto dto = (VatTransferDto) request.getModel();</span>
+<span class="nc" id="L65">        VatTransferDto respDto = this.getVatCreditService().vatTransferCredit(response, dto);</span>
+<span class="nc" id="L66">        response.setModel(respDto);</span>
+
+<span class="nc" id="L68">        response.getTransaction().setTotalAmount(dto.getAmount());</span>
+        // write transaction message for reversal.
+<span class="nc" id="L70">        TransactionMessage transMsg = new TransactionMessage();</span>
+<span class="nc" id="L71">        transMsg.setTransactionId(response.getTransaction().getId());</span>
+<span class="nc" id="L72">        transMsg.setRequestMsg(new Gson().toJson(dto));</span>
+<span class="nc" id="L73">        request.getTransaction().setTransMessage(transMsg);</span>
+<span class="nc" id="L74">    }</span>
+
+    @RequestMap(&quot;{transType:340}&quot;)
+    public void downloadOfflineTicket(Context request, Context response) throws ApplicationException {
+<span class="fc" id="L78">        OfflineTicketPackDto dto = (OfflineTicketPackDto) request.getModel();</span>
+<span class="fc" id="L79">        OfflineTicketPackDto respDto = this.getDownloadOfflineTicketService().downloadOfflineTicket(response, dto);</span>
+<span class="fc" id="L80">        response.setModel(respDto);</span>
+<span class="fc" id="L81">    }</span>
+
+    @RequestMap(&quot;{transType:119,gameType:14}&quot;)
+    public void vatRaffleReprintTicket(Context request, Context response) throws ApplicationException {
+<span class="nc" id="L85">        VatReprintTicketReqDto dto = (VatReprintTicketReqDto) request.getModel();</span>
+<span class="nc" id="L86">        VatSaleTransaction respDto = this.getVatReprintTicketService().raffleReprintTicket(request, response, dto);</span>
+<span class="nc" id="L87">        response.setModel(respDto);</span>
+<span class="nc" id="L88">    }</span>
+
+    @RequestMap(&quot;{transType:119,gameType:18}&quot;)
+    public void vatMagicReprintTicket(Context request, Context response) throws ApplicationException {
+<span class="nc" id="L92">        VatReprintTicketReqDto dto = (VatReprintTicketReqDto) request.getModel();</span>
+<span class="nc" id="L93">        VatSaleTransaction respDto = this.getVatReprintTicketService().MagicReprintTicket(request, response, dto);</span>
+<span class="nc" id="L94">        response.setModel(respDto);</span>
+<span class="nc" id="L95">    }</span>
+
+    // -----------------------------------------------------------------
+    // HELPER METHODS
+    // -----------------------------------------------------------------
+
+    // -----------------------------------------------------------------
+    // SPRING DEPENDENCIES INJECTION
+    // -----------------------------------------------------------------
+
+    public VatCreditService getVatCreditService() {
+<span class="nc" id="L106">        return vatCreditService;</span>
+    }
+
+    public void setVatCreditService(VatCreditService vatCreditService) {
+<span class="nc" id="L110">        this.vatCreditService = vatCreditService;</span>
+<span class="nc" id="L111">    }</span>
+
+    public VatReprintTicketService getVatReprintTicketService() {
+<span class="nc" id="L114">        return vatReprintTicketService;</span>
+    }
+
+    public void setVatReprintTicketService(VatReprintTicketService vatReprintTicketService) {
+<span class="nc" id="L118">        this.vatReprintTicketService = vatReprintTicketService;</span>
+<span class="nc" id="L119">    }</span>
+
+    public DownloadOfflineTicketService getDownloadOfflineTicketService() {
+<span class="fc" id="L122">        return downloadOfflineTicketService;</span>
+    }
+
+    public void setDownloadOfflineTicketService(DownloadOfflineTicketService downloadOfflineTicketService) {
+<span class="nc" id="L126">        this.downloadOfflineTicketService = downloadOfflineTicketService;</span>
+<span class="nc" id="L127">    }</span>
+
+    public VatSaleService getVatSaleService() {
+<span class="fc" id="L130">        return vatSaleService;</span>
+    }
+
+    public void setVatSaleService(VatSaleService vatSaleService) {
+<span class="nc" id="L134">        this.vatSaleService = vatSaleService;</span>
+<span class="nc" id="L135">    }</span>
+
+    public VatOfflineSaleService getVatOfflineSaleService() {
+<span class="fc" id="L138">        return vatOfflineSaleService;</span>
+    }
+
+    public void setVatOfflineSaleService(VatOfflineSaleService vatOfflineSaleService) {
+<span class="nc" id="L142">        this.vatOfflineSaleService = vatOfflineSaleService;</span>
+<span class="nc" id="L143">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.2.201302030002</span></div></body></html>
