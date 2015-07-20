@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.mpos.lottery.te.common.SystemExceptionUnitTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:12:30" hostname="Ramon-PC" time="0.05">
-  <properties/>
-  <testcase name="testGetErrorCode" classname="com.mpos.lottery.te.common.SystemExceptionUnitTest" time="0.05"/>
-  <system-out><![CDATA[Message: java.lang.ArithmeticException: / by zero
-Cause Message: / by zero
-]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

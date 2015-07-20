@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.mpos.lottery.te.port.protocol.OfflineSettingDownloadSerializerUnitTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:54" hostname="Ramon-PC" time="0.023">
-  <properties/>
-  <testcase name="testSerialize" classname="com.mpos.lottery.te.port.protocol.OfflineSettingDownloadSerializerUnitTest" time="0.023"/>
-  <system-out><![CDATA[com.mpos.lottery.te.valueaddservice.vat.web.OfflineTicketPackDto@7ec26203
-]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

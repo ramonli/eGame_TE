@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.mpos.lottery.te.gamespec.prize.dao.TaxThresholdDaoIntegrationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:50" hostname="Ramon-PC" time="0.025">
-  <properties/>
-  <testcase name="testGetByPolicyAndAmountAndDateRange" classname="com.mpos.lottery.te.gamespec.prize.dao.TaxThresholdDaoIntegrationTest" time="0.025"/>
-  <system-out><![CDATA[[2015-05-29 17:13:50,744][Test worker][DEBUG][BaseTransactionalIntegrationTest] Retrieve a ApplicationContext(org.springframework.web.context.support.GenericWebApplicationContext@34f645a8: startup date [Fri May 29 17:12:38 CST 2015]; root of context hierarchy).
-]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

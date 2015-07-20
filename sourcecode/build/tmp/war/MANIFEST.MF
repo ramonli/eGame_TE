@@ -1,8 +1,0 @@
-Manifest-Version: 1.0
-Implementation-Title: mlottery_te
-Implementation-Version: 2.5.2-rc7_4890
-Implementation-Vendor: MPOS Holdings Limited
-Created-By: M.Lottery Transaction Engine Team
-Build-By: Gradle 2.2.1
-Build-Time: Fri May 29 17:10:14 CST 2015
-

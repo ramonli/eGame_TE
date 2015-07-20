@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.mpos.lottery.te.gameimpl.lotto.sale.domain.logic.lotto.BankerSelectedNumberUnitTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-05-29T09:13:32" hostname="Ramon-PC" time="0.0">
-  <properties/>
-  <testcase name="testValidateAndAssembleEntry" classname="com.mpos.lottery.te.gameimpl.lotto.sale.domain.logic.lotto.BankerSelectedNumberUnitTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
