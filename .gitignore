@@ -1,6 +1,8 @@
-./sourcecode/build/
-./sourcecode/.classpath
-./sourcecode/.project
-./sourcecode/.svnkey
-./sourcecode/.checkstyle
+/sourcecode/build/
+/sourcecode/.gradle/
+/sourcecode/.settings/
+/sourcecode/.classpath
+/sourcecode/.project
+/sourcecode/.svnkey
+/sourcecode/.checkstyle
 
